@@ -16,7 +16,10 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 
 int ImageProcessor::loadImage(QString fileName){
     m_img = imread(fileName.toStdString(),-1);
-    cvtColor(m_img, m_gray,COLOR_RGB2GRAY);
+
+    if (m_img.channels() < 3)
+        cvtColor(m_img,m_img,COLOR_GRAY2RGBA);
+    cvtColor(m_img, m_gray,COLOR_RGBA2GRAY);
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
 
@@ -147,7 +150,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Mat normals(mat.size(), CV_32FC3);
     float dx, dy;
 
-    blur(mat,mat,Size(blur_radius,blur_radius));
+    GaussianBlur(mat,mat,Size(blur_radius*2+1,blur_radius*2+1),0);
     for(int x = 0; x < mat.cols; ++x)
     {
         for(int y = 0; y < mat.rows; ++y)

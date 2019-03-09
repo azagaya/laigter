@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -37,6 +37,16 @@
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="2" column="1">
          <widget class="GraphicsView" name="graphicsViewNormal"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Vista previa</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_9">
+        <item row="0" column="0">
+         <widget class="QGraphicsView" name="graphicsView"/>
         </item>
        </layout>
       </widget>
@@ -130,13 +140,13 @@
              <item row="1" column="1">
               <widget class="QSlider" name="normalBlurSlider">
                <property name="minimum">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="maximum">
-                <number>21</number>
+                <number>20</number>
                </property>
                <property name="singleStep">
-                <number>2</number>
+                <number>1</number>
                </property>
                <property name="value">
                 <number>1</number>
@@ -203,10 +213,13 @@
              <item row="2" column="1">
               <widget class="QSlider" name="normalBiselBlurSlider">
                <property name="minimum">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="maximum">
                 <number>20</number>
+               </property>
+               <property name="singleStep">
+                <number>1</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>

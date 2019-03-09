@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QOpenGLWidget>
 #include "src/imageprocessor.h"
 
 namespace Ui {
@@ -35,6 +36,7 @@ private slots:
 private:
     QPixmap m_pixmap;
     Ui::MainWindow *ui;
+    QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;
     QGraphicsScene *m_raw_scene;
     ImageProcessor processor;
