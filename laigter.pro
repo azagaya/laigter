@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     src/imageprocessor.cpp \
-    src/graphicsview.cpp
+    src/graphicsview.cpp \
+    src/openglwidget.cpp \
+    src/geometryengine.cpp
 
 HEADERS += \
         mainwindow.h \
     src/imageprocessor.h \
-    src/graphicsview.h
+    src/graphicsview.h \
+    src/openglwidget.h \
+    src/geometryengine.h
 
 FORMS += \
         mainwindow.ui
@@ -45,3 +49,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += opencv
+
+DISTFILES +=
+
+RESOURCES += \
+    shaders.qrc

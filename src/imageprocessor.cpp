@@ -17,8 +17,15 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 int ImageProcessor::loadImage(QString fileName){
     m_img = imread(fileName.toStdString(),-1);
 
-    if (m_img.channels() < 3)
-        cvtColor(m_img,m_img,COLOR_GRAY2RGBA);
+    if (m_img.channels() < 4){
+        if (m_img.channels() == 3){
+            cvtColor(m_img,m_img,COLOR_RGB2RGBA);
+        }
+        else{
+            cvtColor(m_img,m_img,COLOR_GRAY2RGBA);
+        }
+    }
+
     cvtColor(m_img, m_gray,COLOR_RGBA2GRAY);
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
@@ -36,7 +43,7 @@ void ImageProcessor::calculate_gradient(){
 
 void ImageProcessor::calculate_distance(){
 
-    cvtColor(m_img, m_distance,CV_RGB2GRAY);
+    cvtColor(m_img, m_distance,CV_RGBA2GRAY);
     for(int x = 0; x < m_distance.cols; ++x)
     {
         for(int y = 0; y < m_distance.rows; ++y)
@@ -148,9 +155,14 @@ void ImageProcessor::generate_normal_map(){
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Mat normals(mat.size(), CV_32FC3);
+    Mat mdx,mdy,mg;
     float dx, dy;
 
     GaussianBlur(mat,mat,Size(blur_radius*2+1,blur_radius*2+1),0);
+//    mat.copyTo(mg);
+//    Sobel(mg,mdx,CV_32F, 1, 0);
+//    Sobel(mg,mdy,CV_32F, 0, 1);
+    //imshow("asdf",mdx);
     for(int x = 0; x < mat.cols; ++x)
     {
         for(int y = 0; y < mat.rows; ++y)
@@ -171,6 +183,9 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
                 dy = mat.at<float>(y-2,x) + -4*mat.at<float>(y-1,x) +3*mat.at<float>(y,x);
             else
                 dy = -mat.at<float>(y-1,x) + mat.at<float>(y+1,x);
+//            Vec3f n = Vec3f(-mdx.at<float>(y,x)*(depth/1000.0)*normalInvertX,
+//                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
+//                            1*normalInvertZ);
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
                             -dy*(depth/1000.0)*normalInvertY,
                             1*normalInvertZ);

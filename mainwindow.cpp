@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "src/openglwidget.h"
 #include "src/graphicsview.h"
 
 #include <QFileDialog>
 #include <QDebug>
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_raw_scene = new QGraphicsScene(this);
     m_normal_scene = new QGraphicsScene(this);
+
     connect(&processor,SIGNAL(processed(QPixmap, ProcessedImage)),this,SLOT(update_scene(QPixmap, ProcessedImage)));
     connect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),&processor,SLOT(set_normal_depth(int)));
     connect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),&processor,SLOT(set_normal_blur_radius(int)));
@@ -34,13 +35,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::update_scene(QPixmap pixmap, ProcessedImage type){
     switch (type) {
+
     case ProcessedImage::Raw:
         m_raw_scene->clear();
+        ui->graphicsViewRaw->setSceneRect(pixmap.rect());
         m_raw_scene->addPixmap(pixmap);
         ui->graphicsViewRaw->setScene(m_raw_scene);
+
+        ui->openGLPreviewWidget->setPixmap(pixmap);
+        ui->openGLPreviewWidget->update();
+
         break;
     case ProcessedImage::Normal:
         m_normal_scene->clear();
+        ui->graphicsViewNormal->setSceneRect(pixmap.rect());
         m_normal_scene->addPixmap(pixmap);
         ui->graphicsViewNormal->setScene(m_normal_scene);
         break;

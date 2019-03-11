@@ -15,10 +15,10 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -46,7 +46,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_9">
         <item row="0" column="0">
-         <widget class="QGraphicsView" name="graphicsView"/>
+         <widget class="OpenGlWidget" name="openGLPreviewWidget"/>
         </item>
        </layout>
       </widget>
@@ -314,6 +314,11 @@
    <class>GraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>src/graphicsview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OpenGlWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>src/openglwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
