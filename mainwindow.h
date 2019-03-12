@@ -19,7 +19,10 @@ public:
     ~MainWindow();
 
 public slots:
-    void update_scene(QPixmap pixmap, ProcessedImage type);
+    void update_scene(QImage image, ProcessedImage type);
+
+signals:
+    void normal_depth_changed(int value);
 private slots:
     void on_actionOpen_triggered();
 

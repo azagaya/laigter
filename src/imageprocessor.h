@@ -27,9 +27,11 @@ public:
     void calculate_gradient();
     void calculate_distance();
     Mat modify_distance();
+    bool busy;
 
 signals:
-    void processed(QPixmap pixmap, ProcessedImage type);
+    void processed(QImage image, ProcessedImage type);
+    void on_idle();
 public slots:
     void set_normal_depth(int depth);
     void set_normal_blur_radius(int radius);

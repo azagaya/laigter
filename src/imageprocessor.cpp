@@ -1,6 +1,7 @@
 #include "imageprocessor.h"
 #include <opencv2/highgui.hpp>
 #include <QDebug>
+#include <QApplication>
 #include <cmath>
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
@@ -12,6 +13,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     gradient_end = 255;
     normal_bisel_soft = true;
     normalInvertX = normalInvertY = normalInvertZ = 1;
+    busy = false;
 }
 
 int ImageProcessor::loadImage(QString fileName){
@@ -43,6 +45,7 @@ void ImageProcessor::calculate_gradient(){
 
 void ImageProcessor::calculate_distance(){
 
+    if (!m_img.ptr<int>(0)) return;
     cvtColor(m_img, m_distance,CV_RGBA2GRAY);
     for(int x = 0; x < m_distance.cols; ++x)
     {
@@ -128,6 +131,8 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius){
 }
 
 void ImageProcessor::generate_normal_map(){
+    if (!m_img.ptr<int>(0) || busy) return;
+    busy = true;
     Mat gray;
     m_gray.copyTo(gray);
     Mat normals;
@@ -147,10 +152,11 @@ void ImageProcessor::generate_normal_map(){
 
     normals.convertTo(normals,CV_8UC3,255);
     normals.copyTo(m_normal);
-    QPixmap p =QPixmap::fromImage(QImage(static_cast<unsigned char *>(m_normal.data),
-                                         m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888));
+    QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
+                                         m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
     processed(p, ProcessedImage::Normal);
-
+    busy = false;
+    on_idle();
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){

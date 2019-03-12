@@ -29,15 +29,13 @@ SOURCES += \
         mainwindow.cpp \
     src/imageprocessor.cpp \
     src/graphicsview.cpp \
-    src/openglwidget.cpp \
-    src/geometryengine.cpp
+    src/openglwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     src/imageprocessor.h \
     src/graphicsview.h \
-    src/openglwidget.h \
-    src/geometryengine.h
+    src/openglwidget.h
 
 FORMS += \
         mainwindow.ui
@@ -54,3 +52,4 @@ DISTFILES +=
 
 RESOURCES += \
     shaders.qrc
+

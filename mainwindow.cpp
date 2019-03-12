@@ -5,6 +5,7 @@
 
 #include <QFileDialog>
 #include <QDebug>
+#include <QThread>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_raw_scene = new QGraphicsScene(this);
     m_normal_scene = new QGraphicsScene(this);
 
-    connect(&processor,SIGNAL(processed(QPixmap, ProcessedImage)),this,SLOT(update_scene(QPixmap, ProcessedImage)));
+
+    connect(&processor,SIGNAL(processed(QImage, ProcessedImage)),this,SLOT(update_scene(QImage, ProcessedImage)));
     connect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),&processor,SLOT(set_normal_depth(int)));
     connect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),&processor,SLOT(set_normal_blur_radius(int)));
     connect(ui->normalBevelSlider,SIGNAL(valueChanged(int)),&processor,SLOT(set_normal_bisel_depth(int)));
@@ -26,6 +28,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->graphicsViewRaw,SIGNAL(zoomed_in(double,double)),ui->graphicsViewNormal,SLOT(zoom_in(double,double)));
     connect(ui->graphicsViewNormal,SIGNAL(zoomed_in(double,double)),ui->graphicsViewRaw,SLOT(zoom_in(double,double)));
+
+//    QThread *processing_trhead = new QThread();
+
+//    processor.moveToThread(processing_trhead);
+//    processing_trhead->start(QThread::HighPriority);
 }
 
 MainWindow::~MainWindow()
@@ -33,7 +40,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::update_scene(QPixmap pixmap, ProcessedImage type){
+void MainWindow::update_scene(QImage image, ProcessedImage type){
+    QPixmap pixmap = QPixmap::fromImage(image);
     switch (type) {
 
     case ProcessedImage::Raw:
@@ -42,7 +50,7 @@ void MainWindow::update_scene(QPixmap pixmap, ProcessedImage type){
         m_raw_scene->addPixmap(pixmap);
         ui->graphicsViewRaw->setScene(m_raw_scene);
 
-        ui->openGLPreviewWidget->setPixmap(pixmap);
+        ui->openGLPreviewWidget->setImage(image);
         ui->openGLPreviewWidget->update();
 
         break;
@@ -62,7 +70,7 @@ void MainWindow::on_actionOpen_triggered()
                                                     tr("Open Image"), "/home/pablo",
                                                     tr("Image Files (*.png *.jpg *.bmp)"));
     if (fileName != nullptr){
-        update_scene(QPixmap::fromImage(QImage(fileName)),ProcessedImage::Raw);
+        update_scene(QImage(fileName),ProcessedImage::Raw);
         processor.loadImage(fileName);
     }
 }
@@ -71,6 +79,7 @@ void MainWindow::on_actionFitZoom_triggered()
 {
     ui->graphicsViewRaw->fitInView(ui->graphicsViewRaw->sceneRect(),Qt::KeepAspectRatio);
     ui->graphicsViewNormal->fitInView(ui->graphicsViewNormal->sceneRect(),Qt::KeepAspectRatio);
+    ui->openGLPreviewWidget->fitZoom();
 
 }
 
@@ -78,18 +87,21 @@ void MainWindow::on_actionZoom_100_triggered()
 {
     ui->graphicsViewRaw->resetTransform();
     ui->graphicsViewNormal->resetTransform();
+    ui->openGLPreviewWidget->resetZoom();
 }
 
 void MainWindow::on_actionZoomIn_triggered()
 {
     ui->graphicsViewRaw->scale(1.01,1.01);
     ui->graphicsViewNormal->scale(1.01,1.01);
+    ui->openGLPreviewWidget->setZoom(1.1*ui->openGLPreviewWidget->getZoom());
 }
 
 void MainWindow::on_actionZoomOut_triggered()
 {
     ui->graphicsViewRaw->scale(0.99,0.99);
     ui->graphicsViewNormal->scale(0.99,0.99);
+    ui->openGLPreviewWidget->setZoom(0.9*ui->openGLPreviewWidget->getZoom());
 }
 
 void MainWindow::on_actionExport_triggered()
