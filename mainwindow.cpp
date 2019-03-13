@@ -59,9 +59,12 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
         ui->graphicsViewNormal->setSceneRect(pixmap.rect());
         m_normal_scene->addPixmap(pixmap);
         ui->graphicsViewNormal->setScene(m_normal_scene);
+
+        ui->openGLPreviewWidget->setNormalMap(image);
         break;
 
     }
+    ui->openGLPreviewWidget->update();
 }
 
 void MainWindow::on_actionOpen_triggered()

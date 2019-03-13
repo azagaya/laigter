@@ -20,6 +20,7 @@ public:
     OpenGlWidget(QWidget *parent = nullptr);
 public slots:
     void setImage(QImage image);
+    void setNormalMap(QImage normalMap);
     void setZoom(float zoom);
     void resetZoom();
     void fitZoom();
@@ -29,13 +30,17 @@ protected:
     void paintGL() override;
     void resizeGL(int width, int height) override;
     void wheelEvent(QWheelEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 private:
     GLuint shaderProgram, vertexShader, fragmentShader;
-    QOpenGLTexture *m_texture;
+    QOpenGLTexture *m_texture, *m_normalTexture;
     QOpenGLVertexArrayObject VAO;
+    QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program;
-    QImage m_image;
+    QOpenGLShaderProgram lightProgram;
+    QImage m_image, normalMap;
+    QVector3D lightPosition;
     float sx, sy;
     float m_zoom;
 

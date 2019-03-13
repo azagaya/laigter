@@ -9,8 +9,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
     m_image = QImage("/home/pablo/Imágenes/ship.png");
-
-
+    normalMap = QImage("/home/pablo/Imágenes/ship_n.png");
+    lightPosition = QVector3D(1.0,1.0,1.0);
 }
 
 void OpenGlWidget::initializeGL()
@@ -23,6 +23,11 @@ void OpenGlWidget::initializeGL()
     m_program.create();
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
     m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/fshader.glsl");
+    m_program.link();
+
+    lightProgram.create();
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/lvshader.glsl");
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/lfshader.glsl");
     m_program.link();
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -54,11 +59,22 @@ void OpenGlWidget::initializeGL()
 
 
     m_texture = new QOpenGLTexture(m_image);
+    m_normalTexture = new QOpenGLTexture(normalMap);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+   // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    m_program.release();
     VAO.release();
     VBO.release();
+
+    lightVAO.bind();
+    VBO.bind();
+    vertexLocation = m_program.attributeLocation("aPos");
+    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(vertexLocation);
+    lightVAO.release();
+    VBO.release();
+
 
 
 }
@@ -82,9 +98,25 @@ void OpenGlWidget::paintGL()
     m_texture->bind(0);
     m_program.setUniformValue("tex",0);
     m_program.setUniformValue("transform",transform);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glActiveTexture(GL_TEXTURE1);
+    m_normalTexture->bind(1);
+    m_program.setUniformValue("normalMap",1);
+    m_program.setUniformValue("lightPos",lightPosition);
     glDrawArrays(GL_QUADS, 0, 4);
 
     m_program.release();
+
+
+//    transform.scale(0.1,0.1,1);
+
+//    lightProgram.bind();
+//    lightVAO.bind();
+//    lightProgram.setUniformValue("transform",transform);
+//    glDrawArrays(GL_QUADS, 0, 4);
+
+//    lightProgram.release();
 
 }
 
@@ -103,6 +135,13 @@ void OpenGlWidget::setImage(QImage image){
     m_texture->setData(m_image);
     sx = (float)m_image.width()/width();
     sy = (float)m_image.height()/height();
+}
+
+void OpenGlWidget::setNormalMap(QImage image){
+    normalMap = image;
+    m_normalTexture->destroy();
+    m_normalTexture->create();
+    m_normalTexture->setData(normalMap);
 }
 
 void OpenGlWidget::setZoom(float zoom){
@@ -135,6 +174,18 @@ void OpenGlWidget::fitZoom(){
 
 float OpenGlWidget::getZoom(){
     return m_zoom;
+}
+
+void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
+    if (event->buttons() & Qt::LeftButton)
+    {
+        lightPosition.setX((float)event->localPos().x()/width()*2-1);
+        lightPosition.setY(-(float)event->localPos().y()/height()*2+1);
+        update();
+    }
+    else if (event->buttons() & Qt::RightButton){
+
+    }
 }
 
 
