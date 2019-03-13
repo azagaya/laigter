@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "src/openglwidget.h"
-#include "src/graphicsview.h"
 
 #include <QFileDialog>
 #include <QDebug>
