@@ -45,6 +45,8 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
     case ProcessedImage::Normal:
         normal = image;
         ui->openGLPreviewWidget->setNormalMap(image);
+        if (ui->radioButtonNormal->isChecked())
+            ui->openGLPreviewWidget->setImage(image);
         break;
 
     }
@@ -58,8 +60,14 @@ void MainWindow::on_actionOpen_triggered()
                                                     tr("Image Files (*.png *.jpg *.bmp)"));
     image = QImage(fileName);
     if (fileName != nullptr){
-        update_scene(QImage(fileName),ProcessedImage::Raw);
         processor.loadImage(fileName);
+        if (ui->radioButtonRaw->isChecked()){
+            on_radioButtonRaw_toggled(true);
+        } else if (ui->radioButtonNormal->isChecked()){
+            on_radioButtonNormal_toggled(true);
+        } else {
+            on_radioButtonPreview_toggled(true);
+        }
     }
 }
 
