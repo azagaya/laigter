@@ -11,6 +11,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     m_image = QImage("/home/pablo/Imágenes/ship.png");
     normalMap = QImage("/home/pablo/Imágenes/ship_n.png");
     lightPosition = QVector3D(1.0,1.0,1.0);
+    m_light = true;
 }
 
 void OpenGlWidget::initializeGL()
@@ -75,7 +76,7 @@ void OpenGlWidget::initializeGL()
     lightVAO.release();
     VBO.release();
 
-
+    initialized();
 
 }
 
@@ -91,10 +92,12 @@ void OpenGlWidget::paintGL()
     transform.scale(m_zoom,m_zoom,1);
 
     m_program.bind();
+
     VAO.bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glActiveTexture(GL_TEXTURE0);
+    m_program.setUniformValue("light",m_light);
     m_texture->bind(0);
     m_program.setUniformValue("tex",0);
     m_program.setUniformValue("transform",transform);
@@ -187,6 +190,12 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
 
     }
 }
+
+void OpenGlWidget::setLight(bool light){
+    m_light = light;
+    update();
+}
+
 
 
 

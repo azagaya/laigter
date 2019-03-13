@@ -24,6 +24,9 @@ public slots:
 signals:
     void normal_depth_changed(int value);
 private slots:
+
+    void openGL_initialized();
+
     void on_actionOpen_triggered();
 
     void on_actionFitZoom_triggered();
@@ -36,8 +39,14 @@ private slots:
 
     void on_actionExport_triggered();
 
+    void on_radioButtonRaw_toggled(bool checked);
+
+    void on_radioButtonNormal_toggled(bool checked);
+
+    void on_radioButtonPreview_toggled(bool checked);
+
 private:
-    QPixmap m_pixmap;
+    QImage image, normal;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;

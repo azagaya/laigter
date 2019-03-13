@@ -10,11 +10,14 @@
 #include <QOpenGLBuffer>
 #include <QPixmap>
 #include <QWheelEvent>
+#include <QObject>
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
+    Q_OBJECT
 public:
     OpenGlWidget(QWidget *parent = nullptr);
+
 public slots:
     void setImage(QImage image);
     void setNormalMap(QImage normalMap);
@@ -22,6 +25,9 @@ public slots:
     void resetZoom();
     void fitZoom();
     float getZoom();
+    void setLight(bool light);
+signals:
+    void initialized();
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -38,6 +44,8 @@ private:
     QOpenGLShaderProgram lightProgram;
     QImage m_image, normalMap;
     QVector3D lightPosition;
+
+    bool m_light;
     float sx, sy;
     float m_zoom;
 
