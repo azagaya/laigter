@@ -66,7 +66,7 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
 void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Abrir Imagen"), "/home/pablo",
+                                                    tr("Abrir Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
     image = QImage(fileName);
     if (fileName != nullptr){
