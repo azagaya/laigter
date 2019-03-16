@@ -105,7 +105,7 @@ void MainWindow::on_actionZoomOut_triggered()
 void MainWindow::on_actionExport_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Guardar Imagen"), "/home/pablo",
+                                                    tr("Guardar Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
 
     if (fileName != nullptr){
