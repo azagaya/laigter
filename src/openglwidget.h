@@ -26,6 +26,11 @@ public slots:
     void fitZoom();
     float getZoom();
     void setLight(bool light);
+    void setLightColor(QVector3D color);
+    void setLightHeight(float height);
+    void setLightIntensity(float intensity);
+    void setAmbientIntensity(float intensity);
+    void setAmbientColor(QVector3D color);
 signals:
     void initialized();
 protected:
@@ -36,18 +41,18 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
 private:
     GLuint shaderProgram, vertexShader, fragmentShader;
-    QOpenGLTexture *m_texture, *m_normalTexture;
+    QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture;
     QOpenGLVertexArrayObject VAO;
     QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program;
     QOpenGLShaderProgram lightProgram;
-    QImage m_image, normalMap;
-    QVector3D lightPosition;
-
+    QImage m_image, normalMap, laigter;
+    QVector3D lightPosition, lightColor, ambientColor;
     bool m_light;
     float sx, sy;
     float m_zoom;
+    float diffIntensity, ambientIntensity;
 
 };
 

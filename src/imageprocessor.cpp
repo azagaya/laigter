@@ -17,6 +17,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 }
 
 int ImageProcessor::loadImage(QString fileName){
+    m_fileName = fileName;
     m_img = imread(fileName.toStdString(),-1);
 
     if (m_img.channels() < 4){
@@ -193,7 +194,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
 //                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
 //                            1*normalInvertZ);
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
-                            -dy*(depth/1000.0)*normalInvertY,
+                            dy*(depth/1000.0)*normalInvertY,
                             1*normalInvertZ);
             normals.at<Vec3f>(y,x) = n;
 

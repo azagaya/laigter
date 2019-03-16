@@ -8,9 +8,14 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
-    m_image = QImage("/home/pablo/Imágenes/ship.png");
-    normalMap = QImage("/home/pablo/Imágenes/ship_n.png");
-    lightPosition = QVector3D(1.0,1.0,1.0);
+    m_image = QImage(":/images/laigter-icon.png");
+    normalMap = QImage(":/images/laigter-icon.png");
+    laigter = QImage(":/images/laigter-texture.png");
+    lightColor = QVector3D(0.0,1,0.7);
+    ambientColor = QVector3D(1.0,1.0,1.0);
+    ambientIntensity = 0.8;
+    diffIntensity = 0.4;
+    lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
 }
 
@@ -19,7 +24,7 @@ void OpenGlWidget::initializeGL()
     initializeOpenGLFunctions();
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glClearColor(0.2, 0.2, 0.3, 1.0);
 
     m_program.create();
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
@@ -61,8 +66,8 @@ void OpenGlWidget::initializeGL()
 
     m_texture = new QOpenGLTexture(m_image);
     m_normalTexture = new QOpenGLTexture(normalMap);
-
-   // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    laigterTexture = new QOpenGLTexture(laigter);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     m_program.release();
     VAO.release();
@@ -73,6 +78,12 @@ void OpenGlWidget::initializeGL()
     vertexLocation = m_program.attributeLocation("aPos");
     glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(vertexLocation);
+
+    lightProgram.bind();
+    texCoordLocation = m_program.attributeLocation("aTexCoord");
+    glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(texCoordLocation);
+    lightProgram.release();
     lightVAO.release();
     VBO.release();
 
@@ -99,7 +110,7 @@ void OpenGlWidget::paintGL()
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("light",m_light);
     m_texture->bind(0);
-    m_program.setUniformValue("tex",0);
+    m_program.setUniformValue("texture",0);
     m_program.setUniformValue("transform",transform);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -107,19 +118,36 @@ void OpenGlWidget::paintGL()
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap",1);
     m_program.setUniformValue("lightPos",lightPosition);
+    m_program.setUniformValue("lightColor",lightColor);
+    m_program.setUniformValue("diffIntensity",diffIntensity);
+    m_program.setUniformValue("ambientColor",ambientColor);
+    m_program.setUniformValue("ambientIntensity",ambientIntensity);
     glDrawArrays(GL_QUADS, 0, 4);
 
     m_program.release();
 
+    if (m_light){
 
-//    transform.scale(0.1,0.1,1);
+        float x = (float)laigter.width()/width();
+        float y = (float)laigter.height()/height();
+        transform.setToIdentity();
+        transform.translate(lightPosition);
+        transform.scale(0.3*x,0.3*y,1);
 
-//    lightProgram.bind();
-//    lightVAO.bind();
-//    lightProgram.setUniformValue("transform",transform);
-//    glDrawArrays(GL_QUADS, 0, 4);
+        lightProgram.bind();
+        lightVAO.bind();
+        lightProgram.setUniformValue("transform",transform);
 
-//    lightProgram.release();
+        laigterTexture->bind(0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glActiveTexture(GL_TEXTURE0);
+        lightProgram.setUniformValue("texture",0);
+        lightProgram.setUniformValue("lightColor",lightColor);
+        glDrawArrays(GL_QUADS, 0, 4);
+
+        lightProgram.release();
+    }
 
 }
 
@@ -156,9 +184,9 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
     QPoint degree = event->angleDelta() / 8;
 
-    if(!degree.isNull())
+    if(!degree.isNull() && degree.y()!= 0)
     {
-        QPoint step = degree / 15;
+        QPoint step = degree/qAbs(degree.y());
         setZoom(step.y() > 0 ? m_zoom * 1.1 * step.y() : - m_zoom * 0.9 * step.y());
     }
 }
@@ -196,6 +224,30 @@ void OpenGlWidget::setLight(bool light){
     update();
 }
 
+void OpenGlWidget::setLightColor(QVector3D color){
+    lightColor = color;
+    update();
+}
+
+void OpenGlWidget::setLightHeight(float height){
+    lightPosition.setZ(height);
+    update();
+}
+
+void OpenGlWidget::setLightIntensity(float intensity){
+    diffIntensity = intensity;
+    update();
+}
+
+void OpenGlWidget::setAmbientColor(QVector3D color){
+    ambientColor = color;
+    update();
+}
+
+void OpenGlWidget::setAmbientIntensity(float intensity){
+    ambientIntensity = intensity;
+    update();
+}
 
 
 

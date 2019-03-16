@@ -49,5 +49,6 @@ unix: PKGCONFIG += opencv
 DISTFILES +=
 
 RESOURCES += \
-    shaders.qrc
+    shaders.qrc \
+    images.qrc
 

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QOpenGLWidget>
+#include <QVector3D>
 #include "src/imageprocessor.h"
 
 namespace Ui {
@@ -45,13 +46,24 @@ private slots:
 
     void on_radioButtonPreview_toggled(bool checked);
 
+    void on_pushButtonColor_clicked();
+
+    void on_horizontalSliderDiffHeight_valueChanged(int value);
+
+    void on_horizontalSliderDiffLight_valueChanged(int value);
+
+    void on_horizontalSliderAmbientLight_valueChanged(int value);
+
+    void on_pushButtonAmbientColor_clicked();
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;
     QGraphicsScene *m_raw_scene;
-    ImageProcessor processor;
+    ImageProcessor *processor;
+    QVector3D currentColor, currentAmbientcolor;
 };
 
 #endif // MAINWINDOW_H

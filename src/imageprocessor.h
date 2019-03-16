@@ -28,6 +28,7 @@ public:
     void calculate_distance();
     Mat modify_distance();
     bool busy;
+    QString m_fileName;
 
 signals:
     void processed(QImage image, ProcessedImage type);
