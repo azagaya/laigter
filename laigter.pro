@@ -48,7 +48,11 @@ unix: PKGCONFIG += opencv
 
 DISTFILES +=
 
+TRANSLATIONS = laigter_es.ts \
+               laigter_en.ts
+
 RESOURCES += \
     shaders.qrc \
-    images.qrc
+    images.qrc \
+    translations.qrc
 

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>laigter_en.qm</file>
+        <file>laigter_en.ts</file>
+        <file>laigter_es.qm</file>
+        <file>laigter_es.ts</file>
+    </qresource>
+</RCC>
