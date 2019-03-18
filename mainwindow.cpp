@@ -6,6 +6,7 @@
 #include <QColorDialog>
 #include <QDebug>
 #include <QThread>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -180,4 +181,14 @@ void MainWindow::on_pushButtonAmbientColor_clicked()
         ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
         ui->openGLPreviewWidget->setAmbientColor(currentAmbientcolor);
     }
+}
+
+void MainWindow::on_actionLicencia_triggered()
+{
+    QDesktopServices::openUrl(QUrl("license.html"));
+}
+
+void MainWindow::on_actionReconocimientos_triggered()
+{
+    QDesktopServices::openUrl(QUrl("acknowledgements.html"));
 }

@@ -62,6 +62,9 @@ QDockWidget::title{
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
    <addaction name="actionExport"/>
+   <addaction name="separator"/>
+   <addaction name="actionLicencia"/>
+   <addaction name="actionReconocimientos"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -468,6 +471,16 @@ QDockWidget::title{
   <action name="actionExport">
    <property name="text">
     <string>Exportar</string>
+   </property>
+  </action>
+  <action name="actionLicencia">
+   <property name="text">
+    <string>Licencia</string>
+   </property>
+  </action>
+  <action name="actionReconocimientos">
+   <property name="text">
+    <string>Reconocimientos</string>
    </property>
   </action>
  </widget>

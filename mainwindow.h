@@ -56,6 +56,10 @@ private slots:
 
     void on_pushButtonAmbientColor_clicked();
 
+    void on_actionLicencia_triggered();
+
+    void on_actionReconocimientos_triggered();
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
