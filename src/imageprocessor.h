@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QImage>
-#include <opencv/cv.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <QPixmap>
 
