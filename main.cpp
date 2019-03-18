@@ -4,6 +4,7 @@
 #include <QTranslator>
 #include <QFile>
 #include <QStandardPaths>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,8 @@ int main(int argc, char *argv[])
     QString locale = QLocale::system().name().split("_").at(0);
     QTranslator translator;
     bool loaded = translator.load(":/laigter_"+locale);
-    if (!loaded) translator.load("laigter_en");
+    if (!loaded)
+        translator.load(":/laigter_en");
 
     QApplication a(argc, argv);
     a.installTranslator(&translator);
