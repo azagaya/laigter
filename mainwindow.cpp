@@ -38,8 +38,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->normalInvertY,SIGNAL(toggled(bool)),processor,SLOT(set_normal_invert_y(bool)));
     connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
 
-    ui->actionOpen->setIcon(QIcon::fromTheme("edit-undo"));
-
 }
 
 MainWindow::~MainWindow()
