@@ -56,6 +56,7 @@ TRANSLATIONS = laigter_es.ts \
 RESOURCES += \
     shaders.qrc \
     images.qrc \
-    translations.qrc
+    translations.qrc \
+    icons.qrc
 
 

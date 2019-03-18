@@ -1,2 +1,10 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
+<RCC>
+    <qresource prefix="/">
+        <file>icons/open.png</file>
+        <file>icons/zoom100.png</file>
+        <file>icons/zoom+.png</file>
+        <file>icons/zoom-.png</file>
+        <file>icons/zoomfit.png</file>
+        <file>icons/export.png</file>
+    </qresource>
+</RCC>

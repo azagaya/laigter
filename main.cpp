@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
 #endif
     QString locale = QLocale::system().name().split("_").at(0);
     QTranslator translator;
-    translator.load(":/laigter_"+locale);
+    bool loaded = translator.load(":/laigter_"+locale);
+    if (!loaded) translator.load("laigter_en");
 
     QApplication a(argc, argv);
     a.installTranslator(&translator);

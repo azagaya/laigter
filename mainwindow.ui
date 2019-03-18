@@ -63,8 +63,6 @@ QDockWidget::title{
    <addaction name="separator"/>
    <addaction name="actionExport"/>
    <addaction name="separator"/>
-   <addaction name="actionLicencia"/>
-   <addaction name="actionReconocimientos"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -444,31 +442,55 @@ QDockWidget::title{
    </widget>
   </widget>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+   </property>
    <property name="text">
     <string>Abrir</string>
    </property>
   </action>
   <action name="actionFitZoom">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/zoomfit.png</normaloff>:/icons/zoomfit.png</iconset>
+   </property>
    <property name="text">
     <string>Ajustar Zoom</string>
    </property>
   </action>
   <action name="actionZoom_100">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/zoom100.png</normaloff>:/icons/zoom100.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom 100%</string>
    </property>
   </action>
   <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/zoom+.png</normaloff>:/icons/zoom+.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom +</string>
    </property>
   </action>
   <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/zoom-.png</normaloff>:/icons/zoom-.png</iconset>
+   </property>
    <property name="text">
     <string>Zoom -</string>
    </property>
   </action>
   <action name="actionExport">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
+   </property>
    <property name="text">
     <string>Exportar</string>
    </property>
@@ -492,6 +514,8 @@ QDockWidget::title{
    <header>src/openglwidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
