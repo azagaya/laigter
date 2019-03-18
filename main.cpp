@@ -2,6 +2,8 @@
 #include "src/imageprocessor.h"
 #include <QApplication>
 #include <QTranslator>
+#include <QFile>
+#include <QStandardPaths>
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +17,6 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     a.installTranslator(&translator);
-
 
     MainWindow w;
     QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));

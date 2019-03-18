@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QDesktopServices>
+#include <QStandardPaths>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
