@@ -1,5 +1,4 @@
 #include "imageprocessor.h"
-#include <opencv2/highgui.hpp>
 #include <QDebug>
 #include <QApplication>
 #include <cmath>
@@ -65,7 +64,7 @@ void ImageProcessor::calculate_distance(){
     }
     threshold(m_distance,m_distance,1,255,THRESH_BINARY);
 
-    distanceTransform(m_distance,m_distance,DIST_L2,5);
+    distanceTransform(m_distance,m_distance,CV_DIST_L2,5);
     m_distance.convertTo(m_distance,CV_32FC1,1.0/255);
 }
 
