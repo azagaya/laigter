@@ -32,8 +32,15 @@ QDockWidget::title{
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="0" column="0">
-     <widget class="OpenGlWidget" name="openGLPreviewWidget"/>
+    <item row="0" column="1">
+     <widget class="OpenGlWidget" name="openGLPreviewWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -254,7 +261,7 @@ QDockWidget::title{
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>40</height>
+         <height>0</height>
         </size>
        </property>
       </spacer>
@@ -303,19 +310,6 @@ QDockWidget::title{
         </item>
        </layout>
       </widget>
-     </item>
-     <item row="3" column="0">
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox">
@@ -437,6 +431,22 @@ QDockWidget::title{
         </item>
        </layout>
       </widget>
+     </item>
+     <item row="3" column="0">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </widget>
