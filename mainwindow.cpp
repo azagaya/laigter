@@ -70,8 +70,9 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     tr("Abrir Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
-    image = QImage(fileName);
+
     if (fileName != nullptr){
+        image = QImage(fileName);
         processor->loadImage(fileName);
         if (ui->radioButtonRaw->isChecked()){
             on_radioButtonRaw_toggled(true);
