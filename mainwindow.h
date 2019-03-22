@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QOpenGLWidget>
 #include <QVector3D>
+#include <QThread>
 #include "src/imageprocessor.h"
 
 namespace Ui {
@@ -68,6 +69,7 @@ private:
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
     QVector3D currentColor, currentAmbientcolor;
+    QThread *processingThread;
 };
 
 #endif // MAINWINDOW_H

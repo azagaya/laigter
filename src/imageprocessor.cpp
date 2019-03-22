@@ -33,6 +33,10 @@ int ImageProcessor::loadImage(QString fileName){
         m_gray.convertTo(m_gray, CV_32FC1);
 
     calculate_distance();
+    m_distance.copyTo(new_distance);
+    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                 ,normal_bisel_blur_radius);
     generate_normal_map();
     return 0;
 }
@@ -70,36 +74,60 @@ void ImageProcessor::calculate_distance(){
 
 void ImageProcessor::set_normal_invert_x(bool invert){
     normalInvertX = -invert*2+1;
+    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                 ,normal_bisel_blur_radius);
     generate_normal_map();
+
 }
 void ImageProcessor::set_normal_invert_y(bool invert){
     normalInvertY = -invert*2+1;
+    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                 ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_invert_z(bool invert){
     normalInvertZ = -invert*2+1;
+    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                 ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_depth(int depth){
     normal_depth = depth;
+    Mat gray;
+    m_gray.copyTo(gray);
+    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_bisel_soft(bool soft){
     normal_bisel_soft = soft;
+    new_distance = modify_distance();
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                                                  ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_blur_radius(int radius){
     normal_blur_radius = radius;
+    Mat gray;
+    m_gray.copyTo(gray);
+    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
 }
 
 void ImageProcessor::set_normal_bisel_depth(int depth){
     normal_bisel_depth = depth;
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                                                  ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
 void ImageProcessor::set_normal_bisel_distance(int distance){
     normal_bisel_distance = distance;
+    new_distance = modify_distance();
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                                                  ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
@@ -127,20 +155,17 @@ Mat ImageProcessor::modify_distance(){
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius){
     normal_bisel_blur_radius = radius;
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                                                  ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
 void ImageProcessor::generate_normal_map(){
     if (!m_img.ptr<int>(0) || busy) return;
     busy = true;
-    Mat gray;
-    m_gray.copyTo(gray);
     Mat normals;
-    Mat distance;
-    distance = modify_distance();
-    normals =(calculate_normal(gray,normal_depth,normal_blur_radius)
-              + calculate_normal(distance,normal_bisel_depth*normal_bisel_distance
-                                 ,normal_bisel_blur_radius));
+    normals =(m_emboss_normal
+              + m_distance_normal);
     for(int x = 0; x < normals.cols; ++x)
     {
         for(int y = 0; y < normals.rows; ++y)
@@ -161,34 +186,34 @@ void ImageProcessor::generate_normal_map(){
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Mat normals(mat.size(), CV_32FC3);
+    Mat aux;
     Mat mdx,mdy,mg;
     float dx, dy;
-
-    GaussianBlur(mat,mat,Size(blur_radius*2+1,blur_radius*2+1),0);
+    GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
 //    mat.copyTo(mg);
 //    Sobel(mg,mdx,CV_32F, 1, 0);
 //    Sobel(mg,mdy,CV_32F, 0, 1);
     //imshow("asdf",mdx);
-    for(int x = 0; x < mat.cols; ++x)
+    for(int x = 0; x < aux.cols; ++x)
     {
-        for(int y = 0; y < mat.rows; ++y)
+        for(int y = 0; y < aux.rows; ++y)
         {
             if (m_img.at<Vec4b>(y,x)[3] == 0.0){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }
             if (x==0)
-                dx = -3*mat.at<float>(y,x) + 4*mat.at<float>(y,x+1) - mat.at<float>(y,x+2);
-            else if (x == mat.cols -1 )
-                dx = mat.at<float>(y,x-2) + -4*mat.at<float>(y,x-1) +3*mat.at<float>(y,x);
+                dx = -3*aux.at<float>(y,x) + 4*aux.at<float>(y,x+1) - aux.at<float>(y,x+2);
+            else if (x == aux.cols -1 )
+                dx = aux.at<float>(y,x-2) + -4*aux.at<float>(y,x-1) +3*aux.at<float>(y,x);
             else
-                dx = -mat.at<float>(y,x-1) + mat.at<float>(y,x);
+                dx = -aux.at<float>(y,x-1) + aux.at<float>(y,x);
             if (y==0)
-                dy = -3*mat.at<float>(y,x) + 4*mat.at<float>(y,x+1) - mat.at<float>(y,x+2);
-            else if (y == mat.rows -1 )
-                dy = mat.at<float>(y-2,x) + -4*mat.at<float>(y-1,x) +3*mat.at<float>(y,x);
+                dy = -3*aux.at<float>(y,x) + 4*aux.at<float>(y,x+1) - aux.at<float>(y,x+2);
+            else if (y == aux.rows -1 )
+                dy = aux.at<float>(y-2,x) + -4*aux.at<float>(y-1,x) +3*aux.at<float>(y,x);
             else
-                dy = -mat.at<float>(y-1,x) + mat.at<float>(y+1,x);
+                dy = -aux.at<float>(y-1,x) + aux.at<float>(y+1,x);
 //            Vec3f n = Vec3f(-mdx.at<float>(y,x)*(depth/1000.0)*normalInvertX,
 //                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
 //                            1*normalInvertZ);

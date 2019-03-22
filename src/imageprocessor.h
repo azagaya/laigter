@@ -49,6 +49,9 @@ private:
     Mat m_gradient;
     Mat m_distance;
     Mat m_normal;
+    Mat m_emboss_normal;
+    Mat m_distance_normal;
+    Mat new_distance;
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;

@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <QColorDialog>
 #include <QDebug>
-#include <QThread>
+#include <QtConcurrent/QtConcurrent>
 #include <QDesktopServices>
 #include <QStandardPaths>
 
@@ -28,6 +28,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->dockWidget->setFeatures(QDockWidget::DockWidgetMovable);
     ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
 
+
+//    processingThread = new QThread();
+//    processor->moveToThread(processingThread);
+//    processingThread->start();
+
     connect(processor,SIGNAL(processed(QImage, ProcessedImage)),this,SLOT(update_scene(QImage, ProcessedImage)));
     connect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),processor,SLOT(set_normal_depth(int)));
     connect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),processor,SLOT(set_normal_blur_radius(int)));
@@ -38,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->normalInvertX,SIGNAL(toggled(bool)),processor,SLOT(set_normal_invert_x(bool)));
     connect(ui->normalInvertY,SIGNAL(toggled(bool)),processor,SLOT(set_normal_invert_y(bool)));
     connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
+
 
 }
 
@@ -194,3 +200,4 @@ void MainWindow::on_actionReconocimientos_triggered()
 {
     QDesktopServices::openUrl(QUrl("acknowledgements.html"));
 }
+
