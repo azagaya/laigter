@@ -43,8 +43,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+unix: CONFIG += link_pkgconfig
+unix: PKGCONFIG += opencv
 
 DISTFILES += \
     acknowledgements.html \
@@ -58,5 +58,13 @@ RESOURCES += \
     images.qrc \
     translations.qrc \
     icons.qrc
+
+win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_core320.dll
+win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_imgproc320.dll
+win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_imgcodecs320.dll
+
+win32: INCLUDEPATH += C:\opencv\opencv\build\include
+
+win32: icons\laigter-icon.ico
 
 
