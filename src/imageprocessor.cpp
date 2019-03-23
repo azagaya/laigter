@@ -19,6 +19,26 @@ int ImageProcessor::loadImage(QString fileName){
     m_fileName = fileName;
     m_img = imread(fileName.toStdString(),-1);
 
+    int aux = m_img.depth();
+    switch (aux) {
+    case CV_8S:
+        m_img.convertTo(m_img,CV_8U,0,128);
+        break;
+    case CV_16U:
+        m_img.convertTo(m_img,CV_8U,1/255.0);
+        break;
+    case CV_16S:
+        m_img.convertTo(m_img,CV_8U,1/255.0,128);
+        break;
+    case CV_32S:
+        m_img.convertTo(m_img,CV_8U,1/255.0/255.0,128);
+        break;
+    case CV_32F:
+    case CV_64F:
+        m_img.convertTo(m_img,CV_8U,255);
+        break;
+    }
+
     if (m_img.channels() < 4){
         if (m_img.channels() == 3){
             cvtColor(m_img,m_img,COLOR_RGB2RGBA);
@@ -36,7 +56,7 @@ int ImageProcessor::loadImage(QString fileName){
     m_distance.copyTo(new_distance);
     m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                 ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
     return 0;
 }
@@ -50,7 +70,9 @@ void ImageProcessor::calculate_gradient(){
 void ImageProcessor::calculate_distance(){
 
     if (!m_img.ptr<int>(0)) return;
-    cvtColor(m_img, m_distance,CV_RGBA2GRAY);
+
+    cvtColor(m_img, m_distance,COLOR_RGBA2GRAY,1);
+
     for(int x = 0; x < m_distance.cols; ++x)
     {
         for(int y = 0; y < m_distance.rows; ++y)
@@ -66,7 +88,7 @@ void ImageProcessor::calculate_distance(){
             }
         }
     }
-    threshold(m_distance,m_distance,1,255,THRESH_BINARY);
+    threshold(m_distance,m_distance,0,255,THRESH_BINARY);
 
     distanceTransform(m_distance,m_distance,CV_DIST_L2,5);
     m_distance.convertTo(m_distance,CV_32FC1,1.0/255);
@@ -76,7 +98,7 @@ void ImageProcessor::set_normal_invert_x(bool invert){
     normalInvertX = -invert*2+1;
     m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                 ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 
 }
@@ -84,14 +106,14 @@ void ImageProcessor::set_normal_invert_y(bool invert){
     normalInvertY = -invert*2+1;
     m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                 ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_invert_z(bool invert){
     normalInvertZ = -invert*2+1;
     m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                 ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_depth(int depth){
@@ -105,7 +127,7 @@ void ImageProcessor::set_normal_bisel_soft(bool soft){
     normal_bisel_soft = soft;
     new_distance = modify_distance();
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                                                  ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 void ImageProcessor::set_normal_blur_radius(int radius){
@@ -119,7 +141,7 @@ void ImageProcessor::set_normal_blur_radius(int radius){
 void ImageProcessor::set_normal_bisel_depth(int depth){
     normal_bisel_depth = depth;
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                                                  ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
@@ -127,7 +149,7 @@ void ImageProcessor::set_normal_bisel_distance(int distance){
     normal_bisel_distance = distance;
     new_distance = modify_distance();
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                                                  ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
@@ -156,7 +178,7 @@ Mat ImageProcessor::modify_distance(){
 void ImageProcessor::set_normal_bisel_blur_radius(int radius){
     normal_bisel_blur_radius = radius;
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                                                  ,normal_bisel_blur_radius);
+                                         ,normal_bisel_blur_radius);
     generate_normal_map();
 }
 
@@ -178,7 +200,7 @@ void ImageProcessor::generate_normal_map(){
     normals.convertTo(normals,CV_8UC3,255);
     normals.copyTo(m_normal);
     QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
-                                         m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
+                     m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
     processed(p, ProcessedImage::Normal);
     busy = false;
     on_idle();
@@ -190,9 +212,9 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Mat mdx,mdy,mg;
     float dx, dy;
     GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
-//    mat.copyTo(mg);
-//    Sobel(mg,mdx,CV_32F, 1, 0);
-//    Sobel(mg,mdy,CV_32F, 0, 1);
+    //    mat.copyTo(mg);
+    //    Sobel(mg,mdx,CV_32F, 1, 0);
+    //    Sobel(mg,mdy,CV_32F, 0, 1);
     //imshow("asdf",mdx);
     for(int x = 0; x < aux.cols; ++x)
     {
@@ -214,9 +236,9 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
                 dy = aux.at<float>(y-2,x) + -4*aux.at<float>(y-1,x) +3*aux.at<float>(y,x);
             else
                 dy = -aux.at<float>(y-1,x) + aux.at<float>(y+1,x);
-//            Vec3f n = Vec3f(-mdx.at<float>(y,x)*(depth/1000.0)*normalInvertX,
-//                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
-//                            1*normalInvertZ);
+            //            Vec3f n = Vec3f(-mdx.at<float>(y,x)*(depth/1000.0)*normalInvertX,
+            //                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
+            //                            1*normalInvertZ);
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
                             dy*(depth/1000.0)*normalInvertY,
                             1*normalInvertZ);
