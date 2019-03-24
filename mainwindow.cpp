@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QMenu>
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 #include <QDesktopServices>
@@ -17,7 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
-    processor = new ImageProcessor();
+
+    sample_processor = new ImageProcessor();
+
+    processor = sample_processor;
     currentColor = QVector3D(0.0,1.0,0.7);
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
 
@@ -40,9 +44,27 @@ MainWindow::MainWindow(QWidget *parent) :
     //    processor->moveToThread(processingThread);
     //    processingThread->start();
 
+    ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
+            SLOT(showContextMenuForListWidget(const QPoint &)));
 
+}
 
+void MainWindow::showContextMenuForListWidget(const QPoint &pos){
+    if (ui->listWidget->selectedItems().count() == 0)
+        return;
+    QMenu contextMenu(tr("Context menu"), ui->listWidget);
+    contextMenu.addAction(new QAction(tr("Quitar"), ui->listWidget));
+    connect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
+    contextMenu.exec(ui->listWidget->mapToGlobal(pos));
+    disconnect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
+}
 
+void MainWindow::list_menu_action_triggered(QAction *action){
+    if (action->text() == tr("Quitar")){
+        QListWidgetItem *item =  ui->listWidget->takeItem(ui->listWidget->currentRow());
+        delete item;
+    }
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +121,7 @@ void MainWindow::on_actionOpen_triggered()
             on_radioButtonPreview_toggled(true);
         }
         ui->listWidget->addItem(new QListWidgetItem(QIcon(fileName),processor->get_name()));
+        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
     }
 }
 
@@ -165,7 +188,7 @@ void MainWindow::on_radioButtonPreview_toggled(bool checked)
 void MainWindow::openGL_initialized(){
     ui->radioButtonRaw->toggle();
     QString tmpImage = QDir::temp().path()+"/sample.png";
-    qDebug() << image.save(tmpImage);
+    image.save(tmpImage);
     processor->loadImage(tmpImage);
 }
 
@@ -252,33 +275,50 @@ void MainWindow::on_listWidget_itemChanged(QListWidgetItem *item)
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-    for(int i = 0; i < processorList.count(); i++){
-        if (processorList.at(i)->get_name() == item->text()){
 
-            disconnect_processor(processor);
-            processor = processorList.at(i);
-            connect_processor(processor);
-
-            ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
-            ui->normalInvertY->setChecked(processor->get_normal_invert_y() == -1);
-            ui->biselSoftRadio->setChecked(processor->get_normal_bisel_soft());
-            ui->normalBlurSlider->setValue(processor->get_normal_blur_radius());
-            ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
-            ui->normalDepthSlider->setValue(processor->get_normal_depth());
-            ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
-            ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
-            image = QImage(processor->get_name());
-
-            processor->update();
-            if (ui->radioButtonRaw->isChecked()){
-                on_radioButtonRaw_toggled(true);
-            } else if (ui->radioButtonNormal->isChecked()){
-                on_radioButtonNormal_toggled(true);
-            } else {
-                on_radioButtonPreview_toggled(true);
-            }
-
-        }
-    }
 
 }
+
+void MainWindow::on_listWidget_itemSelectionChanged()
+{
+    if (ui->listWidget->selectedItems().count() > 0){
+        QListWidgetItem *item = ui->listWidget->currentItem();
+        for(int i = 0; i < processorList.count(); i++){
+            if (processorList.at(i)->get_name() == item->text()){
+                disconnect_processor(processor);
+                processor = processorList.at(i);
+                break;
+            }
+        }
+    }
+    else {
+        processor= sample_processor;
+    }
+
+    ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
+    ui->normalInvertY->setChecked(processor->get_normal_invert_y() == -1);
+    ui->biselSoftRadio->setChecked(processor->get_normal_bisel_soft());
+    ui->biselAbruptRadio->setChecked(!processor->get_normal_bisel_soft());
+    ui->normalBlurSlider->setValue(processor->get_normal_blur_radius());
+    ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
+    ui->normalDepthSlider->setValue(processor->get_normal_depth());
+    ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
+    ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
+    image = QImage(processor->get_name());
+
+    processor->update();
+    if (ui->radioButtonRaw->isChecked()){
+        on_radioButtonRaw_toggled(true);
+    } else if (ui->radioButtonNormal->isChecked()){
+        on_radioButtonNormal_toggled(true);
+    } else {
+        on_radioButtonPreview_toggled(true);
+    }
+
+    update_scene(processor->get_normal(),ProcessedImage::Normal);
+    connect_processor(processor);
+}
+
+
+
+

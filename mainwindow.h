@@ -31,7 +31,8 @@ private slots:
 
     void connect_processor(ImageProcessor *p);
     void disconnect_processor(ImageProcessor *p);
-
+    void showContextMenuForListWidget(const QPoint &pos);
+    void list_menu_action_triggered(QAction* action);
     void openGL_initialized();
 
     void on_actionOpen_triggered();
@@ -70,6 +71,8 @@ private slots:
 
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
+    void on_listWidget_itemSelectionChanged();
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
@@ -77,6 +80,7 @@ private:
     QGraphicsScene *m_normal_scene;
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
+    ImageProcessor *sample_processor;
     QVector3D currentColor, currentAmbientcolor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
