@@ -17,6 +17,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 
 int ImageProcessor::loadImage(QString fileName){
     m_fileName = fileName;
+    m_name = fileName;
     m_img = imread(fileName.toStdString(),-1);
 
     int aux = m_img.depth();
@@ -61,7 +62,13 @@ int ImageProcessor::loadImage(QString fileName){
     return 0;
 }
 
+void ImageProcessor::set_name(QString name){
+    m_name = name;
+}
 
+QString ImageProcessor::get_name(){
+    return m_name;
+}
 void ImageProcessor::calculate_gradient(){
 
 
@@ -206,6 +213,12 @@ void ImageProcessor::generate_normal_map(){
     on_idle();
 }
 
+void ImageProcessor::update(){
+    QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
+                     m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
+    processed(p, ProcessedImage::Normal);
+}
+
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Mat normals(mat.size(), CV_32FC3);
     Mat aux;
@@ -247,4 +260,57 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
         }
     }
     return normals;
+}
+
+void ImageProcessor::copy_settings(ImageProcessor *p){
+    normal_depth = p->get_normal_depth();
+    normal_blur_radius = p->get_normal_blur_radius();
+    normal_bisel_soft = p->get_normal_bisel_soft();
+    normal_bisel_depth = p->get_normal_bisel_depth();
+    normal_bisel_distance = p->get_normal_bisel_distance();
+    normal_bisel_blur_radius = p->get_normal_bisel_blur_radius();
+    normalInvertX = p->get_normal_invert_x();
+    normalInvertY = p->get_normal_invert_y();
+}
+
+int ImageProcessor::get_normal_depth(){
+    return normal_depth;
+}
+
+int ImageProcessor::get_normal_blur_radius(){
+    return normal_blur_radius;
+}
+
+bool ImageProcessor::get_normal_bisel_soft(){
+    return normal_bisel_soft;
+}
+
+int ImageProcessor::get_normal_bisel_depth(){
+    return normal_bisel_depth;
+}
+
+int ImageProcessor::get_normal_bisel_distance(){
+    return  normal_bisel_distance;
+}
+
+int ImageProcessor::get_normal_bisel_blur_radius(){
+    return normal_bisel_blur_radius;
+}
+
+int ImageProcessor::get_normal_invert_x(){
+    return normalInvertX;
+}
+
+int ImageProcessor::get_normal_invert_y(){
+    return normalInvertY;
+}
+
+QImage ImageProcessor::get_texture(){
+    return QImage(static_cast<unsigned char *>(m_img.data),
+                  m_img.cols,m_img.rows,m_img.step,QImage::Format_RGB888);;
+}
+
+QImage ImageProcessor::get_normal(){
+    return QImage(static_cast<unsigned char *>(m_normal.data),
+                  m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
 }

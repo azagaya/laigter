@@ -8,8 +8,8 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
-    m_image = QImage(":/images/laigter-icon.png");
-    normalMap = QImage(":/images/laigter-icon.png");
+    m_image = QImage(":/images/sample.png");
+    normalMap = QImage(":/images/sample_n.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     ambientColor = QVector3D(1.0,1.0,1.0);

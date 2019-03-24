@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QOpenGLWidget>
+#include <QListWidgetItem>
 #include <QVector3D>
 #include <QThread>
+#include <QList>
 #include "src/imageprocessor.h"
 
 namespace Ui {
@@ -26,6 +28,9 @@ public slots:
 signals:
     void normal_depth_changed(int value);
 private slots:
+
+    void connect_processor(ImageProcessor *p);
+    void disconnect_processor(ImageProcessor *p);
 
     void openGL_initialized();
 
@@ -61,6 +66,10 @@ private slots:
 
     void on_actionReconocimientos_triggered();
 
+    void on_listWidget_itemChanged(QListWidgetItem *item);
+
+    void on_listWidget_itemClicked(QListWidgetItem *item);
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
@@ -70,6 +79,7 @@ private:
     ImageProcessor *processor;
     QVector3D currentColor, currentAmbientcolor;
     QThread *processingThread;
+    QList <ImageProcessor *> processorList;
 };
 
 #endif // MAINWINDOW_H

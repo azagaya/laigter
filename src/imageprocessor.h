@@ -28,24 +28,39 @@ public:
     void calculate_gradient();
     void calculate_distance();
     Mat modify_distance();
+    void set_name(QString name);
+    QString get_name();
     bool busy;
     QString m_fileName;
+    QImage get_texture();
+    QImage get_normal();
+    void update();
 
 signals:
     void processed(QImage image, ProcessedImage type);
     void on_idle();
 public slots:
+    void copy_settings(ImageProcessor *p);
     void set_normal_depth(int depth);
+    int get_normal_depth();
     void set_normal_blur_radius(int radius);
+    int get_normal_blur_radius();
     void set_normal_bisel_depth(int depth);
+    int get_normal_bisel_depth();
     void set_normal_bisel_distance(int distance);
+    int get_normal_bisel_distance();
     void set_normal_bisel_blur_radius(int radius);
+    int get_normal_bisel_blur_radius();
     void set_normal_bisel_soft(bool soft);
+    bool get_normal_bisel_soft();
     void set_normal_invert_x(bool invert);
+    int get_normal_invert_x();
     void set_normal_invert_y(bool invert);
+    int get_normal_invert_y();
     void set_normal_invert_z(bool invert);
 
 private:
+    QString m_name;
     Mat m_img;
     Mat m_gray;
     Mat m_gradient;
