@@ -9,163 +9,184 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="72"/>
+        <location filename="mainwindow.ui" line="77"/>
         <source>Controles</source>
         <translation>Controls</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="82"/>
+        <location filename="mainwindow.ui" line="87"/>
         <source>Ejes:</source>
         <translation>Axis:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="88"/>
+        <location filename="mainwindow.ui" line="93"/>
         <source>Invertir y</source>
         <translation>Invert y</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="95"/>
+        <location filename="mainwindow.ui" line="100"/>
         <source>Invertir x</source>
         <translation>Invert x</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="105"/>
+        <location filename="mainwindow.ui" line="110"/>
         <source>Realzar:</source>
         <translation>Enhance:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="113"/>
-        <location filename="mainwindow.ui" line="175"/>
-        <location filename="mainwindow.ui" line="344"/>
+        <location filename="mainwindow.ui" line="118"/>
+        <location filename="mainwindow.ui" line="180"/>
+        <location filename="mainwindow.ui" line="336"/>
         <source>Altura:</source>
         <translation>Height:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="136"/>
-        <location filename="mainwindow.ui" line="209"/>
+        <location filename="mainwindow.ui" line="141"/>
+        <location filename="mainwindow.ui" line="214"/>
         <source>Suavizado:</source>
         <translation>Smooth:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="167"/>
+        <location filename="mainwindow.ui" line="172"/>
         <source>Bisel:</source>
         <translation>Bump:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="192"/>
+        <location filename="mainwindow.ui" line="197"/>
         <source>Distancia:</source>
         <translation>Distance:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="232"/>
+        <location filename="mainwindow.ui" line="237"/>
         <source>Suave</source>
         <translation>Smooth</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="242"/>
+        <location filename="mainwindow.ui" line="247"/>
         <source>Abrupto</source>
         <translation>Abrupt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="269"/>
+        <location filename="mainwindow.ui" line="274"/>
         <source>Visualización</source>
         <translation>Visualization</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="279"/>
+        <location filename="mainwindow.ui" line="284"/>
         <source>Vista</source>
         <translation>View</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="285"/>
+        <location filename="mainwindow.ui" line="290"/>
         <source>Mapa Normal</source>
         <translation>Normal Map</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="292"/>
+        <location filename="mainwindow.ui" line="297"/>
         <source>Textura</source>
         <translation>Texture</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="299"/>
+        <location filename="mainwindow.ui" line="304"/>
         <source>Vista Previa</source>
         <translation>Preview</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="325"/>
+        <location filename="mainwindow.ui" line="317"/>
         <source>Luz Difusa</source>
         <translation>Diffuse Light</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="351"/>
-        <location filename="mainwindow.ui" line="403"/>
+        <location filename="mainwindow.ui" line="343"/>
+        <location filename="mainwindow.ui" line="395"/>
         <source>Color:</source>
         <translation>Color:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="374"/>
-        <location filename="mainwindow.ui" line="423"/>
+        <location filename="mainwindow.ui" line="366"/>
+        <location filename="mainwindow.ui" line="415"/>
         <source>Intensidad:</source>
         <translation>Intensity:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="397"/>
+        <location filename="mainwindow.ui" line="389"/>
         <source>Luz Ambiente</source>
         <translation>Ambient Light</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="448"/>
+        <location filename="mainwindow.ui" line="456"/>
+        <source>Texturas:</source>
+        <translation>Textures:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="494"/>
         <source>Abrir</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="453"/>
+        <location filename="mainwindow.ui" line="503"/>
         <source>Ajustar Zoom</source>
         <translation>Fit Zoom</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="458"/>
+        <location filename="mainwindow.ui" line="512"/>
         <source>Zoom 100%</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="463"/>
+        <location filename="mainwindow.ui" line="521"/>
         <source>Zoom +</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="468"/>
+        <location filename="mainwindow.ui" line="530"/>
         <source>Zoom -</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="473"/>
+        <location filename="mainwindow.ui" line="539"/>
         <source>Exportar</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="478"/>
+        <location filename="mainwindow.ui" line="544"/>
         <source>Licencia</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="483"/>
+        <location filename="mainwindow.ui" line="549"/>
         <source>Reconocimientos</source>
         <translation>Acknowledgements</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="72"/>
+        <location filename="mainwindow.cpp" line="56"/>
+        <source>Context menu</source>
+        <translation>Context menu</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="57"/>
+        <location filename="mainwindow.cpp" line="64"/>
+        <source>Quitar</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="96"/>
         <source>Abrir Imagen</source>
         <translation>Open Image</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="73"/>
-        <location filename="mainwindow.cpp" line="112"/>
+        <location filename="mainwindow.cpp" line="97"/>
+        <location filename="mainwindow.cpp" line="153"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="111"/>
+        <location filename="mainwindow.cpp" line="104"/>
+        <source>La imagen ya se encuentra abierta en laigter.</source>
+        <translation>The image is already opened in laigter.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="152"/>
         <source>Guardar Imagen</source>
         <translation>Save Image</translation>
     </message>
