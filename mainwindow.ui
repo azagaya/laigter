@@ -470,13 +470,33 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>159</width>
-          <height>88</height>
+          <width>274</width>
+          <height>121</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
-         <item row="0" column="0">
+         <item row="0" column="0" colspan="2">
           <widget class="QListWidget" name="listWidget"/>
+         </item>
+         <item row="1" column="0">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Exportar Todo</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

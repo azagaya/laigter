@@ -63,6 +63,13 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
 void MainWindow::list_menu_action_triggered(QAction *action){
     if (action->text() == tr("Quitar")){
         QListWidgetItem *item =  ui->listWidget->takeItem(ui->listWidget->currentRow());
+        for (int i=0; i<processorList.count(); i++){
+            if (processorList.at(i)->get_name() == item->text()){
+                processorList.at(i)->deleteLater();
+                processorList.removeAt(i);
+                break;
+            }
+        }
         delete item;
     }
 }
@@ -92,36 +99,39 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Abrir Imagen"), "",
-                                                    tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
-
-    if (fileName != nullptr){
-        image = QImage(fileName);
-        for(int i = 0; i < ui->listWidget->count(); i++){
-            if (ui->listWidget->item(i)->text() == fileName){
-                QMessageBox msgBox;
-                msgBox.setText(tr("La imagen ya se encuentra abierta en laigter."));
-                msgBox.exec();
-                return;
+    QStringList fileNames = QFileDialog::getOpenFileNames(this,
+                                                          tr("Abrir Imagen"), "",
+                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+    foreach (QString fileName, fileNames){
+        if (fileName != nullptr){
+            image = QImage(fileName);
+            int i;
+            for(i = 0; i < ui->listWidget->count(); i++){
+                if (ui->listWidget->item(i)->text() == fileName){
+                    QMessageBox msgBox;
+                    msgBox.setText(tr("La imagen ya se encuentra abierta en laigter."));
+                    msgBox.exec();
+                    break;
+                }
             }
+            if (i != ui->listWidget->count()) continue;
+            ImageProcessor *p = new ImageProcessor();
+            processorList.append(p);
+            p->copy_settings(processor);
+            disconnect_processor(processor);
+            processor = p;
+            connect_processor(processor);
+            processor->loadImage(fileName);
+            if (ui->radioButtonRaw->isChecked()){
+                on_radioButtonRaw_toggled(true);
+            } else if (ui->radioButtonNormal->isChecked()){
+                on_radioButtonNormal_toggled(true);
+            } else {
+                on_radioButtonPreview_toggled(true);
+            }
+            ui->listWidget->addItem(new QListWidgetItem(QIcon(fileName),processor->get_name()));
+            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
-        ImageProcessor *p = new ImageProcessor();
-        processorList.append(p);
-        p->copy_settings(processor);
-        disconnect_processor(processor);
-        processor = p;
-        connect_processor(processor);
-        processor->loadImage(fileName);
-        if (ui->radioButtonRaw->isChecked()){
-            on_radioButtonRaw_toggled(true);
-        } else if (ui->radioButtonNormal->isChecked()){
-            on_radioButtonNormal_toggled(true);
-        } else {
-            on_radioButtonPreview_toggled(true);
-        }
-        ui->listWidget->addItem(new QListWidgetItem(QIcon(fileName),processor->get_name()));
-        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
     }
 }
 
@@ -322,3 +332,21 @@ void MainWindow::on_listWidget_itemSelectionChanged()
 
 
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    QImage n;
+    QString suffix;
+    QString name;
+    QFileInfo info;
+    foreach (ImageProcessor *p, processorList){
+        n = p->get_normal();
+        info = QFileInfo(p->get_name());
+        suffix = info.completeSuffix();
+        name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
+        n.save(name);
+    }
+    QMessageBox msgBox;
+    msgBox.setText(tr("Se exportaron todos los mapas normales."));
+    msgBox.exec();
+}

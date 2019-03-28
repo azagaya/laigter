@@ -55,6 +55,7 @@ int ImageProcessor::loadImage(QString fileName){
 
     calculate_distance();
     m_distance.copyTo(new_distance);
+    new_distance = modify_distance();
     m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);

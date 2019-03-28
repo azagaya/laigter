@@ -73,6 +73,8 @@ private slots:
 
     void on_listWidget_itemSelectionChanged();
 
+    void on_pushButton_clicked();
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
