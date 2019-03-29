@@ -4,8 +4,10 @@
 #include <QObject>
 #include <QImage>
 #include <opencv2/opencv.hpp>
+#if defined(Q_OS_WIN)
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+#endif
 #include <QPixmap>
 
 
