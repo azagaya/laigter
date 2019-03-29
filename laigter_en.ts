@@ -119,42 +119,47 @@
         <translation>Textures:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="494"/>
+        <location filename="mainwindow.ui" line="497"/>
+        <source>Exportar Todo</source>
+        <translation>Export All</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="514"/>
         <source>Abrir</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="503"/>
+        <location filename="mainwindow.ui" line="523"/>
         <source>Ajustar Zoom</source>
         <translation>Fit Zoom</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="512"/>
+        <location filename="mainwindow.ui" line="532"/>
         <source>Zoom 100%</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="521"/>
+        <location filename="mainwindow.ui" line="541"/>
         <source>Zoom +</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="530"/>
+        <location filename="mainwindow.ui" line="550"/>
         <source>Zoom -</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="539"/>
+        <location filename="mainwindow.ui" line="559"/>
         <source>Exportar</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="544"/>
+        <location filename="mainwindow.ui" line="564"/>
         <source>Licencia</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="549"/>
+        <location filename="mainwindow.ui" line="569"/>
         <source>Reconocimientos</source>
         <translation>Acknowledgements</translation>
     </message>
@@ -170,25 +175,30 @@
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="96"/>
+        <location filename="mainwindow.cpp" line="103"/>
         <source>Abrir Imagen</source>
         <translation>Open Image</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="97"/>
-        <location filename="mainwindow.cpp" line="153"/>
+        <location filename="mainwindow.cpp" line="104"/>
+        <location filename="mainwindow.cpp" line="163"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="104"/>
+        <location filename="mainwindow.cpp" line="112"/>
         <source>La imagen ya se encuentra abierta en laigter.</source>
         <translation>The image is already opened in laigter.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="152"/>
+        <location filename="mainwindow.cpp" line="162"/>
         <source>Guardar Imagen</source>
         <translation>Save Image</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="350"/>
+        <source>Se exportaron todos los mapas normales.</source>
+        <translation>Every Normal Map has been exported.</translation>
     </message>
 </context>
 </TS>
