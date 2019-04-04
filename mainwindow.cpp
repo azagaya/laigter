@@ -77,7 +77,12 @@ void MainWindow::list_menu_action_triggered(QAction *action){
         delete item;
     }
     else if (action->text() == tr("Cargar mapa de altura")){
-        processor->loadHeightMap("/home/pablo/Imágenes/ship.png");
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                              tr("Abrir Imagen"), "",
+                                                              tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+        if (fileName != nullptr){
+            processor->loadHeightMap(fileName);
+        }
     }
     else if (action->text() == tr("Reiniciar mapa de altura")){
         processor->loadImage(processor->get_name());
