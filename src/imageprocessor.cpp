@@ -12,6 +12,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     gradient_end = 255;
     normal_bisel_soft = true;
     normalInvertX = normalInvertY = normalInvertZ = 1;
+    tileable = false;
     busy = false;
 }
 
@@ -85,13 +86,15 @@ void ImageProcessor::calculate_distance(){
     {
         for(int y = 0; y < m_distance.rows; ++y)
         {
-            if (x == 0 || y == 0
+            if (!tileable && (x == 0 || y == 0
                     || x == m_distance.cols-1
-                    || y == m_distance.rows-1
-                    || m_img.at<Vec4b>(y,x)[3] == 0.0)
+                    || y == m_distance.rows-1))
             {
                 m_distance.at<unsigned char>(y,x) = 0;
-            }else{
+            }else if (m_img.at<Vec4b>(y,x)[3] == 0.0){
+
+                m_distance.at<unsigned char>(y,x) = 0;
+            } else {
                 m_distance.at<unsigned char>(y,x) = 255;
             }
         }
@@ -159,6 +162,20 @@ void ImageProcessor::set_normal_bisel_distance(int distance){
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
     generate_normal_map();
+}
+
+void ImageProcessor::set_tileable(bool t){
+    tileable = t;
+    calculate_distance();
+    m_distance.copyTo(new_distance);
+    new_distance = modify_distance();
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                         ,normal_bisel_blur_radius);
+    generate_normal_map();
+}
+
+bool ImageProcessor::get_tileable(){
+    return tileable;
 }
 
 Mat ImageProcessor::modify_distance(){
@@ -272,6 +289,7 @@ void ImageProcessor::copy_settings(ImageProcessor *p){
     normal_bisel_blur_radius = p->get_normal_bisel_blur_radius();
     normalInvertX = p->get_normal_invert_x();
     normalInvertY = p->get_normal_invert_y();
+    tileable = p->get_tileable();
 }
 
 int ImageProcessor::get_normal_depth(){
@@ -315,3 +333,5 @@ QImage ImageProcessor::get_normal(){
     return QImage(static_cast<unsigned char *>(m_normal.data),
                   m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
 }
+
+

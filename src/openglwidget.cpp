@@ -17,11 +17,14 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     diffIntensity = 0.4;
     lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
+
+
 }
 
 void OpenGlWidget::initializeGL()
 {
     initializeOpenGLFunctions();
+
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glClearColor(0.2, 0.2, 0.3, 1.0);

@@ -60,6 +60,8 @@ public slots:
     void set_normal_invert_y(bool invert);
     int get_normal_invert_y();
     void set_normal_invert_z(bool invert);
+    bool get_tileable();
+    void set_tileable(bool t);
 
 private:
     QString m_name;
@@ -76,7 +78,7 @@ private:
     int normal_bisel_distance;
     int normal_blur_radius;
     int normal_bisel_blur_radius;
-    bool normal_bisel_soft;
+    bool normal_bisel_soft, tileable;
     int normalInvertX, normalInvertY, normalInvertZ;
     char gradient_end;
 };

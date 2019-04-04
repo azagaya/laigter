@@ -248,6 +248,13 @@ QDockWidget::title{
             </property>
            </widget>
           </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="checkBoxTileable">
+            <property name="text">
+             <string>Tileable</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
