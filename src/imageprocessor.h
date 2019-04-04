@@ -25,6 +25,7 @@ class ImageProcessor : public QObject
 public:
     explicit ImageProcessor(QObject *parent = nullptr);
     int loadImage(QString fileName);
+    int loadHeightMap(QString fileName);
     void generate_normal_map();
     Mat calculate_normal(Mat mat, int depth, int blur_radius);
     void calculate_gradient();
@@ -73,6 +74,7 @@ private:
     Mat m_emboss_normal;
     Mat m_distance_normal;
     Mat new_distance;
+    Mat m_heightmap;
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;

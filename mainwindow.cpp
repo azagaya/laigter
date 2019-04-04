@@ -55,7 +55,11 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
         return;
     QMenu contextMenu(tr("Context menu"), ui->listWidget);
     contextMenu.addAction(new QAction(tr("Quitar"), ui->listWidget));
+    contextMenu.addSeparator();
+    contextMenu.addAction(new QAction(tr("Cargar mapa de altura")));
+    contextMenu.addAction(new QAction(tr("Reiniciar mapa de altura")));
     connect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
+
     contextMenu.exec(ui->listWidget->mapToGlobal(pos));
     disconnect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
 }
@@ -72,6 +76,13 @@ void MainWindow::list_menu_action_triggered(QAction *action){
         }
         delete item;
     }
+    else if (action->text() == tr("Cargar mapa de altura")){
+        processor->loadHeightMap("/home/pablo/Imágenes/ship.png");
+    }
+    else if (action->text() == tr("Reiniciar mapa de altura")){
+        processor->loadImage(processor->get_name());
+    }
+
 }
 
 MainWindow::~MainWindow()

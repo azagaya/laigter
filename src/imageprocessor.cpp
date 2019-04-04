@@ -50,9 +50,61 @@ int ImageProcessor::loadImage(QString fileName){
         }
     }
 
-    cvtColor(m_img, m_gray,COLOR_RGBA2GRAY);
+    m_img.copyTo(m_heightmap);
+    cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
+
+    calculate_distance();
+    m_distance.copyTo(new_distance);
+    new_distance = modify_distance();
+    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                         ,normal_bisel_blur_radius);
+    generate_normal_map();
+    return 0;
+}
+
+int ImageProcessor::loadHeightMap(QString fileName){
+
+    m_heightmap = imread(fileName.toStdString(),-1);
+
+    int aux = m_heightmap.depth();
+    switch (aux) {
+    case CV_8S:
+        m_heightmap.convertTo(m_heightmap,CV_8U,0,128);
+        break;
+    case CV_16U:
+        m_heightmap.convertTo(m_heightmap,CV_8U,1/255.0);
+        break;
+    case CV_16S:
+        m_heightmap.convertTo(m_heightmap,CV_8U,1/255.0,128);
+        break;
+    case CV_32S:
+        m_heightmap.convertTo(m_heightmap,CV_8U,1/255.0/255.0,128);
+        break;
+    case CV_32F:
+    case CV_64F:
+        m_heightmap.convertTo(m_heightmap,CV_8U,255);
+        break;
+    }
+
+    if (m_heightmap.channels() < 4){
+        if (m_heightmap.channels() == 3){
+            cvtColor(m_heightmap,m_heightmap,COLOR_RGB2RGBA);
+        }
+        else{
+            cvtColor(m_heightmap,m_heightmap,COLOR_GRAY2RGBA);
+        }
+    }
+
+
+    cv::resize(m_heightmap,m_heightmap,Size(m_img.size()));
+    cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
+
+    if(m_gray.type() != CV_32FC1)
+        m_gray.convertTo(m_gray, CV_32FC1);
+
 
     calculate_distance();
     m_distance.copyTo(new_distance);
@@ -78,9 +130,9 @@ void ImageProcessor::calculate_gradient(){
 
 void ImageProcessor::calculate_distance(){
 
-    if (!m_img.ptr<int>(0)) return;
+    if (!m_heightmap.ptr<int>(0)) return;
 
-    cvtColor(m_img, m_distance,COLOR_RGBA2GRAY,1);
+    cvtColor(m_heightmap, m_distance,COLOR_RGBA2GRAY,1);
 
     for(int x = 0; x < m_distance.cols; ++x)
     {
@@ -91,7 +143,7 @@ void ImageProcessor::calculate_distance(){
                     || y == m_distance.rows-1))
             {
                 m_distance.at<unsigned char>(y,x) = 0;
-            }else if (m_img.at<Vec4b>(y,x)[3] == 0.0){
+            }else if (m_heightmap.at<Vec4b>(y,x)[3] == 0.0){
 
                 m_distance.at<unsigned char>(y,x) = 0;
             } else {
@@ -208,7 +260,7 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius){
 }
 
 void ImageProcessor::generate_normal_map(){
-    if (!m_img.ptr<int>(0) || busy) return;
+    if (!m_heightmap.ptr<int>(0) || busy) return;
     busy = true;
     Mat normals;
     normals =(m_emboss_normal
@@ -251,7 +303,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     {
         for(int y = 0; y < aux.rows; ++y)
         {
-            if (m_img.at<Vec4b>(y,x)[3] == 0.0){
+            if (m_heightmap.at<Vec4b>(y,x)[3] == 0.0){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }
