@@ -13,14 +13,15 @@ uniform vec3 lightColor;
 uniform float diffIntensity;
 uniform float ambientIntensity;
 uniform vec3 ambientColor;
+uniform vec2 ratio;
 
 void main()
 {
-    vec3 normal = normalize(texture2D(normalMap,texCoord).xyz*vec3(2.0,2.0,1.0)-vec3(1.0,1.0,0.0));
+    vec3 normal = normalize(texture2D(normalMap,texCoord*ratio).xyz*vec3(2.0,2.0,1.0)-vec3(1.0,1.0,0.0));
     vec3 lightDir = normalize(lightPos - vec3(FragPos.xy,0.0));
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;
-    vec4 tex = texture2D(texture,texCoord);
+    vec4 tex = texture2D(texture,texCoord*ratio);
     if (light){
         FragColor = tex*(vec4(diffuse,tex.w)+vec4(ambientColor,1.0)*ambientIntensity);
     }else{

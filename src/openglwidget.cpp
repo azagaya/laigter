@@ -17,6 +17,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     diffIntensity = 0.4;
     lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
+    tileX = false;
+    tileY = false;
 
 
 }
@@ -100,21 +102,37 @@ void OpenGlWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
 
     QMatrix4x4 transform;
-
+    float scaleX, scaleY, zoomX, zoomY;
     transform.setToIdentity();
-    transform.scale(sx,sy,1);
-    transform.scale(m_zoom,m_zoom,1);
+    scaleX = !tileX ? sx : 1;
+    scaleY = !tileY ? sy : 1;
+    transform.scale(scaleX,scaleY,1);
+    zoomX = !tileX ? m_zoom : 1;
+    zoomY = !tileY ? m_zoom : 1;
+    transform.scale(zoomX,zoomY,1);
 
     m_program.bind();
 
     VAO.bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (tileX || tileY){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }else{
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    }
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("light",m_light);
     m_texture->bind(0);
     m_program.setUniformValue("texture",0);
     m_program.setUniformValue("transform",transform);
+    scaleX = tileX ? sx : 1;
+    scaleY = tileY ? sy : 1;
+    zoomX = tileX ? m_zoom : 1;
+    zoomY = tileY ? m_zoom : 1;
+    m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glActiveTexture(GL_TEXTURE1);
@@ -183,6 +201,16 @@ void OpenGlWidget::setZoom(float zoom){
     update();
 }
 
+void OpenGlWidget::setTileX(bool x){
+    tileX = x;
+    update();
+}
+
+void OpenGlWidget::setTileY(bool y){
+    tileY = y;
+    update();
+}
+
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
     QPoint degree = event->angleDelta() / 8;
@@ -209,6 +237,7 @@ void OpenGlWidget::fitZoom(){
 float OpenGlWidget::getZoom(){
     return m_zoom;
 }
+
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
     if (event->buttons() & Qt::LeftButton)
