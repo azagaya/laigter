@@ -95,7 +95,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>80</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -163,7 +163,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>128</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -268,7 +268,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>63</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -297,7 +297,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>65</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -306,6 +306,18 @@ QDockWidget::title{
        <layout class="QGridLayout" name="gridLayout_13">
         <item row="0" column="0">
          <widget class="QPushButton" name="pushButton_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>23</height>
+           </size>
+          </property>
           <property name="text">
            <string>Vecinos</string>
           </property>
@@ -350,7 +362,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>115</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -386,10 +398,16 @@ QDockWidget::title{
         </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="pushButtonAmbientColor">
+          <property name="minimumSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>100</height>
+            <height>23</height>
            </size>
           </property>
           <property name="text">
@@ -406,10 +424,16 @@ QDockWidget::title{
         </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="pushButtonBackgroundColor">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>23</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>100</height>
+            <height>23</height>
            </size>
           </property>
           <property name="text">
@@ -425,7 +449,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>63</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -454,7 +478,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>117</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -493,7 +517,7 @@ QDockWidget::title{
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>107</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="title">
@@ -552,10 +576,16 @@ QDockWidget::title{
         </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="pushButtonColor">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>23</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>100</height>
+            <height>23</height>
            </size>
           </property>
           <property name="text">
@@ -624,6 +654,18 @@ QDockWidget::title{
      </item>
      <item row="1" column="1">
       <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
        <property name="text">
         <string>Exportar Todo</string>
        </property>
