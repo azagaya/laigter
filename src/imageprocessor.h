@@ -10,7 +10,6 @@
 #endif
 #include <QPixmap>
 
-
 using namespace cv;
 
 enum class ProcessedImage
@@ -30,6 +29,7 @@ public:
     Mat calculate_normal(Mat mat, int depth, int blur_radius);
     void calculate_gradient();
     void calculate_distance();
+    void calculate_heightmap();
     Mat modify_distance();
     void set_name(QString name);
     QString get_name();
@@ -38,6 +38,7 @@ public:
     QImage get_texture();
     QImage get_normal();
     void update();
+    void calculate();
 
 signals:
     void processed(QImage image, ProcessedImage type);
@@ -63,6 +64,12 @@ public slots:
     void set_normal_invert_z(bool invert);
     bool get_tileable();
     void set_tileable(bool t);
+    int fill_neighbours(Mat src, Mat dst);
+    int set_neighbour(Mat src, Mat dst, int x, int y);
+    int set_neighbour_image(QString fileName, int x, int y);
+    int empty_neighbour(int x, int y);
+    void reset_neighbours();
+    QImage get_neighbour(int x, int y);
 
 private:
     QString m_name;
@@ -70,11 +77,14 @@ private:
     Mat m_gray;
     Mat m_gradient;
     Mat m_distance;
+    Mat aux_distance;
     Mat m_normal;
     Mat m_emboss_normal;
     Mat m_distance_normal;
     Mat new_distance;
     Mat m_heightmap;
+    Mat current_heightmap;
+    Mat neighbours;
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;

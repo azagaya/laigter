@@ -28,15 +28,18 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     src/imageprocessor.cpp \
-    src/openglwidget.cpp
+    src/openglwidget.cpp \
+    gui/nbselector.cpp
 
 HEADERS += \
         mainwindow.h \
     src/imageprocessor.h \
-    src/openglwidget.h
+    src/openglwidget.h \
+    gui/nbselector.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    gui/nbselector.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

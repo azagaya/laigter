@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "src/openglwidget.h"
+#include "gui/nbselector.h"
 
 #include <QFileDialog>
 #include <QColorDialog>
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     processor = sample_processor;
     currentColor = QVector3D(0.0,1.0,0.7);
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
+    currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
 
     image = QImage(":/images/sample.png");
 
@@ -32,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButtonColor->setIcon(QIcon(pixmap));
     pixmap.fill(QColor(currentAmbientcolor.x()*255,currentAmbientcolor.y()*255,currentAmbientcolor.z()*255));
     ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
+    pixmap.fill(QColor(currentBackgroundColor.x()*255,currentBackgroundColor.y()*255,currentBackgroundColor.z()*255));
+    ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
+
     m_raw_scene = new QGraphicsScene(this);
 
     ui->dockWidget->setFeatures(QDockWidget::DockWidgetMovable);
@@ -209,6 +214,7 @@ void MainWindow::on_radioButtonPreview_toggled(bool checked)
     if (checked){
         ui->openGLPreviewWidget->setLight(true);
         if (!image.isNull())
+            update_scene(normal,ProcessedImage::Normal);
             update_scene(image,ProcessedImage::Raw);
     }
 }
@@ -369,4 +375,22 @@ void MainWindow::on_pushButton_clicked()
     QMessageBox msgBox;
     msgBox.setText(tr("Se exportaron todos los mapas normales."));
     msgBox.exec();
+}
+
+void MainWindow::on_pushButtonBackgroundColor_clicked()
+{
+    QColor color = QColorDialog::getColor(QColor(currentBackgroundColor.x()*255,currentBackgroundColor.y()*255,currentBackgroundColor.z()*255));
+    if (color.isValid()){
+        currentBackgroundColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        QPixmap pixmap(100,100);
+        pixmap.fill(color);
+        ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
+        ui->openGLPreviewWidget->setBackgroundColor(currentBackgroundColor);
+    }
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    NBSelector *nb = new NBSelector(processor);
+    nb->exec();
 }

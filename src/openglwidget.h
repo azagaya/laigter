@@ -31,6 +31,7 @@ public slots:
     void setLightIntensity(float intensity);
     void setAmbientIntensity(float intensity);
     void setAmbientColor(QVector3D color);
+    void setBackgroundColor(QVector3D color);
     void setTileX(bool x);
     void setTileY(bool y);
 signals:
@@ -50,7 +51,7 @@ private:
     QOpenGLShaderProgram m_program;
     QOpenGLShaderProgram lightProgram;
     QImage m_image, normalMap, laigter;
-    QVector3D lightPosition, lightColor, ambientColor;
+    QVector3D lightPosition, lightColor, ambientColor, backgroundColor;
     bool m_light, tileX, tileY;
     float sx, sy;
     float m_zoom;

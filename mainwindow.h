@@ -75,6 +75,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButtonBackgroundColor_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     QImage image, normal;
     Ui::MainWindow *ui;
@@ -83,7 +87,7 @@ private:
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
     ImageProcessor *sample_processor;
-    QVector3D currentColor, currentAmbientcolor;
+    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
 };

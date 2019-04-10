@@ -4,11 +4,11 @@
 #include <cmath>
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
-    normal_bisel_depth = 0;
-    normal_bisel_distance = 0;
-    normal_depth = 10;
-    normal_blur_radius = 1;
-    normal_bisel_blur_radius = 1;
+    normal_bisel_depth = 1000;
+    normal_bisel_distance = 60;
+    normal_depth = 100;
+    normal_blur_radius = 5;
+    normal_bisel_blur_radius = 10;
     gradient_end = 255;
     normal_bisel_soft = true;
     normalInvertX = normalInvertY = normalInvertZ = 1;
@@ -20,7 +20,6 @@ int ImageProcessor::loadImage(QString fileName){
     m_fileName = fileName;
     m_name = fileName;
     m_img = imread(fileName.toStdString(),-1);
-
     int aux = m_img.depth();
     switch (aux) {
     case CV_8S:
@@ -50,19 +49,130 @@ int ImageProcessor::loadImage(QString fileName){
         }
     }
 
+    neighbours = Mat::zeros(m_img.rows*3,m_img.cols*3,m_img.type());
+
     m_img.copyTo(m_heightmap);
-    cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
-    if(m_gray.type() != CV_32FC1)
-        m_gray.convertTo(m_gray, CV_32FC1);
+
+
+
+    current_heightmap = tileable ? neighbours : m_heightmap;
+
+    fill_neighbours(m_heightmap,neighbours);
+
+    return 0;
+}
+
+void ImageProcessor::calculate(){
+//    calculate_heightmap();
+
+//    calculate_distance();
+//    new_distance = modify_distance();
+
+//    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+//    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+//                                         ,normal_bisel_blur_radius);
+//    generate_normal_map();
 
     calculate_distance();
     m_distance.copyTo(new_distance);
     new_distance = modify_distance();
-    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
+
+    calculate_heightmap();
+    Mat gray;
+    m_gray.copyTo(gray);
+    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
+}
+
+void ImageProcessor::calculate_heightmap(){
+    cvtColor(current_heightmap, m_gray,COLOR_RGBA2GRAY);
+    if(m_gray.type() != CV_32FC1)
+        m_gray.convertTo(m_gray, CV_32FC1);
+}
+
+int ImageProcessor::fill_neighbours(Mat src, Mat dst){
+    if (src.cols != dst.cols/3 || src.rows != dst.rows/3)
+        return -1;
+    Rect rect;
+    for (int i=0; i<3; i++){
+        for (int j=0; j<3; j++){
+            rect = Rect(i*src.cols,j*src.rows,src.cols,src.rows);
+            src.copyTo(dst(rect));
+        }
+    }
+    calculate();
     return 0;
+}
+
+void ImageProcessor::reset_neighbours(){
+    fill_neighbours(m_heightmap,neighbours);
+}
+
+int ImageProcessor::empty_neighbour(int x, int y){
+    Mat n = Mat::zeros(m_heightmap.rows,m_heightmap.cols,m_heightmap.type());
+    set_neighbour(n,neighbours,x,y);
+    return 0;
+}
+
+int ImageProcessor::set_neighbour(Mat src, Mat dst, int x, int y){
+    if (src.cols != dst.cols/3 || src.rows != dst.rows/3)
+        return -1;
+    Rect rect(y*src.cols,x*src.rows,src.cols,src.rows);
+    src.copyTo(dst(rect));
+    return 0;
+}
+
+int ImageProcessor::set_neighbour_image(QString fileName, int x, int y){
+    Mat n = imread(fileName.toStdString(),-1);
+
+    int aux = n.depth();
+    switch (aux) {
+    case CV_8S:
+        n.convertTo(n,CV_8U,0,128);
+        break;
+    case CV_16U:
+        n.convertTo(n,CV_8U,1/255.0);
+        break;
+    case CV_16S:
+        n.convertTo(n,CV_8U,1/255.0,128);
+        break;
+    case CV_32S:
+        n.convertTo(n,CV_8U,1/255.0/255.0,128);
+        break;
+    case CV_32F:
+    case CV_64F:
+        n.convertTo(n,CV_8U,255);
+        break;
+    }
+
+    if (n.channels() < 4){
+        if (n.channels() == 3){
+            cvtColor(n,n,COLOR_RGB2RGBA);
+        }
+        else{
+            cvtColor(n,n,COLOR_GRAY2RGBA);
+        }
+    }
+
+
+    cv::resize(n,n,Size(m_img.size()));
+
+    set_neighbour(n,neighbours,x,y);
+
+    return 0;
+}
+
+QImage ImageProcessor::get_neighbour(int x, int y){
+    Mat aux;
+    Rect rect(y*m_img.cols,x*m_img.rows,m_img.cols,m_img.rows);
+    neighbours(rect).copyTo(aux);
+    cvtColor(aux,aux,CV_BGRA2RGBA);
+    QImage p =QImage(static_cast<unsigned char *>(aux.data),
+                     aux.cols,aux.rows,aux.step,QImage::Format_RGBA8888);
+    return p;
+
 }
 
 int ImageProcessor::loadHeightMap(QString fileName){
@@ -102,17 +212,11 @@ int ImageProcessor::loadHeightMap(QString fileName){
     cv::resize(m_heightmap,m_heightmap,Size(m_img.size()));
     cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
 
+    set_neighbour(m_heightmap,neighbours,1,1);
+
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
 
-
-    calculate_distance();
-    m_distance.copyTo(new_distance);
-    new_distance = modify_distance();
-    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
-    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                         ,normal_bisel_blur_radius);
-    generate_normal_map();
     return 0;
 }
 
@@ -130,20 +234,20 @@ void ImageProcessor::calculate_gradient(){
 
 void ImageProcessor::calculate_distance(){
 
-    if (!m_heightmap.ptr<int>(0)) return;
+    if (!current_heightmap.ptr<int>(0)) return;
 
-    cvtColor(m_heightmap, m_distance,COLOR_RGBA2GRAY,1);
+    cvtColor(current_heightmap, m_distance,COLOR_RGBA2GRAY,1);
 
     for(int x = 0; x < m_distance.cols; ++x)
     {
         for(int y = 0; y < m_distance.rows; ++y)
         {
             if (!tileable && (x == 0 || y == 0
-                    || x == m_distance.cols-1
-                    || y == m_distance.rows-1))
+                              || x == m_distance.cols-1
+                              || y == m_distance.rows-1))
             {
                 m_distance.at<unsigned char>(y,x) = 0;
-            }else if (m_heightmap.at<Vec4b>(y,x)[3] == 0.0){
+            }else if (current_heightmap.at<Vec4b>(y,x)[3] == 0.0){
 
                 m_distance.at<unsigned char>(y,x) = 0;
             } else {
@@ -218,12 +322,20 @@ void ImageProcessor::set_normal_bisel_distance(int distance){
 
 void ImageProcessor::set_tileable(bool t){
     tileable = t;
+    current_heightmap = t ? neighbours : m_heightmap;
+
     calculate_distance();
     m_distance.copyTo(new_distance);
     new_distance = modify_distance();
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
+
+    calculate_heightmap();
+    Mat gray;
+    m_gray.copyTo(gray);
+    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
+
 }
 
 bool ImageProcessor::get_tileable(){
@@ -260,7 +372,7 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius){
 }
 
 void ImageProcessor::generate_normal_map(){
-    if (!m_heightmap.ptr<int>(0) || busy) return;
+    if (!current_heightmap.ptr<int>(0) || busy) return;
     busy = true;
     Mat normals;
     normals =(m_emboss_normal
@@ -290,38 +402,32 @@ void ImageProcessor::update(){
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
-    Mat normals(mat.size(), CV_32FC3);
-    Mat aux;
+
+    Mat aux, heightMap;
     Mat mdx,mdy,mg;
+    Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
     float dx, dy;
     GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
-    //    mat.copyTo(mg);
-    //    Sobel(mg,mdx,CV_32F, 1, 0);
-    //    Sobel(mg,mdy,CV_32F, 0, 1);
-    //imshow("asdf",mdx);
+    if(tileable){
+        aux(rect).copyTo(aux);
+        current_heightmap(rect).copyTo(heightMap);
+    }else{
+        m_heightmap.copyTo(heightMap);
+    }
+    Mat normals(aux.size(), CV_32FC3);
     for(int x = 0; x < aux.cols; ++x)
     {
         for(int y = 0; y < aux.rows; ++y)
         {
-            if (m_heightmap.at<Vec4b>(y,x)[3] == 0.0){
+            if (heightMap.at<Vec4b>(y,x)[3] == 0.0){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }
-            if (x==0)
-                dx = -3*aux.at<float>(y,x) + 4*aux.at<float>(y,x+1) - aux.at<float>(y,x+2);
-            else if (x == aux.cols -1 )
-                dx = aux.at<float>(y,x-2) + -4*aux.at<float>(y,x-1) +3*aux.at<float>(y,x);
-            else
-                dx = -aux.at<float>(y,x-1) + aux.at<float>(y,x);
-            if (y==0)
-                dy = -3*aux.at<float>(y,x) + 4*aux.at<float>(y,x+1) - aux.at<float>(y,x+2);
-            else if (y == aux.rows -1 )
-                dy = aux.at<float>(y-2,x) + -4*aux.at<float>(y-1,x) +3*aux.at<float>(y,x);
-            else
-                dy = -aux.at<float>(y-1,x) + aux.at<float>(y+1,x);
-            //            Vec3f n = Vec3f(-mdx.at<float>(y,x)*(depth/1000.0)*normalInvertX,
-            //                            -mdy.at<float>(y,x)*(depth/1000.0)*normalInvertY,
-            //                            1*normalInvertZ);
+
+            dx = -aux.at<float>(y,(x-1+aux.cols)%aux.cols) + aux.at<float>(y,(x+1+aux.cols)%aux.cols);
+            dy = -aux.at<float>((y-1+aux.rows)%aux.rows,x) + aux.at<float>((y+1+aux.rows)%aux.rows,x);
+
+
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
                             dy*(depth/1000.0)*normalInvertY,
                             1*normalInvertZ);

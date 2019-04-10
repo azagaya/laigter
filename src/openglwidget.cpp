@@ -13,6 +13,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     ambientColor = QVector3D(1.0,1.0,1.0);
+    backgroundColor = QVector3D(0.2, 0.2, 0.3);
     ambientIntensity = 0.8;
     diffIntensity = 0.4;
     lightPosition = QVector3D(0.7,0.7,0.3);
@@ -29,7 +30,7 @@ void OpenGlWidget::initializeGL()
 
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    glClearColor(0.2, 0.2, 0.3, 1.0);
+    glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
 
     m_program.create();
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
@@ -99,6 +100,8 @@ void OpenGlWidget::initializeGL()
 
 void OpenGlWidget::paintGL()
 {
+
+    glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     QMatrix4x4 transform;
@@ -258,6 +261,11 @@ void OpenGlWidget::setLight(bool light){
 
 void OpenGlWidget::setLightColor(QVector3D color){
     lightColor = color;
+    update();
+}
+
+void OpenGlWidget::setBackgroundColor(QVector3D color){
+    backgroundColor = color;
     update();
 }
 
