@@ -340,6 +340,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->normalDepthSlider->setValue(processor->get_normal_depth());
     ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
     ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
+    ui->checkBoxTileable->setChecked(processor->get_tileable());
     image = QImage(processor->get_name());
 
     processor->update();

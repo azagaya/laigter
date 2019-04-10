@@ -217,6 +217,8 @@ int ImageProcessor::loadHeightMap(QString fileName){
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
 
+    calculate();
+
     return 0;
 }
 
@@ -238,21 +240,25 @@ void ImageProcessor::calculate_distance(){
 
     cvtColor(current_heightmap, m_distance,COLOR_RGBA2GRAY,1);
 
-    for(int x = 0; x < m_distance.cols; ++x)
+    for(int x = 0; x < m_distance.rows; ++x)
     {
-        for(int y = 0; y < m_distance.rows; ++y)
+        uchar * pixel = m_distance.ptr<uchar>(x);
+        for(int y = 0; y < m_distance.cols; ++y)
         {
             if (!tileable && (x == 0 || y == 0
-                              || x == m_distance.cols-1
-                              || y == m_distance.rows-1))
+                              || x == m_distance.rows-1
+                              || y == m_distance.cols-1))
             {
-                m_distance.at<unsigned char>(y,x) = 0;
-            }else if (current_heightmap.at<Vec4b>(y,x)[3] == 0.0){
-
-                m_distance.at<unsigned char>(y,x) = 0;
+                //m_distance.at<unsigned char>(x,y) = 0;
+                *pixel = 0;
+            }else if (current_heightmap.at<Vec4b>(x,y)[3] == 0.0){
+                //m_distance.at<unsigned char>(x,y) = 0;
+                *pixel = 0;
             } else {
-                m_distance.at<unsigned char>(y,x) = 255;
+                m_distance.at<unsigned char>(x,y) = 255;
+                *pixel = 255;
             }
+            pixel ++;
         }
     }
     threshold(m_distance,m_distance,0,255,THRESH_BINARY);
@@ -345,20 +351,30 @@ bool ImageProcessor::get_tileable(){
 Mat ImageProcessor::modify_distance(){
     Mat m;
     m_distance.copyTo(m);
-    for(int x = 0; x < m.cols; ++x)
+    for(int x = 0; x < m.rows; ++x)
     {
-        for(int y = 0; y < m.rows; ++y)
+        float *pixel = m.ptr<float>(x);
+        for(int y = 0; y < m.cols; ++y)
         {
-            if (normal_bisel_distance == 0) m.at<float>(y,x) = 0;
+            if (normal_bisel_distance == 0){
+                //m.at<float>(y,x) = 0;
+                *pixel = 0;
+            }
             else{
-                m.at<float>(y,x) *= 255.0/normal_bisel_distance;
-                if (m.at<float>(y,x) > 1) m.at<float>(y,x) = 1;
+                //m.at<float>(x,y) *= 255.0/normal_bisel_distance;
+                *pixel *= 255.0/normal_bisel_distance;
+//                if (m.at<float>(x,y) > 1)
+//                    m.at<float>(x,y) = 1;
+                if (*pixel > 1)
+                    *pixel = 1;
                 if (normal_bisel_soft){
-                    double d = m.at<float>(y,x);
-                    //m.at<float>(y,x) = -d*(d-2);
-                    m.at<float>(y,x) = sqrt(1-pow((d-1),2));
+                    //double d = m.at<float>(x,y);
+                    double d = *pixel;
+                    //m.at<float>(x,y) = sqrt(1-pow((d-1),2));
+                    *pixel = sqrt(1-pow((d-1),2));
                 }
             }
+            pixel ++;
         }
     }
     return m;
@@ -408,7 +424,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
     float dx, dy;
     GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
-    if(tileable){
+    if(tileable && aux.rows == m_img.rows*3){
         aux(rect).copyTo(aux);
         current_heightmap(rect).copyTo(heightMap);
     }else{
