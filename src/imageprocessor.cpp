@@ -73,6 +73,8 @@ void ImageProcessor::calculate(){
 //                                         ,normal_bisel_blur_radius);
 //    generate_normal_map();
 
+    current_heightmap = tileable ? neighbours : m_heightmap;
+
     calculate_distance();
     m_distance.copyTo(new_distance);
     new_distance = modify_distance();
