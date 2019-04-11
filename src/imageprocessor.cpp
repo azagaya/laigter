@@ -167,12 +167,11 @@ int ImageProcessor::set_neighbour_image(QString fileName, int x, int y){
 }
 
 QImage ImageProcessor::get_neighbour(int x, int y){
-    Mat aux;
     Rect rect(y*m_img.cols,x*m_img.rows,m_img.cols,m_img.rows);
-    neighbours(rect).copyTo(aux);
-    cvtColor(aux,aux,CV_BGRA2RGBA);
-    QImage p =QImage(static_cast<unsigned char *>(aux.data),
-                     aux.cols,aux.rows,aux.step,QImage::Format_RGBA8888);
+    neighbours(rect).copyTo(m_aux);
+    cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
+    QImage p =QImage(static_cast<unsigned char *>(m_aux.data),
+                     m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
     return p;
 
 }

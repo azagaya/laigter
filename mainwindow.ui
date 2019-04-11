@@ -120,7 +120,7 @@ QDockWidget::title{
              <number>1000</number>
             </property>
             <property name="value">
-             <number>50</number>
+             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -627,8 +627,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>178</width>
-          <height>94</height>
+          <width>260</width>
+          <height>88</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">

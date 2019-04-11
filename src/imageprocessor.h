@@ -85,6 +85,7 @@ private:
     Mat m_heightmap;
     Mat current_heightmap;
     Mat neighbours;
+    Mat m_aux;
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;
