@@ -2,7 +2,8 @@
 #define NBSELECTOR_H
 
 #include <QDialog>
-#include <src/imageprocessor.h>
+#include "src/imageprocessor.h"
+#include "src/imageloader.h"
 
 namespace Ui {
 class NBSelector;
@@ -43,6 +44,7 @@ private slots:
 private:
     Ui::NBSelector *ui;
     ImageProcessor *processor;
+    ImageLoader *il;
 };
 
 #endif // NBSELECTOR_H

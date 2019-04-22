@@ -9,6 +9,7 @@
 #include <opencv2/imgproc.hpp>
 #endif
 #include <QPixmap>
+#include "src/imageloader.h"
 
 using namespace cv;
 
@@ -23,8 +24,8 @@ class ImageProcessor : public QObject
     Q_OBJECT
 public:
     explicit ImageProcessor(QObject *parent = nullptr);
-    int loadImage(QString fileName);
-    int loadHeightMap(QString fileName);
+    int loadImage(QString fileName, QImage image);
+    int loadHeightMap(QString fileName, QImage height);
     void generate_normal_map();
     Mat calculate_normal(Mat mat, int depth, int blur_radius);
     void calculate_gradient();
@@ -66,12 +67,13 @@ public slots:
     void set_tileable(bool t);
     int fill_neighbours(Mat src, Mat dst);
     int set_neighbour(Mat src, Mat dst, int x, int y);
-    int set_neighbour_image(QString fileName, int x, int y);
+    int set_neighbour_image(QString fileName, QImage image, int x, int y);
     int empty_neighbour(int x, int y);
     void reset_neighbours();
     QImage get_neighbour(int x, int y);
 
 private:
+    ImageLoader il;
     QString m_name;
     Mat m_img;
     Mat m_gray;
@@ -86,6 +88,7 @@ private:
     Mat current_heightmap;
     Mat neighbours;
     Mat m_aux;
+    Mat current_parallax;
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;

@@ -27,12 +27,14 @@ CONFIG += core ui c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    src/imageloader.cpp \
     src/imageprocessor.cpp \
     src/openglwidget.cpp \
     gui/nbselector.cpp
 
 HEADERS += \
         mainwindow.h \
+    src/imageloader.h \
     src/imageprocessor.h \
     src/openglwidget.h \
     gui/nbselector.h

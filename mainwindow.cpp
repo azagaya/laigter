@@ -85,14 +85,23 @@ void MainWindow::list_menu_action_triggered(QAction *action){
     }
     else if (action->text() == tr("Cargar mapa de altura")){
         QString fileName = QFileDialog::getOpenFileName(this,
-                                                              tr("Abrir Imagen"), "",
-                                                              tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+                                                        tr("Abrir Imagen"), "",
+                                                        tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+
         if (fileName != nullptr){
-            processor->loadHeightMap(fileName);
+            bool success;
+            QImage height = il.loadImage(fileName, &success);
+            if (!success) return;
+            height = height.convertToFormat(QImage::Format_RGBA8888);
+
+            processor->loadHeightMap(fileName, height);
         }
     }
     else if (action->text() == tr("Reiniciar mapa de altura")){
-        processor->loadImage(processor->get_name());
+        bool succes;
+        QImage height = il.loadImage(processor->get_name(),&succes);
+        height = height.convertToFormat(QImage::Format_RGBA8888);
+        processor->loadImage(processor->get_name(),il.loadImage(processor->get_name(),&succes));
     }
 
 }
@@ -124,10 +133,20 @@ void MainWindow::on_actionOpen_triggered()
 {
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
                                                           tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+
     foreach (QString fileName, fileNames){
         if (fileName != nullptr){
-            image = QImage(fileName);
+            ImageLoader il;
+            bool succes;
+            image = il.loadImage(fileName,&succes);
+            if (!succes || image.isNull()){
+                QMessageBox msgBox;
+                msgBox.setText(tr("Formato no soportado o incorrecto."));
+                msgBox.exec();
+                return;
+            }
+            image = image.convertToFormat(QImage::Format_RGBA8888);
             int i;
             for(i = 0; i < ui->listWidget->count(); i++){
                 if (ui->listWidget->item(i)->text() == fileName){
@@ -144,7 +163,7 @@ void MainWindow::on_actionOpen_triggered()
             disconnect_processor(processor);
             processor = p;
             connect_processor(processor);
-            processor->loadImage(fileName);
+            processor->loadImage(fileName, image);
             if (ui->radioButtonRaw->isChecked()){
                 on_radioButtonRaw_toggled(true);
             } else if (ui->radioButtonNormal->isChecked()){
@@ -152,7 +171,7 @@ void MainWindow::on_actionOpen_triggered()
             } else {
                 on_radioButtonPreview_toggled(true);
             }
-            ui->listWidget->addItem(new QListWidgetItem(QIcon(fileName),processor->get_name()));
+            ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(image)),processor->get_name()));
             ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
     }
@@ -213,9 +232,10 @@ void MainWindow::on_radioButtonPreview_toggled(bool checked)
 {
     if (checked){
         ui->openGLPreviewWidget->setLight(true);
-        if (!image.isNull())
+        if (!image.isNull()){
             update_scene(normal,ProcessedImage::Normal);
             update_scene(image,ProcessedImage::Raw);
+        }
     }
 }
 
@@ -223,7 +243,7 @@ void MainWindow::openGL_initialized(){
     ui->radioButtonRaw->toggle();
     QString tmpImage = QDir::temp().path()+"/sample.png";
     image.save(tmpImage);
-    processor->loadImage(tmpImage);
+    processor->loadImage(tmpImage,image);
 }
 
 void MainWindow::on_pushButtonColor_clicked()
@@ -315,6 +335,7 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 }
 
+
 void MainWindow::on_listWidget_itemSelectionChanged()
 {
     if (ui->listWidget->selectedItems().count() > 0){
@@ -341,7 +362,9 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
     ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
     ui->checkBoxTileable->setChecked(processor->get_tileable());
-    image = QImage(processor->get_name());
+    bool succes;
+    image = il.loadImage(processor->get_name(), &succes);
+    image = image.convertToFormat(QImage::Format_RGBA8888);
 
     processor->update();
     if (ui->radioButtonRaw->isChecked()){

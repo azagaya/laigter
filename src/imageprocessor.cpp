@@ -16,10 +16,11 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     busy = false;
 }
 
-int ImageProcessor::loadImage(QString fileName){
+int ImageProcessor::loadImage(QString fileName, QImage image){
     m_fileName = fileName;
     m_name = fileName;
-    m_img = imread(fileName.toStdString(),-1);
+    //m_img = imread(fileName.toStdString(),-1);
+    m_img = Mat(image.height(),image.width(),CV_8UC4,image.scanLine(0));
     int aux = m_img.depth();
     switch (aux) {
     case CV_8S:
@@ -126,8 +127,9 @@ int ImageProcessor::set_neighbour(Mat src, Mat dst, int x, int y){
     return 0;
 }
 
-int ImageProcessor::set_neighbour_image(QString fileName, int x, int y){
-    Mat n = imread(fileName.toStdString(),-1);
+int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, int y){
+
+    Mat n = Mat(image.height(),image.width(),CV_8UC4,image.scanLine(0));
 
     int aux = n.depth();
     switch (aux) {
@@ -176,9 +178,10 @@ QImage ImageProcessor::get_neighbour(int x, int y){
 
 }
 
-int ImageProcessor::loadHeightMap(QString fileName){
+int ImageProcessor::loadHeightMap(QString fileName, QImage height){
 
-    m_heightmap = imread(fileName.toStdString(),-1);
+    //m_heightmap = imread(fileName.toStdString(),-1);
+    m_heightmap = Mat(height.height(),height.width(),CV_8UC4,height.scanLine(0));
 
     int aux = m_heightmap.depth();
     switch (aux) {
@@ -436,7 +439,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     {
         for(int y = 0; y < aux.rows; ++y)
         {
-            if (heightMap.at<Vec4b>(y,x)[3] == 0.0){
+            if (heightMap.at<Vec4b>(y,x)[3] == 0.0 || m_img.at<Vec4b>(y,x)[3] == 0.0){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }

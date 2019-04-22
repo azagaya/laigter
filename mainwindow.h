@@ -9,6 +9,7 @@
 #include <QThread>
 #include <QList>
 #include "src/imageprocessor.h"
+#include "src/imageloader.h"
 
 namespace Ui {
 class MainWindow;
@@ -34,7 +35,6 @@ private slots:
     void showContextMenuForListWidget(const QPoint &pos);
     void list_menu_action_triggered(QAction* action);
     void openGL_initialized();
-
     void on_actionOpen_triggered();
 
     void on_actionFitZoom_triggered();
@@ -90,6 +90,7 @@ private:
     QVector3D currentColor, currentAmbientcolor, currentBackgroundColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
+    ImageLoader il;
 };
 
 #endif // MAINWINDOW_H
