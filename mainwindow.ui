@@ -50,7 +50,7 @@ QDockWidget::title{
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -72,7 +72,7 @@ QDockWidget::title{
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="normalDockWidget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -83,7 +83,7 @@ QDockWidget::title{
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Controles</string>
+    <string>Mapa Normal</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -456,6 +456,13 @@ QDockWidget::title{
         <string>Mosaico</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_12">
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="checkBoxMosaicoY">
+          <property name="text">
+           <string>Mosaico y</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QCheckBox" name="checkBoxMosaicoX">
           <property name="text">
@@ -463,10 +470,23 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="checkBoxMosaicoY">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="checkBoxParallax">
           <property name="text">
-           <string>Mosaico y</string>
+           <string>Paralaje</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSlider" name="sliderParallax">
+          <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -499,13 +519,20 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QRadioButton" name="radioButtonPreview">
           <property name="text">
            <string>Vista Previa</string>
           </property>
           <property name="checked">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="radioButtonParallax">
+          <property name="text">
+           <string>Mapa de Paralaje</string>
           </property>
          </widget>
         </item>
@@ -530,7 +557,7 @@ QDockWidget::title{
            <number>400</number>
           </property>
           <property name="value">
-           <number>80</number>
+           <number>60</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -604,7 +631,7 @@ QDockWidget::title{
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Texturas:</string>
+    <string>Texturas</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -669,6 +696,113 @@ QDockWidget::title{
        <property name="text">
         <string>Exportar Todo</string>
        </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="parallaxDockWidget">
+   <property name="windowTitle">
+    <string>Mapa de Paralaje</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QGridLayout" name="gridLayout_14">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_9">
+       <property name="title">
+        <string>Binarización:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_15">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Umbral:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSlider" name="parallaxThreshSlider">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="pageStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>140</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Enfoque:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSlider" name="parallaxFocusSlider">
+          <property name="maximum">
+           <number>50</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>3</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Suavizado:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSlider" name="parallaxSoftSlider">
+          <property name="maximum">
+           <number>50</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>120</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="1">
+         <widget class="QCheckBox" name="checkBoxParallaxInvert">
+          <property name="text">
+           <string>Invertir</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

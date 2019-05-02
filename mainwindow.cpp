@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_raw_scene = new QGraphicsScene(this);
 
-    ui->dockWidget->setFeatures(QDockWidget::DockWidgetMovable);
+    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
     ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
 
     connect_processor(processor);
@@ -54,6 +54,11 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(showContextMenuForListWidget(const QPoint &)));
     connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
     connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
+    connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setParallax(bool)));
+    connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
+
+    tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
+    ui->normalDockWidget->raise();
 
 }
 
@@ -124,7 +129,12 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
         if (ui->radioButtonNormal->isChecked())
             ui->openGLPreviewWidget->setImage(image);
         break;
-
+    case ProcessedImage::Parallax:
+        parallax = image;
+        ui->openGLPreviewWidget->setParallaxMap(parallax);
+        if (ui->radioButtonParallax->isChecked())
+            ui->openGLPreviewWidget->setImage(image);
+        break;
     }
     ui->openGLPreviewWidget->update();
 }
@@ -214,6 +224,7 @@ void MainWindow::on_radioButtonRaw_toggled(bool checked)
 {
     if (checked){
         ui->openGLPreviewWidget->setLight(false);
+        ui->openGLPreviewWidget->setParallax(false);
         if (!image.isNull())
             update_scene(image,ProcessedImage::Raw);
     }
@@ -223,15 +234,25 @@ void MainWindow::on_radioButtonNormal_toggled(bool checked)
 {
     if (checked){
         ui->openGLPreviewWidget->setLight(false);
+        ui->openGLPreviewWidget->setParallax(false);
         if (!normal.isNull())
             update_scene(normal,ProcessedImage::Raw);
     }
 }
-
+void MainWindow::on_radioButtonParallax_toggled(bool checked)
+{
+    if (checked){
+        ui->openGLPreviewWidget->setLight(false);
+        ui->openGLPreviewWidget->setParallax(false);
+        if (!parallax.isNull())
+            update_scene(parallax,ProcessedImage::Raw);
+    }
+}
 void MainWindow::on_radioButtonPreview_toggled(bool checked)
 {
     if (checked){
         ui->openGLPreviewWidget->setLight(true);
+        ui->openGLPreviewWidget->setParallax(ui->checkBoxParallax->isChecked());
         if (!image.isNull()){
             update_scene(normal,ProcessedImage::Normal);
             update_scene(image,ProcessedImage::Raw);
@@ -308,6 +329,10 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->normalInvertY,SIGNAL(toggled(bool)),p,SLOT(set_normal_invert_y(bool)));
     connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
     connect(ui->checkBoxTileable,SIGNAL(toggled(bool)),p,SLOT(set_tileable(bool)));
+    connect(ui->checkBoxParallaxInvert,SIGNAL(toggled(bool)),p,SLOT(set_parallax_invert(bool)));
+    connect(ui->parallaxSoftSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_soft(int)));
+    connect(ui->parallaxThreshSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_thresh(int)));
+    connect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
@@ -322,6 +347,10 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->normalInvertY,SIGNAL(toggled(bool)),p,SLOT(set_normal_invert_y(bool)));
     disconnect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
     disconnect(ui->checkBoxTileable,SIGNAL(toggled(bool)),p,SLOT(set_tileable(bool)));
+    disconnect(ui->checkBoxParallaxInvert,SIGNAL(toggled(bool)),p,SLOT(set_parallax_invert(bool)));
+    disconnect(ui->parallaxSoftSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_soft(int)));
+    disconnect(ui->parallaxThreshSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_thresh(int)));
+    disconnect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
 }
 
 void MainWindow::on_listWidget_itemChanged(QListWidgetItem *item)
@@ -362,6 +391,12 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
     ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
     ui->checkBoxTileable->setChecked(processor->get_tileable());
+
+    ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
+    ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
+    ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
+    ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
+
     bool succes;
     image = il.loadImage(processor->get_name(), &succes);
     image = image.convertToFormat(QImage::Format_RGBA8888);
@@ -376,6 +411,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     }
 
     update_scene(processor->get_normal(),ProcessedImage::Normal);
+    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
     connect_processor(processor);
 }
 
@@ -418,3 +454,5 @@ void MainWindow::on_pushButton_2_clicked()
     NBSelector *nb = new NBSelector(processor);
     nb->exec();
 }
+
+

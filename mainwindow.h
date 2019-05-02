@@ -79,8 +79,10 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_radioButtonParallax_toggled(bool checked);
+
 private:
-    QImage image, normal;
+    QImage image, normal, parallax;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;

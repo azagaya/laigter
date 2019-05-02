@@ -14,10 +14,11 @@
 using namespace cv;
 
 enum class ProcessedImage
-  {
-     Raw,
-     Normal
-  };
+{
+    Raw,
+    Normal,
+    Parallax
+};
 
 class ImageProcessor : public QObject
 {
@@ -32,12 +33,14 @@ public:
     void calculate_distance();
     void calculate_heightmap();
     Mat modify_distance();
+    Mat modify_parallax();
     void set_name(QString name);
     QString get_name();
     bool busy;
     QString m_fileName;
     QImage get_texture();
     QImage get_normal();
+    QImage get_parallax();
     void update();
     void calculate();
 
@@ -65,11 +68,23 @@ public slots:
     void set_normal_invert_z(bool invert);
     bool get_tileable();
     void set_tileable(bool t);
+
+    void set_parallax_invert(bool invert);
+    bool get_parallax_invert();
+    void set_parallax_focus(int focus);
+    int get_parallax_focus();
+    void set_parallax_soft(int soft);
+    int get_parallax_soft();
+    void set_parallax_thresh(int thresh);
+    int get_parallax_thresh();
+
+
     int fill_neighbours(Mat src, Mat dst);
     int set_neighbour(Mat src, Mat dst, int x, int y);
     int set_neighbour_image(QString fileName, QImage image, int x, int y);
     int empty_neighbour(int x, int y);
     void reset_neighbours();
+    void set_current_heightmap();
     QImage get_neighbour(int x, int y);
 
 private:
@@ -85,16 +100,23 @@ private:
     Mat m_distance_normal;
     Mat new_distance;
     Mat m_heightmap;
+    Mat m_parallax;
     Mat current_heightmap;
     Mat neighbours;
     Mat m_aux;
+
     Mat current_parallax;
+    int parallax_min;
+    int parallax_max;
+    int parallax_focus;
+    int parallax_soft;
+
     int normal_depth;
     int normal_bisel_depth;
     int normal_bisel_distance;
     int normal_blur_radius;
     int normal_bisel_blur_radius;
-    bool normal_bisel_soft, tileable;
+    bool normal_bisel_soft, tileable, parallax_invert;
     int normalInvertX, normalInvertY, normalInvertZ;
     char gradient_end;
 };

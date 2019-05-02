@@ -3,5 +3,6 @@
         <file>images/laigter-icon.png</file>
         <file>images/laigter-texture.png</file>
         <file>images/sample.png</file>
+        <file>images/sample_p.png</file>
     </qresource>
 </RCC>

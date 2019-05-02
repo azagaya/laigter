@@ -9,11 +9,17 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     normal_depth = 100;
     normal_blur_radius = 5;
     normal_bisel_blur_radius = 10;
-    gradient_end = 255;
+    gradient_end = 1;
     normal_bisel_soft = true;
     normalInvertX = normalInvertY = normalInvertZ = 1;
     tileable = false;
     busy = false;
+
+    parallax_max = 140;
+    parallax_min = 150;
+    parallax_invert = false;
+    parallax_focus = 3;
+    parallax_soft = 10;
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image){
@@ -55,30 +61,37 @@ int ImageProcessor::loadImage(QString fileName, QImage image){
     m_img.copyTo(m_heightmap);
 
 
+    set_current_heightmap();
 
-    current_heightmap = tileable ? neighbours : m_heightmap;
 
     fill_neighbours(m_heightmap,neighbours);
 
     return 0;
 }
 
-void ImageProcessor::calculate(){
-//    calculate_heightmap();
-
-//    calculate_distance();
-//    new_distance = modify_distance();
-
-//    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
-//    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-//                                         ,normal_bisel_blur_radius);
-//    generate_normal_map();
+void ImageProcessor::set_current_heightmap(){
 
     current_heightmap = tileable ? neighbours : m_heightmap;
+    cvtColor(m_heightmap,m_parallax, CV_RGBA2GRAY);
+}
+
+void ImageProcessor::calculate(){
+    //    calculate_heightmap();
+
+    //    calculate_distance();
+    //    new_distance = modify_distance();
+
+    //    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
+    //    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+    //                                         ,normal_bisel_blur_radius);
+    //    generate_normal_map();
+
+    set_current_heightmap();
 
     calculate_distance();
     m_distance.copyTo(new_distance);
     new_distance = modify_distance();
+
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
 
@@ -87,6 +100,12 @@ void ImageProcessor::calculate(){
     m_gray.copyTo(gray);
     m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
+
+    current_parallax = modify_parallax();
+
+    QImage pa = QImage(static_cast<unsigned char *>(current_parallax.data),
+                       current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
+    processed(pa,ProcessedImage::Parallax);
 }
 
 void ImageProcessor::calculate_heightmap(){
@@ -159,7 +178,7 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, i
             cvtColor(n,n,COLOR_GRAY2RGBA);
         }
     }
-
+    //cvtColor(n,n,COLOR_RGBA2BGRA);
 
     cv::resize(n,n,Size(m_img.size()));
 
@@ -171,7 +190,7 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, i
 QImage ImageProcessor::get_neighbour(int x, int y){
     Rect rect(y*m_img.cols,x*m_img.rows,m_img.cols,m_img.rows);
     neighbours(rect).copyTo(m_aux);
-    cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
+    //cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
     QImage p =QImage(static_cast<unsigned char *>(m_aux.data),
                      m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
     return p;
@@ -211,7 +230,7 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height){
             cvtColor(m_heightmap,m_heightmap,COLOR_GRAY2RGBA);
         }
     }
-
+    //cvtColor(m_heightmap,m_heightmap,COLOR_RGBA2BGRA);
 
     cv::resize(m_heightmap,m_heightmap,Size(m_img.size()));
     cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
@@ -265,6 +284,7 @@ void ImageProcessor::calculate_distance(){
             pixel ++;
         }
     }
+
     threshold(m_distance,m_distance,0,255,THRESH_BINARY);
 
     distanceTransform(m_distance,m_distance,CV_DIST_L2,5);
@@ -325,6 +345,7 @@ void ImageProcessor::set_normal_bisel_depth(int depth){
 void ImageProcessor::set_normal_bisel_distance(int distance){
     normal_bisel_distance = distance;
     new_distance = modify_distance();
+
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
     generate_normal_map();
@@ -332,7 +353,7 @@ void ImageProcessor::set_normal_bisel_distance(int distance){
 
 void ImageProcessor::set_tileable(bool t){
     tileable = t;
-    current_heightmap = t ? neighbours : m_heightmap;
+    set_current_heightmap();
 
     calculate_distance();
     m_distance.copyTo(new_distance);
@@ -367,8 +388,8 @@ Mat ImageProcessor::modify_distance(){
             else{
                 //m.at<float>(x,y) *= 255.0/normal_bisel_distance;
                 *pixel *= 255.0/normal_bisel_distance;
-//                if (m.at<float>(x,y) > 1)
-//                    m.at<float>(x,y) = 1;
+                //                if (m.at<float>(x,y) > 1)
+                //                    m.at<float>(x,y) = 1;
                 if (*pixel > 1)
                     *pixel = 1;
                 if (normal_bisel_soft){
@@ -381,6 +402,21 @@ Mat ImageProcessor::modify_distance(){
             pixel ++;
         }
     }
+
+    return m;
+}
+
+Mat ImageProcessor::modify_parallax(){
+    Mat m;
+    m_parallax.copyTo(m);
+
+    int blurType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
+
+    GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
+    threshold(m,m,parallax_max,255,blurType);
+
+    GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+
     return m;
 }
 
@@ -411,6 +447,7 @@ void ImageProcessor::generate_normal_map(){
     QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
                      m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
     processed(p, ProcessedImage::Normal);
+
     busy = false;
     on_idle();
 }
@@ -418,7 +455,11 @@ void ImageProcessor::generate_normal_map(){
 void ImageProcessor::update(){
     QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
                      m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
+
     processed(p, ProcessedImage::Normal);
+    p = QImage(static_cast<unsigned char *>(current_parallax.data),
+               current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_RGB888);
+    processed(p,ProcessedImage::Parallax);
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
@@ -439,7 +480,7 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     {
         for(int y = 0; y < aux.rows; ++y)
         {
-            if (heightMap.at<Vec4b>(y,x)[3] == 0.0 || m_img.at<Vec4b>(y,x)[3] == 0.0){
+            if (heightMap.at<Vec4b>(y,x)[3] == 0.0 ){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }
@@ -468,6 +509,10 @@ void ImageProcessor::copy_settings(ImageProcessor *p){
     normalInvertX = p->get_normal_invert_x();
     normalInvertY = p->get_normal_invert_y();
     tileable = p->get_tileable();
+    parallax_max = p->get_parallax_thresh();
+    parallax_soft = p->get_parallax_soft();
+    parallax_focus = p->get_parallax_focus();
+    parallax_invert = p->get_parallax_invert();
 }
 
 int ImageProcessor::get_normal_depth(){
@@ -512,4 +557,48 @@ QImage ImageProcessor::get_normal(){
                   m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
 }
 
+QImage ImageProcessor::get_parallax(){
+    return QImage(static_cast<unsigned char *>(current_parallax.data),
+                  current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
+}
+
+bool ImageProcessor::get_parallax_invert(){
+    return parallax_invert;
+}
+
+void ImageProcessor::set_parallax_invert(bool invert){
+    parallax_invert = invert;
+    modify_parallax();
+    calculate();
+}
+
+void ImageProcessor::set_parallax_focus(int focus){
+    parallax_focus = focus;
+    modify_parallax();
+    calculate();
+}
+
+int ImageProcessor::get_parallax_focus(){
+    return parallax_focus;
+}
+
+void ImageProcessor::set_parallax_soft(int soft){
+    parallax_soft = soft;
+    modify_parallax();
+    calculate();
+}
+
+int ImageProcessor::get_parallax_soft(){
+    return parallax_soft;
+}
+
+int ImageProcessor::get_parallax_thresh(){
+    return parallax_max;
+}
+
+void ImageProcessor::set_parallax_thresh(int thresh){
+    parallax_max = thresh;
+    modify_parallax();
+    calculate();
+}
 

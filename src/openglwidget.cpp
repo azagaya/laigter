@@ -10,14 +10,17 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     m_zoom = 1.0;
     m_image = QImage(":/images/sample.png");
     normalMap = QImage(":/images/sample_n.png");
+    parallaxMap = QImage(":/images/sample_p.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     ambientColor = QVector3D(1.0,1.0,1.0);
     backgroundColor = QVector3D(0.2, 0.2, 0.3);
     ambientIntensity = 0.8;
-    diffIntensity = 0.4;
+    diffIntensity = 0.6;
     lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
+    m_parallax = false;
+    parallax_height = 0.03;
     tileX = false;
     tileY = false;
 
@@ -71,6 +74,7 @@ void OpenGlWidget::initializeGL()
 
 
     m_texture = new QOpenGLTexture(m_image);
+    m_parallaxTexture = new QOpenGLTexture(parallaxMap);
     m_normalTexture = new QOpenGLTexture(normalMap);
     laigterTexture = new QOpenGLTexture(laigter);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -141,6 +145,13 @@ void OpenGlWidget::paintGL()
     glActiveTexture(GL_TEXTURE1);
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap",1);
+
+    m_parallaxTexture->bind(2);
+    m_program.setUniformValue("parallaxMap",2);
+    m_program.setUniformValue("viewPos",QVector3D(0,0,1));
+    m_program.setUniformValue("parallax",m_parallax);
+    m_program.setUniformValue("height_scale",parallax_height);
+
     m_program.setUniformValue("lightPos",lightPosition);
     m_program.setUniformValue("lightColor",lightColor);
     m_program.setUniformValue("diffIntensity",diffIntensity);
@@ -190,6 +201,7 @@ void OpenGlWidget::setImage(QImage image){
     m_texture->setData(m_image);
     sx = (float)m_image.width()/width();
     sy = (float)m_image.height()/height();
+
 }
 
 void OpenGlWidget::setNormalMap(QImage image){
@@ -197,6 +209,13 @@ void OpenGlWidget::setNormalMap(QImage image){
     m_normalTexture->destroy();
     m_normalTexture->create();
     m_normalTexture->setData(normalMap);
+}
+
+void OpenGlWidget::setParallaxMap(QImage image){
+    parallaxMap = image;
+    m_parallaxTexture->destroy();
+    m_parallaxTexture->create();
+    m_parallaxTexture->setData(parallaxMap);
 }
 
 void OpenGlWidget::setZoom(float zoom){
@@ -211,6 +230,11 @@ void OpenGlWidget::setTileX(bool x){
 
 void OpenGlWidget::setTileY(bool y){
     tileY = y;
+    update();
+}
+
+void OpenGlWidget::setParallax(bool p){
+    m_parallax = p;
     update();
 }
 
@@ -256,6 +280,11 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
 
 void OpenGlWidget::setLight(bool light){
     m_light = light;
+    update();
+}
+
+void OpenGlWidget::setParallaxHeight(int height){
+    parallax_height = height/1000.0;
     update();
 }
 
