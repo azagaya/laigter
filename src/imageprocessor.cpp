@@ -115,8 +115,9 @@ void ImageProcessor::calculate_heightmap(){
 }
 
 int ImageProcessor::fill_neighbours(Mat src, Mat dst){
-    if (src.cols != dst.cols/3 || src.rows != dst.rows/3)
+    if (src.cols != dst.cols/3 || src.rows != dst.rows/3){
         return -1;
+    }
     Rect rect;
     for (int i=0; i<3; i++){
         for (int j=0; j<3; j++){
@@ -129,6 +130,7 @@ int ImageProcessor::fill_neighbours(Mat src, Mat dst){
 }
 
 void ImageProcessor::reset_neighbours(){
+
     fill_neighbours(m_heightmap,neighbours);
 }
 
@@ -139,8 +141,9 @@ int ImageProcessor::empty_neighbour(int x, int y){
 }
 
 int ImageProcessor::set_neighbour(Mat src, Mat dst, int x, int y){
-    if (src.cols != dst.cols/3 || src.rows != dst.rows/3)
+    if (src.cols != dst.cols/3 || src.rows != dst.rows/3){
         return -1;
+    }
     Rect rect(y*src.cols,x*src.rows,src.cols,src.rows);
     src.copyTo(dst(rect));
     return 0;
@@ -179,8 +182,8 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, i
         }
     }
     //cvtColor(n,n,COLOR_RGBA2BGRA);
-
-    cv::resize(n,n,Size(m_img.size()));
+    cv::resize(n,n,m_img.size()*2);
+    cv::resize(n,n,m_img.size());
 
     set_neighbour(n,neighbours,x,y);
 
@@ -231,8 +234,9 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height){
         }
     }
     //cvtColor(m_heightmap,m_heightmap,COLOR_RGBA2BGRA);
+    cv::resize(m_heightmap,m_heightmap,m_img.size()*2);
+    cv::resize(m_heightmap,m_heightmap,m_img.size());
 
-    cv::resize(m_heightmap,m_heightmap,Size(m_img.size()));
     cvtColor(m_heightmap, m_gray,COLOR_RGBA2GRAY);
 
     set_neighbour(m_heightmap,neighbours,1,1);

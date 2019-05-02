@@ -27,7 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
     currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
 
-    image = QImage(":/images/sample.png");
+    bool success;
+    image = il.loadImage(":/images/sample.png",&success);
 
     QPixmap pixmap(100,100);
     pixmap.fill(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
