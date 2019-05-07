@@ -20,6 +20,14 @@ enum class ProcessedImage
     Parallax
 };
 
+enum class ParallaxType
+{
+    Binary,
+    HeightMap,
+    Quantization,
+    Intervals
+};
+
 class ImageProcessor : public QObject
 {
     Q_OBJECT
@@ -77,6 +85,14 @@ public slots:
     int get_parallax_soft();
     void set_parallax_thresh(int thresh);
     int get_parallax_thresh();
+    void set_parallax_min(int min);
+    int get_parallax_min();
+    void set_parallax_type(ParallaxType ptype);
+    int get_parallax_quantization();
+    void set_parallax_quantization(int q);
+    ParallaxType get_parallax_type();
+
+
 
 
     int fill_neighbours(Mat src, Mat dst);
@@ -110,6 +126,8 @@ private:
     int parallax_max;
     int parallax_focus;
     int parallax_soft;
+    int parallax_quantization;
+    ParallaxType parallax_type;
 
     int normal_depth;
     int normal_bisel_depth;

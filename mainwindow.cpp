@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(showContextMenuForListWidget(const QPoint &)));
     connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
     connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
-    connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setParallax(bool)));
+    //connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setParallax(bool)));
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
 
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -334,6 +334,8 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->parallaxSoftSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_soft(int)));
     connect(ui->parallaxThreshSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_thresh(int)));
     connect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
+    connect(ui->parallaxMinHeight,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_min(int)));
+    connect(ui->parallaxQuantizationSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_quantization(int)));
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
@@ -352,6 +354,8 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->parallaxSoftSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_soft(int)));
     disconnect(ui->parallaxThreshSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_thresh(int)));
     disconnect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
+    disconnect(ui->parallaxMinHeight,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_min(int)));
+    disconnect(ui->parallaxQuantizationSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_quantization(int)));
 }
 
 void MainWindow::on_listWidget_itemChanged(QListWidgetItem *item)
@@ -407,8 +411,10 @@ void MainWindow::on_listWidget_itemSelectionChanged()
         on_radioButtonRaw_toggled(true);
     } else if (ui->radioButtonNormal->isChecked()){
         on_radioButtonNormal_toggled(true);
-    } else {
+    } else if (ui->radioButtonPreview){
         on_radioButtonPreview_toggled(true);
+    } else {
+        on_radioButtonParallax_toggled(true);
     }
 
     update_scene(processor->get_normal(),ProcessedImage::Normal);
@@ -457,3 +463,65 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
+
+void MainWindow::on_checkBoxParallax_toggled(bool checked)
+{
+    ui->openGLPreviewWidget->setParallax(checked && ui->radioButtonPreview->isChecked());
+}
+
+void MainWindow::on_sliderParallax_sliderReleased()
+{
+
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(int index)
+{
+
+    ParallaxType ptype = static_cast<ParallaxType>(index);
+    processor->set_parallax_type(ptype);
+
+    switch (ptype) {
+    case ParallaxType::Binary:
+        ui->parallaxMinHeight->setVisible(true);
+        ui->parallaxSoftSlider->setVisible(true);
+        ui->parallaxFocusSlider->setVisible(true);
+        ui->parallaxThreshSlider->setVisible(true);
+        ui->checkBoxParallaxInvert->setVisible(true);
+        ui->parallaxQuantizationSlider->setVisible(false);
+
+        ui->labelThreshMin->setVisible(true);
+        ui->labelThreshSoft->setVisible(true);
+        ui->labelThreshFocus->setVisible(true);
+        ui->labelThreshParallax->setVisible(true);
+        ui->labelQuantization->setVisible(false);
+        break;
+    case ParallaxType::HeightMap:
+        ui->parallaxMinHeight->setVisible(false);
+        ui->parallaxSoftSlider->setVisible(true);
+        ui->parallaxFocusSlider->setVisible(false);
+        ui->parallaxThreshSlider->setVisible(false);
+        ui->checkBoxParallaxInvert->setVisible(true);
+        ui->parallaxQuantizationSlider->setVisible(false);
+
+        ui->labelThreshMin->setVisible(false);
+        ui->labelThreshSoft->setVisible(true);
+        ui->labelThreshFocus->setVisible(false);
+        ui->labelThreshParallax->setVisible(false);
+        ui->labelQuantization->setVisible(false);
+        break;
+    case ParallaxType::Quantization:
+        ui->parallaxMinHeight->setVisible(false);
+        ui->parallaxSoftSlider->setVisible(true);
+        ui->parallaxFocusSlider->setVisible(true);
+        ui->parallaxThreshSlider->setVisible(false);
+        ui->checkBoxParallaxInvert->setVisible(true);
+        ui->parallaxQuantizationSlider->setVisible(true);
+
+        ui->labelThreshMin->setVisible(false);
+        ui->labelThreshSoft->setVisible(true);
+        ui->labelThreshFocus->setVisible(true);
+        ui->labelThreshParallax->setVisible(false);
+        ui->labelQuantization->setVisible(true);
+    }
+
+}

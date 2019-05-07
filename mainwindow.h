@@ -81,6 +81,12 @@ private slots:
 
     void on_radioButtonParallax_toggled(bool checked);
 
+    void on_checkBoxParallax_toggled(bool checked);
+
+    void on_sliderParallax_sliderReleased();
+
+    void on_comboBox_currentIndexChanged(int index);
+
 private:
     QImage image, normal, parallax;
     Ui::MainWindow *ui;

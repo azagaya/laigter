@@ -16,10 +16,13 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     busy = false;
 
     parallax_max = 140;
-    parallax_min = 150;
+    parallax_min = 0;
     parallax_invert = false;
     parallax_focus = 3;
     parallax_soft = 10;
+    parallax_quantization = 1;
+    parallax_type = ParallaxType::Binary;
+
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image){
@@ -102,6 +105,16 @@ void ImageProcessor::calculate(){
     generate_normal_map();
 
     current_parallax = modify_parallax();
+
+    switch (current_parallax.channels()) {
+    case 3:
+        cvtColor(current_parallax,current_parallax,COLOR_RGB2GRAY);
+        break;
+    case 4:
+        cvtColor(current_parallax,current_parallax,COLOR_RGBA2GRAY);
+        break;
+
+    }
 
     QImage pa = QImage(static_cast<unsigned char *>(current_parallax.data),
                        current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
@@ -412,14 +425,39 @@ Mat ImageProcessor::modify_distance(){
 
 Mat ImageProcessor::modify_parallax(){
     Mat m;
-    m_parallax.copyTo(m);
 
-    int blurType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
 
-    GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
-    threshold(m,m,parallax_max,255,blurType);
+    int threshType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
+    double min, max;
 
-    GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+    switch (parallax_type){
+    case ParallaxType::Binary:
+        m_parallax.copyTo(m);
+        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
+        threshold(m,m,parallax_max,255,threshType);
+        m -= parallax_min;
+        GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+        break;
+    case ParallaxType::HeightMap:
+        m_heightmap.copyTo(m);
+        if (threshType == THRESH_BINARY_INV) m = 255-m;
+        GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+        break;
+    case ParallaxType::Intervals:
+        break;
+    case ParallaxType::Quantization:
+        m_heightmap.copyTo(m);
+        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
+        m /= (parallax_quantization/255.0);
+        m *= (255.0/parallax_quantization);
+        if (threshType == THRESH_BINARY_INV) m = 255-m;
+        GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+
+        minMaxLoc(m, &min, &max);
+        m = -255/(max-min)*min+255/(max-min)*m;
+        break;
+    }
+
 
     return m;
 }
@@ -606,3 +644,32 @@ void ImageProcessor::set_parallax_thresh(int thresh){
     calculate();
 }
 
+int ImageProcessor::get_parallax_min(){
+    return parallax_min;
+}
+
+void ImageProcessor::set_parallax_min(int min){
+    parallax_min = min;
+    modify_parallax();
+    calculate();
+}
+
+ParallaxType ImageProcessor::get_parallax_type(){
+    return  parallax_type;
+}
+
+void ImageProcessor::set_parallax_type(ParallaxType ptype){
+    parallax_type = ptype;
+    modify_parallax();
+    calculate();
+}
+
+int ImageProcessor::get_parallax_quantization(){
+    return  parallax_quantization;
+}
+
+void ImageProcessor::set_parallax_quantization(int q){
+    parallax_quantization = q;
+    modify_parallax();
+    calculate();
+}
