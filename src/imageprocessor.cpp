@@ -551,10 +551,14 @@ void ImageProcessor::copy_settings(ImageProcessor *p){
     normalInvertX = p->get_normal_invert_x();
     normalInvertY = p->get_normal_invert_y();
     tileable = p->get_tileable();
+
     parallax_max = p->get_parallax_thresh();
     parallax_soft = p->get_parallax_soft();
     parallax_focus = p->get_parallax_focus();
     parallax_invert = p->get_parallax_invert();
+    parallax_min = p->get_parallax_min();
+    parallax_type = p->get_parallax_type();
+    parallax_quantization = p->get_parallax_quantization();
 }
 
 int ImageProcessor::get_normal_depth(){

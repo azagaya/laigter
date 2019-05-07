@@ -179,6 +179,8 @@ void MainWindow::on_actionOpen_triggered()
                 on_radioButtonRaw_toggled(true);
             } else if (ui->radioButtonNormal->isChecked()){
                 on_radioButtonNormal_toggled(true);
+            } else if (ui->radioButtonParallax->isChecked()) {
+                on_radioButtonParallax_toggled(true);
             } else {
                 on_radioButtonPreview_toggled(true);
             }
@@ -401,6 +403,9 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
     ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
     ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
+    ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
+    ui->parallaxMinHeight->setValue(processor->get_parallax_min());
+    ui->parallaxQuantizationSlider->setValue(processor->get_parallax_quantization());
 
     bool succes;
     image = il.loadImage(processor->get_name(), &succes);
@@ -411,7 +416,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
         on_radioButtonRaw_toggled(true);
     } else if (ui->radioButtonNormal->isChecked()){
         on_radioButtonNormal_toggled(true);
-    } else if (ui->radioButtonPreview){
+    } else if (ui->radioButtonPreview->isChecked()){
         on_radioButtonPreview_toggled(true);
     } else {
         on_radioButtonParallax_toggled(true);
