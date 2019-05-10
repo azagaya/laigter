@@ -440,21 +440,27 @@ Mat ImageProcessor::modify_parallax(){
         break;
     case ParallaxType::HeightMap:
         m_heightmap.copyTo(m);
-        if (threshType == THRESH_BINARY_INV) m = 255-m;
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
+
+        if (threshType == THRESH_BINARY_INV){
+            subtract(Scalar::all(255),m,m) ;
+        }
         break;
     case ParallaxType::Intervals:
         break;
     case ParallaxType::Quantization:
         m_heightmap.copyTo(m);
+
         GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
         m /= (parallax_quantization/255.0);
         m *= (255.0/parallax_quantization);
-        if (threshType == THRESH_BINARY_INV) m = 255-m;
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
 
-        minMaxLoc(m, &min, &max);
-        m = -255/(max-min)*min+255/(max-min)*m;
+        m = -255/(parallax_max-parallax_min+1)*parallax_min+255/(parallax_max-parallax_min+1)*m;
+
+        if (threshType == THRESH_BINARY_INV){
+            subtract(Scalar::all(255),m,m) ;
+        }
         break;
     }
 

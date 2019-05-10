@@ -61,6 +61,9 @@ MainWindow::MainWindow(QWidget *parent) :
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
     ui->normalDockWidget->raise();
 
+    ui->parallaxQuantizationSlider->setVisible(false);
+    ui->labelQuantization->setVisible(false);
+
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos){
@@ -515,17 +518,17 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->labelQuantization->setVisible(false);
         break;
     case ParallaxType::Quantization:
-        ui->parallaxMinHeight->setVisible(false);
+        ui->parallaxMinHeight->setVisible(true);
         ui->parallaxSoftSlider->setVisible(true);
         ui->parallaxFocusSlider->setVisible(true);
-        ui->parallaxThreshSlider->setVisible(false);
+        ui->parallaxThreshSlider->setVisible(true);
         ui->checkBoxParallaxInvert->setVisible(true);
         ui->parallaxQuantizationSlider->setVisible(true);
 
-        ui->labelThreshMin->setVisible(false);
+        ui->labelThreshMin->setVisible(true);
         ui->labelThreshSoft->setVisible(true);
         ui->labelThreshFocus->setVisible(true);
-        ui->labelThreshParallax->setVisible(false);
+        ui->labelThreshParallax->setVisible(true);
         ui->labelQuantization->setVisible(true);
     }
 
