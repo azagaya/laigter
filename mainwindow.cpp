@@ -64,6 +64,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->parallaxQuantizationSlider->setVisible(false);
     ui->labelQuantization->setVisible(false);
 
+    ui->sliderParallaxBright->setVisible(false);
+    ui->sliderParallaxContrast->setVisible(false);
+
+    ui->labelBrightness->setVisible(false);
+    ui->labelContrast->setVisible(false);
+
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos){
@@ -341,6 +347,9 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
     connect(ui->parallaxMinHeight,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_min(int)));
     connect(ui->parallaxQuantizationSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_quantization(int)));
+    connect(ui->sliderParallaxErodeDilate,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_erode_dilate(int)));
+    connect(ui->sliderParallaxBright,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_brightness(int)));
+    connect(ui->sliderParallaxContrast,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_contrast(int)));
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
@@ -361,6 +370,10 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->parallaxFocusSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_focus(int)));
     disconnect(ui->parallaxMinHeight,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_min(int)));
     disconnect(ui->parallaxQuantizationSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_quantization(int)));
+    disconnect(ui->sliderParallaxErodeDilate,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_erode_dilate(int)));
+    disconnect(ui->sliderParallaxBright,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_brightness(int)));
+    disconnect(ui->sliderParallaxContrast,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_contrast(int)));
+
 }
 
 void MainWindow::on_listWidget_itemChanged(QListWidgetItem *item)
@@ -409,6 +422,9 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
     ui->parallaxMinHeight->setValue(processor->get_parallax_min());
     ui->parallaxQuantizationSlider->setValue(processor->get_parallax_quantization());
+    ui->sliderParallaxBright->setValue(processor->get_parallax_brightness());
+    ui->sliderParallaxContrast->setValue(static_cast<int>(processor->get_parallax_contrast()*1000));
+    ui->sliderParallaxErodeDilate->setValue(processor->get_parallax_erode_dilate());
 
     bool succes;
     image = il.loadImage(processor->get_name(), &succes);
@@ -440,12 +456,23 @@ void MainWindow::on_pushButton_clicked()
     QString suffix;
     QString name;
     QFileInfo info;
-    foreach (ImageProcessor *p, processorList){
-        n = p->get_normal();
-        info = QFileInfo(p->get_name());
-        suffix = info.completeSuffix();
-        name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
-        n.save(name);
+    if (ui->checkBoxExportNormal->isChecked()){
+        foreach (ImageProcessor *p, processorList){
+            n = p->get_normal();
+            info = QFileInfo(p->get_name());
+            suffix = info.completeSuffix();
+            name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
+            n.save(name);
+        }
+    }
+    if (ui->checkBoxExportNormal->isChecked()){
+        foreach (ImageProcessor *p, processorList){
+            n = p->get_parallax();
+            info = QFileInfo(p->get_name());
+            suffix = info.completeSuffix();
+            name = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
+            n.save(name);
+        }
     }
     QMessageBox msgBox;
     msgBox.setText(tr("Se exportaron todos los mapas normales."));
@@ -496,7 +523,13 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->parallaxThreshSlider->setVisible(true);
         ui->checkBoxParallaxInvert->setVisible(true);
         ui->parallaxQuantizationSlider->setVisible(false);
+        ui->sliderParallaxErodeDilate->setVisible(true);
+        ui->sliderParallaxBright->setVisible(false);
+        ui->sliderParallaxContrast->setVisible(false);
 
+        ui->labelErodeDilate->setVisible(true);
+        ui->labelBrightness->setVisible(false);
+        ui->labelContrast->setVisible(false);
         ui->labelThreshMin->setVisible(true);
         ui->labelThreshSoft->setVisible(true);
         ui->labelThreshFocus->setVisible(true);
@@ -511,6 +544,14 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->checkBoxParallaxInvert->setVisible(true);
         ui->parallaxQuantizationSlider->setVisible(false);
 
+        ui->sliderParallaxErodeDilate->setVisible(false);
+        ui->sliderParallaxBright->setVisible(true);
+        ui->sliderParallaxContrast->setVisible(true);
+
+        ui->labelErodeDilate->setVisible(false);
+        ui->labelBrightness->setVisible(true);
+        ui->labelContrast->setVisible(true);
+
         ui->labelThreshMin->setVisible(false);
         ui->labelThreshSoft->setVisible(true);
         ui->labelThreshFocus->setVisible(false);
@@ -524,6 +565,14 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->parallaxThreshSlider->setVisible(true);
         ui->checkBoxParallaxInvert->setVisible(true);
         ui->parallaxQuantizationSlider->setVisible(true);
+
+        ui->sliderParallaxErodeDilate->setVisible(false);
+        ui->sliderParallaxBright->setVisible(true);
+        ui->sliderParallaxContrast->setVisible(true);
+
+        ui->labelErodeDilate->setVisible(false);
+        ui->labelBrightness->setVisible(true);
+        ui->labelContrast->setVisible(true);
 
         ui->labelThreshMin->setVisible(true);
         ui->labelThreshSoft->setVisible(true);

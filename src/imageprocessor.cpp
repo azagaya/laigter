@@ -22,6 +22,9 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     parallax_soft = 10;
     parallax_quantization = 1;
     parallax_type = ParallaxType::Binary;
+    parallax_brightness = 0;
+    parallax_contrast = 1;
+    parallax_erode_dilate = 1;
 
 }
 
@@ -73,21 +76,11 @@ int ImageProcessor::loadImage(QString fileName, QImage image){
 }
 
 void ImageProcessor::set_current_heightmap(){
-
     current_heightmap = tileable ? neighbours : m_heightmap;
-    cvtColor(m_heightmap,m_parallax, CV_RGBA2GRAY);
+    cvtColor(current_heightmap,m_parallax, CV_RGBA2GRAY);
 }
 
 void ImageProcessor::calculate(){
-    //    calculate_heightmap();
-
-    //    calculate_distance();
-    //    new_distance = modify_distance();
-
-    //    m_emboss_normal =(calculate_normal(m_gray,normal_depth,normal_blur_radius));
-    //    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-    //                                         ,normal_bisel_blur_radius);
-    //    generate_normal_map();
 
     set_current_heightmap();
 
@@ -104,7 +97,14 @@ void ImageProcessor::calculate(){
     m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
 
-    current_parallax = modify_parallax();
+    Mat p = modify_parallax();
+
+    Rect rect(m_img.rows,m_img.cols,m_img.rows,m_img.cols);
+    if(tileable && p.rows == m_img.rows*3){
+        p(rect).copyTo(current_parallax);
+    }else{
+        p.copyTo(current_parallax);
+    }
 
     switch (current_parallax.channels()) {
     case 3:
@@ -384,6 +384,7 @@ void ImageProcessor::set_tileable(bool t){
     m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
 
+    calculate();
 }
 
 bool ImageProcessor::get_tileable(){
@@ -426,9 +427,8 @@ Mat ImageProcessor::modify_distance(){
 Mat ImageProcessor::modify_parallax(){
     Mat m;
 
-
-    int threshType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
-    double min, max;
+    int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
+    Mat shape = getStructuringElement(MORPH_RECT,Size(abs(parallax_erode_dilate)*2+1,abs(parallax_erode_dilate)*2+1));
 
     switch (parallax_type){
     case ParallaxType::Binary:
@@ -436,20 +436,27 @@ Mat ImageProcessor::modify_parallax(){
         GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
         threshold(m,m,parallax_max,255,threshType);
         m -= parallax_min;
+        if (parallax_erode_dilate > 0){
+            dilate(m,m,shape);
+        } else {
+            erode(m,m,shape);
+        }
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
         break;
     case ParallaxType::HeightMap:
-        m_heightmap.copyTo(m);
+        current_heightmap.copyTo(m);
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
 
         if (threshType == THRESH_BINARY_INV){
             subtract(Scalar::all(255),m,m) ;
         }
+        multiply(Scalar::all(parallax_contrast),m,m);
+        add(Scalar::all(parallax_brightness),m,m);
         break;
     case ParallaxType::Intervals:
         break;
     case ParallaxType::Quantization:
-        m_heightmap.copyTo(m);
+        current_heightmap.copyTo(m);
 
         GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
         m /= (parallax_quantization/255.0);
@@ -463,8 +470,6 @@ Mat ImageProcessor::modify_parallax(){
         }
         break;
     }
-
-
     return m;
 }
 
@@ -565,6 +570,9 @@ void ImageProcessor::copy_settings(ImageProcessor *p){
     parallax_min = p->get_parallax_min();
     parallax_type = p->get_parallax_type();
     parallax_quantization = p->get_parallax_quantization();
+    parallax_erode_dilate = p->get_parallax_erode_dilate();
+    parallax_contrast = p->get_parallax_contrast();
+    parallax_brightness = p->get_parallax_brightness();
 }
 
 int ImageProcessor::get_normal_depth(){
@@ -682,4 +690,34 @@ void ImageProcessor::set_parallax_quantization(int q){
     parallax_quantization = q;
     modify_parallax();
     calculate();
+}
+
+void ImageProcessor::set_parallax_erode_dilate(int value){
+    parallax_erode_dilate = value;
+    modify_parallax();
+    calculate();
+}
+
+int ImageProcessor::get_parallax_erode_dilate(){
+    return parallax_erode_dilate;
+}
+
+void ImageProcessor::set_parallax_contrast(int contrast){
+    parallax_contrast = contrast / 1000.0;
+    modify_parallax();
+    calculate();
+}
+
+double ImageProcessor::get_parallax_contrast(){
+    return  parallax_contrast;
+}
+
+void ImageProcessor::set_parallax_brightness(int brightness){
+    parallax_brightness = brightness;
+    modify_parallax();
+    calculate();
+}
+
+int ImageProcessor::get_parallax_brightness(){
+    return parallax_brightness;
 }

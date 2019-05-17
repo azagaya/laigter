@@ -90,6 +90,12 @@ public slots:
     void set_parallax_type(ParallaxType ptype);
     int get_parallax_quantization();
     void set_parallax_quantization(int q);
+    int get_parallax_erode_dilate();
+    void set_parallax_erode_dilate(int value);
+    int get_parallax_brightness();
+    void set_parallax_brightness(int brightness);
+    double get_parallax_contrast();
+    void set_parallax_contrast(int contrast);
     ParallaxType get_parallax_type();
 
 
@@ -127,6 +133,9 @@ private:
     int parallax_focus;
     int parallax_soft;
     int parallax_quantization;
+    int parallax_brightness;
+    double parallax_contrast;
+    int parallax_erode_dilate;
     ParallaxType parallax_type;
 
     int normal_depth;
