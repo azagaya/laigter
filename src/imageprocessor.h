@@ -51,6 +51,7 @@ public:
     QImage get_parallax();
     void update();
     void calculate();
+    void calculate_parallax();
 
 signals:
     void processed(QImage image, ProcessedImage type);
@@ -146,6 +147,7 @@ private:
     bool normal_bisel_soft, tileable, parallax_invert;
     int normalInvertX, normalInvertY, normalInvertZ;
     char gradient_end;
+
 };
 
 #endif // IMAGEPROCESSOR_H

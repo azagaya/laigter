@@ -85,18 +85,18 @@ void ImageProcessor::calculate(){
     set_current_heightmap();
 
     calculate_distance();
-    m_distance.copyTo(new_distance);
-    new_distance = modify_distance();
-    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                         ,normal_bisel_blur_radius);
+
 
     calculate_heightmap();
-    Mat gray;
-    m_gray.copyTo(gray);
-    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
 
     generate_normal_map();
 
+    calculate_parallax();
+
+
+}
+
+void ImageProcessor::calculate_parallax(){
     Mat p = modify_parallax();
 
     Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
@@ -120,11 +120,15 @@ void ImageProcessor::calculate(){
                        current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
     processed(pa,ProcessedImage::Parallax);
 }
-
 void ImageProcessor::calculate_heightmap(){
     cvtColor(current_heightmap, m_gray,COLOR_RGBA2GRAY);
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
+
+
+    Mat gray;
+    m_gray.copyTo(gray);
+    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
 }
 
 int ImageProcessor::fill_neighbours(Mat src, Mat dst){
@@ -306,6 +310,11 @@ void ImageProcessor::calculate_distance(){
 
     distanceTransform(m_distance,m_distance,CV_DIST_L2,5);
     m_distance.convertTo(m_distance,CV_32FC1,1.0/255);
+
+    m_distance.copyTo(new_distance);
+    new_distance = modify_distance();
+    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
+                                         ,normal_bisel_blur_radius);
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert){
@@ -615,13 +624,13 @@ bool ImageProcessor::get_parallax_invert(){
 void ImageProcessor::set_parallax_invert(bool invert){
     parallax_invert = invert;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 void ImageProcessor::set_parallax_focus(int focus){
     parallax_focus = focus;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_focus(){
@@ -631,7 +640,7 @@ int ImageProcessor::get_parallax_focus(){
 void ImageProcessor::set_parallax_soft(int soft){
     parallax_soft = soft;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_soft(){
@@ -645,7 +654,7 @@ int ImageProcessor::get_parallax_thresh(){
 void ImageProcessor::set_parallax_thresh(int thresh){
     parallax_max = thresh;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_min(){
@@ -655,7 +664,7 @@ int ImageProcessor::get_parallax_min(){
 void ImageProcessor::set_parallax_min(int min){
     parallax_min = min;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 ParallaxType ImageProcessor::get_parallax_type(){
@@ -665,7 +674,7 @@ ParallaxType ImageProcessor::get_parallax_type(){
 void ImageProcessor::set_parallax_type(ParallaxType ptype){
     parallax_type = ptype;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_quantization(){
@@ -675,13 +684,13 @@ int ImageProcessor::get_parallax_quantization(){
 void ImageProcessor::set_parallax_quantization(int q){
     parallax_quantization = q;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 void ImageProcessor::set_parallax_erode_dilate(int value){
     parallax_erode_dilate = value;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_erode_dilate(){
@@ -691,7 +700,7 @@ int ImageProcessor::get_parallax_erode_dilate(){
 void ImageProcessor::set_parallax_contrast(int contrast){
     parallax_contrast = contrast / 1000.0;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 double ImageProcessor::get_parallax_contrast(){
@@ -701,7 +710,7 @@ double ImageProcessor::get_parallax_contrast(){
 void ImageProcessor::set_parallax_brightness(int brightness){
     parallax_brightness = brightness;
     modify_parallax();
-    calculate();
+    calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_brightness(){
