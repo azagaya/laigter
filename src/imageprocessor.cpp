@@ -87,7 +87,6 @@ void ImageProcessor::calculate(){
     calculate_distance();
     m_distance.copyTo(new_distance);
     new_distance = modify_distance();
-
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
 
@@ -95,11 +94,12 @@ void ImageProcessor::calculate(){
     Mat gray;
     m_gray.copyTo(gray);
     m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
+
     generate_normal_map();
 
     Mat p = modify_parallax();
 
-    Rect rect(m_img.rows,m_img.cols,m_img.rows,m_img.cols);
+    Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
     if(tileable && p.rows == m_img.rows*3){
         p(rect).copyTo(current_parallax);
     }else{
@@ -361,7 +361,7 @@ void ImageProcessor::set_normal_bisel_depth(int depth){
 
 void ImageProcessor::set_normal_bisel_distance(int distance){
     normal_bisel_distance = distance;
-    new_distance = modify_distance();
+    modify_distance().copyTo(new_distance);
 
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
@@ -370,20 +370,6 @@ void ImageProcessor::set_normal_bisel_distance(int distance){
 
 void ImageProcessor::set_tileable(bool t){
     tileable = t;
-    set_current_heightmap();
-
-    calculate_distance();
-    m_distance.copyTo(new_distance);
-    new_distance = modify_distance();
-    m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
-                                         ,normal_bisel_blur_radius);
-
-    calculate_heightmap();
-    Mat gray;
-    m_gray.copyTo(gray);
-    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
-    generate_normal_map();
-
     calculate();
 }
 
@@ -394,6 +380,7 @@ bool ImageProcessor::get_tileable(){
 Mat ImageProcessor::modify_distance(){
     Mat m;
     m_distance.copyTo(m);
+//    multiply(m,(255.0/normal_bisel_distance),m);
     for(int x = 0; x < m.rows; ++x)
     {
         float *pixel = m.ptr<float>(x);
@@ -420,7 +407,6 @@ Mat ImageProcessor::modify_distance(){
             pixel ++;
         }
     }
-
     return m;
 }
 
