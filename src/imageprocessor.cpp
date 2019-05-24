@@ -428,7 +428,7 @@ Mat ImageProcessor::modify_parallax(){
     switch (parallax_type){
     case ParallaxType::Binary:
         m_parallax.copyTo(m);
-        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
+        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0);
         threshold(m,m,parallax_max,255,threshType);
         m -= parallax_min;
         if (parallax_erode_dilate > 0){
@@ -453,7 +453,7 @@ Mat ImageProcessor::modify_parallax(){
     case ParallaxType::Quantization:
         current_heightmap.copyTo(m);
 
-        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0,BORDER_REPLICATE);
+        GaussianBlur(m,m,Size(parallax_focus*2+1,parallax_focus*2+1),0,0);
         m /= (parallax_quantization/255.0);
         m *= (255.0/parallax_quantization);
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
