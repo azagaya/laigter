@@ -87,6 +87,8 @@ private slots:
 
     void on_comboBox_currentIndexChanged(int index);
 
+    void on_pushButtonExportTo_clicked();
+
 private:
     QImage image, normal, parallax;
     Ui::MainWindow *ui;

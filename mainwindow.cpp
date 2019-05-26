@@ -456,6 +456,7 @@ void MainWindow::on_pushButton_clicked()
     QString suffix;
     QString name;
     QFileInfo info;
+    QString message = "";
     if (ui->checkBoxExportNormal->isChecked()){
         foreach (ImageProcessor *p, processorList){
             n = p->get_normal();
@@ -464,8 +465,9 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
             n.save(name);
         }
+        message += tr("Se exportaron todos los mapas normales. ");
     }
-    if (ui->checkBoxExportNormal->isChecked()){
+    if (ui->checkBoxExportParallax->isChecked()){
         foreach (ImageProcessor *p, processorList){
             n = p->get_parallax();
             info = QFileInfo(p->get_name());
@@ -473,10 +475,13 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
             n.save(name);
         }
+        message += tr("Se exportaron todos los mapas de paralaje. ");
     }
-    QMessageBox msgBox;
-    msgBox.setText(tr("Se exportaron todos los mapas normales."));
-    msgBox.exec();
+    if (message != ""){
+        QMessageBox msgBox;
+        msgBox.setText(message);
+        msgBox.exec();
+    }
 }
 
 void MainWindow::on_pushButtonBackgroundColor_clicked()
@@ -581,4 +586,47 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
         ui->labelQuantization->setVisible(true);
     }
 
+}
+
+void MainWindow::on_pushButtonExportTo_clicked()
+{
+    QImage n;
+    QString suffix;
+    QString name;
+    QFileInfo info;
+    QString message = "";
+    QString path = QFileDialog::getExistingDirectory();
+    if (path != nullptr){
+        if (ui->checkBoxExportNormal->isChecked()){
+            foreach (ImageProcessor *p, processorList){
+                n = p->get_normal();
+                info = QFileInfo(p->get_name());
+                suffix = info.completeSuffix();
+                name = path + "/" + info.baseName() + "_n." + suffix;
+                int i=1;
+                while (QFileInfo::exists(name))
+                    name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_n." + suffix;
+                n.save(name);
+            }
+            message += tr("Se exportaron todos los mapas normales. ");
+        }
+        if (ui->checkBoxExportParallax->isChecked()){
+            foreach (ImageProcessor *p, processorList){
+                n = p->get_parallax();
+                info = QFileInfo(p->get_name());
+                suffix = info.completeSuffix();
+                name = path + "/" + info.baseName() + "_p." + suffix;
+                int i=1;
+                while (QFileInfo::exists(name))
+                    name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_p." + suffix;
+                n.save(name);
+            }
+            message += tr("Se exportaron todos los mapas de paralaje. ");
+        }
+        if (message != ""){
+            QMessageBox msgBox;
+            msgBox.setText(message);
+            msgBox.exec();
+        }
+    }
 }
