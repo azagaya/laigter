@@ -27,8 +27,8 @@ void main()
 {
     vec3 viewDir = normalize(viewPos-FragPos);
 
-    float dx = 1.0/pixelsX/2.0;
-    float dy = 1.0/pixelsY/2.0;
+    float dx = 0.5/pixelsX/ratio.x;
+    float dy = 0.5/pixelsY/ratio.y;
 
     vec2 texCoords = texCoord;
     if (pixelated){
