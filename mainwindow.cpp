@@ -57,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
     //connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setParallax(bool)));
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
+    connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
     ui->normalDockWidget->raise();

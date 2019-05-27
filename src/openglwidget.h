@@ -36,6 +36,8 @@ public slots:
     void setTileX(bool x);
     void setTileY(bool y);
 
+    void setPixelated(bool pixelated);
+
     void setParallaxHeight(int height);
     void setParallax(bool p);
 signals:
@@ -56,10 +58,11 @@ private:
     QOpenGLShaderProgram lightProgram;
     QImage m_image, normalMap, parallaxMap, laigter;
     QVector3D lightPosition, lightColor, ambientColor, backgroundColor;
-    bool m_light, tileX, tileY, m_parallax;
+    bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;
     float m_zoom;
     float diffIntensity, ambientIntensity;
+    int pixelsX, pixelsY;
 
 };
 

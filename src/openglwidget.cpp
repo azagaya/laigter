@@ -23,7 +23,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     parallax_height = 0.03;
     tileX = false;
     tileY = false;
-
+    m_pixelated = false;
 
 }
 
@@ -74,6 +74,8 @@ void OpenGlWidget::initializeGL()
 
 
     m_texture = new QOpenGLTexture(m_image);
+    pixelsX = m_image.width();
+    pixelsY = m_image.height();
     m_parallaxTexture = new QOpenGLTexture(parallaxMap);
     m_normalTexture = new QOpenGLTexture(normalMap);
     laigterTexture = new QOpenGLTexture(laigter);
@@ -135,6 +137,9 @@ void OpenGlWidget::paintGL()
     m_texture->bind(0);
     m_program.setUniformValue("texture",0);
     m_program.setUniformValue("transform",transform);
+    m_program.setUniformValue("pixelsX",pixelsX);
+    m_program.setUniformValue("pixelsY",pixelsY);
+    m_program.setUniformValue("pixelated",m_pixelated);
     scaleX = tileX ? sx : 1;
     scaleY = tileY ? sy : 1;
     zoomX = tileX ? m_zoom : 1;
@@ -201,6 +206,8 @@ void OpenGlWidget::setImage(QImage image){
     m_texture->setData(m_image);
     sx = (float)m_image.width()/width();
     sy = (float)m_image.height()/height();
+    pixelsX = image.width();
+    pixelsY = image.height();
 
 }
 
@@ -318,5 +325,9 @@ void OpenGlWidget::setAmbientIntensity(float intensity){
     update();
 }
 
+void OpenGlWidget::setPixelated(bool pixelated){
+    m_pixelated = pixelated;
+    update();
+}
 
 

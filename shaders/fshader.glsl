@@ -17,7 +17,9 @@ uniform float ambientIntensity;
 uniform vec3 ambientColor;
 uniform vec2 ratio;
 uniform bool parallax;
+uniform bool pixelated;
 uniform float height_scale;
+uniform int pixelsX, pixelsY;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -25,7 +27,14 @@ void main()
 {
     vec3 viewDir = normalize(viewPos-FragPos);
 
+    float dx = 1.0/pixelsX/2.0;
+    float dy = 1.0/pixelsY/2.0;
+
     vec2 texCoords = texCoord;
+    if (pixelated){
+        texCoords = vec2(dx * round(texCoord.x / dx),
+                         dy * round(texCoord.y / dy));
+    }
     if (parallax){
         texCoords = ParallaxMapping(texCoords,  viewDir);
 
@@ -40,8 +49,9 @@ void main()
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;
     vec4 tex = texture2D(texture,texCoords);
+    vec4 l_color = tex*(vec4(diffuse,tex.w)+vec4(ambientColor,1.0)*ambientIntensity);
     if (light){
-        FragColor = tex*(vec4(diffuse,tex.w)+vec4(ambientColor,1.0)*ambientIntensity);
+        FragColor = l_color;
     }else{
         FragColor = tex;
     }
