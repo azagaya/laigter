@@ -31,14 +31,14 @@
     <message>
         <location filename="mainwindow.ui" line="110"/>
         <location filename="mainwindow.ui" line="178"/>
-        <location filename="mainwindow.ui" line="570"/>
+        <location filename="mainwindow.ui" line="577"/>
         <source>Altura:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="133"/>
         <location filename="mainwindow.ui" line="218"/>
-        <location filename="mainwindow.ui" line="791"/>
+        <location filename="mainwindow.ui" line="798"/>
         <source>Suavizado:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -111,7 +111,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="476"/>
-        <location filename="mainwindow.ui" line="682"/>
+        <location filename="mainwindow.ui" line="689"/>
         <source>Paralaje</source>
         <translation type="unfinished"></translation>
     </message>
@@ -127,24 +127,24 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="535"/>
-        <location filename="mainwindow.ui" line="720"/>
+        <location filename="mainwindow.ui" line="727"/>
         <source>Mapa de Paralaje</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="551"/>
+        <location filename="mainwindow.ui" line="558"/>
         <source>Luz Difusa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="395"/>
-        <location filename="mainwindow.ui" line="577"/>
+        <location filename="mainwindow.ui" line="584"/>
         <source>Color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="375"/>
-        <location filename="mainwindow.ui" line="600"/>
+        <location filename="mainwindow.ui" line="607"/>
         <source>Intensidad:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,179 +154,191 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="952"/>
+        <location filename="mainwindow.ui" line="959"/>
         <source>Abrir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="961"/>
+        <location filename="mainwindow.ui" line="968"/>
         <source>Ajustar Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="970"/>
+        <location filename="mainwindow.ui" line="977"/>
         <source>Zoom 100%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="979"/>
+        <location filename="mainwindow.ui" line="986"/>
         <source>Zoom +</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="988"/>
+        <location filename="mainwindow.ui" line="995"/>
         <source>Zoom -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="704"/>
-        <location filename="mainwindow.ui" line="997"/>
+        <location filename="mainwindow.ui" line="711"/>
+        <location filename="mainwindow.ui" line="1004"/>
         <source>Exportar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="634"/>
+        <location filename="mainwindow.ui" line="542"/>
+        <source>Pixelado</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="641"/>
         <source>Texturas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="644"/>
+        <location filename="mainwindow.ui" line="651"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="711"/>
+        <location filename="mainwindow.ui" line="718"/>
         <source>Exportar a...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="730"/>
+        <location filename="mainwindow.ui" line="737"/>
         <source>Tipo:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="738"/>
+        <location filename="mainwindow.ui" line="745"/>
         <source>Binario</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="743"/>
+        <location filename="mainwindow.ui" line="750"/>
         <source>Mapa de Altura</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="751"/>
+        <location filename="mainwindow.ui" line="758"/>
         <source>Controles:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="770"/>
+        <location filename="mainwindow.ui" line="777"/>
         <source>Cuantización:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="777"/>
+        <location filename="mainwindow.ui" line="784"/>
         <source>Umbral:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="784"/>
+        <location filename="mainwindow.ui" line="791"/>
         <source>Altura Mínima:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="811"/>
+        <location filename="mainwindow.ui" line="818"/>
         <source>Contraste:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="834"/>
+        <location filename="mainwindow.ui" line="841"/>
         <source>Invertir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="841"/>
+        <location filename="mainwindow.ui" line="848"/>
         <source>Enfoque:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="848"/>
+        <location filename="mainwindow.ui" line="855"/>
         <source>Brillo:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="923"/>
+        <location filename="mainwindow.ui" line="930"/>
         <source>Erosión / Dilatación:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1002"/>
+        <location filename="mainwindow.ui" line="1009"/>
         <source>Licencia</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1007"/>
+        <location filename="mainwindow.ui" line="1014"/>
         <source>Reconocimientos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="78"/>
+        <location filename="mainwindow.cpp" line="79"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="79"/>
-        <location filename="mainwindow.cpp" line="90"/>
+        <location filename="mainwindow.cpp" line="80"/>
+        <location filename="mainwindow.cpp" line="91"/>
         <source>Quitar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="81"/>
-        <location filename="mainwindow.cpp" line="101"/>
+        <location filename="mainwindow.cpp" line="82"/>
+        <location filename="mainwindow.cpp" line="102"/>
         <source>Cargar mapa de altura</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="82"/>
-        <location filename="mainwindow.cpp" line="115"/>
+        <location filename="mainwindow.cpp" line="83"/>
+        <location filename="mainwindow.cpp" line="116"/>
         <source>Reiniciar mapa de altura</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="103"/>
-        <location filename="mainwindow.cpp" line="155"/>
-        <source>Abrir Imagen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="104"/>
         <location filename="mainwindow.cpp" line="156"/>
+        <source>Abrir Imagen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="105"/>
+        <location filename="mainwindow.cpp" line="157"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="165"/>
+        <location filename="mainwindow.cpp" line="166"/>
         <source>Formato no soportado o incorrecto.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="227"/>
+        <location filename="mainwindow.cpp" line="228"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="174"/>
+        <location filename="mainwindow.cpp" line="469"/>
+        <location filename="mainwindow.cpp" line="612"/>
+        <source>Se exportaron todos los mapas normales. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="479"/>
+        <location filename="mainwindow.cpp" line="625"/>
+        <source>Se exportaron todos los mapas de paralaje. </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="175"/>
         <source>La imagen ya se encuentra abierta en laigter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="226"/>
+        <location filename="mainwindow.cpp" line="227"/>
         <source>Guardar Imagen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="478"/>
-        <source>Se exportaron todos los mapas normales.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -358,6 +370,19 @@
         <location filename="gui/nbselector.cpp" line="156"/>
         <location filename="gui/nbselector.cpp" line="171"/>
         <source>Abrir Imagen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gui/nbselector.cpp" line="51"/>
+        <location filename="gui/nbselector.cpp" line="67"/>
+        <location filename="gui/nbselector.cpp" line="82"/>
+        <location filename="gui/nbselector.cpp" line="97"/>
+        <location filename="gui/nbselector.cpp" line="112"/>
+        <location filename="gui/nbselector.cpp" line="127"/>
+        <location filename="gui/nbselector.cpp" line="142"/>
+        <location filename="gui/nbselector.cpp" line="157"/>
+        <location filename="gui/nbselector.cpp" line="172"/>
+        <source>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
