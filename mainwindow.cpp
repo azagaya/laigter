@@ -180,7 +180,7 @@ void MainWindow::on_actionOpen_triggered()
             if (i != ui->listWidget->count()) continue;
             ImageProcessor *p = new ImageProcessor();
             processorList.append(p);
-            p->copy_settings(processor);
+            p->copy_settings(processor->get_settings());
             disconnect_processor(processor);
             processor = p;
             connect_processor(processor);

@@ -26,6 +26,29 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     parallax_contrast = 1;
     parallax_erode_dilate = 1;
 
+    settings.tileable = &tileable;
+    settings.gradient_end = &gradient_end;
+    settings.parallax_max = &parallax_max;
+    settings.parallax_min = &parallax_min;
+    settings.parallax_soft = &parallax_soft;
+    settings.parallax_type = &parallax_type;
+    settings.parallax_focus = &parallax_focus;
+    settings.parallax_invert = &parallax_invert;
+    settings.parallax_contrast = &parallax_contrast;
+    settings.parallax_brightness = &parallax_brightness;
+    settings.parallax_erode_dilate = &parallax_erode_dilate;
+    settings.parallax_quantization = &parallax_quantization;
+
+    settings.normal_depth = &normal_depth;
+    settings.normalInvertX = &normalInvertX;
+    settings.normalInvertY = &normalInvertY;
+    settings.normalInvertZ = &normalInvertZ;
+    settings.normal_bisel_soft = &normal_bisel_soft;
+    settings.normal_bisel_depth = &normal_bisel_depth;
+    settings.normal_blur_radius = &normal_blur_radius;
+    settings.normal_bisel_distance = &normal_bisel_distance;
+    settings.normal_bisel_blur_radius = &normal_bisel_blur_radius;
+
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image){
@@ -389,7 +412,7 @@ bool ImageProcessor::get_tileable(){
 Mat ImageProcessor::modify_distance(){
     Mat m;
     m_distance.copyTo(m);
-//    multiply(m,(255.0/normal_bisel_distance),m);
+    //    multiply(m,(255.0/normal_bisel_distance),m);
     for(int x = 0; x < m.rows; ++x)
     {
         float *pixel = m.ptr<float>(x);
@@ -547,27 +570,12 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     return normals;
 }
 
-void ImageProcessor::copy_settings(ImageProcessor *p){
-    normal_depth = p->get_normal_depth();
-    normal_blur_radius = p->get_normal_blur_radius();
-    normal_bisel_soft = p->get_normal_bisel_soft();
-    normal_bisel_depth = p->get_normal_bisel_depth();
-    normal_bisel_distance = p->get_normal_bisel_distance();
-    normal_bisel_blur_radius = p->get_normal_bisel_blur_radius();
-    normalInvertX = p->get_normal_invert_x();
-    normalInvertY = p->get_normal_invert_y();
-    tileable = p->get_tileable();
+void ImageProcessor::copy_settings(ProcessorSettings s){
+    settings = s;
+}
 
-    parallax_max = p->get_parallax_thresh();
-    parallax_soft = p->get_parallax_soft();
-    parallax_focus = p->get_parallax_focus();
-    parallax_invert = p->get_parallax_invert();
-    parallax_min = p->get_parallax_min();
-    parallax_type = p->get_parallax_type();
-    parallax_quantization = p->get_parallax_quantization();
-    parallax_erode_dilate = p->get_parallax_erode_dilate();
-    parallax_contrast = p->get_parallax_contrast();
-    parallax_brightness = p->get_parallax_brightness();
+ProcessorSettings ImageProcessor::get_settings(){
+    return settings;
 }
 
 int ImageProcessor::get_normal_depth(){
@@ -715,4 +723,30 @@ void ImageProcessor::set_parallax_brightness(int brightness){
 
 int ImageProcessor::get_parallax_brightness(){
     return parallax_brightness;
+}
+
+ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
+    *tileable = *(other.tileable);
+    *gradient_end = *(other.gradient_end);
+    *parallax_max = *(other.parallax_max);
+    *parallax_min = *(other.parallax_min);
+    *parallax_soft = *(other.parallax_soft);
+    *parallax_type = *(other.parallax_type);
+    *parallax_focus = *(other.parallax_focus);
+    *parallax_invert = *(other.parallax_invert);
+    *parallax_contrast = *(other.parallax_contrast);
+    *parallax_brightness = *(other.parallax_brightness);
+    *parallax_erode_dilate = *(other.parallax_erode_dilate);
+    *parallax_quantization = *(other.parallax_quantization);
+
+    *normal_depth = *(other.normal_depth);
+    *normalInvertX = *(other.normalInvertX);
+    *normalInvertY = *(other.normalInvertY);
+    *normalInvertZ = *(other.normalInvertZ);
+    *normal_bisel_soft = *(other.normal_bisel_soft);
+    *normal_bisel_depth = *(other.normal_bisel_depth);
+    *normal_blur_radius = *(other.normal_blur_radius);
+    *normal_bisel_distance = *(other.normal_bisel_distance);
+    *normal_bisel_blur_radius = *(other.normal_bisel_blur_radius);
+    return *this;
 }

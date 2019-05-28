@@ -28,6 +28,30 @@ enum class ParallaxType
     Intervals
 };
 
+class ProcessorSettings
+{
+public:
+    ProcessorSettings& operator=( ProcessorSettings other);
+    int *parallax_min;
+    int *parallax_max;
+    int *parallax_focus;
+    int *parallax_soft;
+    int *parallax_quantization;
+    int *parallax_brightness;
+    double *parallax_contrast;
+    int *parallax_erode_dilate;
+    ParallaxType *parallax_type;
+
+    int *normal_depth;
+    int *normal_bisel_depth;
+    int *normal_bisel_distance;
+    int *normal_blur_radius;
+    int *normal_bisel_blur_radius;
+    bool *normal_bisel_soft, *tileable, *parallax_invert;
+    int *normalInvertX, *normalInvertY, *normalInvertZ;
+    char *gradient_end;
+};
+
 class ImageProcessor : public QObject
 {
     Q_OBJECT
@@ -57,7 +81,7 @@ signals:
     void processed(QImage image, ProcessedImage type);
     void on_idle();
 public slots:
-    void copy_settings(ImageProcessor *p);
+    void copy_settings(ProcessorSettings s);
     void set_normal_depth(int depth);
     int get_normal_depth();
     void set_normal_blur_radius(int radius);
@@ -97,6 +121,9 @@ public slots:
     void set_parallax_brightness(int brightness);
     double get_parallax_contrast();
     void set_parallax_contrast(int contrast);
+
+    ProcessorSettings get_settings();
+
     ParallaxType get_parallax_type();
 
 
@@ -111,6 +138,8 @@ public slots:
     QImage get_neighbour(int x, int y);
 
 private:
+    ProcessorSettings settings;
+
     ImageLoader il;
     QString m_name;
     Mat m_img;

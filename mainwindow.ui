@@ -512,10 +512,17 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButtonRaw">
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="radioButtonParallax">
           <property name="text">
-           <string>Textura</string>
+           <string>Mapa de Paralaje</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="checkBoxPixelated">
+          <property name="text">
+           <string>Pixelado</string>
           </property>
          </widget>
         </item>
@@ -529,17 +536,17 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QRadioButton" name="radioButtonParallax">
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="radioButtonRaw">
           <property name="text">
-           <string>Mapa de Paralaje</string>
+           <string>Textura</string>
           </property>
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QCheckBox" name="checkBoxPixelated">
-          <property name="text">
-           <string>Pixelado</string>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
