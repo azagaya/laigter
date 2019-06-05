@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PresetsManager</class>
+ <widget class="QDialog" name="PresetsManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>540</width>
+    <height>392</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Guardar Preset Actual:</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Nombre:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEditPresetName"/>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QListWidget" name="listWidgetControls">
+        <item>
+         <property name="text">
+          <string>Realzar → Altura</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Realzar → Suavizado</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bisel → Altura</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bisel → Distancia</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bisel → Suavizado</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mosaico</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Invertir x</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Invertir y</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tipo de paralaje</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario → Umbral</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario → Enfoque</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario → Suavizado</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario → Altura mínima</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario → Erosión / Dilatación</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Invertir Paralaje</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonSavePreset">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Guardar</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Aplicar Preset:</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Preset:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonImportPreset">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Importar</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="comboBoxPreset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QListWidget" name="listWidgetTextures"/>
+      </item>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pushButtonExportPreset">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Exportar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonAplyPreset">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Aplicar</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

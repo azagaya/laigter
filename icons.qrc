@@ -6,5 +6,6 @@
         <file>icons/zoom-.png</file>
         <file>icons/zoomfit.png</file>
         <file>icons/export.png</file>
+        <file>icons/presets.png</file>
     </qresource>
 </RCC>

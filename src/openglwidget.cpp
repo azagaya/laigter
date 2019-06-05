@@ -24,7 +24,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     tileX = false;
     tileY = false;
     m_pixelated = false;
-
+    lightSelected = false;
 }
 
 void OpenGlWidget::initializeGL()
@@ -113,6 +113,7 @@ void OpenGlWidget::paintGL()
     QMatrix4x4 transform;
     float scaleX, scaleY, zoomX, zoomY;
     transform.setToIdentity();
+    transform.translate(texturePosition);
     scaleX = !tileX ? sx : 1;
     scaleY = !tileY ? sy : 1;
     transform.scale(scaleX,scaleY,1);
@@ -153,7 +154,7 @@ void OpenGlWidget::paintGL()
 
     m_parallaxTexture->bind(2);
     m_program.setUniformValue("parallaxMap",2);
-    m_program.setUniformValue("viewPos",QVector3D(0,0,1));
+    m_program.setUniformValue("viewPos",lightPosition);
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
 
@@ -232,11 +233,13 @@ void OpenGlWidget::setZoom(float zoom){
 
 void OpenGlWidget::setTileX(bool x){
     tileX = x;
+    texturePosition.setX(0);
     update();
 }
 
 void OpenGlWidget::setTileY(bool y){
     tileY = y;
+    texturePosition.setY(0);
     update();
 }
 
@@ -258,6 +261,7 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 
 void OpenGlWidget::resetZoom(){
     setZoom(1.0);
+    texturePosition = QVector3D(0,0,0);
 }
 
 void OpenGlWidget::fitZoom(){
@@ -266,23 +270,57 @@ void OpenGlWidget::fitZoom(){
     y = (float)m_image.height()/height();
     s = qMax(x,y);
     setZoom(1/s);
+    texturePosition = QVector3D(0,0,0);
 }
 
 float OpenGlWidget::getZoom(){
     return m_zoom;
 }
 
+void OpenGlWidget::mousePressEvent(QMouseEvent *event){
+    if (event->buttons() & Qt::LeftButton)
+    {
+        float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
+        float lightHeight = (float)laigter.height()/height()*0.3;
+        float mouseX = (float)event->localPos().x()/width()*2-1;
+        float mouseY = -(float)event->localPos().y()/height()*2+1;
+
+        if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                m_light){
+            lightSelected = true;
+        }else{
+            textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
+        }
+    }
+    else if (event->buttons() & Qt::RightButton){
+
+    }
+}
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
     if (event->buttons() & Qt::LeftButton)
     {
-        lightPosition.setX((float)event->localPos().x()/width()*2-1);
-        lightPosition.setY(-(float)event->localPos().y()/height()*2+1);
+        float mouseX = (float)event->localPos().x()/width()*2-1;
+        float mouseY = -(float)event->localPos().y()/height()*2+1;
+        if (lightSelected){
+            lightPosition.setX(mouseX);
+            lightPosition.setY(mouseY);
+        }else{
+            if (!tileX)
+                texturePosition.setX(mouseX-textureOffset.x());
+            if (!tileY)
+                texturePosition.setY(mouseY-textureOffset.y());
+        }
         update();
     }
     else if (event->buttons() & Qt::RightButton){
 
     }
+}
+
+void OpenGlWidget::mouseReleaseEvent(QMouseEvent *event){
+    lightSelected = false;
 }
 
 void OpenGlWidget::setLight(bool light){

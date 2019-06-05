@@ -22,6 +22,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *e);
 
 public slots:
     void update_scene(QImage image, ProcessedImage type);
@@ -89,6 +91,10 @@ private slots:
 
     void on_pushButtonExportTo_clicked();
 
+    void open_files(QStringList fileNames);
+
+
+    void on_actionPresets_triggered();
 
 private:
     QImage image, normal, parallax;

@@ -70,6 +70,7 @@ QDockWidget::title{
    <addaction name="separator"/>
    <addaction name="actionExport"/>
    <addaction name="separator"/>
+   <addaction name="actionPresets"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="normalDockWidget">
@@ -1019,6 +1020,15 @@ QDockWidget::title{
   <action name="actionReconocimientos">
    <property name="text">
     <string>Reconocimientos</string>
+   </property>
+  </action>
+  <action name="actionPresets">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/presets.png</normaloff>:/icons/presets.png</iconset>
+   </property>
+   <property name="text">
+    <string>Presets</string>
    </property>
   </action>
  </widget>

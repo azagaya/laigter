@@ -5,9 +5,11 @@
 #include <QFile>
 #include <QStandardPaths>
 #include <QDebug>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setApplicationName("laigter");
 #if defined(Q_OS_WIN)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -16,6 +18,21 @@ int main(int argc, char *argv[])
     bool loaded = translator.load(":/laigter_"+locale);
     if (!loaded)
         translator.load(":/laigter_en");
+
+#ifndef PORTABLE
+    QString appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir dir(appData);
+    if (!dir.exists())
+        dir.mkpath(".");
+    dir = QDir(appData+"/presets");
+    if (!dir.exists())
+        dir.mkpath(".");
+
+#else
+    QDir dir("./presets");
+    if (!dir.exists())
+        dir.mkpath(".");
+#endif
 
     QApplication a(argc, argv);
     a.installTranslator(&translator);

@@ -611,8 +611,10 @@ int ImageProcessor::get_normal_invert_y(){
 }
 
 QImage ImageProcessor::get_texture(){
-    return QImage(static_cast<unsigned char *>(m_img.data),
-                  m_img.cols,m_img.rows,m_img.step,QImage::Format_RGB888);;
+    Mat image;
+    cvtColor(m_img,m_aux,CV_BGRA2RGBA);
+    return QImage(static_cast<unsigned char *>(m_aux.data),
+                  m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
 }
 
 QImage ImageProcessor::get_normal(){

@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "src/openglwidget.h"
 #include "gui/nbselector.h"
+#include "gui/presetsmanager.h"
 
 #include <QFileDialog>
 #include <QColorDialog>
@@ -12,6 +13,8 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QListWidgetItem>
+#include <QMimeData>
+#include <QDragEnterEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -70,6 +73,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->labelBrightness->setVisible(false);
     ui->labelContrast->setVisible(false);
+
+    setAcceptDrops(true);
 
 }
 
@@ -155,7 +160,10 @@ void MainWindow::on_actionOpen_triggered()
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
                                                           tr("Abrir Imagen"), "",
                                                           tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+    open_files(fileNames);
+}
 
+void MainWindow::open_files(QStringList fileNames){
     foreach (QString fileName, fileNames){
         if (fileName != nullptr){
             ImageLoader il;
@@ -163,9 +171,9 @@ void MainWindow::on_actionOpen_triggered()
             image = il.loadImage(fileName,&succes);
             if (!succes || image.isNull()){
                 QMessageBox msgBox;
-                msgBox.setText(tr("Formato no soportado o incorrecto."));
+                msgBox.setText(tr("No se puede abrir ")+fileName+".\n"+tr("Formato no soportado o incorrecto."));
                 msgBox.exec();
-                return;
+                continue;
             }
             image = image.convertToFormat(QImage::Format_RGBA8888);
             int i;
@@ -630,4 +638,24 @@ void MainWindow::on_pushButtonExportTo_clicked()
             msgBox.exec();
         }
     }
+}
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls()) {
+        e->acceptProposedAction();
+    }
+}
+void MainWindow::dropEvent(QDropEvent *event){
+    QStringList fileNames;
+    QList<QUrl> urlList = event->mimeData()->urls();
+    foreach(QUrl url, urlList){
+        fileNames.append(url.toLocalFile());
+    }
+    open_files(fileNames);
+}
+
+void MainWindow::on_actionPresets_triggered()
+{
+    PresetsManager pm(processor->get_settings(), &processorList);
+    pm.exec();
 }

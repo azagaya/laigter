@@ -48,6 +48,8 @@ protected:
     void resizeGL(int width, int height) override;
     void wheelEvent(QWheelEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 private:
     GLuint shaderProgram, vertexShader, fragmentShader;
     QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *m_parallaxTexture;
@@ -57,13 +59,13 @@ private:
     QOpenGLShaderProgram m_program;
     QOpenGLShaderProgram lightProgram;
     QImage m_image, normalMap, parallaxMap, laigter;
-    QVector3D lightPosition, lightColor, ambientColor, backgroundColor;
+    QVector3D lightPosition, lightColor, ambientColor, backgroundColor, texturePosition, textureOffset;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;
     float m_zoom;
     float diffIntensity, ambientIntensity;
     int pixelsX, pixelsY;
-
+    bool lightSelected;
 };
 
 #endif // OPENGLWIDGET_H

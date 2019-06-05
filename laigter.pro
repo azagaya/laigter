@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += core ui c++11
 
 SOURCES += \
+    gui/presetsmanager.cpp \
         main.cpp \
         mainwindow.cpp \
     src/imageloader.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     gui/nbselector.cpp
 
 HEADERS += \
+    gui/presetsmanager.h \
         mainwindow.h \
     src/imageloader.h \
     src/imageprocessor.h \
@@ -40,6 +42,7 @@ HEADERS += \
     gui/nbselector.h
 
 FORMS += \
+    gui/presetsmanager.ui \
         mainwindow.ui \
     gui/nbselector.ui
 
