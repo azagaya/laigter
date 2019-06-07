@@ -1,6 +1,7 @@
 #include "presetsmanager.h"
 #include "ui_presetsmanager.h"
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
@@ -204,4 +205,46 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
         }
     }
     settingAplied();
+}
+
+void PresetsManager::on_pushButtonExportPreset_clicked()
+{
+    QString path = QFileDialog::getExistingDirectory();
+    if (path != nullptr){
+        QString preset = ui->comboBoxPreset->currentText();
+        QFile selected_preset(presetsPath+preset);
+        if(selected_preset.open(QIODevice::ReadOnly)){
+            selected_preset.copy(path+"/"+preset);
+        }
+    }
+}
+
+void PresetsManager::on_pushButtonImportPreset_clicked()
+{
+    QString path = QFileDialog::getOpenFileName();
+    if (path != nullptr){
+        QFile preset(path);
+        QFileInfo info(preset);
+        QString name = info.baseName();
+        QFile existing_preset(presetsPath+name);
+        if (!existing_preset.exists()){
+            if (preset.open(QIODevice::ReadOnly)){
+                QByteArray firstLine = preset.readLine();
+                if (firstLine == "[Laigter Preset]\n"){
+                    preset.copy(presetsPath+name);
+                }
+                else{
+                    QMessageBox msg;
+                    msg.setText(tr("Formato de preset incorrecto."));
+                    msg.exec();
+                }
+            }
+        }
+        else{
+            QMessageBox msg;
+            msg.setText(tr("Ya existe un preset con ese nombre."));
+            msg.exec();
+        }
+    }
+    update_presets();
 }

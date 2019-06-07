@@ -266,6 +266,26 @@
        </spacer>
       </item>
       <item row="0" column="2">
+       <widget class="QPushButton" name="pushButtonExportPreset">
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Exportar</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../icons.qrc">
+          <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
        <widget class="QPushButton" name="pushButtonImportPreset">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -279,6 +299,9 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Importar</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -288,13 +311,16 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
+      <item row="0" column="4">
        <widget class="QPushButton" name="pushButtonDeletePreset">
         <property name="maximumSize">
          <size>
           <width>24</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Eliminar</string>
         </property>
         <property name="text">
          <string/>
@@ -305,7 +331,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
+      <item row="0" column="5">
        <widget class="QComboBox" name="comboBoxPreset">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -321,38 +347,21 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="5">
+      <item row="1" column="0" colspan="6">
        <widget class="QListWidget" name="listWidgetTextures"/>
       </item>
-      <item row="2" column="0" colspan="3">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QPushButton" name="pushButtonExportPreset">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Exportar</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButtonAplyPreset">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Aplicar</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonAplyPreset">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Aplicar</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

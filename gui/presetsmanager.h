@@ -35,6 +35,10 @@ private slots:
 
     void on_pushButtonAplyPreset_clicked();
 
+    void on_pushButtonExportPreset_clicked();
+
+    void on_pushButtonImportPreset_clicked();
+
 private:
     Ui::PresetsManager *ui;
     ProcessorSettings mSettings, loadedSettings;
