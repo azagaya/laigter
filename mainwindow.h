@@ -69,10 +69,6 @@ private slots:
 
     void on_actionReconocimientos_triggered();
 
-    void on_listWidget_itemChanged(QListWidgetItem *item);
-
-    void on_listWidget_itemClicked(QListWidgetItem *item);
-
     void on_listWidget_itemSelectionChanged();
 
     void on_pushButton_clicked();

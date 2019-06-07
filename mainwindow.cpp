@@ -385,18 +385,6 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
 
 }
 
-void MainWindow::on_listWidget_itemChanged(QListWidgetItem *item)
-{
-
-}
-
-void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
-{
-
-
-}
-
-
 void MainWindow::on_listWidget_itemSelectionChanged()
 {
     if (ui->listWidget->selectedItems().count() > 0){
@@ -657,5 +645,8 @@ void MainWindow::dropEvent(QDropEvent *event){
 void MainWindow::on_actionPresets_triggered()
 {
     PresetsManager pm(processor->get_settings(), &processorList);
+    connect(&pm, SIGNAL(settingAplied()),this,SLOT(on_listWidget_itemSelectionChanged()));
     pm.exec();
+    disconnect(&pm, SIGNAL(settingAplied()),this,SLOT(on_listWidget_itemSelectionChanged()));
 }
+

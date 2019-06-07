@@ -7,5 +7,7 @@
         <file>icons/zoomfit.png</file>
         <file>icons/export.png</file>
         <file>icons/presets.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/import.png</file>
     </qresource>
 </RCC>
