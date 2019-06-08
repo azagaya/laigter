@@ -37,16 +37,16 @@ void main()
                          dy * round(texCoord.y / dy));
     }
     if (parallax){
-//        texCoords = ParallaxMapping(texCoords,  viewDir);
+        texCoords = ParallaxMapping(texCoords,  viewDir);
 
-//        if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-//            discard;
+        if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+            discard;
 
-       dis = height_scale*(texture2D(parallaxMap, texCoords*ratio).r-0.5)*2*viewDir.xy;
-       texCoords.x += dis.x;
-       texCoords.y -= dis.y;
-       if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-        discard;
+//       dis = height_scale*(texture2D(parallaxMap, texCoords*ratio).r-0.5)*2*viewDir.xy;
+//       texCoords.x += dis.x;
+//       texCoords.y -= dis.y;
+//       if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+//        discard;
 
     }
 

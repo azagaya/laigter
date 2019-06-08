@@ -154,7 +154,8 @@ void OpenGlWidget::paintGL()
 
     m_parallaxTexture->bind(2);
     m_program.setUniformValue("parallaxMap",2);
-    m_program.setUniformValue("viewPos",lightPosition);
+    //m_program.setUniformValue("viewPos",lightPosition);
+    m_program.setUniformValue("viewPos",QVector3D(0,0,1));
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
 

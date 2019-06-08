@@ -139,6 +139,7 @@ void PresetsManager::on_pushButtonDeletePreset_clicked()
 void PresetsManager::on_pushButtonAplyPreset_clicked()
 {
     QMessageBox msg;
+
     QString preset = ui->comboBoxPreset->currentText();
     QFile selected_preset(presetsPath+preset);
     if(!selected_preset.open(QIODevice::ReadOnly)){
@@ -153,6 +154,10 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
         msg.exec();
         return;
     }
+
+    ui->groupBox->setEnabled(false);
+    ui->groupBox_2->setEnabled(false);
+
     settings_list.removeAt(0);
 
     QStringList processorList;
@@ -162,6 +167,9 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
     foreach(ImageProcessor *p, *mProcessorList){
         if (!processorList.contains(p->get_name()))
             continue;
+
+        ui->labelMessage->setText(tr("Aplicando ")+ preset + tr(" a ") + p->get_name() + "...");
+        QApplication::processEvents();
         for (int i=0; i< settings_list.count(); i++){
             QByteArray setting = settings_list.at(i);
             QList<QByteArray> aux = setting.split('\t');
@@ -204,6 +212,10 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
             }
         }
     }
+
+    ui->groupBox->setEnabled(true);
+    ui->groupBox_2->setEnabled(true);
+    ui->labelMessage->setText("");
     settingAplied();
 }
 
