@@ -164,18 +164,19 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 void MainWindow::open_files(QStringList fileNames){
+    QImage auximage;
     foreach (QString fileName, fileNames){
         if (fileName != nullptr){
             ImageLoader il;
             bool succes;
-            image = il.loadImage(fileName,&succes);
-            if (!succes || image.isNull()){
+            auximage = il.loadImage(fileName,&succes);
+            if (!succes || auximage.isNull()){
                 QMessageBox msgBox;
                 msgBox.setText(tr("No se puede abrir ")+fileName+".\n"+tr("Formato no soportado o incorrecto."));
                 msgBox.exec();
                 continue;
             }
-            image = image.convertToFormat(QImage::Format_RGBA8888);
+            auximage = auximage.convertToFormat(QImage::Format_RGBA8888);
             int i;
             for(i = 0; i < ui->listWidget->count(); i++){
                 if (ui->listWidget->item(i)->text() == fileName){
@@ -185,7 +186,9 @@ void MainWindow::open_files(QStringList fileNames){
                     break;
                 }
             }
+
             if (i != ui->listWidget->count()) continue;
+            image = auximage;
             ImageProcessor *p = new ImageProcessor();
             processorList.append(p);
             p->copy_settings(processor->get_settings());
