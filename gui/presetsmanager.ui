@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Administrador de Presets</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -142,7 +142,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Binario → Suavizado</string>
+          <string>Suavizado del Paralaje</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
@@ -159,14 +159,6 @@
         <item>
          <property name="text">
           <string>Binario → Erosión / Dilatación</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Mapa de Altura → Suavizado</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
