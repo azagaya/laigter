@@ -92,6 +92,12 @@ private slots:
 
     void on_actionPresets_triggered();
 
+    void on_pushButtonColorSpec_clicked();
+
+    void on_horizontalSliderSpec_valueChanged(int value);
+
+    void on_horizontalSliderSpecScatter_valueChanged(int value);
+
 private:
     QImage image, normal, parallax;
     Ui::MainWindow *ui;
@@ -100,7 +106,7 @@ private:
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
     ImageProcessor *sample_processor;
-    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor;
+    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
     ImageLoader il;

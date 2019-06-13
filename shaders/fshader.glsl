@@ -12,7 +12,10 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform bool light;
 uniform vec3 lightColor;
+uniform vec3 specColor;
 uniform float diffIntensity;
+uniform float specIntensity;
+uniform float specScatter;
 uniform float ambientIntensity;
 uniform vec3 ambientColor;
 uniform vec2 ratio;
@@ -25,7 +28,6 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
 void main()
 {
-    float specStrength = 0.5;
     vec2 dis;
     vec3 viewDir = normalize(viewPos-FragPos);
 
@@ -58,8 +60,8 @@ void main()
 
     vec3 reflectDir = reflect(-lightDir, normal);
 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specStrength * spec * lightColor;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), specScatter);
+    vec3 specular = specIntensity * spec * specColor;
 
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;

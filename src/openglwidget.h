@@ -28,9 +28,12 @@ public slots:
     float getZoom();
     void setLight(bool light);
     void setLightColor(QVector3D color);
+    void setSpecColor(QVector3D color);
     void setLightHeight(float height);
     void setLightIntensity(float intensity);
     void setAmbientIntensity(float intensity);
+    void setSpecIntensity(float intensity);
+    void setSpecScatter(int scatter);
     void setAmbientColor(QVector3D color);
     void setBackgroundColor(QVector3D color);
     void setTileX(bool x);
@@ -59,11 +62,11 @@ private:
     QOpenGLShaderProgram m_program;
     QOpenGLShaderProgram lightProgram;
     QImage m_image, normalMap, parallaxMap, laigter;
-    QVector3D lightPosition, lightColor, ambientColor, backgroundColor, texturePosition, textureOffset;
+    QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;
     float m_zoom;
-    float diffIntensity, ambientIntensity;
+    float diffIntensity, ambientIntensity, specIntensity, specScatter;
     int pixelsX, pixelsY;
     bool lightSelected;
 };

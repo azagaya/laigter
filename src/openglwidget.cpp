@@ -13,10 +13,13 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     parallaxMap = QImage(":/images/sample_p.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
+    specColor = QVector3D(0.0,1,0.7);
     ambientColor = QVector3D(1.0,1.0,1.0);
     backgroundColor = QVector3D(0.2, 0.2, 0.3);
     ambientIntensity = 0.8;
     diffIntensity = 0.6;
+    specIntensity = 0.6;
+    specScatter = 32;
     lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
     m_parallax = false;
@@ -161,7 +164,10 @@ void OpenGlWidget::paintGL()
 
     m_program.setUniformValue("lightPos",lightPosition);
     m_program.setUniformValue("lightColor",lightColor);
+    m_program.setUniformValue("specColor",specColor);
     m_program.setUniformValue("diffIntensity",diffIntensity);
+    m_program.setUniformValue("specIntensity",specIntensity);
+    m_program.setUniformValue("specScatter",specScatter);
     m_program.setUniformValue("ambientColor",ambientColor);
     m_program.setUniformValue("ambientIntensity",ambientIntensity);
     glDrawArrays(GL_QUADS, 0, 4);
@@ -339,6 +345,11 @@ void OpenGlWidget::setLightColor(QVector3D color){
     update();
 }
 
+void OpenGlWidget::setSpecColor(QVector3D color){
+    specColor = color;
+    update();
+}
+
 void OpenGlWidget::setBackgroundColor(QVector3D color){
     backgroundColor = color;
     update();
@@ -351,6 +362,16 @@ void OpenGlWidget::setLightHeight(float height){
 
 void OpenGlWidget::setLightIntensity(float intensity){
     diffIntensity = intensity;
+    update();
+}
+
+void OpenGlWidget::setSpecIntensity(float intensity){
+    specIntensity = intensity;
+    update();
+}
+
+void OpenGlWidget::setSpecScatter(int scatter){
+    specScatter = scatter;
     update();
 }
 

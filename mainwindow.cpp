@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     currentColor = QVector3D(0.0,1.0,0.7);
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
     currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
+    currentSpecColor = QVector3D(0.0,1.0,0.7);
 
     bool success;
     image = il.loadImage(":/images/sample.png",&success);
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap pixmap(100,100);
     pixmap.fill(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
     ui->pushButtonColor->setIcon(QIcon(pixmap));
+    ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
     pixmap.fill(QColor(currentAmbientcolor.x()*255,currentAmbientcolor.y()*255,currentAmbientcolor.z()*255));
     ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
     pixmap.fill(QColor(currentBackgroundColor.x()*255,currentBackgroundColor.y()*255,currentBackgroundColor.z()*255));
@@ -653,3 +655,25 @@ void MainWindow::on_actionPresets_triggered()
     disconnect(&pm, SIGNAL(settingAplied()),this,SLOT(on_listWidget_itemSelectionChanged()));
 }
 
+
+void MainWindow::on_pushButtonColorSpec_clicked()
+{
+    QColor color = QColorDialog::getColor(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
+    if (color.isValid()){
+        currentColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        QPixmap pixmap(100,100);
+        pixmap.fill(color);
+        ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
+        ui->openGLPreviewWidget->setSpecColor(currentColor);
+    }
+}
+
+void MainWindow::on_horizontalSliderSpec_valueChanged(int value)
+{
+    ui->openGLPreviewWidget->setSpecIntensity(static_cast<float>(value/100.0));
+}
+
+void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value)
+{
+    ui->openGLPreviewWidget->setSpecScatter(value);
+}

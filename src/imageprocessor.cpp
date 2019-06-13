@@ -412,7 +412,6 @@ bool ImageProcessor::get_tileable(){
 Mat ImageProcessor::modify_distance(){
     Mat m;
     m_distance.copyTo(m);
-    qDebug() << m.type();
     for(int x = 0; x < m.rows; ++x)
     {
         float *pixel = m.ptr<float>(x);
