@@ -25,6 +25,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
 void main()
 {
+    float specStrength = 0.5;
     vec2 dis;
     vec3 viewDir = normalize(viewPos-FragPos);
 
@@ -54,10 +55,17 @@ void main()
 
     vec3 normal = normalize(texture2D(normalMap,texCoords).xyz*2-1);
     vec3 lightDir = normalize(lightPos - vec3(FragPos.xy,0.0));
+
+    vec3 reflectDir = reflect(-lightDir, normal);
+
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec3 specular = specStrength * spec * lightColor;
+
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;
     vec4 tex = texture2D(texture,texCoords);
-    vec4 l_color = tex*(vec4(diffuse,tex.w)+vec4(ambientColor,1.0)*ambientIntensity);
+
+    vec4 l_color = tex*(vec4(diffuse,1.0)+vec4(specular,1.0)+vec4(ambientColor,1.0)*ambientIntensity);
     if (light){
         FragColor = l_color;
     }else{

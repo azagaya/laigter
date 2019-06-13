@@ -463,13 +463,11 @@ Mat ImageProcessor::modify_parallax(){
         break;
     case ParallaxType::HeightMap:
         current_heightmap.copyTo(m);
+        m.convertTo(m,-1,parallax_contrast,parallax_brightness);
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
-
         if (threshType == THRESH_BINARY_INV){
             subtract(Scalar::all(255),m,m) ;
         }
-        multiply(Scalar::all(parallax_contrast),m,m);
-        add(Scalar::all(parallax_brightness),m,m);
         break;
     case ParallaxType::Intervals:
         break;
