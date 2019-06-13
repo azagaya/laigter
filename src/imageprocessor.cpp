@@ -393,7 +393,7 @@ void ImageProcessor::set_normal_bisel_depth(int depth){
 
 void ImageProcessor::set_normal_bisel_distance(int distance){
     normal_bisel_distance = distance;
-    modify_distance().copyTo(new_distance);
+    new_distance = modify_distance();
 
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
@@ -412,27 +412,21 @@ bool ImageProcessor::get_tileable(){
 Mat ImageProcessor::modify_distance(){
     Mat m;
     m_distance.copyTo(m);
-    //    multiply(m,(255.0/normal_bisel_distance),m);
+    qDebug() << m.type();
     for(int x = 0; x < m.rows; ++x)
     {
         float *pixel = m.ptr<float>(x);
         for(int y = 0; y < m.cols; ++y)
         {
             if (normal_bisel_distance == 0){
-                //m.at<float>(y,x) = 0;
                 *pixel = 0;
             }
             else{
-                //m.at<float>(x,y) *= 255.0/normal_bisel_distance;
                 *pixel *= 255.0/normal_bisel_distance;
-                //                if (m.at<float>(x,y) > 1)
-                //                    m.at<float>(x,y) = 1;
                 if (*pixel > 1)
                     *pixel = 1;
                 if (normal_bisel_soft){
-                    //double d = m.at<float>(x,y);
                     double d = *pixel;
-                    //m.at<float>(x,y) = sqrt(1-pow((d-1),2));
                     *pixel = sqrt(1-pow((d-1),2));
                 }
             }
