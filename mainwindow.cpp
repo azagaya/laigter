@@ -520,6 +520,16 @@ void MainWindow::on_pushButton_clicked()
         }
         message += tr("Se exportaron todos los mapas de paralaje. ");
     }
+    if (ui->checkBoxExportSpecular->isChecked()){
+        foreach (ImageProcessor *p, processorList){
+            n = p->get_specular();
+            info = QFileInfo(p->get_name());
+            suffix = info.completeSuffix();
+            name = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
+            n.save(name);
+        }
+        message += tr("Se exportaron todos los mapas de especulares. ");
+    }
     if (message != ""){
         QMessageBox msgBox;
         msgBox.setText(message);

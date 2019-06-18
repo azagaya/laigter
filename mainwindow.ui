@@ -647,6 +647,30 @@ QDockWidget::title{
         <string>Vista</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
+        <item row="2" column="0">
+         <widget class="QRadioButton" name="radioButtonSpecular">
+          <property name="text">
+           <string>Mapa Especular</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QCheckBox" name="checkBoxPixelated">
+          <property name="text">
+           <string>Pixelado</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QRadioButton" name="radioButtonPreview">
+          <property name="text">
+           <string>Vista Previa</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QRadioButton" name="radioButtonRaw">
           <property name="text">
@@ -661,13 +685,6 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QRadioButton" name="radioButtonSpecular">
-          <property name="text">
-           <string>Mapa Especular</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0">
          <widget class="QRadioButton" name="radioButtonParallax">
           <property name="text">
@@ -675,41 +692,10 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QRadioButton" name="radioButtonPreview">
-          <property name="text">
-           <string>Vista Previa</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="0" colspan="2">
          <widget class="Line" name="line">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QCheckBox" name="checkBoxPixelated">
-          <property name="text">
-           <string>Pixelado</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>Tamaño del Pixel:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QSpinBox" name="spinBox">
-          <property name="minimum">
-           <number>1</number>
           </property>
          </widget>
         </item>
@@ -780,20 +766,10 @@ QDockWidget::title{
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QGridLayout" name="gridLayout_10">
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="checkBoxExportNormal">
-       <property name="text">
-        <string>Normal</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0" colspan="2">
       <widget class="QScrollArea" name="scrollArea">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -806,8 +782,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>260</width>
-          <height>88</height>
+          <width>239</width>
+          <height>96</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -818,13 +794,44 @@ QDockWidget::title{
        </widget>
       </widget>
      </item>
+     <item row="1" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QCheckBox" name="checkBoxExportNormal">
+         <property name="text">
+          <string>Normal</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxExportSpecular">
+         <property name="text">
+          <string>Especular</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxExportParallax">
+         <property name="text">
+          <string>Paralaje</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
      <item row="2" column="0">
-      <widget class="QCheckBox" name="checkBoxExportParallax">
+      <widget class="QPushButton" name="pushButtonExportTo">
        <property name="text">
-        <string>Paralaje</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Exportar a...</string>
        </property>
       </widget>
      </item>
@@ -844,13 +851,6 @@ QDockWidget::title{
        </property>
        <property name="text">
         <string>Exportar</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pushButtonExportTo">
-       <property name="text">
-        <string>Exportar a...</string>
        </property>
       </widget>
      </item>
