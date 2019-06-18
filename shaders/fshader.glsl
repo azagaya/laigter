@@ -8,6 +8,7 @@ out vec4 FragColor;
 uniform sampler2D texture;
 uniform sampler2D normalMap;
 uniform sampler2D parallaxMap;
+uniform sampler2D specularMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform bool light;
@@ -22,7 +23,7 @@ uniform vec2 ratio;
 uniform bool parallax;
 uniform bool pixelated;
 uniform float height_scale;
-uniform int pixelsX, pixelsY;
+uniform int pixelsX, pixelsY, pixelSize=1;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 
@@ -31,13 +32,12 @@ void main()
     vec2 dis;
     vec3 viewDir = normalize(viewPos-FragPos);
 
-    float dx = 0.5/pixelsX/ratio.x;
-    float dy = 0.5/pixelsY/ratio.y;
-
     vec2 texCoords = texCoord;
+    vec2 texCoordsL = texCoord;
     if (pixelated){
-        texCoords = vec2(dx * round(texCoord.x / dx),
-                         dy * round(texCoord.y / dy));
+            float dx = 1.0*(pixelsX+1)*ratio.x;
+            float dy = 1.0*(pixelsY+1)*ratio.y;
+            texCoords = vec2(round(texCoord.x*dx) / (dx), round(texCoord.y*dy) / (dy));
     }
     if (parallax){
         texCoords = ParallaxMapping(texCoords,  viewDir);
@@ -45,23 +45,24 @@ void main()
         if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
             discard;
 
-//       dis = height_scale*(texture2D(parallaxMap, texCoords*ratio).r-0.5)*2*viewDir.xy;
-//       texCoords.x += dis.x;
-//       texCoords.y -= dis.y;
-//       if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-//        discard;
+        //       dis = height_scale*(texture2D(parallaxMap, texCoords*ratio).r-0.5)*2*viewDir.xy;
+        //       texCoords.x += dis.x;
+        //       texCoords.y -= dis.y;
+        //       if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
+        //        discard;
 
     }
 
     texCoords *= ratio;
 
     vec3 normal = normalize(texture2D(normalMap,texCoords).xyz*2-1);
+    vec3 specMap = texture2D(specularMap,texCoords).xyz;
     vec3 lightDir = normalize(lightPos - vec3(FragPos.xy,0.0));
 
     vec3 reflectDir = reflect(-lightDir, normal);
 
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), specScatter);
-    vec3 specular = specIntensity * spec * specColor;
+    vec3 specular = specIntensity * spec * specColor* specMap;
 
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;

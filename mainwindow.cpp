@@ -45,8 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_raw_scene = new QGraphicsScene(this);
 
-    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
-    ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
+//    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
+//    ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
 
     connect_processor(processor);
 
@@ -64,7 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
+    tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
+
     ui->normalDockWidget->raise();
 
     ui->parallaxQuantizationSlider->setVisible(false);
@@ -153,6 +155,12 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
         if (ui->radioButtonParallax->isChecked())
             ui->openGLPreviewWidget->setImage(image);
         break;
+    case ProcessedImage::Specular:
+        specular = image;
+        ui->openGLPreviewWidget->setSpecularMap(specular);
+        if (ui->radioButtonSpecular->isChecked())
+            ui->openGLPreviewWidget->setImage(image);
+        break;
     }
     ui->openGLPreviewWidget->update();
 }
@@ -204,6 +212,8 @@ void MainWindow::open_files(QStringList fileNames){
                 on_radioButtonNormal_toggled(true);
             } else if (ui->radioButtonParallax->isChecked()) {
                 on_radioButtonParallax_toggled(true);
+            } else if (ui->radioButtonSpecular->isChecked()) {
+                on_radioButtonSpecular_toggled(true);
             } else {
                 on_radioButtonPreview_toggled(true);
             }
@@ -272,6 +282,16 @@ void MainWindow::on_radioButtonParallax_toggled(bool checked)
         ui->openGLPreviewWidget->setParallax(false);
         if (!parallax.isNull())
             update_scene(parallax,ProcessedImage::Raw);
+    }
+}
+
+void MainWindow::on_radioButtonSpecular_toggled(bool checked)
+{
+    if (checked){
+        ui->openGLPreviewWidget->setLight(false);
+        ui->openGLPreviewWidget->setParallax(false);
+        if (!specular.isNull())
+            update_scene(specular,ProcessedImage::Raw);
     }
 }
 void MainWindow::on_radioButtonPreview_toggled(bool checked)
@@ -364,6 +384,12 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->sliderParallaxErodeDilate,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_erode_dilate(int)));
     connect(ui->sliderParallaxBright,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_brightness(int)));
     connect(ui->sliderParallaxContrast,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_contrast(int)));
+
+    connect(ui->sliderSpecSoft,SIGNAL(valueChanged(int)),p,SLOT(set_specular_blur(int)));
+    connect(ui->sliderSpecBright,SIGNAL(valueChanged(int)),p,SLOT(set_specular_bright(int)));
+    connect(ui->sliderSpecContrast,SIGNAL(valueChanged(int)),p,SLOT(set_specular_contrast(int)));
+    connect(ui->sliderSpecThresh,SIGNAL(valueChanged(int)),p,SLOT(set_specular_thresh(int)));
+    connect(ui->checkBoxSpecInvert,SIGNAL(toggled(bool)),p,SLOT(set_specular_invert(bool)));
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
@@ -387,6 +413,12 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->sliderParallaxErodeDilate,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_erode_dilate(int)));
     disconnect(ui->sliderParallaxBright,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_brightness(int)));
     disconnect(ui->sliderParallaxContrast,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_contrast(int)));
+
+    disconnect(ui->sliderSpecSoft,SIGNAL(valueChanged(int)),p,SLOT(set_specular_blur(int)));
+    disconnect(ui->sliderSpecBright,SIGNAL(valueChanged(int)),p,SLOT(set_specular_bright(int)));
+    disconnect(ui->sliderSpecContrast,SIGNAL(valueChanged(int)),p,SLOT(set_specular_contrast(int)));
+    disconnect(ui->sliderSpecThresh,SIGNAL(valueChanged(int)),p,SLOT(set_specular_thresh(int)));
+    disconnect(ui->checkBoxSpecInvert,SIGNAL(toggled(bool)),p,SLOT(set_specular_invert(bool)));
 
 }
 
@@ -428,6 +460,12 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->sliderParallaxContrast->setValue(static_cast<int>(processor->get_parallax_contrast()*1000));
     ui->sliderParallaxErodeDilate->setValue(processor->get_parallax_erode_dilate());
 
+    ui->sliderSpecSoft->setValue(processor->get_specular_blur());
+    ui->sliderSpecBright->setValue(processor->get_specular_bright());
+    ui->sliderSpecThresh->setValue(processor->get_specular_trhesh());
+    ui->sliderSpecContrast->setValue(static_cast<int>(processor->get_specular_contrast()*1000));
+    ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
+
     bool succes;
     image = il.loadImage(processor->get_name(), &succes);
     image = image.convertToFormat(QImage::Format_RGBA8888);
@@ -439,12 +477,15 @@ void MainWindow::on_listWidget_itemSelectionChanged()
         on_radioButtonNormal_toggled(true);
     } else if (ui->radioButtonPreview->isChecked()){
         on_radioButtonPreview_toggled(true);
-    } else {
+    } else if (ui->radioButtonParallax->isChecked()){
         on_radioButtonParallax_toggled(true);
+    } else if (ui->radioButtonSpecular->isChecked()){
+        on_radioButtonSpecular_toggled(true);
     }
 
     update_scene(processor->get_normal(),ProcessedImage::Normal);
     update_scene(processor->get_parallax(),ProcessedImage::Parallax);
+    update_scene(processor->get_specular(),ProcessedImage::Specular);
     connect_processor(processor);
 }
 
@@ -677,3 +718,4 @@ void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value)
 {
     ui->openGLPreviewWidget->setSpecScatter(value);
 }
+

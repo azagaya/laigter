@@ -98,8 +98,10 @@ private slots:
 
     void on_horizontalSliderSpecScatter_valueChanged(int value);
 
+    void on_radioButtonSpecular_toggled(bool checked);
+
 private:
-    QImage image, normal, parallax;
+    QImage image, normal, parallax, specular;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;

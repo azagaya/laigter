@@ -3,14 +3,13 @@
 #include <QDebug>
 #include <QOpenGLVertexArrayObject>
 
-
-
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
     m_image = QImage(":/images/sample.png");
     normalMap = QImage(":/images/sample_n.png");
     parallaxMap = QImage(":/images/sample_p.png");
+    specularMap = QImage(":/images/sample_p.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     specColor = QVector3D(0.0,1,0.7);
@@ -28,6 +27,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     tileY = false;
     m_pixelated = false;
     lightSelected = false;
+
+    pixelSize = 3;
 }
 
 void OpenGlWidget::initializeGL()
@@ -80,6 +81,7 @@ void OpenGlWidget::initializeGL()
     pixelsX = m_image.width();
     pixelsY = m_image.height();
     m_parallaxTexture = new QOpenGLTexture(parallaxMap);
+    m_specularTexture = new QOpenGLTexture(specularMap);
     m_normalTexture = new QOpenGLTexture(normalMap);
     laigterTexture = new QOpenGLTexture(laigter);
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -127,8 +129,6 @@ void OpenGlWidget::paintGL()
     m_program.bind();
 
     VAO.bind();
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     if (tileX || tileY){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -136,6 +136,14 @@ void OpenGlWidget::paintGL()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
+
+    int i1 = m_pixelated ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("light",m_light);
     m_texture->bind(0);
@@ -143,20 +151,38 @@ void OpenGlWidget::paintGL()
     m_program.setUniformValue("transform",transform);
     m_program.setUniformValue("pixelsX",pixelsX);
     m_program.setUniformValue("pixelsY",pixelsY);
+    m_program.setUniformValue("pixelSize",pixelSize);
     m_program.setUniformValue("pixelated",m_pixelated);
     scaleX = tileX ? sx : 1;
     scaleY = tileY ? sy : 1;
     zoomX = tileX ? m_zoom : 1;
     zoomY = tileY ? m_zoom : 1;
     m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (tileX || tileY){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }else{
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    }
+
+    i1 = m_pixelated ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+    i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
     glActiveTexture(GL_TEXTURE1);
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap",1);
 
     m_parallaxTexture->bind(2);
     m_program.setUniformValue("parallaxMap",2);
+
+    m_specularTexture->bind(3);
+    m_program.setUniformValue("specularMap",3);
+
     //m_program.setUniformValue("viewPos",lightPosition);
     m_program.setUniformValue("viewPos",QVector3D(0,0,1));
     m_program.setUniformValue("parallax",m_parallax);
@@ -189,6 +215,7 @@ void OpenGlWidget::paintGL()
         laigterTexture->bind(0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
         glActiveTexture(GL_TEXTURE0);
         lightProgram.setUniformValue("texture",0);
         lightProgram.setUniformValue("lightColor",lightColor);
@@ -231,6 +258,13 @@ void OpenGlWidget::setParallaxMap(QImage image){
     m_parallaxTexture->destroy();
     m_parallaxTexture->create();
     m_parallaxTexture->setData(parallaxMap);
+}
+
+void OpenGlWidget::setSpecularMap(QImage image){
+    specularMap = image;
+    m_specularTexture->destroy();
+    m_specularTexture->create();
+    m_specularTexture->setData(specularMap);
 }
 
 void OpenGlWidget::setZoom(float zoom){
@@ -388,6 +422,10 @@ void OpenGlWidget::setAmbientIntensity(float intensity){
 void OpenGlWidget::setPixelated(bool pixelated){
     m_pixelated = pixelated;
     update();
+}
+
+void OpenGlWidget::setPixelSize(int size){
+    pixelSize = size;
 }
 
 

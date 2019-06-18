@@ -26,6 +26,12 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     parallax_contrast = 1;
     parallax_erode_dilate = 1;
 
+    specular_blur = 10;
+    specular_bright = 0;
+    specular_contrast = 1;
+    specular_thresh = 127;
+    specular_thresh = false;
+
     settings.tileable = &tileable;
     settings.gradient_end = &gradient_end;
     settings.parallax_max = &parallax_max;
@@ -48,6 +54,8 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.normal_blur_radius = &normal_blur_radius;
     settings.normal_bisel_distance = &normal_bisel_distance;
     settings.normal_bisel_blur_radius = &normal_bisel_blur_radius;
+
+    settings.specular_blur = &specular_blur;
 
 }
 
@@ -109,12 +117,13 @@ void ImageProcessor::calculate(){
 
     calculate_distance();
 
-
     calculate_heightmap();
 
     generate_normal_map();
 
     calculate_parallax();
+
+    calculate_specular();
 
 
 }
@@ -143,6 +152,32 @@ void ImageProcessor::calculate_parallax(){
                        current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
     processed(pa,ProcessedImage::Parallax);
 }
+
+void ImageProcessor::calculate_specular(){
+    Mat p = modify_specular();
+
+    Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
+    if(tileable && p.rows == m_img.rows*3){
+        p(rect).copyTo(current_specular);
+    }else{
+        p.copyTo(current_specular);
+    }
+
+    switch (current_specular.channels()) {
+    case 3:
+        cvtColor(current_specular,current_specular,COLOR_RGB2GRAY);
+        break;
+    case 4:
+        cvtColor(current_specular,current_specular,COLOR_RGBA2GRAY);
+        break;
+
+    }
+
+    QImage pa = QImage(static_cast<unsigned char *>(current_specular.data),
+                       current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
+    processed(pa,ProcessedImage::Specular);
+}
+
 void ImageProcessor::calculate_heightmap(){
     cvtColor(current_heightmap, m_gray,COLOR_RGBA2GRAY);
     if(m_gray.type() != CV_32FC1)
@@ -456,7 +491,10 @@ Mat ImageProcessor::modify_parallax(){
         break;
     case ParallaxType::HeightMap:
         current_heightmap.copyTo(m);
-        m.convertTo(m,-1,parallax_contrast,parallax_brightness);
+        cvtColor(m,m,CV_RGBA2GRAY);
+        m.convertTo(m,CV_32F,1/255.0,-0.5);
+        m.convertTo(m,-1,parallax_contrast,0.5);
+        m.convertTo(m,CV_8U,255,parallax_brightness);
         GaussianBlur(m,m,Size(parallax_soft*2+1,parallax_soft*2+1),0,0);
         if (threshType == THRESH_BINARY_INV){
             subtract(Scalar::all(255),m,m) ;
@@ -479,6 +517,23 @@ Mat ImageProcessor::modify_parallax(){
         }
         break;
     }
+    return m;
+}
+
+Mat ImageProcessor::modify_specular(){
+    Mat m;
+
+        current_heightmap.copyTo(m);
+        cvtColor(m,m,CV_RGBA2GRAY);
+        m.convertTo(m,CV_32F,1/255.0,-specular_thresh/255.0);
+        m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
+        m.convertTo(m,CV_8U,255,specular_bright);
+        GaussianBlur(m,m,Size(specular_blur*2+1,specular_blur*2+1),0,0);
+
+        if (specular_invert){
+            subtract(Scalar::all(255),m,m) ;
+        }
+
     return m;
 }
 
@@ -618,19 +673,22 @@ QImage ImageProcessor::get_parallax(){
                   current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
 }
 
+QImage ImageProcessor::get_specular(){
+    return QImage(static_cast<unsigned char *>(current_specular.data),
+                  current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
+}
+
 bool ImageProcessor::get_parallax_invert(){
     return parallax_invert;
 }
 
 void ImageProcessor::set_parallax_invert(bool invert){
     parallax_invert = invert;
-    modify_parallax();
     calculate_parallax();
 }
 
 void ImageProcessor::set_parallax_focus(int focus){
     parallax_focus = focus;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -640,7 +698,6 @@ int ImageProcessor::get_parallax_focus(){
 
 void ImageProcessor::set_parallax_soft(int soft){
     parallax_soft = soft;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -654,7 +711,6 @@ int ImageProcessor::get_parallax_thresh(){
 
 void ImageProcessor::set_parallax_thresh(int thresh){
     parallax_max = thresh;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -664,7 +720,6 @@ int ImageProcessor::get_parallax_min(){
 
 void ImageProcessor::set_parallax_min(int min){
     parallax_min = min;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -674,7 +729,6 @@ ParallaxType ImageProcessor::get_parallax_type(){
 
 void ImageProcessor::set_parallax_type(ParallaxType ptype){
     parallax_type = ptype;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -684,13 +738,11 @@ int ImageProcessor::get_parallax_quantization(){
 
 void ImageProcessor::set_parallax_quantization(int q){
     parallax_quantization = q;
-    modify_parallax();
     calculate_parallax();
 }
 
 void ImageProcessor::set_parallax_erode_dilate(int value){
     parallax_erode_dilate = value;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -700,7 +752,6 @@ int ImageProcessor::get_parallax_erode_dilate(){
 
 void ImageProcessor::set_parallax_contrast(int contrast){
     parallax_contrast = contrast / 1000.0;
-    modify_parallax();
     calculate_parallax();
 }
 
@@ -710,13 +761,53 @@ double ImageProcessor::get_parallax_contrast(){
 
 void ImageProcessor::set_parallax_brightness(int brightness){
     parallax_brightness = brightness;
-    modify_parallax();
     calculate_parallax();
 }
 
 int ImageProcessor::get_parallax_brightness(){
     return parallax_brightness;
 }
+
+void ImageProcessor::set_specular_blur(int blur){
+    specular_blur = blur;
+    calculate_specular();
+}
+int ImageProcessor::get_specular_blur(){
+    return specular_blur;
+}
+
+void ImageProcessor::set_specular_bright(int bright){
+    specular_bright = bright;
+    calculate_specular();
+}
+int ImageProcessor::get_specular_bright(){
+    return specular_bright;
+}
+
+void ImageProcessor::set_specular_invert(bool invert){
+    specular_invert = invert;
+    calculate_specular();
+}
+bool ImageProcessor::get_specular_invert(){
+    return  specular_invert;
+}
+
+void ImageProcessor::set_specular_thresh(int thresh){
+    specular_thresh = thresh;
+    calculate_specular();
+}
+int ImageProcessor::get_specular_trhesh(){
+    return specular_thresh;
+}
+
+void ImageProcessor::set_specular_contrast(int contrast){
+    specular_contrast = contrast/1000.0;
+    calculate_specular();
+}
+double ImageProcessor::get_specular_contrast(){
+    return specular_contrast;
+}
+
 
 ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *tileable = *(other.tileable);

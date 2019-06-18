@@ -17,7 +17,8 @@ enum class ProcessedImage
 {
     Raw,
     Normal,
-    Parallax
+    Parallax,
+    Specular
 };
 
 enum class ParallaxType
@@ -41,6 +42,12 @@ public:
     double *parallax_contrast;
     int *parallax_erode_dilate;
     ParallaxType *parallax_type;
+
+    int *specular_thresh;
+    double *specular_contrast;
+    int *specular_bright;
+    int *specular_blur;
+    bool *specular_invert;
 
     int *normal_depth;
     int *normal_bisel_depth;
@@ -66,16 +73,19 @@ public:
     void calculate_heightmap();
     Mat modify_distance();
     Mat modify_parallax();
+    Mat modify_specular();
     void set_name(QString name);
     QString get_name();
     bool busy;
     QString m_fileName;
     QImage get_texture();
     QImage get_normal();
-    QImage get_parallax();
+    QImage get_parallax();    
+    QImage get_specular();
     void update();
     void calculate();
     void calculate_parallax();
+    void calculate_specular();
 
 signals:
     void processed(QImage image, ProcessedImage type);
@@ -121,6 +131,18 @@ public slots:
     void set_parallax_brightness(int brightness);
     double get_parallax_contrast();
     void set_parallax_contrast(int contrast);
+    
+    void set_specular_invert(bool invert);
+    bool get_specular_invert();
+    void set_specular_thresh(int thresh);
+    int get_specular_trhesh();
+    void set_specular_contrast(int contrast);
+    double get_specular_contrast();
+    void set_specular_bright(int bright);
+    int get_specular_bright();
+    void set_specular_blur(int blur);
+    int get_specular_blur();
+    
 
     ProcessorSettings get_settings();
 
@@ -153,9 +175,17 @@ private:
     Mat new_distance;
     Mat m_heightmap;
     Mat m_parallax;
+    Mat m_specular;
     Mat current_heightmap;
     Mat neighbours;
     Mat m_aux;
+
+    Mat current_specular;
+    int specular_thresh;
+    int specular_bright;
+    double specular_contrast;
+    int specular_blur;
+    bool specular_invert;
 
     Mat current_parallax;
     int parallax_min;
