@@ -186,7 +186,7 @@ void MainWindow::open_files(QStringList fileNames){
                 msgBox.exec();
                 continue;
             }
-            auximage = auximage.convertToFormat(QImage::Format_RGBA8888);
+            auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
             int i;
             for(i = 0; i < ui->listWidget->count(); i++){
                 if (ui->listWidget->item(i)->text() == fileName){
