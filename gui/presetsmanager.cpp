@@ -6,12 +6,14 @@
 #include <QDir>
 #include <QDebug>
 
-static QString presetCodes[19] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight ",
+static QString presetCodes[23] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight ",
                                   "BumpDistance", "BumpSoft ", "BumpCut ", "Tile ", "InvertX ",
                                   "InvertY ", "ParallaxType", "BinaryThreshold ",
                                   "BinaryFocus ", "ParallaxSoft ", "BinaryMinHeight ",
                                   "BinaryErodeDilate ", "HeightMapBrightness ",
-                                  "HeightMapContrast ", "InvertParallax "};
+                                  "HeightMapContrast ", "InvertParallax ", "SpecularBlur ",
+                                 "SpecularBright ", "SpecularContrast ", "SpecularThresh ",
+                                 "SpecularInvert "};
 
 PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor*> *processorList, QWidget *parent) :
     QDialog(parent),
@@ -53,6 +55,11 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     currentValues[15] = QString::number(*mSettings.parallax_brightness);
     currentValues[16] = QString::number(*mSettings.parallax_contrast*1000);
     currentValues[17] = QString::number(*mSettings.parallax_invert);
+    currentValues[18] = QString::number(*mSettings.specular_blur);
+    currentValues[19] = QString::number(*mSettings.specular_bright);
+    currentValues[20] = QString::number(*mSettings.specular_contrast*1000);
+    currentValues[21] = QString::number(*mSettings.specular_thresh);
+    currentValues[22] = *mSettings.specular_invert ? "1" : "0";
 
     ui->listWidgetTextures->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
@@ -209,6 +216,16 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
                 p->set_parallax_contrast(aux[1].toInt());
             }else if (aux[0] == presetCodes[17]){
                 p->set_parallax_invert((bool)aux[1].toInt());
+            }else if (aux[0] == presetCodes[18]){
+                p->set_specular_blur(aux[1].toInt());
+            }else if (aux[0] == presetCodes[19]){
+                p->set_specular_bright(aux[1].toInt());
+            }else if (aux[0] == presetCodes[20]){
+                p->set_specular_contrast(aux[1].toInt());
+            }else if (aux[0] == presetCodes[21]){
+                p->set_specular_thresh(aux[1].toInt());
+            }else if (aux[0] == presetCodes[22]){
+                p->set_specular_invert((bool)aux[1].toInt());
             }
         }
     }

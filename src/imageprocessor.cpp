@@ -30,7 +30,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     specular_bright = 0;
     specular_contrast = 1;
     specular_thresh = 127;
-    specular_thresh = false;
+    specular_invert = false;
 
     settings.tileable = &tileable;
     settings.gradient_end = &gradient_end;
@@ -56,6 +56,10 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.normal_bisel_blur_radius = &normal_bisel_blur_radius;
 
     settings.specular_blur = &specular_blur;
+    settings.specular_bright = &specular_bright;
+    settings.specular_invert = &specular_invert;
+    settings.specular_thresh = &specular_thresh;
+    settings.specular_contrast = &specular_contrast;
 
 }
 
