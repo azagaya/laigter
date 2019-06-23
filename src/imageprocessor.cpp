@@ -100,10 +100,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image){
     neighbours = Mat::zeros(m_img.rows*3,m_img.cols*3,m_img.type());
 
     m_img.copyTo(m_heightmap);
-
-
-    set_current_heightmap();
-
+    m_img.copyTo(m_specular);
 
     fill_neighbours(m_heightmap,neighbours);
 
@@ -527,7 +524,7 @@ Mat ImageProcessor::modify_parallax(){
 Mat ImageProcessor::modify_specular(){
     Mat m;
 
-        current_heightmap.copyTo(m);
+        m_specular.copyTo(m);
         cvtColor(m,m,CV_RGBA2GRAY);
         m.convertTo(m,CV_32F,1/255.0,-specular_thresh/255.0);
         m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
