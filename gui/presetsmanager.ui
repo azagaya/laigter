@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>865</width>
+    <width>644</width>
     <height>448</height>
    </rect>
   </property>
@@ -175,207 +175,6 @@
       <string>Guardar Preset Actual:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0" colspan="3">
-       <widget class="QListWidget" name="listWidgetControls">
-        <item>
-         <property name="text">
-          <string>Realzar → Altura</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Realzar → Suavizado</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bisel → Altura</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bisel → Distancia</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bisel → Suavizado</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bisel → Corte</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Mosaico</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Invertir x</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Invertir y</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Tipo de paralaje</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Binario → Umbral</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Binario → Enfoque</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Suavizado del Paralaje</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Binario → Altura mínima</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Binario → Erosión / Dilatación</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Mapa de Altura → Brillo</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Mapa de Altura → Contraste</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Invertir Paralaje</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Especular → Suavizado</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Especular → Brillo</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Especular → Contraste</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Especular → Umbral</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Especular → Invertir</string>
-         </property>
-         <property name="checkState">
-          <enum>Checked</enum>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QPushButton" name="pushButtonSavePreset">
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Guardar</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="sizePolicy">
@@ -392,402 +191,405 @@
       <item row="0" column="1" colspan="2">
        <widget class="QLineEdit" name="lineEditPresetName"/>
       </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="checkBoxAllPresets">
-        <property name="text">
-         <string>Todo</string>
+      <item row="1" column="0" colspan="3">
+       <widget class="QTreeWidget" name="treeWidget">
+        <column>
+         <property name="text">
+          <string>Controles</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Código</string>
+         </property>
+        </column>
+        <item>
+         <property name="text">
+          <string>Normal</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+         <item>
+          <property name="text">
+           <string>Realzar</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+          <item>
+           <property name="text">
+            <string>Altura</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Suavizado</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>1</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Bisel</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+          <item>
+           <property name="text">
+            <string>Altura</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Distancia</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>3</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Suavizado</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Corte</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>5</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Invertir</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+          <item>
+           <property name="text">
+            <string>Eje x</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>7</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Eje y</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>8</string>
+           </property>
+          </item>
+         </item>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mozaico</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+         <property name="text">
+          <string>6</string>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Paralaje</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+         <item>
+          <property name="text">
+           <string>Tipo</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>9</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Binario</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+          <item>
+           <property name="text">
+            <string>Umbral</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>10</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Enfoque</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>11</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Altura Mínima</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>13</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Erosión / Dilatación</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>14</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Suavizado</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>12</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mapa de Altura</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+          <item>
+           <property name="text">
+            <string>Brillo</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>15</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Contraste</string>
+           </property>
+           <property name="checkState">
+            <enum>Checked</enum>
+           </property>
+           <property name="text">
+            <string>16</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Invertir</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>17</string>
+          </property>
+         </item>
+        </item>
+        <item>
+         <property name="text">
+          <string>Especular</string>
+         </property>
+         <property name="checkState">
+          <enum>Checked</enum>
+         </property>
+         <property name="flags">
+          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+         </property>
+         <item>
+          <property name="text">
+           <string>Suavizado</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>18</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Brillo</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>19</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Contraste</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>20</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Umbral</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>21</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Invertir</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+          <property name="text">
+           <string>22</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          </property>
+         </item>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonSavePreset">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
         </property>
-        <property name="checked">
-         <bool>true</bool>
+        <property name="text">
+         <string>Guardar</string>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QTreeWidget" name="treeWidget">
-     <column>
-      <property name="text">
-       <string>Controles</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Código</string>
-      </property>
-     </column>
-     <item>
-      <property name="text">
-       <string>Normal</string>
-      </property>
-      <property name="checkState">
-       <enum>Checked</enum>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-      </property>
-      <item>
-       <property name="text">
-        <string>Realzar</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-       <item>
-        <property name="text">
-         <string>Altura</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Suavizado</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>Bisel</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-       <item>
-        <property name="text">
-         <string>Altura</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Distancia</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Suavizado</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Corte</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>5</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>Invertir</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-       <item>
-        <property name="text">
-         <string>Eje x</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>7</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Eje y</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>8</string>
-        </property>
-       </item>
-      </item>
-     </item>
-     <item>
-      <property name="text">
-       <string>Mozaico</string>
-      </property>
-      <property name="checkState">
-       <enum>Checked</enum>
-      </property>
-      <property name="text">
-       <string>6</string>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Paralaje</string>
-      </property>
-      <property name="checkState">
-       <enum>Checked</enum>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-      </property>
-      <item>
-       <property name="text">
-        <string>Tipo</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>9</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Binario</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-       <item>
-        <property name="text">
-         <string>Umbral</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>10</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Enfoque</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>11</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Altura Mínima</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>13</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Erosión / Dilatación</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>14</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>Suavizado</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>12</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Mapa de Altura</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-       <item>
-        <property name="text">
-         <string>Brillo</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>15</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Contraste</string>
-        </property>
-        <property name="checkState">
-         <enum>Checked</enum>
-        </property>
-        <property name="text">
-         <string>16</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text">
-        <string>Invertir</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>17</string>
-       </property>
-      </item>
-     </item>
-     <item>
-      <property name="text">
-       <string>Especular</string>
-      </property>
-      <property name="checkState">
-       <enum>Checked</enum>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-      </property>
-      <item>
-       <property name="text">
-        <string>Suavizado</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>18</string>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Brillo</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>19</string>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Contraste</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>20</string>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Umbral</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>21</string>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Invertir</string>
-       </property>
-       <property name="checkState">
-        <enum>Checked</enum>
-       </property>
-       <property name="text">
-        <string>22</string>
-       </property>
-       <property name="flags">
-        <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-       </property>
-      </item>
-     </item>
     </widget>
    </item>
   </layout>

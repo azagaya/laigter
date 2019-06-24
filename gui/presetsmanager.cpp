@@ -12,8 +12,8 @@ static QString presetCodes[23] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight 
                                   "BinaryFocus ", "ParallaxSoft ", "BinaryMinHeight ",
                                   "BinaryErodeDilate ", "HeightMapBrightness ",
                                   "HeightMapContrast ", "InvertParallax ", "SpecularBlur ",
-                                 "SpecularBright ", "SpecularContrast ", "SpecularThresh ",
-                                 "SpecularInvert "};
+                                  "SpecularBright ", "SpecularContrast ", "SpecularThresh ",
+                                  "SpecularInvert "};
 
 PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor*> *processorList, QWidget *parent) :
     QDialog(parent),
@@ -35,7 +35,7 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     foreach(ImageProcessor *p, *mProcessorList){
         ui->listWidgetTextures->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(p->get_neighbour(1,1))),p->get_name()));
     }
-    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
+    //    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
 
     currentValues[0] = QString::number(*mSettings.normal_depth);
     currentValues[1] = QString::number(*mSettings.normal_blur_radius);
@@ -101,48 +101,56 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
 
     if (preset.open(QIODevice::WriteOnly)){
 
+        QTextStream in(&preset);
+
+        in << "[Laigter Preset]";
+
         QTreeWidgetItemIterator it(ui->treeWidget);
         while (*it) {
-            qDebug() << (*it)->text(0);
+            if ((*it)->checkState(0) == Qt::Checked){
+                QString code = (*it)->text(1);
+                if (code != ""){
+                    int i = (*it)->text(1).toInt();
+                    in << "\n" << presetCodes[i] << "\t" << currentValues[i];
+                }
+            }
             ++it;
         }
 
-        QTextStream in(&preset);
-        in << "[Laigter Preset]";
-        for (int i=0; i < ui->listWidgetControls->count(); i++){
-            if(ui->listWidgetControls->item(i)->checkState() == Qt::Checked){
-                in << "\n" << presetCodes[i] << "\t" << currentValues[i];
-            }
-        }
+        //        for (int i=0; i < ui->listWidgetControls->count(); i++){
+        //            if(ui->listWidgetControls->item(i)->checkState() == Qt::Checked){
+        //                in << "\n" << presetCodes[i] << "\t" << currentValues[i];
+        //            }
+        //        }
 
         preset.close();
         update_presets();
     }
 }
 
-void PresetsManager::control_checkbox_state_changed(int state){
-    for (int i=0; i< ui->listWidgetControls->count(); i++){
-        ui->listWidgetControls->item(i)->setCheckState((Qt::CheckState)state);
-    }
-}
+//void PresetsManager::control_checkbox_state_changed(int state){
+//    for (int i=0; i< ui->listWidgetControls->count(); i++){
+//        ui->listWidgetControls->item(i)->setCheckState((Qt::CheckState)state);
+//    }
+//}
 
-void PresetsManager::on_listWidgetControls_itemChanged(QListWidgetItem *item)
-{
-    bool checked = item->checkState() == Qt::Checked ? true : false;
-    disconnect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
-    if (!checked){
-        ui->checkBoxAllPresets->setChecked(false);
+//void PresetsManager::on_listWidgetControls_itemChanged(QListWidgetItem *item)
+//{
+//    bool checked = item->checkState() == Qt::Checked ? true : false;
+//    disconnect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
+//    if (!checked){
+//        ui->checkBoxAllPresets->setChecked(false);
 
-    } else {
-        for (int i=0; i < ui->listWidgetControls->count(); i++){
-            checked &= ui->listWidgetControls->item(i)->checkState() == Qt::Checked;
-            if (!checked)
-                break;
-        }
-        ui->checkBoxAllPresets->setChecked(checked);
-    }
-    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
-}
+//    } else {
+//        for (int i=0; i < ui->listWidgetControls->count(); i++){
+//            checked &= ui->listWidgetControls->item(i)->checkState() == Qt::Checked;
+//            if (!checked)
+//                break;
+//        }
+//        ui->checkBoxAllPresets->setChecked(checked);
+//    }
+//    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
+//}
 
 void PresetsManager::on_pushButtonDeletePreset_clicked()
 {
