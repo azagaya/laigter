@@ -29,6 +29,11 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     lightSelected = false;
 
     pixelSize = 3;
+
+    QSurfaceFormat format;
+    format.setSamples(16);
+
+    setFormat(format);
 }
 
 void OpenGlWidget::initializeGL()
