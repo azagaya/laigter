@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
     currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
     currentSpecColor = QVector3D(0.0,1.0,0.7);
+    currentSpecBaseColor = QVector3D(0,0,0);
 
     bool success;
     image = il.loadImage(":/images/sample.png",&success);
@@ -90,6 +91,10 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
     contextMenu.addSeparator();
     contextMenu.addAction(new QAction(tr("Cargar mapa de altura")));
     contextMenu.addAction(new QAction(tr("Reiniciar mapa de altura")));
+    contextMenu.addSeparator();
+    contextMenu.addAction(new QAction(tr("Cargar mapa especular")));
+    contextMenu.addAction(new QAction(tr("Reiniciar mapa especular")));
+
     connect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
 
     contextMenu.exec(ui->listWidget->mapToGlobal(pos));
@@ -117,7 +122,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             bool success;
             QImage height = il.loadImage(fileName, &success);
             if (!success) return;
-            height = height.convertToFormat(QImage::Format_RGBA8888);
+            height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
             processor->loadHeightMap(fileName, height);
         }
@@ -125,8 +130,30 @@ void MainWindow::list_menu_action_triggered(QAction *action){
     else if (action->text() == tr("Reiniciar mapa de altura")){
         bool succes;
         QImage height = il.loadImage(processor->get_name(),&succes);
-        height = height.convertToFormat(QImage::Format_RGBA8888);
-        processor->loadImage(processor->get_name(),il.loadImage(processor->get_name(),&succes));
+        height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        processor->loadImage(processor->get_name(),height);
+    }
+    else if (action->text() == tr("Cargar mapa especular")){
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr("Abrir Imagen"), "",
+                                                        tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+
+        if (fileName != nullptr){
+            bool success;
+            QImage spec = il.loadImage(fileName, &success);
+            if (!success) return;
+            spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+
+            processor->loadSpecularMap(fileName, spec);
+        }
+
+    }
+    else if (action->text() == tr("Reiniciar mapa especular")){
+        bool succes;
+        QImage specular = il.loadImage(processor->get_name(),&succes);
+        specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        processor->loadSpecularMap(processor->get_name(),specular);
+
     }
 
 }
@@ -709,13 +736,13 @@ void MainWindow::on_actionPresets_triggered()
 
 void MainWindow::on_pushButtonColorSpec_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
+    QColor color = QColorDialog::getColor(QColor(currentSpecColor.x()*255,currentSpecColor.y()*255,currentSpecColor.z()*255));
     if (color.isValid()){
-        currentColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        currentSpecColor = QVector3D(color.redF(),color.greenF(),color.blueF());
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
-        ui->openGLPreviewWidget->setSpecColor(currentColor);
+        ui->openGLPreviewWidget->setSpecColor(currentSpecColor);
     }
 }
 
@@ -728,4 +755,3 @@ void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value)
 {
     ui->openGLPreviewWidget->setSpecScatter(value);
 }
-

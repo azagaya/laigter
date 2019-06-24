@@ -108,7 +108,7 @@ private:
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
     ImageProcessor *sample_processor;
-    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor;
+    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
     ImageLoader il;

@@ -66,6 +66,7 @@ public:
     explicit ImageProcessor(QObject *parent = nullptr);
     int loadImage(QString fileName, QImage image);
     int loadHeightMap(QString fileName, QImage height);
+    int loadSpecularMap(QString fileName, QImage specular);
     void generate_normal_map();
     Mat calculate_normal(Mat mat, int depth, int blur_radius);
     void calculate_gradient();
@@ -142,6 +143,9 @@ public slots:
     int get_specular_bright();
     void set_specular_blur(int blur);
     int get_specular_blur();
+    void set_specular_base_color(Vec4b color);
+    Vec4b get_specular_base_color();
+
     
 
     ProcessorSettings get_settings();
@@ -186,6 +190,7 @@ private:
     double specular_contrast;
     int specular_blur;
     bool specular_invert;
+    Vec4b specular_base_color;
 
     Mat current_parallax;
     int parallax_min;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>1196</height>
+    <height>1210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -782,8 +782,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>239</width>
-          <height>96</height>
+          <width>260</width>
+          <height>88</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1100,13 +1100,6 @@ QDockWidget::title{
         <string>Controles:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_19">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_15">
-          <property name="text">
-           <string>Umbral:</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QSlider" name="sliderSpecThresh">
           <property name="maximum">
@@ -1120,10 +1113,17 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_17">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Brillo:</string>
+           <string>Umbral:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Contraste:</string>
           </property>
          </widget>
         </item>
@@ -1137,36 +1137,6 @@ QDockWidget::title{
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Contraste:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSlider" name="sliderSpecContrast">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>4000</number>
-          </property>
-          <property name="value">
-           <number>1000</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Suavizado:</string>
           </property>
          </widget>
         </item>
@@ -1199,10 +1169,40 @@ QDockWidget::title{
           </property>
          </spacer>
         </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Brillo:</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="1">
          <widget class="QCheckBox" name="checkBoxSpecInvert">
           <property name="text">
            <string>Invertir</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>Suavizado:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSlider" name="sliderSpecContrast">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>4000</number>
+          </property>
+          <property name="value">
+           <number>1000</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>

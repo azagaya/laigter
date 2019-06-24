@@ -31,6 +31,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     specular_contrast = 1;
     specular_thresh = 127;
     specular_invert = false;
+    specular_base_color = Vec4b(0,0,0,0);
 
     settings.tileable = &tileable;
     settings.gradient_end = &gradient_end;
@@ -274,6 +275,48 @@ QImage ImageProcessor::get_neighbour(int x, int y){
                      m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
     return p;
 
+}
+
+int ImageProcessor::loadSpecularMap(QString fileName, QImage specular){
+
+    //m_heightmap = imread(fileName.toStdString(),-1);
+    m_specular = Mat(specular.height(),specular.width(),CV_8UC4,specular.scanLine(0));
+
+    int aux = m_specular.depth();
+    switch (aux) {
+    case CV_8S:
+        m_specular.convertTo(m_specular,CV_8U,0,128);
+        break;
+    case CV_16U:
+        m_specular.convertTo(m_specular,CV_8U,1/255.0);
+        break;
+    case CV_16S:
+        m_specular.convertTo(m_specular,CV_8U,1/255.0,128);
+        break;
+    case CV_32S:
+        m_specular.convertTo(m_specular,CV_8U,1/255.0/255.0,128);
+        break;
+    case CV_32F:
+    case CV_64F:
+        m_specular.convertTo(m_specular,CV_8U,255);
+        break;
+    }
+
+    if (m_specular.channels() < 4){
+        if (m_specular.channels() == 3){
+            cvtColor(m_specular,m_specular,COLOR_RGB2RGBA);
+        }
+        else{
+            cvtColor(m_specular,m_specular,COLOR_GRAY2RGBA);
+        }
+    }
+    //cvtColor(m_specular,m_specular,COLOR_RGBA2BGRA);
+    cv::resize(m_specular,m_specular,m_img.size()*2);
+    cv::resize(m_specular,m_specular,m_img.size());
+
+    calculate();
+
+    return 0;
 }
 
 int ImageProcessor::loadHeightMap(QString fileName, QImage height){
@@ -525,8 +568,11 @@ Mat ImageProcessor::modify_specular(){
     Mat m;
 
         m_specular.copyTo(m);
+
+        m.convertTo(m,CV_32F,1/255.0);
+        m = abs(m-specular_base_color/255.0);
         cvtColor(m,m,CV_RGBA2GRAY);
-        m.convertTo(m,CV_32F,1/255.0,-specular_thresh/255.0);
+        m.convertTo(m,-1,1,-specular_thresh/255.0);
         m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
         m.convertTo(m,CV_8U,255,specular_bright);
         GaussianBlur(m,m,Size(specular_blur*2+1,specular_blur*2+1),0,0);
@@ -809,6 +855,14 @@ double ImageProcessor::get_specular_contrast(){
     return specular_contrast;
 }
 
+void ImageProcessor::set_specular_base_color(Vec4b color){
+    specular_base_color = color;
+    calculate_specular();
+}
+
+Vec4b ImageProcessor::get_specular_base_color(){
+    return specular_base_color;
+}
 
 ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *tileable = *(other.tileable);
