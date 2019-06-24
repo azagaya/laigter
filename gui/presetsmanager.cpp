@@ -62,6 +62,8 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     currentValues[22] = *mSettings.specular_invert ? "1" : "0";
 
     ui->listWidgetTextures->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    ui->treeWidget->setColumnHidden(1,true);
 }
 
 void PresetsManager::update_presets(){
@@ -98,6 +100,12 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
     }
 
     if (preset.open(QIODevice::WriteOnly)){
+
+        QTreeWidgetItemIterator it(ui->treeWidget);
+        while (*it) {
+            qDebug() << (*it)->text(0);
+            ++it;
+        }
 
         QTextStream in(&preset);
         in << "[Laigter Preset]";
