@@ -27,10 +27,6 @@ private slots:
     void update_presets();
     QStringList scan_presets();
 
-//    void control_checkbox_state_changed(int state);
-
-//    void on_listWidgetControls_itemChanged(QListWidgetItem *item);
-
     void on_pushButtonDeletePreset_clicked();
 
     void on_pushButtonAplyPreset_clicked();

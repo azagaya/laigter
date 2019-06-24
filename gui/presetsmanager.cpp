@@ -35,7 +35,6 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     foreach(ImageProcessor *p, *mProcessorList){
         ui->listWidgetTextures->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(p->get_neighbour(1,1))),p->get_name()));
     }
-    //    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
 
     currentValues[0] = QString::number(*mSettings.normal_depth);
     currentValues[1] = QString::number(*mSettings.normal_blur_radius);
@@ -117,40 +116,11 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
             ++it;
         }
 
-        //        for (int i=0; i < ui->listWidgetControls->count(); i++){
-        //            if(ui->listWidgetControls->item(i)->checkState() == Qt::Checked){
-        //                in << "\n" << presetCodes[i] << "\t" << currentValues[i];
-        //            }
-        //        }
-
         preset.close();
         update_presets();
     }
 }
 
-//void PresetsManager::control_checkbox_state_changed(int state){
-//    for (int i=0; i< ui->listWidgetControls->count(); i++){
-//        ui->listWidgetControls->item(i)->setCheckState((Qt::CheckState)state);
-//    }
-//}
-
-//void PresetsManager::on_listWidgetControls_itemChanged(QListWidgetItem *item)
-//{
-//    bool checked = item->checkState() == Qt::Checked ? true : false;
-//    disconnect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
-//    if (!checked){
-//        ui->checkBoxAllPresets->setChecked(false);
-
-//    } else {
-//        for (int i=0; i < ui->listWidgetControls->count(); i++){
-//            checked &= ui->listWidgetControls->item(i)->checkState() == Qt::Checked;
-//            if (!checked)
-//                break;
-//        }
-//        ui->checkBoxAllPresets->setChecked(checked);
-//    }
-//    connect(ui->checkBoxAllPresets,SIGNAL(stateChanged(int)),this,SLOT(control_checkbox_state_changed(int)));
-//}
 
 void PresetsManager::on_pushButtonDeletePreset_clicked()
 {
