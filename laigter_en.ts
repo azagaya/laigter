@@ -43,7 +43,7 @@
         <location filename="mainwindow.ui" line="140"/>
         <location filename="mainwindow.ui" line="225"/>
         <location filename="mainwindow.ui" line="933"/>
-        <location filename="mainwindow.ui" line="1169"/>
+        <location filename="mainwindow.ui" line="1189"/>
         <source>Suavizado:</source>
         <translation>Smooth:</translation>
     </message>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="919"/>
-        <location filename="mainwindow.ui" line="1106"/>
+        <location filename="mainwindow.ui" line="1119"/>
         <source>Umbral:</source>
         <translation>Threshold:</translation>
     </message>
@@ -292,13 +292,13 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="953"/>
-        <location filename="mainwindow.ui" line="1146"/>
+        <location filename="mainwindow.ui" line="1126"/>
         <source>Contraste:</source>
         <translation>Contrast:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="976"/>
-        <location filename="mainwindow.ui" line="1205"/>
+        <location filename="mainwindow.ui" line="1182"/>
         <source>Invertir</source>
         <translation>Invert</translation>
     </message>
@@ -309,7 +309,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="990"/>
-        <location filename="mainwindow.ui" line="1126"/>
+        <location filename="mainwindow.ui" line="1175"/>
         <source>Brillo:</source>
         <translation>Brightness:</translation>
     </message>
@@ -334,79 +334,93 @@
         <translation>Presets</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="88"/>
+        <location filename="mainwindow.cpp" line="89"/>
         <source>Context menu</source>
         <translation>Context menu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="89"/>
-        <location filename="mainwindow.cpp" line="100"/>
+        <location filename="mainwindow.cpp" line="90"/>
+        <location filename="mainwindow.cpp" line="105"/>
         <source>Quitar</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="91"/>
-        <location filename="mainwindow.cpp" line="111"/>
+        <location filename="mainwindow.cpp" line="92"/>
+        <location filename="mainwindow.cpp" line="116"/>
         <source>Cargar mapa de altura</source>
         <translation>Load height-map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="92"/>
-        <location filename="mainwindow.cpp" line="125"/>
+        <location filename="mainwindow.cpp" line="93"/>
+        <location filename="mainwindow.cpp" line="130"/>
         <source>Reiniciar mapa de altura</source>
         <translation>Reset height-map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="113"/>
-        <location filename="mainwindow.cpp" line="171"/>
+        <location filename="mainwindow.cpp" line="95"/>
+        <location filename="mainwindow.cpp" line="136"/>
+        <source>Cargar mapa especular</source>
+        <translation>Load specular map</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="96"/>
+        <location filename="mainwindow.cpp" line="151"/>
+        <source>Reiniciar mapa especular</source>
+        <translation>Reset specular map</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="118"/>
+        <location filename="mainwindow.cpp" line="138"/>
+        <location filename="mainwindow.cpp" line="198"/>
         <source>Abrir Imagen</source>
         <translation>Open Image</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="114"/>
-        <location filename="mainwindow.cpp" line="172"/>
+        <location filename="mainwindow.cpp" line="119"/>
+        <location filename="mainwindow.cpp" line="139"/>
+        <location filename="mainwindow.cpp" line="199"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="185"/>
+        <location filename="mainwindow.cpp" line="212"/>
         <source>Formato no soportado o incorrecto.</source>
         <translation>Incorrect or not supported format.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="185"/>
+        <location filename="mainwindow.cpp" line="212"/>
         <source>No se puede abrir </source>
         <translation>Cannot open </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="251"/>
+        <location filename="mainwindow.cpp" line="278"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="511"/>
-        <location filename="mainwindow.cpp" line="664"/>
+        <location filename="mainwindow.cpp" line="538"/>
+        <location filename="mainwindow.cpp" line="691"/>
         <source>Se exportaron todos los mapas normales. </source>
         <translation>All normal maps were exported. </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="521"/>
-        <location filename="mainwindow.cpp" line="677"/>
+        <location filename="mainwindow.cpp" line="548"/>
+        <location filename="mainwindow.cpp" line="704"/>
         <source>Se exportaron todos los mapas de paralaje. </source>
         <translation>All parallax map were exported. </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="531"/>
+        <location filename="mainwindow.cpp" line="558"/>
         <source>Se exportaron todos los mapas de especulares. </source>
         <translation>All specular maps were exported. </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="194"/>
+        <location filename="mainwindow.cpp" line="221"/>
         <source>La imagen ya se encuentra abierta en laigter.</source>
         <translation>The image is already opened in laigter.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="250"/>
+        <location filename="mainwindow.cpp" line="277"/>
         <source>Guardar Imagen</source>
         <translation>Save Image</translation>
     </message>
@@ -475,209 +489,429 @@
         <translation>Presets Manager</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="26"/>
+        <location filename="gui/presetsmanager.ui" line="175"/>
         <source>Guardar Preset Actual:</source>
         <translation>Save current preset:</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="239"/>
+        <location filename="gui/presetsmanager.ui" line="187"/>
         <source>Nombre:</source>
         <translation>Name:</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="33"/>
         <source>Realzar → Altura</source>
-        <translation>Enhance → Height</translation>
+        <translation type="vanished">Enhance → Height</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="41"/>
         <source>Realzar → Suavizado</source>
-        <translation>Enhance → Soft</translation>
+        <translation type="vanished">Enhance → Soft</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="49"/>
         <source>Bisel → Altura</source>
-        <translation>Bump → Height</translation>
+        <translation type="vanished">Bump → Height</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="57"/>
         <source>Bisel → Distancia</source>
-        <translation>Bump → Distance</translation>
+        <translation type="vanished">Bump → Distance</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="65"/>
         <source>Bisel → Suavizado</source>
-        <translation>Bump → Soft</translation>
+        <translation type="vanished">Bump → Soft</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="73"/>
         <source>Bisel → Corte</source>
-        <translation>Bump → Cut</translation>
+        <translation type="vanished">Bump → Cut</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="81"/>
         <source>Mosaico</source>
-        <translation>Tile</translation>
+        <translation type="vanished">Tile</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="89"/>
         <source>Invertir x</source>
-        <translation>Invert x</translation>
+        <translation type="vanished">Invert x</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="97"/>
         <source>Invertir y</source>
-        <translation>Invert y</translation>
+        <translation type="vanished">Invert y</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="105"/>
         <source>Tipo de paralaje</source>
-        <translation>Parallax Type</translation>
+        <translation type="vanished">Parallax Type</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="113"/>
         <source>Binario → Umbral</source>
-        <translation>Binary → Threshold</translation>
+        <translation type="vanished">Binary → Threshold</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="121"/>
         <source>Binario → Enfoque</source>
-        <translation>Binary → Focus</translation>
+        <translation type="vanished">Binary → Focus</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="129"/>
         <source>Suavizado del Paralaje</source>
         <oldsource>Binario → Suavizado</oldsource>
-        <translation>Parallax Soft</translation>
+        <translation type="vanished">Parallax Soft</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="137"/>
         <source>Binario → Altura mínima</source>
-        <translation>Binary → Min Height</translation>
+        <translation type="vanished">Binary → Min Height</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="145"/>
         <source>Binario → Erosión / Dilatación</source>
-        <translation>Binary → Erode / Dilate</translation>
+        <translation type="vanished">Binary → Erode / Dilate</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="153"/>
         <source>Mapa de Altura → Brillo</source>
         <oldsource>Mapa de Altura → Suavizado</oldsource>
-        <translation>HeightMap → Brightness</translation>
+        <translation type="vanished">HeightMap → Brightness</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="161"/>
         <source>Mapa de Altura → Contraste</source>
-        <translation>HeightMap → Contrast</translation>
+        <translation type="vanished">HeightMap → Contrast</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="169"/>
         <source>Invertir Paralaje</source>
-        <translation>Invert Parallax</translation>
+        <translation type="vanished">Invert Parallax</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="177"/>
         <source>Especular → Suavizado</source>
-        <translation>Specular → Soft</translation>
+        <translation type="vanished">Specular → Soft</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="185"/>
         <source>Especular → Brillo</source>
-        <translation>Specular → Bright</translation>
+        <translation type="vanished">Specular → Bright</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="193"/>
         <source>Especular → Contraste</source>
-        <translation>Specular → Contrast</translation>
+        <translation type="vanished">Specular → Contrast</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="201"/>
         <source>Especular → Umbral</source>
-        <translation>Specular → Threshold</translation>
+        <translation type="vanished">Specular → Threshold</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="209"/>
         <source>Especular → Invertir</source>
-        <translation>Specular → Invert</translation>
+        <translation type="vanished">Specular → Invert</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="226"/>
+        <location filename="gui/presetsmanager.ui" line="588"/>
         <source>Guardar</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="249"/>
         <source>Todo</source>
-        <translation>All</translation>
+        <translation type="vanished">All</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="268"/>
+        <location filename="gui/presetsmanager.ui" line="33"/>
         <source>Aplicar Preset:</source>
         <translation>Apply Preset:</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="280"/>
+        <location filename="gui/presetsmanager.ui" line="45"/>
         <source>Preset:</source>
         <translation>Preset:</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="309"/>
+        <location filename="gui/presetsmanager.ui" line="74"/>
         <source>Exportar</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="335"/>
+        <location filename="gui/presetsmanager.ui" line="100"/>
         <source>Importar</source>
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="355"/>
+        <location filename="gui/presetsmanager.ui" line="120"/>
         <source>Eliminar</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.ui" line="394"/>
+        <location filename="gui/presetsmanager.ui" line="159"/>
         <source>Aplicar</source>
         <translation>Apply</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="88"/>
+        <location filename="gui/presetsmanager.ui" line="198"/>
+        <source>Controles</source>
+        <translation>Controls</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="203"/>
+        <source>Código</source>
+        <translation>Code</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="208"/>
+        <source>Normal</source>
+        <translation>Normal</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="218"/>
+        <source>Realzar</source>
+        <translation>Enhance</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="231"/>
+        <location filename="gui/presetsmanager.ui" line="267"/>
+        <source>Altura</source>
+        <translation>Height</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="237"/>
+        <source>0</source>
+        <translation>0</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="242"/>
+        <location filename="gui/presetsmanager.ui" line="289"/>
+        <location filename="gui/presetsmanager.ui" line="442"/>
+        <location filename="gui/presetsmanager.ui" line="508"/>
+        <source>Suavizado</source>
+        <translation>Soft</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="248"/>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="254"/>
+        <source>Bisel</source>
+        <translation>Bump</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="273"/>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="278"/>
+        <source>Distancia</source>
+        <translation>Distance</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="284"/>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="295"/>
+        <source>4</source>
+        <translation>4</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="300"/>
+        <source>Corte</source>
+        <translation>Cut</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="306"/>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="312"/>
+        <location filename="gui/presetsmanager.ui" line="486"/>
+        <location filename="gui/presetsmanager.ui" line="564"/>
+        <source>Invertir</source>
+        <translation>Invert</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="325"/>
+        <source>Eje x</source>
+        <translation>X axis</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="331"/>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="336"/>
+        <source>Eje y</source>
+        <translation>Y axis</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="342"/>
+        <source>8</source>
+        <translation>8</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="349"/>
+        <source>Mozaico</source>
+        <translation>Tile</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="355"/>
+        <source>6</source>
+        <translation>6</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="363"/>
+        <source>Paralaje</source>
+        <translation>Parallax</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="373"/>
+        <source>Tipo</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="379"/>
+        <source>9</source>
+        <translation>9</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="384"/>
+        <source>Binario</source>
+        <translation>Binary</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="397"/>
+        <location filename="gui/presetsmanager.ui" line="550"/>
+        <source>Umbral</source>
+        <translation>Threshold</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="403"/>
+        <source>10</source>
+        <translation>10</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="408"/>
+        <source>Enfoque</source>
+        <translation>Focus</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="414"/>
+        <source>11</source>
+        <translation>11</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="419"/>
+        <source>Altura Mínima</source>
+        <translation>Minimum Height</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="425"/>
+        <source>13</source>
+        <translation>13</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="430"/>
+        <source>Erosión / Dilatación</source>
+        <translation>Erode / Dilate</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="436"/>
+        <source>14</source>
+        <translation>14</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="448"/>
+        <source>12</source>
+        <translation>12</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="453"/>
+        <source>Mapa de Altura</source>
+        <translation>Height Map</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="463"/>
+        <location filename="gui/presetsmanager.ui" line="522"/>
+        <source>Brillo</source>
+        <translation>Brightness</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="469"/>
+        <source>15</source>
+        <translation>15</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="474"/>
+        <location filename="gui/presetsmanager.ui" line="536"/>
+        <source>Contraste</source>
+        <translation>Contrast</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="480"/>
+        <source>16</source>
+        <translation>16</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="492"/>
+        <source>17</source>
+        <translation>17</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="498"/>
+        <source>Especular</source>
+        <translation>Specular</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="514"/>
+        <source>18</source>
+        <translation>18</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="528"/>
+        <source>19</source>
+        <translation>19</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="542"/>
+        <source>20</source>
+        <translation>20</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="556"/>
+        <source>21</source>
+        <translation>21</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.ui" line="570"/>
+        <source>22</source>
+        <translation>22</translation>
+    </message>
+    <message>
+        <location filename="gui/presetsmanager.cpp" line="89"/>
         <source>Debe ingresar un nombre para el preset!</source>
         <translation>You must input a name for the preset!</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="95"/>
+        <location filename="gui/presetsmanager.cpp" line="96"/>
         <source>Ya existe un preset con ese nombre!</source>
         <translation>There is already a preset with that name!</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="153"/>
+        <location filename="gui/presetsmanager.cpp" line="139"/>
         <source>No se pudo abrir el preset especificado.</source>
         <translation>Cannot open the specified preset.</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="160"/>
+        <location filename="gui/presetsmanager.cpp" line="146"/>
         <source>Archivo con formato incorrecto.</source>
         <translation>Incorrect file format.</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="178"/>
+        <location filename="gui/presetsmanager.cpp" line="164"/>
         <source>Aplicando </source>
         <translation>Applying </translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="178"/>
+        <location filename="gui/presetsmanager.cpp" line="164"/>
         <source> a </source>
         <translation> to </translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="267"/>
+        <location filename="gui/presetsmanager.cpp" line="253"/>
         <source>Formato de preset incorrecto.</source>
         <translation>Incorrect preset format.</translation>
     </message>
     <message>
-        <location filename="gui/presetsmanager.cpp" line="274"/>
+        <location filename="gui/presetsmanager.cpp" line="260"/>
         <source>Ya existe un preset con ese nombre.</source>
         <translation>There is already a preset with that name.</translation>
     </message>

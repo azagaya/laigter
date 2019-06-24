@@ -131,7 +131,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
         bool succes;
         QImage height = il.loadImage(processor->get_name(),&succes);
         height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-        processor->loadImage(processor->get_name(),height);
+        processor->loadHeightMap(processor->get_name(),height);
     }
     else if (action->text() == tr("Cargar mapa especular")){
         QString fileName = QFileDialog::getOpenFileName(this,
