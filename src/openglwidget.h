@@ -45,6 +45,8 @@ public slots:
 
     void setParallaxHeight(int height);
     void setParallax(bool p);
+
+    QImage renderBuffer();
 signals:
     void initialized();
 protected:

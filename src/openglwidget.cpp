@@ -123,6 +123,7 @@ void OpenGlWidget::paintGL()
     QMatrix4x4 transform;
     float scaleX, scaleY, zoomX, zoomY;
     transform.setToIdentity();
+
     transform.translate(texturePosition);
     scaleX = !tileX ? sx : 1;
     scaleY = !tileY ? sy : 1;
@@ -130,6 +131,8 @@ void OpenGlWidget::paintGL()
     zoomX = !tileX ? m_zoom : 1;
     zoomY = !tileY ? m_zoom : 1;
     transform.scale(zoomX,zoomY,1);
+
+
 
     m_program.bind();
 
@@ -142,8 +145,8 @@ void OpenGlWidget::paintGL()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
 
-    int i1 = m_pixelated ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
-    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
+    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST;
+    int i2 = m_pixelated ? GL_NEAREST : GL_NEAREST;
 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
@@ -158,6 +161,7 @@ void OpenGlWidget::paintGL()
     m_program.setUniformValue("pixelsY",pixelsY);
     m_program.setUniformValue("pixelSize",pixelSize);
     m_program.setUniformValue("pixelated",m_pixelated);
+
     scaleX = tileX ? sx : 1;
     scaleY = tileY ? sy : 1;
     zoomX = tileX ? m_zoom : 1;
@@ -171,10 +175,6 @@ void OpenGlWidget::paintGL()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
-
-    i1 = m_pixelated ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
-    i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -228,7 +228,10 @@ void OpenGlWidget::paintGL()
 
         lightProgram.release();
     }
-
+    QImage im(m_texture->width(),m_texture->height(),QImage::Format_RGBA8888);
+    im.fill(Qt::transparent);
+    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,im.scanLine(0));
+    im.save("rendered.png");
 }
 
 void OpenGlWidget::resizeGL(int w, int h)
@@ -431,6 +434,10 @@ void OpenGlWidget::setPixelated(bool pixelated){
 
 void OpenGlWidget::setPixelSize(int size){
     pixelSize = size;
+}
+
+QImage OpenGlWidget::renderBuffer(){
+    return grabFramebuffer();
 }
 
 

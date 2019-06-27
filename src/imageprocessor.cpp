@@ -272,7 +272,7 @@ QImage ImageProcessor::get_neighbour(int x, int y){
     neighbours(rect).copyTo(m_aux);
     //cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
     QImage p =QImage(static_cast<unsigned char *>(m_aux.data),
-                     m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
+                     m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888_Premultiplied);
     return p;
 
 }
@@ -707,7 +707,7 @@ QImage ImageProcessor::get_texture(){
     Mat image;
     cvtColor(m_img,m_aux,CV_BGRA2RGBA);
     return QImage(static_cast<unsigned char *>(m_aux.data),
-                  m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888);
+                  m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888_Premultiplied);
 }
 
 QImage ImageProcessor::get_normal(){
