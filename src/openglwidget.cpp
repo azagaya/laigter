@@ -31,7 +31,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     pixelSize = 3;
 
     QSurfaceFormat format;
-    format.setSamples(16);
+    format.setSamples(32);
 
     setFormat(format);
 }
@@ -145,8 +145,8 @@ void OpenGlWidget::paintGL()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
 
-    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST;
-    int i2 = m_pixelated ? GL_NEAREST : GL_NEAREST;
+    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
@@ -228,10 +228,10 @@ void OpenGlWidget::paintGL()
 
         lightProgram.release();
     }
-    QImage im(m_texture->width(),m_texture->height(),QImage::Format_RGBA8888);
-    im.fill(Qt::transparent);
-    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,im.scanLine(0));
-    im.save("rendered.png");
+//    QImage im(m_texture->width(),m_texture->height(),QImage::Format_RGBA8888);
+//    im.fill(Qt::transparent);
+//    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,im.scanLine(0));
+//    im.save("rendered.png");
 }
 
 void OpenGlWidget::resizeGL(int w, int h)

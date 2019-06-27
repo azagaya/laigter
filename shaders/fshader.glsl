@@ -34,9 +34,13 @@ void main()
     vec2 texCoords = texCoord;
     vec2 texCoordsL = texCoord;
     if (pixelated){
-            float dx = 1.0*(pixelsX)*ratio.x;
-            float dy = 1.0*(pixelsY)*ratio.y;
-            texCoords = vec2(floor(texCoord.x*dx+0.5)/(dx), floor(texCoord.y*dy+0.5)/(dy));
+
+        float dx = 1.0*(pixelsX)*ratio.x/2;
+        float dy = 1.0*(pixelsY)*ratio.y/2;
+        vec2 coords = vec2(texCoords.x*pixelsX,texCoords.y*pixelsY);
+
+        texCoords.x = (floor(coords.x)+1/dx)/pixelsX;
+        texCoords.y = (floor(coords.y)+1/dy)/pixelsY;
     }
     if (parallax){
         texCoords = ParallaxMapping(texCoords,  viewDir);
@@ -79,8 +83,8 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
 {
     // number of depth layers
 
-    const float minLayers = 16.0;
-    const float maxLayers = 64.0;
+    const float minLayers = 32.0;
+    const float maxLayers = 128.0;
     float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
     // calculate the size of each layer
     float layerDepth = 1.0 / numLayers;
