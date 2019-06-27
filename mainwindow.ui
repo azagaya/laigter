@@ -397,7 +397,7 @@ QDockWidget::title{
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -782,8 +782,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>260</width>
-          <height>88</height>
+          <width>274</width>
+          <height>98</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">

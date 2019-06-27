@@ -1,4 +1,4 @@
-#version 420
+#version 330 core
 
 in vec2 texCoord;
 in vec3 FragPos;
@@ -35,12 +35,13 @@ void main()
     vec2 texCoordsL = texCoord;
     if (pixelated){
 
-        float dx = 1.0*(pixelsX)*ratio.x/2;
-        float dy = 1.0*(pixelsY)*ratio.y/2;
-        vec2 coords = vec2(texCoords.x*pixelsX,texCoords.y*pixelsY);
+        float dx = 1.0*(pixelsX*ratio.x);
+        float dy = 1.0*(pixelsY*ratio.y);
+        vec2 coords = vec2(texCoords.x*dx,texCoords.y*dy);
 
-        texCoords.x = (floor(coords.x)+1/dx)/pixelsX;
-        texCoords.y = (floor(coords.y)+1/dy)/pixelsY;
+        texCoords.x = (floor(coords.x)+0.5/dx)/dx;
+        texCoords.y = (floor(coords.y)+0.5/dy)/dy;
+
     }
     if (parallax){
         texCoords = ParallaxMapping(texCoords,  viewDir);
