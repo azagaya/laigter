@@ -1,4 +1,10 @@
-#version 330 core
+#version 300 es
+#undef lowp
+#undef mediump
+#undef highp
+
+precision highp float;
+precision highp int;
 
 in vec2 texCoord;
 out vec4 FragColor;

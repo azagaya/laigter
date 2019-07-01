@@ -31,6 +31,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     pixelSize = 3;
 
     QSurfaceFormat format;
+    format.setProfile( QSurfaceFormat::CompatibilityProfile);
     format.setSamples(32);
 
     setFormat(format);
@@ -72,15 +73,13 @@ void OpenGlWidget::initializeGL()
     VBO.allocate(vertices,sizeof(vertices));
 
     int vertexLocation = m_program.attributeLocation("aPos");
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(vertexLocation);
+    glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
 
     int texCoordLocation = m_program.attributeLocation("aTexCoord");
-    glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(texCoordLocation);
-
-    m_program.bind();
-
+    glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                          (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
 
     m_texture = new QOpenGLTexture(m_image);
     pixelsX = m_image.width();
@@ -89,23 +88,20 @@ void OpenGlWidget::initializeGL()
     m_specularTexture = new QOpenGLTexture(specularMap);
     m_normalTexture = new QOpenGLTexture(normalMap);
     laigterTexture = new QOpenGLTexture(laigter);
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    m_program.release();
     VAO.release();
     VBO.release();
 
     lightVAO.bind();
     VBO.bind();
     vertexLocation = m_program.attributeLocation("aPos");
-    glVertexAttribPointer(vertexLocation, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(vertexLocation);
+    glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
 
-    lightProgram.bind();
     texCoordLocation = m_program.attributeLocation("aTexCoord");
-    glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(texCoordLocation);
-    lightProgram.release();
+    glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                          (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
     lightVAO.release();
     VBO.release();
 
@@ -207,11 +203,11 @@ void OpenGlWidget::paintGL()
 
     if (m_light){
 
-        float x = (float)laigter.width()/width();
-        float y = (float)laigter.height()/height();
+        float x = static_cast<float>(laigter.width())/width();
+        float y = static_cast<float>(laigter.height())/height();
         transform.setToIdentity();
         transform.translate(lightPosition);
-        transform.scale(0.3*x,0.3*y,1);
+        transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
 
         lightProgram.bind();
         lightVAO.bind();

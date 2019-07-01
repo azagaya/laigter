@@ -28,7 +28,8 @@ QDockWidget::title{
 	border-radius:4px;
 	margin:2px;
 	padding:3px
-}</string>
+}
+</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
