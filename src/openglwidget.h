@@ -23,6 +23,7 @@ public slots:
     void setNormalMap(QImage normalMap);
     void setParallaxMap(QImage parallaxMap);
     void setSpecularMap(QImage image);
+    void setOcclusionMap(QImage occlusionMap);
     void setZoom(float zoom);
     void resetZoom();
     void fitZoom();
@@ -59,13 +60,13 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 private:
     GLuint shaderProgram, vertexShader, fragmentShader;
-    QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *m_parallaxTexture, *m_specularTexture;
+    QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
     QOpenGLVertexArrayObject VAO;
     QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program;
     QOpenGLShaderProgram lightProgram;
-    QImage m_image, normalMap, parallaxMap, laigter, specularMap;
+    QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap;
     QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;

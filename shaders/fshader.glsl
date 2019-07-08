@@ -1,10 +1,4 @@
-#version 300 es
-#undef lowp
-#undef mediump
-#undef highp
-
-precision highp float;
-precision highp int;
+#version 130
 
 
 in vec2 texCoord;
@@ -15,6 +9,7 @@ uniform sampler2D texture;
 uniform sampler2D normalMap;
 uniform sampler2D parallaxMap;
 uniform sampler2D specularMap;
+uniform sampler2D occlusionMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform bool light;
@@ -75,11 +70,13 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), specScatter);
     vec3 specular = specIntensity * spec * specColor* specMap;
 
+    float occlusion = texture2D(occlusionMap,texCoords).x;
+
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;
     vec4 tex = texture2D(texture,texCoords);
 
-    vec4 l_color = tex*(vec4(diffuse,1.0)+vec4(specular,1.0)+vec4(ambientColor,1.0)*ambientIntensity);
+    vec4 l_color = tex*(vec4(diffuse,1.0)+vec4(specular,1.0)+vec4(ambientColor,1.0)*ambientIntensity*occlusion);
     if (light){
         FragColor = l_color;
     }else{

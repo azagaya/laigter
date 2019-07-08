@@ -33,6 +33,14 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     specular_invert = false;
     specular_base_color = Vec4b(0,0,0,0);
 
+    occlusion_blur = 10;
+    occlusion_bright = 16;
+    occlusion_contrast = 1;
+    occlusion_thresh = 1;
+    occlusion_invert = false;
+    occlusion_distance_mode = true;
+    occlusion_distance = 10;
+
     settings.tileable = &tileable;
     settings.gradient_end = &gradient_end;
     settings.parallax_max = &parallax_max;
@@ -61,6 +69,14 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.specular_invert = &specular_invert;
     settings.specular_thresh = &specular_thresh;
     settings.specular_contrast = &specular_contrast;
+
+    settings.occlusion_blur = &occlusion_blur;
+    settings.occlusion_bright = &occlusion_bright;
+    settings.occlusion_invert = &occlusion_invert;
+    settings.occlusion_thresh = &occlusion_thresh;
+    settings.occlusion_contrast = &occlusion_contrast;
+    settings.occlusion_distance = &occlusion_distance;
+    settings.occlusion_distance_mode = &occlusion_distance_mode;
 
 }
 
@@ -102,6 +118,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image){
 
     m_img.copyTo(m_heightmap);
     m_img.copyTo(m_specular);
+    m_img.copyTo(m_occlusion);
 
     fill_neighbours(m_heightmap,neighbours);
 
@@ -127,6 +144,7 @@ void ImageProcessor::calculate(){
 
     calculate_specular();
 
+    calculate_occlusion();
 
 }
 
@@ -178,6 +196,31 @@ void ImageProcessor::calculate_specular(){
     QImage pa = QImage(static_cast<unsigned char *>(current_specular.data),
                        current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
     processed(pa,ProcessedImage::Specular);
+}
+
+void ImageProcessor::calculate_occlusion(){
+    Mat p = modify_occlusion();
+
+    Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
+    if(tileable && p.rows == m_img.rows*3){
+        p(rect).copyTo(current_occlusion);
+    }else{
+        p.copyTo(current_occlusion);
+    }
+
+    switch (current_occlusion.channels()) {
+    case 3:
+        cvtColor(current_occlusion,current_occlusion,COLOR_RGB2GRAY);
+        break;
+    case 4:
+        cvtColor(current_occlusion,current_occlusion,COLOR_RGBA2GRAY);
+        break;
+
+    }
+
+    QImage pa = QImage(static_cast<unsigned char *>(current_occlusion.data),
+                       current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+    processed(pa,ProcessedImage::Occlusion);
 }
 
 void ImageProcessor::calculate_heightmap(){
@@ -407,7 +450,6 @@ void ImageProcessor::calculate_distance(){
             pixel ++;
         }
     }
-
     threshold(m_distance,m_distance,0,255,THRESH_BINARY);
 
     distanceTransform(m_distance,m_distance,CV_DIST_L2,5);
@@ -514,6 +556,55 @@ Mat ImageProcessor::modify_distance(){
     return m;
 }
 
+Mat ImageProcessor::modify_occlusion(){
+    Mat m;
+
+    int threshType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
+
+    cvtColor(current_heightmap, m_occlusion,COLOR_RGBA2GRAY,1);
+    m_occlusion.copyTo(m);
+
+    if (occlusion_distance_mode){
+        threshold(m,m,occlusion_thresh,255,threshType);
+        distanceTransform(m,m,CV_DIST_L2,5);
+        m.convertTo(m,CV_32F,1/255.0);
+        for(int x = 0; x < m.rows; ++x)
+        {
+            float *pixel = m.ptr<float>(x);
+            for(int y = 0; y < m.cols; ++y)
+            {
+                if (occlusion_distance == 0){
+                    *pixel = 0;
+                }
+                else{
+                    *pixel *= 255.0/occlusion_distance;
+                    if (*pixel > 1)
+                        *pixel = 1;
+                    double d = *pixel;
+                    *pixel = sqrt(1-pow((d-1),2));
+
+                }
+                pixel ++;
+            }
+        }
+
+        m.convertTo(m,CV_8UC1,255);
+    }
+
+    m.convertTo(m,CV_32F,1/255.0);
+    m.convertTo(m,-1,1,-occlusion_thresh/255.0);
+    m.convertTo(m,-1,occlusion_contrast,occlusion_thresh/255.0);
+    m.convertTo(m,CV_8U,255,occlusion_bright);
+    GaussianBlur(m,m,Size(occlusion_blur*2+1,occlusion_blur*2+1),0,0);
+
+    if (occlusion_invert){
+        subtract(Scalar::all(255),m,m) ;
+    }
+
+    m.convertTo(m,CV_GRAY2RGB,1);
+    return m;
+}
+
 Mat ImageProcessor::modify_parallax(){
     Mat m;
 
@@ -567,19 +658,19 @@ Mat ImageProcessor::modify_parallax(){
 Mat ImageProcessor::modify_specular(){
     Mat m;
 
-        m_specular.copyTo(m);
+    m_specular.copyTo(m);
 
-        m.convertTo(m,CV_32F,1/255.0);
-        m = abs(m-specular_base_color/255.0);
-        cvtColor(m,m,CV_RGBA2GRAY);
-        m.convertTo(m,-1,1,-specular_thresh/255.0);
-        m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
-        m.convertTo(m,CV_8U,255,specular_bright);
-        GaussianBlur(m,m,Size(specular_blur*2+1,specular_blur*2+1),0,0);
+    m.convertTo(m,CV_32F,1/255.0);
+    m = abs(m-specular_base_color/255.0);
+    cvtColor(m,m,CV_RGBA2GRAY);
+    m.convertTo(m,-1,1,-specular_thresh/255.0);
+    m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
+    m.convertTo(m,CV_8U,255,specular_bright);
+    GaussianBlur(m,m,Size(specular_blur*2+1,specular_blur*2+1),0,0);
 
-        if (specular_invert){
-            subtract(Scalar::all(255),m,m) ;
-        }
+    if (specular_invert){
+        subtract(Scalar::all(255),m,m) ;
+    }
 
     return m;
 }
@@ -862,6 +953,62 @@ void ImageProcessor::set_specular_base_color(Vec4b color){
 
 Vec4b ImageProcessor::get_specular_base_color(){
     return specular_base_color;
+}
+
+void ImageProcessor::set_occlusion_blur(int blur){
+    occlusion_blur = blur;
+}
+
+int ImageProcessor::get_occlusion_blur(){
+    return occlusion_blur;
+}
+
+void ImageProcessor::set_occlusion_bright(int bright){
+    occlusion_bright = bright;
+}
+
+int ImageProcessor::get_occlusion_bright(){
+    return occlusion_bright;
+}
+
+void ImageProcessor::set_occlusion_invert(bool invert){
+    occlusion_invert = invert;
+}
+
+bool ImageProcessor::get_occlusion_invert(){
+    return occlusion_invert;
+}
+
+void ImageProcessor::set_occlusion_thresh(int thresh){
+    occlusion_thresh = thresh;
+}
+
+int ImageProcessor::get_occlusion_trhesh(){
+    return occlusion_thresh;
+}
+
+void ImageProcessor::set_occlusion_contrast(int contrast){
+    occlusion_contrast = contrast/1000.0;
+}
+
+double ImageProcessor::get_occlusion_contrast(){
+    return occlusion_contrast;
+}
+
+void ImageProcessor::set_occlusion_distance_mode(bool distance_mode){
+    occlusion_distance_mode = distance_mode;
+}
+
+bool ImageProcessor::get_occlusion_distance_mode(){
+    return occlusion_distance_mode;
+}
+
+void ImageProcessor::set_occlusion_distance(int distance){
+    occlusion_distance = distance;
+}
+
+int ImageProcessor::get_occlusion_distance(){
+    return occlusion_distance;
 }
 
 ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){

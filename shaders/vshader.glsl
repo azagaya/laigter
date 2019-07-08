@@ -1,10 +1,4 @@
-#version 300 es
-#undef lowp
-#undef mediump
-#undef highp
-
-precision highp float;
-precision highp int;
+#version 130
 
 in vec3 aPos;
 in vec2 aTexCoord;

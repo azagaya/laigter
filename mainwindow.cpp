@@ -16,6 +16,8 @@
 #include <QMimeData>
 #include <QDragEnterEvent>
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -46,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_raw_scene = new QGraphicsScene(this);
 
-//    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
-//    ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
+    //    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
+    //    ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
 
     connect_processor(processor);
 
@@ -61,12 +63,12 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(showContextMenuForListWidget(const QPoint &)));
     connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
     connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
-    //connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setParallax(bool)));
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
     tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
+    tabifyDockWidget(ui->normalDockWidget, ui->occlusionDockWidget);
 
     ui->normalDockWidget->raise();
 
@@ -173,19 +175,25 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
     case ProcessedImage::Normal:
         normal = image;
         ui->openGLPreviewWidget->setNormalMap(image);
-        if (ui->radioButtonNormal->isChecked())
+        if (ui->comboBoxView->currentIndex() == ViewMode::NormalMap  )
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Parallax:
         parallax = image;
         ui->openGLPreviewWidget->setParallaxMap(parallax);
-        if (ui->radioButtonParallax->isChecked())
+        if (ui->comboBoxView->currentIndex() == ViewMode::ParallaxMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Specular:
         specular = image;
         ui->openGLPreviewWidget->setSpecularMap(specular);
-        if (ui->radioButtonSpecular->isChecked())
+        if (ui->comboBoxView->currentIndex() == ViewMode::SpecularMap)
+            ui->openGLPreviewWidget->setImage(image);
+        break;
+    case ProcessedImage::Occlusion:
+        occlusion = image;
+        ui->openGLPreviewWidget->setOcclusionMap(occlusion);
+        if (ui->comboBoxView->currentIndex() == ViewMode::OcclusionMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     }
@@ -233,17 +241,14 @@ void MainWindow::open_files(QStringList fileNames){
             processor = p;
             connect_processor(processor);
             processor->loadImage(fileName, image);
-            if (ui->radioButtonRaw->isChecked()){
-                on_radioButtonRaw_toggled(true);
-            } else if (ui->radioButtonNormal->isChecked()){
-                on_radioButtonNormal_toggled(true);
-            } else if (ui->radioButtonParallax->isChecked()) {
-                on_radioButtonParallax_toggled(true);
-            } else if (ui->radioButtonSpecular->isChecked()) {
-                on_radioButtonSpecular_toggled(true);
-            } else {
-                on_radioButtonPreview_toggled(true);
+            switch(ui->comboBoxView->currentIndex()){
+            case ViewMode::Texture:
+
+                break;
+
             }
+
+            on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
             ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(image)),processor->get_name()));
             ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
@@ -283,58 +288,9 @@ void MainWindow::on_actionExport_triggered()
 
 }
 
-void MainWindow::on_radioButtonRaw_toggled(bool checked)
-{
-    if (checked){
-        ui->openGLPreviewWidget->setLight(false);
-        ui->openGLPreviewWidget->setParallax(false);
-        if (!image.isNull())
-            update_scene(image,ProcessedImage::Raw);
-    }
-}
-
-void MainWindow::on_radioButtonNormal_toggled(bool checked)
-{
-    if (checked){
-        ui->openGLPreviewWidget->setLight(false);
-        ui->openGLPreviewWidget->setParallax(false);
-        if (!normal.isNull())
-            update_scene(normal,ProcessedImage::Raw);
-    }
-}
-void MainWindow::on_radioButtonParallax_toggled(bool checked)
-{
-    if (checked){
-        ui->openGLPreviewWidget->setLight(false);
-        ui->openGLPreviewWidget->setParallax(false);
-        if (!parallax.isNull())
-            update_scene(parallax,ProcessedImage::Raw);
-    }
-}
-
-void MainWindow::on_radioButtonSpecular_toggled(bool checked)
-{
-    if (checked){
-        ui->openGLPreviewWidget->setLight(false);
-        ui->openGLPreviewWidget->setParallax(false);
-        if (!specular.isNull())
-            update_scene(specular,ProcessedImage::Raw);
-    }
-}
-void MainWindow::on_radioButtonPreview_toggled(bool checked)
-{
-    if (checked){
-        ui->openGLPreviewWidget->setLight(true);
-        ui->openGLPreviewWidget->setParallax(ui->checkBoxParallax->isChecked());
-        if (!image.isNull()){
-            update_scene(normal,ProcessedImage::Normal);
-            update_scene(image,ProcessedImage::Raw);
-        }
-    }
-}
 
 void MainWindow::openGL_initialized(){
-    ui->radioButtonRaw->toggle();
+    on_comboBoxView_currentIndexChanged(0);
     QString tmpImage = QDir::temp().path()+"/sample.png";
     image.save(tmpImage);
     processor->loadImage(tmpImage,image);
@@ -498,17 +454,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     image = image.convertToFormat(QImage::Format_RGBA8888);
 
     processor->update();
-    if (ui->radioButtonRaw->isChecked()){
-        on_radioButtonRaw_toggled(true);
-    } else if (ui->radioButtonNormal->isChecked()){
-        on_radioButtonNormal_toggled(true);
-    } else if (ui->radioButtonPreview->isChecked()){
-        on_radioButtonPreview_toggled(true);
-    } else if (ui->radioButtonParallax->isChecked()){
-        on_radioButtonParallax_toggled(true);
-    } else if (ui->radioButtonSpecular->isChecked()){
-        on_radioButtonSpecular_toggled(true);
-    }
+    on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
 
     update_scene(processor->get_normal(),ProcessedImage::Normal);
     update_scene(processor->get_parallax(),ProcessedImage::Parallax);
@@ -586,7 +532,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_checkBoxParallax_toggled(bool checked)
 {
-    ui->openGLPreviewWidget->setParallax(checked && ui->radioButtonPreview->isChecked());
+    ui->openGLPreviewWidget->setParallax(checked && ui->comboBoxView->currentIndex() == ViewMode::Preview);
 }
 
 void MainWindow::on_sliderParallax_sliderReleased()
@@ -754,4 +700,41 @@ void MainWindow::on_horizontalSliderSpec_valueChanged(int value)
 void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value)
 {
     ui->openGLPreviewWidget->setSpecScatter(value);
+}
+
+void MainWindow::on_comboBoxView_currentIndexChanged(int index)
+{
+
+    ui->openGLPreviewWidget->setLight(false);
+    ui->openGLPreviewWidget->setParallax(false);
+    switch (index){
+    case ViewMode::Texture:
+        if (!image.isNull())
+            update_scene(image,ProcessedImage::Raw);
+        break;
+    case ViewMode::NormalMap:
+        if (!normal.isNull())
+            update_scene(normal,ProcessedImage::Raw);
+        break;
+    case ViewMode::SpecularMap:
+        if (!specular.isNull())
+            update_scene(specular,ProcessedImage::Raw);
+        break;
+    case ViewMode::ParallaxMap:
+        if (!parallax.isNull())
+            update_scene(parallax,ProcessedImage::Raw);
+        break;
+    case ViewMode::OcclusionMap:
+        if (!occlusion.isNull())
+            update_scene(occlusion,ProcessedImage::Raw);
+        break;
+    case ViewMode::Preview:
+        ui->openGLPreviewWidget->setLight(true);
+        ui->openGLPreviewWidget->setParallax(ui->checkBoxParallax->isChecked());
+        if (!image.isNull()){
+            update_scene(normal,ProcessedImage::Normal);
+            update_scene(image,ProcessedImage::Raw);
+        }
+        break;
+    }
 }

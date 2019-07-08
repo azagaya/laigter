@@ -10,7 +10,15 @@
 #include <QList>
 #include "src/imageprocessor.h"
 #include "src/imageloader.h"
-
+enum ViewMode
+{
+    Texture,
+    NormalMap,
+    SpecularMap,
+    ParallaxMap,
+    OcclusionMap,
+    Preview
+};
 namespace Ui {
 class MainWindow;
 }
@@ -49,12 +57,6 @@ private slots:
 
     void on_actionExport_triggered();
 
-    void on_radioButtonRaw_toggled(bool checked);
-
-    void on_radioButtonNormal_toggled(bool checked);
-
-    void on_radioButtonPreview_toggled(bool checked);
-
     void on_pushButtonColor_clicked();
 
     void on_horizontalSliderDiffHeight_valueChanged(int value);
@@ -77,8 +79,6 @@ private slots:
 
     void on_pushButton_2_clicked();
 
-    void on_radioButtonParallax_toggled(bool checked);
-
     void on_checkBoxParallax_toggled(bool checked);
 
     void on_sliderParallax_sliderReleased();
@@ -89,7 +89,6 @@ private slots:
 
     void open_files(QStringList fileNames);
 
-
     void on_actionPresets_triggered();
 
     void on_pushButtonColorSpec_clicked();
@@ -98,10 +97,10 @@ private slots:
 
     void on_horizontalSliderSpecScatter_valueChanged(int value);
 
-    void on_radioButtonSpecular_toggled(bool checked);
+    void on_comboBoxView_currentIndexChanged(int index);
 
 private:
-    QImage image, normal, parallax, specular;
+    QImage image, normal, parallax, specular, occlusion;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;

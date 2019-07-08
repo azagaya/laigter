@@ -18,7 +18,8 @@ enum class ProcessedImage
     Raw,
     Normal,
     Parallax,
-    Specular
+    Specular,
+    Occlusion
 };
 
 enum class ParallaxType
@@ -57,6 +58,14 @@ public:
     bool *normal_bisel_soft, *tileable, *parallax_invert;
     int *normalInvertX, *normalInvertY, *normalInvertZ;
     char *gradient_end;
+
+    int *occlusion_thresh;
+    double *occlusion_contrast;
+    int *occlusion_bright;
+    int *occlusion_blur;
+    bool *occlusion_invert;
+    bool *occlusion_distance_mode;
+    int *occlusion_distance;
 };
 
 class ImageProcessor : public QObject
@@ -75,6 +84,7 @@ public:
     Mat modify_distance();
     Mat modify_parallax();
     Mat modify_specular();
+    Mat modify_occlusion();
     void set_name(QString name);
     QString get_name();
     bool busy;
@@ -87,6 +97,7 @@ public:
     void calculate();
     void calculate_parallax();
     void calculate_specular();
+    void calculate_occlusion();
 
 signals:
     void processed(QImage image, ProcessedImage type);
@@ -146,7 +157,20 @@ public slots:
     void set_specular_base_color(Vec4b color);
     Vec4b get_specular_base_color();
 
-    
+    void set_occlusion_invert(bool invert);
+    bool get_occlusion_invert();
+    void set_occlusion_thresh(int thresh);
+    int get_occlusion_trhesh();
+    void set_occlusion_contrast(int contrast);
+    double get_occlusion_contrast();
+    void set_occlusion_bright(int bright);
+    int get_occlusion_bright();
+    void set_occlusion_blur(int blur);
+    int get_occlusion_blur();
+    void set_occlusion_distance_mode(bool distance_mode);
+    bool get_occlusion_distance_mode();
+    void set_occlusion_distance(int distance);
+    int get_occlusion_distance();
 
     ProcessorSettings get_settings();
 
@@ -180,6 +204,7 @@ private:
     Mat m_heightmap;
     Mat m_parallax;
     Mat m_specular;
+    Mat m_occlusion;
     Mat current_heightmap;
     Mat neighbours;
     Mat m_aux;
@@ -211,6 +236,15 @@ private:
     bool normal_bisel_soft, tileable, parallax_invert;
     int normalInvertX, normalInvertY, normalInvertZ;
     char gradient_end;
+
+    Mat current_occlusion;
+    int occlusion_thresh;
+    double occlusion_contrast;
+    int occlusion_bright;
+    int occlusion_blur;
+    bool occlusion_invert;
+    bool occlusion_distance_mode;
+    int occlusion_distance;
 
 };
 

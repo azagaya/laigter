@@ -10,6 +10,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     normalMap = QImage(":/images/sample_n.png");
     parallaxMap = QImage(":/images/sample_p.png");
     specularMap = QImage(":/images/sample_p.png");
+    occlusionMap = QImage(":/images/sample_p.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     specColor = QVector3D(0.0,1,0.7);
@@ -87,6 +88,7 @@ void OpenGlWidget::initializeGL()
     m_parallaxTexture = new QOpenGLTexture(parallaxMap);
     m_specularTexture = new QOpenGLTexture(specularMap);
     m_normalTexture = new QOpenGLTexture(normalMap);
+    m_occlusionTexture = new QOpenGLTexture(occlusionMap);
     laigterTexture = new QOpenGLTexture(laigter);
 
     VAO.release();
@@ -133,13 +135,17 @@ void OpenGlWidget::paintGL()
     m_program.bind();
 
     VAO.bind();
-    if (tileX || tileY){
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    }else{
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    }
+//    if (tileX || tileY){
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    }else{
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+//    }
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
@@ -183,6 +189,9 @@ void OpenGlWidget::paintGL()
 
     m_specularTexture->bind(3);
     m_program.setUniformValue("specularMap",3);
+
+    m_occlusionTexture->bind(4);
+    m_program.setUniformValue("occlusionMap",4);
 
     //m_program.setUniformValue("viewPos",lightPosition);
     m_program.setUniformValue("viewPos",QVector3D(0,0,1));
@@ -255,6 +264,13 @@ void OpenGlWidget::setNormalMap(QImage image){
     m_normalTexture->destroy();
     m_normalTexture->create();
     m_normalTexture->setData(normalMap);
+}
+
+void OpenGlWidget::setOcclusionMap(QImage image){
+    occlusionMap = image;
+    m_occlusionTexture->destroy();
+    m_occlusionTexture->create();
+    m_occlusionTexture->setData(occlusionMap);
 }
 
 void OpenGlWidget::setParallaxMap(QImage image){

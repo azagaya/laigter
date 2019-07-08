@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>1210</height>
+    <height>1270</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -166,6 +166,35 @@ QDockWidget::title{
        </layout>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Ejes:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="normalInvertX">
+          <property name="text">
+           <string>Invertir x</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="normalInvertY">
+          <property name="text">
+           <string>Invertir y</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox_3">
        <property name="maximumSize">
@@ -267,79 +296,6 @@ QDockWidget::title{
            </widget>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Ejes:</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_8">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="normalInvertX">
-          <property name="text">
-           <string>Invertir x</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="normalInvertY">
-          <property name="text">
-           <string>Invertir y</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QGroupBox" name="groupBox_8">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Mosaico:</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_13">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_2">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>23</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>23</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Vecinos</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="checkBoxTileable">
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>Mosaico</string>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -648,55 +604,64 @@ QDockWidget::title{
         <string>Vista</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="2" column="0">
-         <widget class="QRadioButton" name="radioButtonSpecular">
-          <property name="text">
-           <string>Mapa Especular</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QCheckBox" name="checkBoxPixelated">
-          <property name="text">
-           <string>Pixelado</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QRadioButton" name="radioButtonPreview">
-          <property name="text">
-           <string>Vista Previa</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButtonRaw">
+         <widget class="QLabel" name="label_24">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Textura</string>
+           <string>Modo:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QRadioButton" name="radioButtonNormal">
-          <property name="text">
-           <string>Mapa Normal</string>
-          </property>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBoxView">
+          <item>
+           <property name="text">
+            <string>Textura</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mapa Normal</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mapa Especular</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mapa de Paralaje</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mapa de Oclusión</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Vista Previa</string>
+           </property>
+          </item>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QRadioButton" name="radioButtonParallax">
-          <property name="text">
-           <string>Mapa de Paralaje</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="2">
+        <item row="1" column="0" colspan="2">
          <widget class="Line" name="line">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="checkBoxPixelated">
+          <property name="text">
+           <string>Pixelado</string>
           </property>
          </widget>
         </item>
@@ -763,7 +728,7 @@ QDockWidget::title{
     <string>Texturas</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+    <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QGridLayout" name="gridLayout_10">
@@ -784,7 +749,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>274</width>
-          <height>98</height>
+          <height>661</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1204,6 +1169,215 @@ QDockWidget::title{
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="occlusionDockWidget">
+   <property name="windowTitle">
+    <string>Oclusión</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_6">
+    <layout class="QGridLayout" name="gridLayout_21">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_10">
+       <property name="title">
+        <string>Controles:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_20">
+        <item row="5" column="1">
+         <widget class="QCheckBox" name="checkBoxOcclusionInvert">
+          <property name="text">
+           <string>Invertir</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_23">
+          <property name="text">
+           <string>Suavizado:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSlider" name="sliderOcclusionBright">
+          <property name="minimum">
+           <number>-255</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSlider" name="sliderOcclusionSoft">
+          <property name="maximum">
+           <number>50</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSlider" name="sliderOcclusionThresh">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Contraste:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>60</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSlider" name="sliderOcclusionContrast">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>4000</number>
+          </property>
+          <property name="value">
+           <number>1000</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>Brillo:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>Umbral:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="checkBoxOcclusionDistance">
+          <property name="text">
+           <string>Distancia:</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSlider" name="sliderOcclusionDistance">
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="TileDockWidget">
+   <property name="windowTitle">
+    <string>Mosaico</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_7">
+    <layout class="QGridLayout" name="gridLayout_22">
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_8">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Controles:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Vecinos</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="checkBoxTileable">
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>Mosaico</string>
           </property>
          </widget>
         </item>
