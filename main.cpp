@@ -37,10 +37,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.installTranslator(&translator);
 
-#if defined(Q_OS_WIN)
-    a.setAttribute(Qt::AA_UseSoftwareOpenGL);
-#endif
-
     MainWindow w;
     QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));
     w.show();
