@@ -1,23 +1,14 @@
-<!--?xml version="1.0" encoding="UTF-8"?-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=windows-1252">
-    <title>Laigter 3rd Party components</title>
+Acknowledgements
 
-    </head><body><h1>Acknowledgements</h1>
-    <p>Portions of this software may utilize the following copyrighted material, the use of which is hereby acknowledged.</p>
+Portions of this software may utilize the following copyrighted material, the use of which is hereby acknowledged.
+Software under LGPL
 
-  
+    QtCreator
+    Qt
 
+OpenCV
 
-<h2>Software under LGPL</h2>
-<ul>
-	<li>QtCreator</li>
-	<li>Qt</li>
-</ul>
-
-<h2>OpenCV</h2>
-<pre>By downloading, copying, installing or using the software you agree to this license.
+By downloading, copying, installing or using the software you agree to this license.
 If you do not agree to this license, do not download, install,
 copy or use the software.
 
@@ -50,15 +41,13 @@ loss of use, data, or profits; or business interruption) however caused
 and on any theory of liability, whether in contract, strict liability,
 or tort (including negligence or otherwise) arising in any way out of
 the use of this software, even if advised of the possibility of such damage.
-</pre>
 
-<h2>Qt 5.x.x</h2>
+Qt 5.x.x
 
-<p>Laigter uses Qt 5.x.x libraries. Through them additional software might be used as described in the <tt>ThirdPartySoftware_Listing.txt</tt>
-included in the Qt distribution.</p>
+Laigter uses Qt 5.x.x libraries. Through them additional software might be used as described in the ThirdPartySoftware_Listing.txt included in the Qt distribution.
+Qt ThirdPartySoftware_Listing.txt
 
-<b>Qt ThirdPartySoftware_Listing.txt</b>
-<pre>The various components of the release include Open Source licensed software components.  These components, listed by the component where such Open Source licensed software appears, are described as follows:
+The various components of the release include Open Source licensed software components.  These components, listed by the component where such Open Source licensed software appears, are described as follows:
 
 =========
 Qt Libraries
@@ -107,9 +96,9 @@ This license was inspired by the BSD, Artistic, and IJG (Independent JPEG  Group
 We specifically permit and encourage the inclusion of this software, with  or without modifications, in commercial products.  We disclaim all warranties covering The FreeType Project and assume no liability related to The FreeType Project.
 
 Finally, many people asked us for  a preferred form  for a credit/disclaimer to use in compliance with this license.  We thus encourage you to use the following text:
-    “Portions of this software are copyright © <year> The FreeType Project (www.freetype.org).  All rights reserved."
+    â€œPortions of this software are copyright Â©  The FreeType Project (www.freetype.org).  All rights reserved."
 
-  Please replace <year> with the value from the FreeType version you actually use.
+  Please replace  with the value from the FreeType version you actually use.
 
 Legal Terms
 ===========
@@ -188,7 +177,7 @@ We specifically permit and encourage the use of this software as the basis of co
 ansi2knr.c is included in this distribution by permission of L. Peter Deutsch, sole proprietor of its copyright holder, Aladdin Enterprises of Menlo Park, CA. ansi2knr.c is NOT covered by the above copyright and conditions, but instead by the usual distribution terms of the Free Software Foundation; principally,that you must include source code if you redistribute it.  (See the file ansi2knr.c for full details.)  However, since ansi2knr.c is not needed as part of any program generated from the IJG code, this does not limit you more than the foregoing paragraphs do.
 The Unix configuration script "configure" was produced with GNU Autoconf. It is copyright by the Free Software Foundation but is freely distributable. The same holds for its supporting scripts (config.guess, config.sub,
 ltconfig, ltmain.sh).  Another support script, install-sh, is copyright by M.I.T. but is also freely distributable.
-It appears that the arithmetic coding option of the JPEG spec is covered by patents owned by IBM, AT&amp;T, and Mitsubishi.  Hence arithmetic coding cannot legally be used without obtaining one or more licenses.  For this reason, support for arithmetic coding has been removed from the free JPEG software.
+It appears that the arithmetic coding option of the JPEG spec is covered by patents owned by IBM, AT&T, and Mitsubishi.  Hence arithmetic coding cannot legally be used without obtaining one or more licenses.  For this reason, support for arithmetic coding has been removed from the free JPEG software.
 (Since arithmetic coding provides only a marginal gain over the unpatented Huffman mode, it is unlikely that very many implementations will support it.)
 So far as we are aware, there are no patent restrictions on the remaining code.
 The IJG distribution formerly included code to read and write GIF files.
@@ -220,7 +209,7 @@ We specifically permit and encourage the use of this software as the basis of co
 ansi2knr.c is included in this distribution by permission of L. Peter Deutsch, sole proprietor of its copyright holder, Aladdin Enterprises of Menlo Park, CA. ansi2knr.c is NOT covered by the above copyright and conditions, but instead by the usual distribution terms of the Free Software Foundation; principally,that you must include source code if you redistribute it.  (See the file ansi2knr.c for full details.)  However, since ansi2knr.c is not needed as part of any program generated from the IJG code, this does not limit you more than the foregoing paragraphs do.
 The Unix configuration script "configure" was produced with GNU Autoconf. It is copyright by the Free Software Foundation but is freely distributable. The same holds for its supporting scripts (config.guess, config.sub,
 ltconfig, ltmain.sh).  Another support script, install-sh, is copyright by M.I.T. but is also freely distributable.
-It appears that the arithmetic coding option of the JPEG spec is covered by patents owned by IBM, AT&amp;T, and Mitsubishi.  Hence arithmetic coding cannot legally be used without obtaining one or more licenses.  For this reason, support for arithmetic coding has been removed from the free JPEG software.
+It appears that the arithmetic coding option of the JPEG spec is covered by patents owned by IBM, AT&T, and Mitsubishi.  Hence arithmetic coding cannot legally be used without obtaining one or more licenses.  For this reason, support for arithmetic coding has been removed from the free JPEG software.
 (Since arithmetic coding provides only a marginal gain over the unpatented Huffman mode, it is unlikely that very many implementations will support it.)
 So far as we are aware, there are no patent restrictions on the remaining code.
 The IJG distribution formerly included code to read and write GIF files.
@@ -310,7 +299,7 @@ Glenn Randers-Pehrson
 glennrp at users.sourceforge.net
 May 8, 2008
 
-Zlib License –version 1.2.5
+Zlib License â€“version 1.2.5
 
   Copyright (C) 1995-2005 Jean-loup Gailly and Mark Adler
 
@@ -352,7 +341,7 @@ This code is in the public domain; do with it what you wish.
 LibTiff
 Copyright (c) 1988-1997 Sam Leffler
 Copyright (c) 1991-1997 Silicon Graphics, Inc.
-Copyright (C) 2004, Andrey Kiselev <dron@ak4719.spb.edu>
+Copyright (C) 2004, Andrey Kiselev 
 Copyright (c) 1997 Greg Ward Larson
 
 Permission to use, copy, modify, distribute, and sell this software and its documentation for any purpose is hereby granted without fee, provided that (i) the above copyright notices and this permission notice appear in all copies of the software and related documentation, and (ii) the names of Sam Leffler and Silicon Graphics may not be used in any advertising or publicity relating to the software without the specific, prior written permission of Sam Leffler and Silicon Graphics.
@@ -374,7 +363,7 @@ Permission to use, copy, modify, distribute, and sell this software and its docu
 THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 IN NO EVENT SHALL WOLFRAM GLOGER BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 Non-Digia Owned Code used in Qt
-Qt contains some code that is not provided under the the GNU General Public License version 3 (“GPL”), or the GNU Lesser General Public License version 2.1 (“LGPL”), but rather under specific highly permissive licenses from the original authors. This page lists the licenses used for that code, names the authors, and links to the points where it is used.
+Qt contains some code that is not provided under the the GNU General Public License version 3 (â€œGPLâ€), or the GNU Lesser General Public License version 2.1 (â€œLGPLâ€), but rather under specific highly permissive licenses from the original authors. This page lists the licenses used for that code, names the authors, and links to the points where it is used.
 Digia gratefully acknowledges these and others contributions to Qt. We recommend that programs that use Qt or Qtopia Core also acknowledge these contributions, and quote these license statements in an appendix to the documentation.
 
 Copyright (C) 1999 Serika Kurusugawa. All rights reserved.
@@ -442,9 +431,9 @@ Copyright (c) 1989 The Regents of the University of California. All rights reser
 Redistribution and use in source and binary forms are permitted provided that the above copyright notice and this paragraph are duplicated in all such forms and that any documentation, advertising materials, and other materials related to such distribution and use acknowledge that the software was developed by the University of California, Berkeley. The name of the University may not be used to endorse or promote products derived from this software without specific prior written permission. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 * QDate::weekNumber()
 
-Copyright (c) 1991 by AT&amp;T.
+Copyright (c) 1991 by AT&T.
 Permission to use, copy, modify, and distribute this software for any purpose without fee is hereby granted, provided that this entire notice is included in all copies of any software which is or includes a copy or modification of this software and in all copies of the supporting documentation for such software.
-THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED WARRANTY. IN PARTICULAR, NEITHER THE AUTHOR NOR AT&amp;T MAKES ANY REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED WARRANTY. IN PARTICULAR, NEITHER THE AUTHOR NOR AT&T MAKES ANY REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
 This product includes software developed by the University of California, Berkeley and its contributors.
 * QLocale
 
@@ -471,7 +460,7 @@ The limited permissions granted above are perpetual and will not be revoked by t
 This document and the information contained herein is provided on an "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 * Torrent Example
 
-Copyright (c) 1998 by Bjorn Reese <breese@imada.ou.dk>
+Copyright (c) 1998 by Bjorn Reese 
 Permission to use, copy, modify, and distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE AUTHORS AND CONTRIBUTORS ACCEPT NO RESPONSIBILITY IN ANY CONCEIVABLE MANNER.
 * Parts of the QCrashHandler Class
@@ -532,7 +521,7 @@ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WAR
 * QImage
 
 This file is part of the KDE project
-Copyright (C) 2005-2007 Matthias Kretz <kretz@kde.org>
+Copyright (C) 2005-2007 Matthias Kretz 
 Copyright (C) 2007-2008 Trolltech ASA.
 This library is free software; you can redistribute it and/or modify it under the terms of the GNU Library General Public License version 2 as published by the Free Software Foundation.
 This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more details.
@@ -615,18 +604,18 @@ This software is released under the MIT license.
 
 MD4 (md4.cpp and md4.h)
 MD4 (RFC-1320) message digest.
-Modified from MD5 code by Andrey Panin <pazke@donpac.ru>
-Written by Solar Designer <solar@openwall.com> in 2001, and placed in
+Modified from MD5 code by Andrey Panin 
+Written by Solar Designer  in 2001, and placed in
 the public domain. There's absolutely no warranty.
 
 Bison Parser
 As a special exception, you may create a larger work that contains part or all of the Bison parser skeleton and distribute that work under terms of your choice, so long as that work isn't itself a parser generator using the skeleton or a modified version thereof as a parser skeleton. Alternatively, if you modify or redistribute the parser skeleton itself, you may (at your option) remove this special exception, which will cause the skeleton and the resulting Bison output files to be licensed under the GNU General Public License without this special exception.
 
-Copyright © 1994-2001 World Wide Web Consortium, (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved. http://www.w3.org/Consortium/Legal/
+Copyright Â© 1994-2001 World Wide Web Consortium, (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved. http://www.w3.org/Consortium/Legal/
 This W3C work (including software, documents, or other related items) is being provided by the copyright holders under the following license. By obtaining, using and/or copying this work, you (the licensee) agree that you have read, understood, and will comply with the following terms and conditions:
 Permission to use, copy, modify, and distribute this software and its documentation, with or without modification, for any purpose and without fee or royalty is hereby granted, provided that you include the following on ALL copies of the software and documentation or portions thereof, including modifications, that you make:
 1. The full text of this NOTICE in a location viewable to users of the redistributed or derivative work.
-2. Any pre-existing intellectual property disclaimers, notices, or terms and conditions. If none exist, a short notice of the following form (hypertext is preferred, text is permitted) should be used within the body of any redistributed or derivative code: "Copyright © [$date-of-software] World Wide Web Consortium, (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved. http://www.w3.org/Consortium/Legal/"
+2. Any pre-existing intellectual property disclaimers, notices, or terms and conditions. If none exist, a short notice of the following form (hypertext is preferred, text is permitted) should be used within the body of any redistributed or derivative code: "Copyright Â© [$date-of-software] World Wide Web Consortium, (Massachusetts Institute of Technology, Institut National de Recherche en Informatique et en Automatique, Keio University). All Rights Reserved. http://www.w3.org/Consortium/Legal/"
 3. Notice of any changes or modifications to the W3C files, including the date changes were made. (We recommend you provide URIs to the location from which the code is derived.)
 THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
 COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF ANY USE OF THE SOFTWARE OR DOCUMENTATION.
@@ -656,7 +645,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 
 Wayland Windowing Manager:
-Copyright © 2010 Kristian Høgsberg
+Copyright Â© 2010 Kristian HÃ¸gsberg
 Permission to use, copy, modify, distribute, and sell this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation, and that the name of the copyright holders not be used in advertising or publicity pertaining to distribution of the software without specific, written prior permission. The copyright holders make no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.
 THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
@@ -672,7 +661,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 TestLib\Valgrind:
-Copyright (C) 2000-2007 Julian Seward.�&nbsp; All rights reserved.
+Copyright (C) 2000-2007 Julian Seward.Â  All rights reserved.
 License:
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -836,9 +825,5 @@ Except as contained in this notice, the names of the authors or their
 institutions shall not be used in advertising or otherwise to promote the
 sale, use or other dealings in this Software without prior written
 authorization from the authors
-</solar@openwall.com></pazke@donpac.ru></kretz@kde.org></breese@imada.ou.dk></dron@ak4719.spb.edu></year></year></pre>
 
 
-
-
-</body></html>

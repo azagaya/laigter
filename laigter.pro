@@ -72,8 +72,8 @@ unix: CONFIG += link_pkgconfig
 unix: PKGCONFIG += opencv
 
 DISTFILES += \
-    acknowledgements.html \
-    license.html
+    ACKNOWLEDGEMETS \
+    LICENSE
 
 TRANSLATIONS = laigter_es.ts \
                laigter_en.ts
