@@ -135,14 +135,6 @@ void OpenGlWidget::paintGL()
     m_program.bind();
 
     VAO.bind();
-//    if (tileX || tileY){
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    }else{
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-//    }
-
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -193,7 +185,6 @@ void OpenGlWidget::paintGL()
     m_occlusionTexture->bind(4);
     m_program.setUniformValue("occlusionMap",4);
 
-    //m_program.setUniformValue("viewPos",lightPosition);
     m_program.setUniformValue("viewPos",QVector3D(0,0,1));
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
@@ -233,10 +224,6 @@ void OpenGlWidget::paintGL()
 
         lightProgram.release();
     }
-//    QImage im(m_texture->width(),m_texture->height(),QImage::Format_RGBA8888);
-//    im.fill(Qt::transparent);
-//    glGetTexImage(GL_TEXTURE_2D,0,GL_RGBA,GL_UNSIGNED_BYTE,im.scanLine(0));
-//    im.save("rendered.png");
 }
 
 void OpenGlWidget::resizeGL(int w, int h)

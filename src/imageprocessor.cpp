@@ -559,13 +559,13 @@ Mat ImageProcessor::modify_distance(){
 Mat ImageProcessor::modify_occlusion(){
     Mat m;
 
-    int threshType = parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
-
     cvtColor(current_heightmap, m_occlusion,COLOR_RGBA2GRAY,1);
     m_occlusion.copyTo(m);
-
+    if (occlusion_invert){
+        subtract(Scalar::all(255),m,m) ;
+    }
     if (occlusion_distance_mode){
-        threshold(m,m,occlusion_thresh,255,threshType);
+        threshold(m,m,occlusion_thresh,255,THRESH_BINARY);
         distanceTransform(m,m,CV_DIST_L2,5);
         m.convertTo(m,CV_32F,1/255.0);
         for(int x = 0; x < m.rows; ++x)
@@ -596,10 +596,6 @@ Mat ImageProcessor::modify_occlusion(){
     m.convertTo(m,-1,occlusion_contrast,occlusion_thresh/255.0);
     m.convertTo(m,CV_8U,255,occlusion_bright);
     GaussianBlur(m,m,Size(occlusion_blur*2+1,occlusion_blur*2+1),0,0);
-
-    if (occlusion_invert){
-        subtract(Scalar::all(255),m,m) ;
-    }
 
     m.convertTo(m,CV_GRAY2RGB,1);
     return m;
@@ -957,6 +953,7 @@ Vec4b ImageProcessor::get_specular_base_color(){
 
 void ImageProcessor::set_occlusion_blur(int blur){
     occlusion_blur = blur;
+    calculate_occlusion();
 }
 
 int ImageProcessor::get_occlusion_blur(){
@@ -965,6 +962,7 @@ int ImageProcessor::get_occlusion_blur(){
 
 void ImageProcessor::set_occlusion_bright(int bright){
     occlusion_bright = bright;
+    calculate_occlusion();
 }
 
 int ImageProcessor::get_occlusion_bright(){
@@ -973,6 +971,7 @@ int ImageProcessor::get_occlusion_bright(){
 
 void ImageProcessor::set_occlusion_invert(bool invert){
     occlusion_invert = invert;
+    calculate_occlusion();
 }
 
 bool ImageProcessor::get_occlusion_invert(){
@@ -981,6 +980,7 @@ bool ImageProcessor::get_occlusion_invert(){
 
 void ImageProcessor::set_occlusion_thresh(int thresh){
     occlusion_thresh = thresh;
+    calculate_occlusion();
 }
 
 int ImageProcessor::get_occlusion_trhesh(){
@@ -989,6 +989,7 @@ int ImageProcessor::get_occlusion_trhesh(){
 
 void ImageProcessor::set_occlusion_contrast(int contrast){
     occlusion_contrast = contrast/1000.0;
+    calculate_occlusion();
 }
 
 double ImageProcessor::get_occlusion_contrast(){
@@ -997,6 +998,7 @@ double ImageProcessor::get_occlusion_contrast(){
 
 void ImageProcessor::set_occlusion_distance_mode(bool distance_mode){
     occlusion_distance_mode = distance_mode;
+    calculate_occlusion();
 }
 
 bool ImageProcessor::get_occlusion_distance_mode(){
@@ -1005,6 +1007,7 @@ bool ImageProcessor::get_occlusion_distance_mode(){
 
 void ImageProcessor::set_occlusion_distance(int distance){
     occlusion_distance = distance;
+    calculate_occlusion();
 }
 
 int ImageProcessor::get_occlusion_distance(){
@@ -1034,5 +1037,19 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *normal_blur_radius = *(other.normal_blur_radius);
     *normal_bisel_distance = *(other.normal_bisel_distance);
     *normal_bisel_blur_radius = *(other.normal_bisel_blur_radius);
+
+    *specular_blur = *(other.specular_blur);
+    *specular_bright = *(other.specular_bright);
+    *specular_invert = *(other.specular_invert);
+    *specular_thresh = *(other.specular_thresh);
+    *specular_contrast = *(other.specular_contrast);
+
+    *occlusion_blur = *(other.occlusion_blur);
+    *occlusion_bright = *(other.occlusion_bright);
+    *occlusion_invert = *(other.occlusion_invert);
+    *occlusion_thresh = *(other.occlusion_thresh);
+    *occlusion_contrast = *(other.occlusion_contrast);
+    *occlusion_distance = *(other.occlusion_distance);
+    *occlusion_distance_mode = *(other.occlusion_distance_mode);
     return *this;
 }

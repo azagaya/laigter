@@ -37,12 +37,10 @@ void main()
     vec2 texCoordsL = texCoord;
     if (pixelated){
 
-        float dx = 1.0*(float(pixelsX)*ratio.x);
-        float dy = 1.0*(float(pixelsY)*ratio.y);
-        vec2 coords = vec2(texCoords.x*dx,texCoords.y*dy);
+        vec2 d = vec2(float(pixelsX),float(pixelsY))*ratio;
+        vec2 coords = texCoords*d;
 
-        texCoords.x = (floor(coords.x)+0.5/dx)/dx;
-        texCoords.y = (floor(coords.y)+0.5/dy)/dy;
+        texCoords = (floor(coords)+0.5/d)/d;
 
     }
     if (parallax){
@@ -50,13 +48,6 @@ void main()
 
         if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
             discard;
-
-        //       dis = height_scale*(texture2D(parallaxMap, texCoords*ratio).r-0.5)*2*viewDir.xy;
-        //       texCoords.x += dis.x;
-        //       texCoords.y -= dis.y;
-        //       if(texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 || texCoords.y < 0.0)
-        //        discard;
-
     }
 
     texCoords *= ratio;
@@ -127,12 +118,4 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
     float weight = afterDepth / (afterDepth - beforeDepth);
     finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
     return finalTexCoords;
-
-    return currentTexCoords;
-    //    float r = texture2D(parallaxMap, texCoords*ratio).r;
-    //    float b =texture2D(parallaxMap, texCoords*ratio).b;
-    //    float g = texture2D(parallaxMap, texCoords*ratio).g;
-    //    float height =  (r+g+b)/3;
-    //    vec2 p = viewDir.xy / viewDir.z * (height*height_scale);
-    //    return texCoords + p;
 }

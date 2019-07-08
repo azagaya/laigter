@@ -6,14 +6,16 @@
 #include <QDir>
 #include <QDebug>
 
-static QString presetCodes[23] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight ",
+static QString presetCodes[30] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight ",
                                   "BumpDistance", "BumpSoft ", "BumpCut ", "Tile ", "InvertX ",
                                   "InvertY ", "ParallaxType", "BinaryThreshold ",
                                   "BinaryFocus ", "ParallaxSoft ", "BinaryMinHeight ",
                                   "BinaryErodeDilate ", "HeightMapBrightness ",
                                   "HeightMapContrast ", "InvertParallax ", "SpecularBlur ",
                                   "SpecularBright ", "SpecularContrast ", "SpecularThresh ",
-                                  "SpecularInvert "};
+                                  "SpecularInvert ", "OcclusionBlur ", "OcclusionBright ",
+                                  "OcclusionInvert ", "OcclusionThresh ", "OcclusionContrast "
+                                  "OcclusionDistance ", "OcclusionDistanceMode "};
 
 PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor*> *processorList, QWidget *parent) :
     QDialog(parent),
@@ -59,6 +61,13 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     currentValues[20] = QString::number(*mSettings.specular_contrast*1000);
     currentValues[21] = QString::number(*mSettings.specular_thresh);
     currentValues[22] = *mSettings.specular_invert ? "1" : "0";
+    currentValues[23] = QString::number(*mSettings.occlusion_blur);
+    currentValues[24] = QString::number(*mSettings.occlusion_bright);
+    currentValues[25] = *mSettings.occlusion_invert ? "1" : "0";
+    currentValues[26] = QString::number(*mSettings.occlusion_thresh);
+    currentValues[27] = QString::number(*mSettings.occlusion_contrast*1000);
+    currentValues[28] = QString::number(*mSettings.occlusion_distance);
+    currentValues[29] = *mSettings.occlusion_distance_mode ? "1" : "0";
 
     ui->listWidgetTextures->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -212,6 +221,20 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
                 p->set_specular_thresh(aux[1].toInt());
             }else if (aux[0] == presetCodes[22]){
                 p->set_specular_invert((bool)aux[1].toInt());
+            }else if (aux[0] == presetCodes[23]){
+                p->set_occlusion_blur(aux[1].toInt());
+            }else if (aux[0] == presetCodes[24]){
+                p->set_occlusion_bright(aux[1].toInt());
+            }else if (aux[0] == presetCodes[25]){
+                p->set_occlusion_invert((bool)aux[1].toInt());
+            }else if (aux[0] == presetCodes[26]){
+                p->set_occlusion_thresh(aux[1].toInt());
+            }else if (aux[0] == presetCodes[27]){
+                p->set_occlusion_contrast(aux[1].toInt());
+            }else if (aux[0] == presetCodes[28]){
+                p->set_occlusion_distance(aux[1].toInt());
+            }else if (aux[0] == presetCodes[29]){
+                p->set_occlusion_distance_mode((bool)aux[1].toInt());
             }
         }
     }

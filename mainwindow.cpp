@@ -373,6 +373,14 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->sliderSpecContrast,SIGNAL(valueChanged(int)),p,SLOT(set_specular_contrast(int)));
     connect(ui->sliderSpecThresh,SIGNAL(valueChanged(int)),p,SLOT(set_specular_thresh(int)));
     connect(ui->checkBoxSpecInvert,SIGNAL(toggled(bool)),p,SLOT(set_specular_invert(bool)));
+
+    connect(ui->sliderOcclusionSoft,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_blur(int)));
+    connect(ui->sliderOcclusionBright,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_bright(int)));
+    connect(ui->sliderOcclusionContrast,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_contrast(int)));
+    connect(ui->sliderOcclusionThresh,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_thresh(int)));
+    connect(ui->checkBoxOcclusionInvert,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_invert(bool)));
+    connect(ui->checkBoxOcclusionDistance,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_distance_mode(bool)));
+    connect(ui->sliderOcclusionDistance,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_distance(int)));
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){

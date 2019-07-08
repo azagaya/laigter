@@ -41,7 +41,7 @@ private:
     QList <ImageProcessor *> *mProcessorList;
     QString presetsPath;
     QDir presetsDir;
-    QString currentValues[23];
+    QString currentValues[30];
 };
 
 #endif // PRESETSMANAGER_H
