@@ -5,6 +5,10 @@ You can get binaries from itch.io: https://azagaya.itch.io/laigter
 
 Laigter is available in english and spanish. It should automatically detect your PC language.
 
+## Prerequisites
+
+You need Qt framework (online installer is the recommended way to get it) and opencv 3.2 or above. Opencv is not meant for tools like this, but is the one i'm used to. In the future it would be nice to do without it.
+
 ## Contributing
 
 Easiest way to contribute is trying laigter and giving me your feedback. Please open an issue when you find a bug, and try to specify the way to reproduce it.
