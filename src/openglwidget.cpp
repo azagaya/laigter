@@ -188,7 +188,7 @@ void OpenGlWidget::paintGL()
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-    glActiveTexture(GL_TEXTURE1);
+
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap",1);
 
@@ -213,23 +213,24 @@ void OpenGlWidget::paintGL()
     m_program.setUniformValue("specScatter",specScatter);
     m_program.setUniformValue("ambientColor",ambientColor);
     m_program.setUniformValue("ambientIntensity",ambientIntensity);
+    m_texture->bind(0);
     glDrawArrays(GL_QUADS, 0, 4);
 
     m_program.release();
+    float x = static_cast<float>(laigter.width())/width();
+    float y = static_cast<float>(laigter.height())/height();
+    transform.setToIdentity();
+    transform.translate(lightPosition);
+    transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
 
+    lightProgram.bind();
+    lightVAO.bind();
+    lightProgram.setUniformValue("transform",transform);
+
+    laigterTexture->bind(0);
     if (m_light){
 
-        float x = static_cast<float>(laigter.width())/width();
-        float y = static_cast<float>(laigter.height())/height();
-        transform.setToIdentity();
-        transform.translate(lightPosition);
-        transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
 
-        lightProgram.bind();
-        lightVAO.bind();
-        lightProgram.setUniformValue("transform",transform);
-
-        laigterTexture->bind(0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -238,8 +239,8 @@ void OpenGlWidget::paintGL()
         lightProgram.setUniformValue("lightColor",lightColor);
         glDrawArrays(GL_QUADS, 0, 4);
 
-        lightProgram.release();
     }
+    lightProgram.release();
 }
 
 void OpenGlWidget::resizeGL(int w, int h)
@@ -259,7 +260,6 @@ void OpenGlWidget::setImage(QImage image){
     sy = (float)m_image.height()/height();
     pixelsX = image.width();
     pixelsY = image.height();
-    update();
 
 }
 
