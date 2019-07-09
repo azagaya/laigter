@@ -259,6 +259,7 @@ void OpenGlWidget::setImage(QImage image){
     sy = (float)m_image.height()/height();
     pixelsX = image.width();
     pixelsY = image.height();
+    update();
 
 }
 

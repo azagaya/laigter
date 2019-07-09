@@ -483,9 +483,9 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     processor->update();
     on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
 
-    update_scene(processor->get_normal(),ProcessedImage::Normal);
-    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
-    update_scene(processor->get_specular(),ProcessedImage::Specular);
+//    update_scene(processor->get_normal(),ProcessedImage::Normal);
+//    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
+//    update_scene(processor->get_specular(),ProcessedImage::Specular);
     connect_processor(processor);
 }
 
