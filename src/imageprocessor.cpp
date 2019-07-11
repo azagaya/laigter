@@ -593,7 +593,7 @@ Mat ImageProcessor::modify_occlusion(){
             for(int y = 0; y < m.cols; ++y)
             {
                 if (occlusion_distance == 0){
-                    *pixel = 0;
+                    *pixel = 1.0;
                 }
                 else{
                     *pixel *= 255.0/occlusion_distance;
@@ -829,6 +829,11 @@ QImage ImageProcessor::get_parallax(){
 QImage ImageProcessor::get_specular(){
     return QImage(static_cast<unsigned char *>(current_specular.data),
                   current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
+}
+
+QImage ImageProcessor::get_occlusion(){
+    return QImage(static_cast<unsigned char *>(current_occlusion.data),
+                       current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
 }
 
 bool ImageProcessor::get_parallax_invert(){

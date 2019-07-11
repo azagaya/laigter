@@ -112,6 +112,7 @@ public:
     QImage get_normal();
     QImage get_parallax();    
     QImage get_specular();
+    QImage get_occlusion();
     void update();
     void calculate();
     void calculate_parallax();

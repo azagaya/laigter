@@ -430,6 +430,14 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->sliderSpecThresh,SIGNAL(valueChanged(int)),p,SLOT(set_specular_thresh(int)));
     disconnect(ui->checkBoxSpecInvert,SIGNAL(toggled(bool)),p,SLOT(set_specular_invert(bool)));
 
+    disconnect(ui->sliderOcclusionSoft,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_blur(int)));
+    disconnect(ui->sliderOcclusionBright,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_bright(int)));
+    disconnect(ui->sliderOcclusionContrast,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_contrast(int)));
+    disconnect(ui->sliderOcclusionThresh,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_thresh(int)));
+    disconnect(ui->checkBoxOcclusionInvert,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_invert(bool)));
+    disconnect(ui->checkBoxOcclusionDistance,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_distance_mode(bool)));
+    disconnect(ui->sliderOcclusionDistance,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_distance(int)));
+
 }
 
 void MainWindow::on_listWidget_itemSelectionChanged()
@@ -476,16 +484,26 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->sliderSpecContrast->setValue(static_cast<int>(processor->get_specular_contrast()*1000));
     ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
 
+    ui->sliderOcclusionSoft->setValue(processor->get_occlusion_blur());
+    ui->sliderOcclusionBright->setValue(processor->get_occlusion_bright());
+    ui->sliderOcclusionThresh->setValue(processor->get_occlusion_trhesh());
+    ui->sliderOcclusionContrast->setValue(static_cast<int>(processor->get_occlusion_contrast()*1000));
+    ui->sliderOcclusionDistance->setValue(processor->get_occlusion_distance());
+    ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
+    ui->checkBoxOcclusionDistance->setChecked(processor->get_occlusion_distance_mode());
+
     bool succes;
     image = il.loadImage(processor->get_name(), &succes);
     image = image.convertToFormat(QImage::Format_RGBA8888);
 
-    processor->update();
+    //processor->update();
     on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
 
-//    update_scene(processor->get_normal(),ProcessedImage::Normal);
-//    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
-//    update_scene(processor->get_specular(),ProcessedImage::Specular);
+    update_scene(processor->get_normal(),ProcessedImage::Normal);
+    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
+    update_scene(processor->get_specular(),ProcessedImage::Specular);
+    update_scene(processor->get_occlusion(),ProcessedImage::Occlusion);
+
     connect_processor(processor);
 }
 
@@ -508,7 +526,7 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas normales. ");
+        message += tr("Se exportaron todos los mapas normales.\n");
     }
     if (ui->checkBoxExportParallax->isChecked()){
         foreach (ImageProcessor *p, processorList){
@@ -518,7 +536,7 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas de paralaje. ");
+        message += tr("Se exportaron todos los mapas de paralaje.\n");
     }
     if (ui->checkBoxExportSpecular->isChecked()){
         foreach (ImageProcessor *p, processorList){
@@ -528,7 +546,17 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas de especulares. ");
+        message += tr("Se exportaron todos los mapas especulares.\n");
+    }
+    if (ui->checkBoxExportOcclusion->isChecked()){
+        foreach (ImageProcessor *p, processorList){
+            n = p->get_occlusion();
+            info = QFileInfo(p->get_name());
+            suffix = info.completeSuffix();
+            name = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
+            n.save(name);
+        }
+        message += tr("Se exportaron todos los mapas de oclusión.\n");
     }
     if (message != ""){
         QMessageBox msgBox;
@@ -661,7 +689,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_n." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas normales. ");
+            message += tr("Se exportaron todos los mapas normales.\n");
         }
         if (ui->checkBoxExportParallax->isChecked()){
             foreach (ImageProcessor *p, processorList){
@@ -674,7 +702,33 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_p." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas de paralaje. ");
+            message += tr("Se exportaron todos los mapas de paralaje.\n");
+        }
+        if (ui->checkBoxExportSpecular->isChecked()){
+            foreach (ImageProcessor *p, processorList){
+                n = p->get_specular();
+                info = QFileInfo(p->get_name());
+                suffix = info.completeSuffix();
+                name = path + "/" + info.baseName() + "_s." + suffix;
+                int i=1;
+                while (QFileInfo::exists(name))
+                    name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_s." + suffix;
+                n.save(name);
+            }
+            message += tr("Se exportaron todos los mapas especulares.\n");
+        }
+        if (ui->checkBoxExportOcclusion->isChecked()){
+            foreach (ImageProcessor *p, processorList){
+                n = p->get_occlusion();
+                info = QFileInfo(p->get_name());
+                suffix = info.completeSuffix();
+                name = path + "/" + info.baseName() + "_o." + suffix;
+                int i=1;
+                while (QFileInfo::exists(name))
+                    name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_o." + suffix;
+                n.save(name);
+            }
+            message += tr("Se exportaron todos los mapas de oclusión.\n");
         }
         if (message != ""){
             QMessageBox msgBox;
