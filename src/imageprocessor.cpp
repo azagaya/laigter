@@ -676,7 +676,6 @@ Mat ImageProcessor::modify_specular(){
     m_specular.copyTo(m);
 
     m.convertTo(m,CV_32F,1/255.0);
-    m = abs(m-specular_base_color/255.0);
     cvtColor(m,m,CV_RGBA2GRAY);
     m.convertTo(m,-1,1,-specular_thresh/255.0);
     m.convertTo(m,-1,specular_contrast,specular_thresh/255.0);
