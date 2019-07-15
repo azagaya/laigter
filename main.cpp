@@ -55,8 +55,12 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     a.installTranslator(&translator);
-    //a.setAttribute(Qt::AA_UseSoftwareOpenGL);
-
+    if (argc > 1){
+        if (*argv[1] == 's'){
+            a.setAttribute(Qt::AA_UseSoftwareOpenGL);
+            qDebug() << "Soft OpenGL";
+        }
+    }
     MainWindow w;
     QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));
     w.show();

@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QOpenGLVertexArrayObject>
+#include <QOpenGLVersionProfile>
 
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
@@ -52,9 +53,11 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 
     QSurfaceFormat format;
     format.setProfile( QSurfaceFormat::CompatibilityProfile);
+
     format.setSamples(32);
 
     setFormat(format);
+
 }
 
 void OpenGlWidget::initializeGL()
