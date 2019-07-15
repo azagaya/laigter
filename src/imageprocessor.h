@@ -109,6 +109,7 @@ public:
     bool busy;
     QString m_fileName;
     QImage get_texture();
+    QImage get_heightmap();
     QImage get_normal();
     QImage get_parallax();    
     QImage get_specular();

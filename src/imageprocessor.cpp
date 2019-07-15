@@ -1076,3 +1076,10 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *occlusion_distance_mode = *(other.occlusion_distance_mode);
     return *this;
 }
+
+QImage ImageProcessor::get_heightmap(){
+    Mat m;
+    add(current_heightmap, new_distance,m);
+    return QImage(static_cast<unsigned char *>(current_occlusion.data),
+                       current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+}
