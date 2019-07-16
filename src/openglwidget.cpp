@@ -152,8 +152,6 @@ void OpenGlWidget::paintGL()
     zoomY = !tileY ? m_zoom : 1;
     transform.scale(zoomX,zoomY,1);
 
-
-
     m_program.bind();
 
     VAO.bind();
