@@ -145,20 +145,17 @@ void OpenGlWidget::paintGL()
     float scaleX, scaleY, zoomX, zoomY;
     transform.setToIdentity();
 
-    transform.translate(texturePosition);
-    scaleX = !tileX ? sx : 1;
-    scaleY = !tileY ? sy : 1;
-    transform.scale(scaleX,scaleY,1);
-    zoomX = !tileX ? m_zoom : 1;
-    zoomY = !tileY ? m_zoom : 1;
-    transform.scale(zoomX,zoomY,1);
+    float translatex = (float)m_image.width()/width()-1;
+    float translatey = (float)m_image.height()/height()-1;
+    transform.translate(translatex,translatey);
+    transform.scale((float)m_image.width()/width(),(float)m_image.height()/height(),1);
 
     /* Start first pass */
 
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
     format.setSamples(16);
-    QOpenGLFramebufferObject frameBuffer(width(), height(), format);
+    QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height(), format);
 
     frameBuffer.bind();
 
@@ -213,11 +210,14 @@ void OpenGlWidget::paintGL()
     m_occlusionTexture->bind(4);
     m_program.setUniformValue("occlusionMap",4);
 
-    m_program.setUniformValue("viewPos",QVector3D(0,0,1));
+    m_program.setUniformValue("viewPos",QVector3D(translatex,translatey,1));
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
 
-    m_program.setUniformValue("lightPos",lightPosition);
+    QVector3D pos(lightPosition);
+    pos.setX(pos.x()+translatex-texturePosition.x());
+    pos.setY(pos.y()+translatey-texturePosition.y());
+    m_program.setUniformValue("lightPos",pos);
     m_program.setUniformValue("lightColor",lightColor);
     m_program.setUniformValue("specColor",specColor);
     m_program.setUniformValue("diffIntensity",diffIntensity);
@@ -244,12 +244,17 @@ void OpenGlWidget::paintGL()
     program.link();
 
     transform.setToIdentity();
+    transform.translate(texturePosition);
+    scaleX = !tileX ? sx : 1;
+    scaleY = !tileY ? sy : 1;
+    transform.scale(scaleX,scaleY,1);
+
+    zoomX = !tileX ? m_zoom : 1;
+    zoomY = !tileY ? m_zoom : 1;
+    transform.scale(zoomX,zoomY,1);
 
     program.bind();
     VAO.bind();
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
     glActiveTexture(GL_TEXTURE0);
     rendered.bind(0);
@@ -411,17 +416,19 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
 }
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
+    float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
+    float lightHeight = (float)laigter.height()/height()*0.3;
     if (event->buttons() & Qt::LeftButton)
     {
         float mouseX = (float)event->localPos().x()/width()*2-1;
         float mouseY = -(float)event->localPos().y()/height()*2+1;
         if (lightSelected){
             lightPosition.setX(mouseX);
-            if (lightPosition.x() > 0.9) lightPosition.setX(0.9);
-            else if (lightPosition.x() < -0.9) lightPosition.setX(-0.9);
+            if (lightPosition.x() >= 1-lightWidth/2) lightPosition.setX(1-lightWidth/2);
+            else if (lightPosition.x() < -1+lightWidth/2) lightPosition.setX(-1+lightWidth/2);
             lightPosition.setY(mouseY);
-            if (lightPosition.y() > 0.9) lightPosition.setY(0.9);
-            else if (lightPosition.y() < -0.9) lightPosition.setY(-0.9);
+            if (lightPosition.y() > 1-lightHeight/2) lightPosition.setY(1-lightHeight/2);
+            else if (lightPosition.y() < -1+lightHeight/2) lightPosition.setY(-1+lightHeight/2);
         }else{
             if (!tileX)
                 texturePosition.setX(mouseX-textureOffset.x());
