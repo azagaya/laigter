@@ -4,5 +4,8 @@
         <file>shaders/vshader.glsl</file>
         <file>shaders/lfshader.glsl</file>
         <file>shaders/lvshader.glsl</file>
+        <file>shaders/distance.glsl</file>
+        <file>shaders/simple-vertex.glsl</file>
+        <file>shaders/simple-fragment.glsl</file>
     </qresource>
 </RCC>

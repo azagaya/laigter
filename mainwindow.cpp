@@ -272,6 +272,7 @@ void MainWindow::open_files(QStringList fileNames){
             ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
     }
+
 }
 
 void MainWindow::on_actionFitZoom_triggered()

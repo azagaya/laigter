@@ -66,6 +66,8 @@ public slots:
     void setParallaxHeight(int height);
     void setParallax(bool p);
 
+    QImage calculate_distance(QImage image);
+
     QImage renderBuffer();
 signals:
     void initialized();
@@ -83,8 +85,7 @@ private:
     QOpenGLVertexArrayObject VAO;
     QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
-    QOpenGLShaderProgram m_program;
-    QOpenGLShaderProgram lightProgram;
+    QOpenGLShaderProgram m_program, simpleProgram, lightProgram;
     QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap;
     QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
