@@ -22,9 +22,10 @@
 in vec2 texCoord;
 out vec4 FragColor;
 uniform sampler2D texture;
+uniform vec2 ratio;
 
 void main()
 {
-    vec4 tex = texture2D(texture,texCoord);
+    vec4 tex = texture2D(texture,texCoord*ratio);
     FragColor = tex;
 }

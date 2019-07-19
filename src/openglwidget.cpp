@@ -141,21 +141,24 @@ void OpenGlWidget::paintGL()
     glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    QMatrix4x4 transform;
-    float scaleX, scaleY, zoomX, zoomY;
-    transform.setToIdentity();
-
-    float translatex = (float)m_image.width()/width()-1;
-    float translatey = (float)m_image.height()/height()-1;
-    transform.translate(translatex,translatey);
-    transform.scale((float)m_image.width()/width(),(float)m_image.height()/height(),1);
-
-    /* Start first pass */
-
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    format.setSamples(16);
-    QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height(), format);
+    format.setSamples(32);
+
+
+    QOpenGLFramebufferObject frameBuffer(width(), height(), format);
+
+    QMatrix4x4 transform;
+    transform.setToIdentity();
+    transform.translate(texturePosition);
+    float scaleX = !tileX ? sx : 1;
+    float scaleY = !tileY ? sy : 1;
+    transform.scale(scaleX,scaleY,1);
+    float zoomX = !tileX ? m_zoom : 1;
+    float zoomY = !tileY ? m_zoom : 1;
+    transform.scale(zoomX,zoomY,1);
+
+    /* Start first pass */
 
     frameBuffer.bind();
 
@@ -170,6 +173,14 @@ void OpenGlWidget::paintGL()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
+    if (tileX || tileY){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }else{
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    }
+
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("light",m_light);
     m_texture->bind(0);
@@ -180,20 +191,14 @@ void OpenGlWidget::paintGL()
     m_program.setUniformValue("pixelSize",pixelSize);
     m_program.setUniformValue("pixelated",m_pixelated);
 
+
+
     scaleX = tileX ? sx : 1;
     scaleY = tileY ? sy : 1;
     zoomX = tileX ? m_zoom : 1;
     zoomY = tileY ? m_zoom : 1;
     m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
 
-
-    if (tileX || tileY){
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    }else{
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -210,14 +215,11 @@ void OpenGlWidget::paintGL()
     m_occlusionTexture->bind(4);
     m_program.setUniformValue("occlusionMap",4);
 
-    m_program.setUniformValue("viewPos",QVector3D(translatex,translatey,1));
+    m_program.setUniformValue("viewPos",QVector3D(0,0,1));
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
 
-    QVector3D pos(lightPosition);
-    pos.setX(pos.x()+translatex-texturePosition.x());
-    pos.setY(pos.y()+translatey-texturePosition.y());
-    m_program.setUniformValue("lightPos",pos);
+    m_program.setUniformValue("lightPos",lightPosition);
     m_program.setUniformValue("lightColor",lightColor);
     m_program.setUniformValue("specColor",specColor);
     m_program.setUniformValue("diffIntensity",diffIntensity);
@@ -233,7 +235,6 @@ void OpenGlWidget::paintGL()
     frameBuffer.release();
     frameBuffer.bindDefault();
     QOpenGLTexture rendered(frameBuffer.toImage());
-
     /* Render to default framebuffer */
 
     QOpenGLShaderProgram program;
@@ -244,14 +245,6 @@ void OpenGlWidget::paintGL()
     program.link();
 
     transform.setToIdentity();
-    transform.translate(texturePosition);
-    scaleX = !tileX ? sx : 1;
-    scaleY = !tileY ? sy : 1;
-    transform.scale(scaleX,scaleY,1);
-
-    zoomX = !tileX ? m_zoom : 1;
-    zoomY = !tileY ? m_zoom : 1;
-    transform.scale(zoomX,zoomY,1);
 
     program.bind();
     VAO.bind();
@@ -260,6 +253,7 @@ void OpenGlWidget::paintGL()
     rendered.bind(0);
     program.setUniformValue("texture",0);
     program.setUniformValue("transform",transform);
+    program.setUniformValue("ratio",QVector2D(1,1));
     glDrawArrays(GL_QUADS, 0, 4);
 
     program.release();
@@ -297,8 +291,8 @@ void OpenGlWidget::paintGL()
 
 void OpenGlWidget::resizeGL(int w, int h)
 {
-    sx = (float)m_image.width()/width();
-    sy = (float)m_image.height()/height();
+    sx = (float)m_image.width()/w;
+    sy = (float)m_image.height()/h;
     update();
 }
 
