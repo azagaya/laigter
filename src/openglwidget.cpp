@@ -59,6 +59,16 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 
     setFormat(format);
 
+    //    refreshTimer.setInterval(1.0/60.0*1000.0);
+    //    refreshTimer.setSingleShot(false);
+
+    //    connect(&refreshTimer,SIGNAL(timeout()),this,SLOT(update()));
+
+    //    refreshTimer.start()
+
+    need_to_update = true;
+    export_render = false;
+
 }
 
 void OpenGlWidget::initializeGL()
@@ -137,16 +147,28 @@ void OpenGlWidget::initializeGL()
 
 void OpenGlWidget::paintGL()
 {
+    if (need_to_update){
+        need_to_update = false;
+        update_scene();
+    }
+    if (export_render){
+        export_render = false;
+        if (tileX || tileY){
+            renderedPreview = grabFramebuffer();
+        } else {
+            renderedPreview = calculate_preview();
+        }
+    }
+}
 
+void OpenGlWidget::update(){
+    need_to_update = true;
+    QOpenGLWidget::update();
+}
+
+void OpenGlWidget::update_scene(){
     glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-
-    QOpenGLFramebufferObjectFormat format;
-    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    format.setSamples(32);
-
-
-    QOpenGLFramebufferObject frameBuffer(width(), height(), format);
 
     QMatrix4x4 transform;
     transform.setToIdentity();
@@ -159,8 +181,6 @@ void OpenGlWidget::paintGL()
     transform.scale(zoomX,zoomY,1);
 
     /* Start first pass */
-
-    frameBuffer.bind();
 
     m_program.bind();
 
@@ -232,32 +252,6 @@ void OpenGlWidget::paintGL()
 
     m_program.release();
 
-    frameBuffer.release();
-    frameBuffer.bindDefault();
-    QOpenGLTexture rendered(frameBuffer.toImage());
-    /* Render to default framebuffer */
-
-    QOpenGLShaderProgram program;
-    program.create();
-    program.removeAllShaders();
-    program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/simple-vertex.glsl");
-    program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/simple-fragment.glsl");
-    program.link();
-
-    transform.setToIdentity();
-
-    program.bind();
-    VAO.bind();
-
-    glActiveTexture(GL_TEXTURE0);
-    rendered.bind(0);
-    program.setUniformValue("texture",0);
-    program.setUniformValue("transform",transform);
-    program.setUniformValue("ratio",QVector2D(1,1));
-    glDrawArrays(GL_QUADS, 0, 4);
-
-    program.release();
-
     /* Render light texture */
 
     float x = static_cast<float>(laigter.width())/width();
@@ -286,7 +280,6 @@ void OpenGlWidget::paintGL()
 
     }
     lightProgram.release();
-
 }
 
 void OpenGlWidget::resizeGL(int w, int h)
@@ -537,14 +530,12 @@ QImage OpenGlWidget::calculate_distance(QImage image){
     program.bind();
 
     VAO.bind();
-    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
-    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glActiveTexture(GL_TEXTURE0);
-    texture.bind(0);
+    m_texture->bind(0);
 
     program.setUniformValue("texture",0);
 
@@ -557,6 +548,99 @@ QImage OpenGlWidget::calculate_distance(QImage image){
     program.release();
     frameBuffer.release();
 
+    return frameBuffer.toImage();
+}
+
+QImage OpenGlWidget::calculate_preview(){
+
+    QOpenGLFramebufferObjectFormat format;
+    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setSamples(16);
+    QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height(), format);
+
+    QMatrix4x4 transform;
+    transform.setToIdentity();
+
+    QVector2D scale((float)m_image.width()/width(),(float)m_image.height()/height());
+    QVector2D translate(scale.x()-1, scale.y()-1);
+
+    //transform.translate(translate.x(),translate.y(),texturePosition.z());
+    //transform.scale(scale.x(),scale.y(),1);
+
+    /* Start first pass */
+
+    frameBuffer.bind();
+    glViewport(0, 0, m_image.width(), m_image.height());
+    m_program.bind();
+
+    VAO.bind();
+
+    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+
+    if (tileX || tileY){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }else{
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    }
+
+    glActiveTexture(GL_TEXTURE0);
+    m_program.setUniformValue("light",m_light);
+    m_texture->bind(0);
+    m_program.setUniformValue("texture",0);
+    m_program.setUniformValue("transform",transform);
+    m_program.setUniformValue("pixelsX",pixelsX);
+    m_program.setUniformValue("pixelsY",pixelsY);
+    m_program.setUniformValue("pixelSize",pixelSize);
+    m_program.setUniformValue("pixelated",m_pixelated);
+
+    m_program.setUniformValue("ratio",QVector2D(1,1));
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+
+    m_normalTexture->bind(1);
+    m_program.setUniformValue("normalMap",1);
+
+    m_parallaxTexture->bind(2);
+    m_program.setUniformValue("parallaxMap",2);
+
+    m_specularTexture->bind(3);
+    m_program.setUniformValue("specularMap",3);
+
+    m_occlusionTexture->bind(4);
+    m_program.setUniformValue("occlusionMap",4);
+
+    m_program.setUniformValue("viewPos",QVector3D(-texturePosition.x()*width()/m_image.width(),
+                                                  -texturePosition.y()*height()/m_image.height(),1));
+    m_program.setUniformValue("parallax",m_parallax);
+    m_program.setUniformValue("height_scale",parallax_height);
+
+    QVector3D pos((lightPosition.x()-texturePosition.x())*width()/m_image.width(),
+                  (lightPosition.y()-texturePosition.y())*height()/m_image.height(),
+                  lightPosition.z());
+
+    m_program.setUniformValue("lightPos",pos);
+    m_program.setUniformValue("lightColor",lightColor);
+    m_program.setUniformValue("specColor",specColor);
+    m_program.setUniformValue("diffIntensity",diffIntensity);
+    m_program.setUniformValue("specIntensity",specIntensity);
+    m_program.setUniformValue("specScatter",specScatter);
+    m_program.setUniformValue("ambientColor",ambientColor);
+    m_program.setUniformValue("ambientIntensity",ambientIntensity);
+    m_texture->bind(0);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    m_program.release();
+
+    frameBuffer.release();
     return frameBuffer.toImage();
 }
 

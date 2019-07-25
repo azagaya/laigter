@@ -33,24 +33,23 @@ float border(sampler2D texture, vec2 texCoord){
 }
 
 float distance(sampler2D texture, vec2 texCoord){
-    /**** Alternative distances algorithm (too slow) ****/
-        float pi =  3.14159265359;
-        float dist = radius;
+        float dist = sqrt(2.0)*float(radius);
         bool d1 = false, d2 = false, d3 = false, d4 = false;
         if (border(texture, texCoord) == 0.0) return 0.0;
-        for (int i =1; i <= radius; i++){
-                for (int j = 0; j<=4*i; j++){
-                        float angle = j * 2.0*pi/(4.0*i);
-                        float len = i;
-                        d1 = (border(texture, texCoord+vec2(cos(angle)*len*pixelSize.x,sin(angle)*len*pixelSize.y)) == 0.0);
-                        if (d1 ){
-                                dist = min(dist,len);
+        for (int i = 1; i <= radius; i++){
+                for (int j = -i; j<=i; j++){
+                        float len = abs(i);
+                        d1 = (border(texture, texCoord+vec2(float(i)*pixelSize.x,float(j)*pixelSize.y)) == 0.0);
+                        d2 = (border(texture, texCoord+vec2(-float(i)*pixelSize.x,float(j)*pixelSize.y)) == 0.0);
+                        d3 = (border(texture, texCoord+vec2(float(j)*pixelSize.x,float(i)*pixelSize.y)) == 0.0);
+                        d4 = (border(texture, texCoord+vec2(float(j)*pixelSize.x,-float(i)*pixelSize.y)) == 0.0);
+                        if (d1 || d2 || d3 || d4 ){
+                                dist = min(dist,sqrt(pow(float(i),2.0)+pow(float(j),2.0)));
                         }
                 }
-                if (d1) break;
         }
-        dist /= radius;
-        dist = sqrt(1.0-pow((dist-1.0),2.0));
+        dist /= (sqrt(2.0)*float(radius));
+        dist = sqrt(1.0-pow(dist-1.0,2.0));
         return dist;
 }
 

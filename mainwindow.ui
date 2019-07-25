@@ -733,6 +733,9 @@ QDockWidget::title{
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QGridLayout" name="gridLayout_10">
+     <property name="verticalSpacing">
+      <number>3</number>
+     </property>
      <item row="0" column="0" colspan="2">
       <widget class="QListWidget" name="listWidget"/>
      </item>

@@ -30,12 +30,14 @@
 #include <QPixmap>
 #include <QWheelEvent>
 #include <QObject>
+#include <QTimer>
 
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
     OpenGlWidget(QWidget *parent = nullptr);
+    void update();
 
 public slots:
     void setImage(QImage image);
@@ -67,6 +69,8 @@ public slots:
     void setParallax(bool p);
 
     QImage calculate_distance(QImage image);
+    QImage calculate_preview();
+    void update_scene();
 
     QImage renderBuffer();
 signals:
@@ -86,14 +90,17 @@ private:
     QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program, simpleProgram, lightProgram;
-    QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap;
+    QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap, renderedPreview;
     QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
+    QTimer refreshTimer;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;
     float m_zoom;
     float diffIntensity, ambientIntensity, specIntensity, specScatter;
     int pixelsX, pixelsY, pixelSize;
     bool lightSelected;
+
+    bool need_to_update, export_render;
 };
 
 #endif // OPENGLWIDGET_H
