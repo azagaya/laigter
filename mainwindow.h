@@ -118,6 +118,8 @@ private slots:
 
     void on_comboBoxView_currentIndexChanged(int index);
 
+    void on_actionExportPreview_triggered();
+
 private:
     QImage image, normal, parallax, specular, occlusion;
     Ui::MainWindow *ui;

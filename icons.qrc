@@ -9,5 +9,6 @@
         <file>icons/presets.png</file>
         <file>icons/delete.png</file>
         <file>icons/import.png</file>
+        <file>icons/export-preview.png</file>
     </qresource>
 </RCC>

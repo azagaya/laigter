@@ -77,6 +77,7 @@ QDockWidget::title{
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
    <addaction name="actionExport"/>
+   <addaction name="actionExportPreview"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>
   </widget>
@@ -355,7 +356,7 @@ QDockWidget::title{
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -721,7 +722,7 @@ QDockWidget::title{
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_3">
+  <widget class="QDockWidget" name="dockWidgetTextures">
    <property name="features">
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
@@ -738,72 +739,6 @@ QDockWidget::title{
      </property>
      <item row="0" column="0" colspan="2">
       <widget class="QListWidget" name="listWidget"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="checkBoxExportNormal">
-       <property name="text">
-        <string>Normal</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="checkBoxExportOcclusion">
-       <property name="text">
-        <string>Oclusión</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QCheckBox" name="checkBoxExportSpecular">
-       <property name="text">
-        <string>Especular</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="checkBoxExportParallax">
-       <property name="text">
-        <string>Paralaje</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QPushButton" name="pushButtonExportTo">
-       <property name="text">
-        <string>Exportar a...</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QPushButton" name="pushButton">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>23</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>23</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Exportar</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </widget>
@@ -1372,6 +1307,103 @@ QDockWidget::title{
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockWidgetExport">
+   <property name="windowTitle">
+    <string>Exportar</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_9">
+    <layout class="QGridLayout" name="gridLayout_23">
+     <item row="0" column="0" colspan="2">
+      <widget class="QScrollArea" name="scrollArea">
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>254</width>
+          <height>208</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_11">
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="checkBoxExportOcclusion">
+           <property name="text">
+            <string>Oclusión</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="checkBoxExportParallax">
+           <property name="text">
+            <string>Paralaje</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="checkBoxExportSpecular">
+           <property name="text">
+            <string>Especular</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBoxExportNormal">
+           <property name="text">
+            <string>Normal</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButtonExportTo">
+       <property name="text">
+        <string>Exportar a...</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Exportar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="icons.qrc">
@@ -1443,6 +1475,18 @@ QDockWidget::title{
    </property>
    <property name="text">
     <string>Presets</string>
+   </property>
+  </action>
+  <action name="actionExportPreview">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/export-preview.png</normaloff>:/icons/export-preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exportar Vista Previa</string>
+   </property>
+   <property name="toolTip">
+    <string>Exportar Vista Previa</string>
    </property>
   </action>
  </widget>

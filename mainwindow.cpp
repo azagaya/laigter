@@ -89,6 +89,10 @@ MainWindow::MainWindow(QWidget *parent) :
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->occlusionDockWidget);
 
+    tabifyDockWidget(ui->dockWidgetTextures, ui->dockWidgetExport);
+
+    ui->dockWidgetTextures->raise();
+
     ui->normalDockWidget->raise();
 
     ui->parallaxQuantizationSlider->setVisible(false);
@@ -301,9 +305,46 @@ void MainWindow::on_actionExport_triggered()
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Guardar Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+    QString aux;
 
-    if (fileName != nullptr){
-        normal.save(fileName);
+    QImage n;
+    QString suffix;
+    QFileInfo info;
+    QString message = "";
+
+    info = QFileInfo(fileName);
+    suffix = info.completeSuffix();
+
+    if (suffix == "") suffix = "png";
+
+    if (ui->checkBoxExportNormal->isChecked()){
+        aux = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
+        n = normal;
+        n.save(aux);
+        message += tr("Se exportó el mapa normal.\n");
+    }
+    if (ui->checkBoxExportParallax->isChecked()){
+        aux = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
+        n = parallax;
+        n.save(aux);
+        message += tr("Se exportó el mapa de paralaje.\n");
+    }
+    if (ui->checkBoxExportSpecular->isChecked()){
+        aux = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
+        n = specular;
+        n.save(aux);
+        message += tr("Se exportó el apa especular.\n");
+    }
+    if (ui->checkBoxExportOcclusion->isChecked()){
+        fileName = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
+        n = occlusion;
+        n.save(fileName);
+        message += tr("Se exportó el mapa de oclusión.\n");
+    }
+    if (message != ""){
+        QMessageBox msgBox;
+        msgBox.setText(message);
+        msgBox.exec();
     }
 
 }
@@ -819,4 +860,23 @@ void MainWindow::on_comboBoxView_currentIndexChanged(int index)
         }
         break;
     }
+}
+
+void MainWindow::on_actionExportPreview_triggered()
+{
+    int current_view = ui->comboBoxView->currentIndex();
+    ui->comboBoxView->setCurrentIndex(ViewMode::Preview);
+    QImage preview(ui->openGLPreviewWidget->get_preview());
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Guardar Imagen"), "",
+                                                    tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+
+    QMessageBox msgBox;
+    if(preview.save(fileName)){
+        msgBox.setText("Se exportó la vista previa.");
+    }else{
+        msgBox.setText("No se pudo exportar la vista previa.");
+    }
+    msgBox.exec();
+    ui->comboBoxView->setCurrentIndex(current_view);
 }

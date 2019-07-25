@@ -69,7 +69,10 @@ public slots:
     void setParallax(bool p);
 
     QImage calculate_distance(QImage image);
+
     QImage calculate_preview();
+    QImage get_preview();
+
     void update_scene();
 
     QImage renderBuffer();
