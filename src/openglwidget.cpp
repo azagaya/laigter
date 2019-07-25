@@ -68,6 +68,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 
     need_to_update = true;
     export_render = false;
+    exportFullView = false;
 
 }
 
@@ -153,7 +154,7 @@ void OpenGlWidget::paintGL()
     }
     if (export_render){
         export_render = false;
-        if (tileX || tileY){
+        if (tileX || tileY || exportFullView){
             renderedPreview = grabFramebuffer();
         } else {
             renderedPreview = calculate_preview();

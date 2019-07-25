@@ -100,7 +100,7 @@ private:
     int pixelsX, pixelsY, pixelSize;
     bool lightSelected;
 
-    bool need_to_update, export_render;
+    bool need_to_update, export_render, exportFullView;
 };
 
 #endif // OPENGLWIDGET_H
