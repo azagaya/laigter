@@ -220,7 +220,7 @@ void MainWindow::update_scene(QImage image, ProcessedImage type){
             ui->openGLPreviewWidget->setImage(image);
         break;
     }
-    ui->openGLPreviewWidget->update();
+    ui->openGLPreviewWidget->need_to_update = true;
 }
 
 void MainWindow::on_actionOpen_triggered()

@@ -37,9 +37,11 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 public:
     OpenGlWidget(QWidget *parent = nullptr);
-    void update();
+    bool need_to_update;
 
 public slots:
+    void update();
+    void force_update();
     void setImage(QImage image);
     void setNormalMap(QImage normalMap);
     void setParallaxMap(QImage parallaxMap);
@@ -103,7 +105,7 @@ private:
     int pixelsX, pixelsY, pixelSize;
     bool lightSelected;
 
-    bool need_to_update, export_render, exportFullView;
+    bool export_render, exportFullView;
 };
 
 #endif // OPENGLWIDGET_H

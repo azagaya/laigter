@@ -60,12 +60,12 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     
     setFormat(format);
     
-    //    refreshTimer.setInterval(1.0/60.0*1000.0);
-    //    refreshTimer.setSingleShot(false);
+    refreshTimer.setInterval(1.0/60.0*1000.0);
+    refreshTimer.setSingleShot(false);
     
-    //    connect(&refreshTimer,SIGNAL(timeout()),this,SLOT(update()));
+    connect(&refreshTimer,SIGNAL(timeout()),this,SLOT(force_update()));
     
-    //    refreshTimer.start()
+    refreshTimer.start();
     
     need_to_update = true;
     export_render = false;
@@ -160,8 +160,13 @@ void OpenGlWidget::paintGL()
 }
 
 void OpenGlWidget::update(){
-    need_to_update = true;
+   //need_to_update = true;
     QOpenGLWidget::update();
+}
+
+void OpenGlWidget::force_update(){
+    if (need_to_update)
+        update();
 }
 
 void OpenGlWidget::update_scene(){
@@ -284,7 +289,7 @@ void OpenGlWidget::resizeGL(int w, int h)
 {
     sx = (float)m_image.width()/w;
     sy = (float)m_image.height()/h;
-    update();
+    need_to_update = true;
 }
 
 
@@ -330,24 +335,24 @@ void OpenGlWidget::setSpecularMap(QImage image){
 
 void OpenGlWidget::setZoom(float zoom){
     m_zoom = zoom;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setTileX(bool x){
     tileX = x;
     texturePosition.setX(0);
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setTileY(bool y){
     tileY = y;
     texturePosition.setY(0);
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setParallax(bool p){
     m_parallax = p;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
@@ -420,7 +425,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
             if (!tileY)
                 texturePosition.setY(mouseY-textureOffset.y());
         }
-        update();
+        need_to_update = true;
     }
     else if (event->buttons() & Qt::RightButton){
         
@@ -433,62 +438,62 @@ void OpenGlWidget::mouseReleaseEvent(QMouseEvent *event){
 
 void OpenGlWidget::setLight(bool light){
     m_light = light;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setParallaxHeight(int height){
     parallax_height = height/1000.0;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setLightColor(QVector3D color){
     lightColor = color;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setSpecColor(QVector3D color){
     specColor = color;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setBackgroundColor(QVector3D color){
     backgroundColor = color;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setLightHeight(float height){
     lightPosition.setZ(height);
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setLightIntensity(float intensity){
     diffIntensity = intensity;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setSpecIntensity(float intensity){
     specIntensity = intensity;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setSpecScatter(int scatter){
     specScatter = scatter;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setAmbientColor(QVector3D color){
     ambientColor = color;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setAmbientIntensity(float intensity){
     ambientIntensity = intensity;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setPixelated(bool pixelated){
     m_pixelated = pixelated;
-    update();
+    need_to_update = true;
 }
 
 void OpenGlWidget::setPixelSize(int size){
@@ -736,7 +741,7 @@ QImage OpenGlWidget::calculate_preview(){
 
 QImage OpenGlWidget::get_preview(){
     export_render = true;
-    update();
+    need_to_update = true;
     while(export_render){
         QApplication::processEvents();
     }
