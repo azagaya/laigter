@@ -738,12 +738,13 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
     float dx, dy;
     GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
-    if(tileable && aux.rows == m_img.rows*3){
-        aux(rect).copyTo(aux);
-        current_heightmap(rect).copyTo(heightMap);
-    }else{
-        m_heightmap.copyTo(heightMap);
-    }
+//    if(tileable && aux.rows == m_img.rows*3){
+//        current_heightmap(rect).copyTo(heightMap);
+//    }else{
+//        m_heightmap.copyTo(heightMap);
+//    }
+
+    current_heightmap.copyTo(heightMap);
     Mat normals(aux.size(), CV_32FC3);
     for(int x = 0; x < aux.cols; ++x)
     {
@@ -754,8 +755,8 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
                 continue;
             }
 
-            dx = -aux.at<float>(y,(x-1+aux.cols)%aux.cols) + aux.at<float>(y,(x+1+aux.cols)%aux.cols);
-            dy = -aux.at<float>((y-1+aux.rows)%aux.rows,x) + aux.at<float>((y+1+aux.rows)%aux.rows,x);
+            dx = -aux.at<float>(y,(x-1)%aux.cols) + aux.at<float>(y,(x+1)%aux.cols);
+            dy = -aux.at<float>((y-1)%aux.rows,x) + aux.at<float>((y+1)%aux.rows,x);
 
 
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
@@ -765,6 +766,8 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
 
         }
     }
+    if(tileable && normals.rows == m_img.rows*3)
+        normals(rect).copyTo(normals);
     return normals;
 }
 
@@ -832,7 +835,7 @@ QImage ImageProcessor::get_specular(){
 
 QImage ImageProcessor::get_occlusion(){
     return QImage(static_cast<unsigned char *>(current_occlusion.data),
-                       current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+                  current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
 }
 
 bool ImageProcessor::get_parallax_invert(){
@@ -1081,5 +1084,5 @@ QImage ImageProcessor::get_heightmap(){
     Mat m;
     add(current_heightmap, new_distance,m);
     return QImage(static_cast<unsigned char *>(current_occlusion.data),
-                       current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+                  current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
 }

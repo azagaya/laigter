@@ -32,6 +32,8 @@
 #include <QObject>
 #include <QTimer>
 
+#include "src/imageprocessor.h"
+
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -106,6 +108,8 @@ private:
     bool lightSelected;
 
     bool export_render, exportFullView;
+
+    ImageProcessor * processor;
 };
 
 #endif // OPENGLWIDGET_H

@@ -510,7 +510,7 @@ QImage OpenGlWidget::calculate_distance(QImage image){
     QOpenGLShaderProgram program;
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    format.setSamples(16);
+    format.setSamples(32);
     QOpenGLFramebufferObject frameBuffer(image.width(), image.height(), format);
     
     program.create();
