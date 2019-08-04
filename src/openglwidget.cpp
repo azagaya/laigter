@@ -152,6 +152,8 @@ void OpenGlWidget::paintGL()
     if (need_to_update){
         need_to_update = false;
         update_scene();
+        calculate_normal(processor->get_heightmap(),processor->get_normal_depth(),
+                         processor->get_normal_invert_x(),processor->get_normal_invert_y());
     }
     if (export_render){
         export_render = false;
@@ -160,7 +162,7 @@ void OpenGlWidget::paintGL()
 }
 
 void OpenGlWidget::update(){
-   //need_to_update = true;
+    //need_to_update = true;
     QOpenGLWidget::update();
 }
 
@@ -554,6 +556,54 @@ QImage OpenGlWidget::calculate_distance(QImage image){
     return frameBuffer.toImage();
 }
 
+QImage OpenGlWidget::calculate_normal(QImage image, float depth, float invertX, float invertY){
+    QOpenGLTexture texture(image);
+    QOpenGLShaderProgram program;
+    QOpenGLFramebufferObjectFormat format;
+    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setSamples(32);
+    QOpenGLFramebufferObject frameBuffer(image.width(), image.height(), format);
+
+    program.create();
+    program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/simple-vertex.glsl");
+    program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/normal.glsl");
+    program.link();
+
+    QMatrix4x4 transform;
+    transform.setToIdentity();
+
+    frameBuffer.bind();
+    glViewport(0, 0, image.width(), image.height());
+
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    program.bind();
+
+    VAO.bind();
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE0);
+    texture.bind(0);
+
+    program.setUniformValue("texture",0);
+
+    program.setUniformValue("transform",transform);
+    program.setUniformValue("pixelSize", QVector2D(1.0/image.width(),1.0/image.height()));
+    program.setUniformValue("radius",image.width()/2);
+    program.setUniformValue("depth", depth);
+    program.setUniformValue("normalInvertX", invertX);
+    program.setUniformValue("normalInvertY",invertY);
+
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    program.release();
+    frameBuffer.release();
+
+    return frameBuffer.toImage();
+}
+
 QImage OpenGlWidget::calculate_preview(){
     if (!tileX && !tileY){
         QOpenGLFramebufferObjectFormat format;
@@ -563,13 +613,7 @@ QImage OpenGlWidget::calculate_preview(){
         
         QMatrix4x4 transform;
         transform.setToIdentity();
-        
-        QVector2D scale((float)m_image.width()/width(),(float)m_image.height()/height());
-        QVector2D translate(scale.x()-1, scale.y()-1);
-        
-        //transform.translate(translate.x(),translate.y(),texturePosition.z());
-        //transform.scale(scale.x(),scale.y(),1);
-        
+              
         /* Start first pass */
         
         frameBuffer.bind();

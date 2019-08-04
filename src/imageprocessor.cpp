@@ -1082,7 +1082,8 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
 
 QImage ImageProcessor::get_heightmap(){
     Mat m;
-    add(current_heightmap, new_distance,m);
-    return QImage(static_cast<unsigned char *>(current_occlusion.data),
-                  current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+    cvtColor(new_distance,m,CV_GRAY2RGBA);
+    m.convertTo(m,CV_8UC3,255);
+    return QImage(static_cast<unsigned char *>(m.data),
+                  m.cols,m.rows,m.step,QImage::Format_RGBA8888_Premultiplied);
 }

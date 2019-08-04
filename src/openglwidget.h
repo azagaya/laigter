@@ -40,6 +40,7 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     OpenGlWidget(QWidget *parent = nullptr);
     bool need_to_update;
+    ImageProcessor * processor;
 
 public slots:
     void update();
@@ -73,7 +74,7 @@ public slots:
     void setParallax(bool p);
 
     QImage calculate_distance(QImage image);
-
+    QImage calculate_normal(QImage image, float depth, float invertX, float invertY);
     QImage calculate_preview();
     QImage get_preview();
 
@@ -109,7 +110,6 @@ private:
 
     bool export_render, exportFullView;
 
-    ImageProcessor * processor;
 };
 
 #endif // OPENGLWIDGET_H

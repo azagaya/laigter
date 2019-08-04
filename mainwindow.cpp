@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     sample_processor = new ImageProcessor();
 
     processor = sample_processor;
+    ui->openGLPreviewWidget->processor = processor;
+
     currentColor = QVector3D(0.0,1.0,0.7);
     currentAmbientcolor = QVector3D(1.0,1.0,1.0);
     currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);

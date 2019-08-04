@@ -7,5 +7,6 @@
         <file>shaders/distance.glsl</file>
         <file>shaders/simple-vertex.glsl</file>
         <file>shaders/simple-fragment.glsl</file>
+        <file>shaders/normal.glsl</file>
     </qresource>
 </RCC>
