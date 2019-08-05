@@ -73,8 +73,6 @@ public slots:
     void setParallaxHeight(int height);
     void setParallax(bool p);
 
-    QImage calculate_distance(QImage image);
-    QImage calculate_normal(QImage image, float depth, float invertX, float invertY);
     QImage calculate_preview();
     QImage get_preview();
 
