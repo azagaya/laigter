@@ -13,59 +13,59 @@
         <translation type="vanished">Controls</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="178"/>
+        <location filename="mainwindow.ui" line="180"/>
         <source>Ejes:</source>
         <translation>Axis:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="191"/>
+        <location filename="mainwindow.ui" line="193"/>
         <source>Invertir y</source>
         <translation>Invert y</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="184"/>
+        <location filename="mainwindow.ui" line="186"/>
         <source>Invertir x</source>
         <translation>Invert x</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="110"/>
+        <location filename="mainwindow.ui" line="112"/>
         <source>Realzar:</source>
         <translation>Enhance:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="118"/>
-        <location filename="mainwindow.ui" line="215"/>
-        <location filename="mainwindow.ui" line="387"/>
+        <location filename="mainwindow.ui" line="120"/>
+        <location filename="mainwindow.ui" line="217"/>
+        <location filename="mainwindow.ui" line="389"/>
         <source>Altura:</source>
         <translation>Height:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="141"/>
-        <location filename="mainwindow.ui" line="255"/>
-        <location filename="mainwindow.ui" line="880"/>
-        <location filename="mainwindow.ui" line="1136"/>
-        <location filename="mainwindow.ui" line="1187"/>
+        <location filename="mainwindow.ui" line="143"/>
+        <location filename="mainwindow.ui" line="257"/>
+        <location filename="mainwindow.ui" line="819"/>
+        <location filename="mainwindow.ui" line="1075"/>
+        <location filename="mainwindow.ui" line="1126"/>
         <source>Suavizado:</source>
         <translation>Smooth:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="207"/>
+        <location filename="mainwindow.ui" line="209"/>
         <source>Bisel:</source>
         <translation>Bump:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="235"/>
-        <location filename="mainwindow.ui" line="1289"/>
+        <location filename="mainwindow.ui" line="237"/>
+        <location filename="mainwindow.ui" line="1228"/>
         <source>Distancia:</source>
         <translation>Distance:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="281"/>
+        <location filename="mainwindow.ui" line="283"/>
         <source>Suave</source>
         <translation>Smooth</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="294"/>
+        <location filename="mainwindow.ui" line="296"/>
         <source>Abrupto</source>
         <translation>Abrupt</translation>
     </message>
@@ -74,19 +74,19 @@
         <translation type="vanished">Tile:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1351"/>
+        <location filename="mainwindow.ui" line="1290"/>
         <source>Vecinos</source>
         <translation>Neighbours</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="680"/>
-        <location filename="mainwindow.ui" line="1317"/>
-        <location filename="mainwindow.ui" line="1361"/>
+        <location filename="mainwindow.ui" line="682"/>
+        <location filename="mainwindow.ui" line="1256"/>
+        <location filename="mainwindow.ui" line="1300"/>
         <source>Mosaico</source>
         <translation>Tile</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="317"/>
+        <location filename="mainwindow.ui" line="319"/>
         <source>Visualización</source>
         <translation>Visualization</translation>
     </message>
@@ -95,44 +95,44 @@
         <translation type="vanished">Background Color:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="693"/>
+        <location filename="mainwindow.ui" line="695"/>
         <source>Mosaico x</source>
         <translation>Tile x</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="686"/>
+        <location filename="mainwindow.ui" line="688"/>
         <source>Mosaico y</source>
         <translation>Tile y</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="604"/>
+        <location filename="mainwindow.ui" line="606"/>
         <source>Vista</source>
         <translation>View</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="629"/>
+        <location filename="mainwindow.ui" line="631"/>
         <source>Mapa Normal</source>
         <translation>Normal Map</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="700"/>
-        <location filename="mainwindow.ui" line="771"/>
-        <location filename="mainwindow.ui" line="809"/>
+        <location filename="mainwindow.ui" line="702"/>
+        <location filename="mainwindow.ui" line="748"/>
+        <location filename="mainwindow.ui" line="1347"/>
         <source>Paralaje</source>
         <translation>Parallax</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="624"/>
+        <location filename="mainwindow.ui" line="626"/>
         <source>Textura</source>
         <translation>Texture</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="649"/>
+        <location filename="mainwindow.ui" line="651"/>
         <source>Vista Previa</source>
         <translation>Preview</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="639"/>
+        <location filename="mainwindow.ui" line="641"/>
         <source>Mapa de Paralaje</source>
         <translation>Parallax Map</translation>
     </message>
@@ -141,16 +141,16 @@
         <translation type="vanished">Diffuse Light</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="410"/>
-        <location filename="mainwindow.ui" line="486"/>
-        <location filename="mainwindow.ui" line="539"/>
+        <location filename="mainwindow.ui" line="412"/>
+        <location filename="mainwindow.ui" line="488"/>
+        <location filename="mainwindow.ui" line="541"/>
         <source>Color:</source>
         <translation>Color:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="367"/>
-        <location filename="mainwindow.ui" line="443"/>
-        <location filename="mainwindow.ui" line="519"/>
+        <location filename="mainwindow.ui" line="369"/>
+        <location filename="mainwindow.ui" line="445"/>
+        <location filename="mainwindow.ui" line="521"/>
         <source>Intensidad:</source>
         <translation>Intensity:</translation>
     </message>
@@ -167,287 +167,322 @@
         <translation type="vanished">Export All</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1377"/>
+        <location filename="mainwindow.ui" line="1413"/>
         <source>Abrir</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1386"/>
+        <location filename="mainwindow.ui" line="1422"/>
         <source>Ajustar Zoom</source>
         <translation>Fit Zoom</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1395"/>
+        <location filename="mainwindow.ui" line="1431"/>
         <source>Zoom 100%</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1404"/>
+        <location filename="mainwindow.ui" line="1440"/>
         <source>Zoom +</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1413"/>
+        <location filename="mainwindow.ui" line="1449"/>
         <source>Zoom -</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="800"/>
-        <location filename="mainwindow.ui" line="1422"/>
+        <location filename="mainwindow.ui" line="1312"/>
+        <location filename="mainwindow.ui" line="1400"/>
+        <location filename="mainwindow.ui" line="1458"/>
         <source>Exportar</source>
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="664"/>
+        <location filename="mainwindow.ui" line="666"/>
         <source>Pixelado</source>
         <translation>Pixelated</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="728"/>
+        <location filename="mainwindow.ui" line="730"/>
         <source>Texturas</source>
         <translation>Textures</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="94"/>
-        <location filename="mainwindow.ui" line="741"/>
+        <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.ui" line="1367"/>
         <source>Normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="333"/>
+        <location filename="mainwindow.ui" line="335"/>
         <source>Luz</source>
         <translation>Light</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="361"/>
+        <location filename="mainwindow.ui" line="363"/>
         <source>Difusa</source>
         <translation>Diffuse</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="437"/>
-        <location filename="mainwindow.ui" line="761"/>
-        <location filename="mainwindow.ui" line="1037"/>
+        <location filename="mainwindow.ui" line="439"/>
+        <location filename="mainwindow.ui" line="976"/>
+        <location filename="mainwindow.ui" line="1357"/>
         <source>Especular</source>
         <translation>Specular</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="463"/>
+        <location filename="mainwindow.ui" line="465"/>
         <source>Dispersión:</source>
         <translation>Scatter:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="513"/>
+        <location filename="mainwindow.ui" line="515"/>
         <source>Ambiente</source>
         <translation>Ambient</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="565"/>
+        <location filename="mainwindow.ui" line="567"/>
         <source>Fondo:</source>
         <translation>Background:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="616"/>
+        <location filename="mainwindow.ui" line="618"/>
         <source>Modo:</source>
         <translation>Mode:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="634"/>
+        <location filename="mainwindow.ui" line="636"/>
         <source>Mapa Especular</source>
         <translation>Specular Map</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="644"/>
+        <location filename="mainwindow.ui" line="646"/>
         <source>Mapa de Oclusión</source>
         <translation>Occlusion Map</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="751"/>
-        <location filename="mainwindow.ui" line="1164"/>
+        <location filename="mainwindow.ui" line="1103"/>
+        <location filename="mainwindow.ui" line="1337"/>
         <source>Oclusión</source>
         <translation>Occlusion</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="781"/>
+        <location filename="mainwindow.ui" line="1381"/>
         <source>Exportar a...</source>
         <translation>Export to...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="819"/>
+        <location filename="mainwindow.ui" line="758"/>
         <source>Tipo:</source>
         <translation>Type:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="827"/>
+        <location filename="mainwindow.ui" line="766"/>
         <source>Binario</source>
         <translation>Binary</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="832"/>
+        <location filename="mainwindow.ui" line="771"/>
         <source>Mapa de Altura</source>
         <translation>Height Map</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="840"/>
-        <location filename="mainwindow.ui" line="1047"/>
-        <location filename="mainwindow.ui" line="1174"/>
-        <location filename="mainwindow.ui" line="1333"/>
+        <location filename="mainwindow.ui" line="779"/>
+        <location filename="mainwindow.ui" line="986"/>
+        <location filename="mainwindow.ui" line="1113"/>
+        <location filename="mainwindow.ui" line="1272"/>
         <source>Controles:</source>
         <translation>Controls:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="859"/>
+        <location filename="mainwindow.ui" line="798"/>
         <source>Cuantización:</source>
         <translation>Quantization:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="866"/>
-        <location filename="mainwindow.ui" line="1066"/>
-        <location filename="mainwindow.ui" line="1282"/>
+        <location filename="mainwindow.ui" line="805"/>
+        <location filename="mainwindow.ui" line="1005"/>
+        <location filename="mainwindow.ui" line="1221"/>
         <source>Umbral:</source>
         <translation>Threshold:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="873"/>
+        <location filename="mainwindow.ui" line="812"/>
         <source>Altura Mínima:</source>
         <translation>Minimum Height:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="900"/>
-        <location filename="mainwindow.ui" line="1073"/>
-        <location filename="mainwindow.ui" line="1236"/>
+        <location filename="mainwindow.ui" line="839"/>
+        <location filename="mainwindow.ui" line="1012"/>
+        <location filename="mainwindow.ui" line="1175"/>
         <source>Contraste:</source>
         <translation>Contrast:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="923"/>
-        <location filename="mainwindow.ui" line="1129"/>
-        <location filename="mainwindow.ui" line="1180"/>
+        <location filename="mainwindow.ui" line="862"/>
+        <location filename="mainwindow.ui" line="1068"/>
+        <location filename="mainwindow.ui" line="1119"/>
         <source>Invertir</source>
         <translation>Invert</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="930"/>
+        <location filename="mainwindow.ui" line="869"/>
         <source>Enfoque:</source>
         <translation>Focus:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="937"/>
-        <location filename="mainwindow.ui" line="1122"/>
-        <location filename="mainwindow.ui" line="1275"/>
+        <location filename="mainwindow.ui" line="876"/>
+        <location filename="mainwindow.ui" line="1061"/>
+        <location filename="mainwindow.ui" line="1214"/>
         <source>Brillo:</source>
         <translation>Brightness:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1012"/>
+        <location filename="mainwindow.ui" line="951"/>
         <source>Erosión / Dilatación:</source>
         <translation>Erode / Dilate:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1427"/>
+        <location filename="mainwindow.ui" line="1463"/>
         <source>Licencia</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1432"/>
+        <location filename="mainwindow.ui" line="1468"/>
         <source>Reconocimientos</source>
         <translation>Acknowledgements</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1441"/>
+        <location filename="mainwindow.ui" line="1477"/>
         <source>Presets</source>
         <translation>Presets</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="110"/>
+        <location filename="mainwindow.ui" line="1486"/>
+        <location filename="mainwindow.ui" line="1489"/>
+        <source>Exportar Vista Previa</source>
+        <translation>Export preview</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="116"/>
         <source>Context menu</source>
         <translation>Context menu</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="111"/>
-        <location filename="mainwindow.cpp" line="126"/>
+        <location filename="mainwindow.cpp" line="117"/>
+        <location filename="mainwindow.cpp" line="132"/>
         <source>Quitar</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="113"/>
-        <location filename="mainwindow.cpp" line="137"/>
+        <location filename="mainwindow.cpp" line="119"/>
+        <location filename="mainwindow.cpp" line="143"/>
         <source>Cargar mapa de altura</source>
         <translation>Load height-map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="114"/>
-        <location filename="mainwindow.cpp" line="151"/>
+        <location filename="mainwindow.cpp" line="120"/>
+        <location filename="mainwindow.cpp" line="157"/>
         <source>Reiniciar mapa de altura</source>
         <translation>Reset height-map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="116"/>
-        <location filename="mainwindow.cpp" line="157"/>
+        <location filename="mainwindow.cpp" line="122"/>
+        <location filename="mainwindow.cpp" line="163"/>
         <source>Cargar mapa especular</source>
         <translation>Load specular map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="117"/>
-        <location filename="mainwindow.cpp" line="172"/>
+        <location filename="mainwindow.cpp" line="123"/>
+        <location filename="mainwindow.cpp" line="178"/>
         <source>Reiniciar mapa especular</source>
         <translation>Reset specular map</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="139"/>
-        <location filename="mainwindow.cpp" line="159"/>
-        <location filename="mainwindow.cpp" line="225"/>
+        <location filename="mainwindow.cpp" line="145"/>
+        <location filename="mainwindow.cpp" line="165"/>
+        <location filename="mainwindow.cpp" line="231"/>
         <source>Abrir Imagen</source>
         <translation>Open Image</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="140"/>
-        <location filename="mainwindow.cpp" line="160"/>
-        <location filename="mainwindow.cpp" line="226"/>
+        <location filename="mainwindow.cpp" line="146"/>
+        <location filename="mainwindow.cpp" line="166"/>
+        <location filename="mainwindow.cpp" line="232"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="239"/>
+        <location filename="mainwindow.cpp" line="245"/>
         <source>Formato no soportado o incorrecto.</source>
         <translation>Incorrect or not supported format.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="239"/>
+        <location filename="mainwindow.cpp" line="245"/>
         <source>No se puede abrir </source>
         <translation>Cannot open </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="302"/>
+        <location filename="mainwindow.cpp" line="309"/>
+        <location filename="mainwindow.cpp" line="874"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
         <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="529"/>
-        <location filename="mainwindow.cpp" line="692"/>
+        <location filename="mainwindow.cpp" line="326"/>
+        <source>Se exportó el mapa normal.
+</source>
+        <translation>Normal map was exported.
+</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="332"/>
+        <source>Se exportó el mapa de paralaje.
+</source>
+        <translation>Parallax map was exported.
+</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="338"/>
+        <source>Se exportó el apa especular.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="344"/>
+        <source>Se exportó el mapa de oclusión.
+</source>
+        <translation>Occlusion map was exported.
+</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="573"/>
+        <location filename="mainwindow.cpp" line="736"/>
         <source>Se exportaron todos los mapas normales.
 </source>
         <translation>All normal maps were exported.
 </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="539"/>
-        <location filename="mainwindow.cpp" line="705"/>
+        <location filename="mainwindow.cpp" line="583"/>
+        <location filename="mainwindow.cpp" line="749"/>
         <source>Se exportaron todos los mapas de paralaje.
 </source>
         <translation>All parallax maps were exported.
 </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="549"/>
-        <location filename="mainwindow.cpp" line="718"/>
+        <location filename="mainwindow.cpp" line="593"/>
+        <location filename="mainwindow.cpp" line="762"/>
         <source>Se exportaron todos los mapas especulares.
 </source>
         <translation>All specular maps were exported.
 </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="559"/>
-        <location filename="mainwindow.cpp" line="731"/>
+        <location filename="mainwindow.cpp" line="603"/>
+        <location filename="mainwindow.cpp" line="775"/>
         <source>Se exportaron todos los mapas de oclusión.
 </source>
         <translation>All occlusion maps were exported.
@@ -466,12 +501,13 @@
         <translation type="vanished">All specular maps were exported. </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="248"/>
+        <location filename="mainwindow.cpp" line="254"/>
         <source>La imagen ya se encuentra abierta en laigter.</source>
         <translation>The image is already opened in laigter.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="301"/>
+        <location filename="mainwindow.cpp" line="308"/>
+        <location filename="mainwindow.cpp" line="873"/>
         <source>Guardar Imagen</source>
         <translation>Save Image</translation>
     </message>

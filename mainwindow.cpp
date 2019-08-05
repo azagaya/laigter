@@ -335,7 +335,7 @@ void MainWindow::on_actionExport_triggered()
         aux = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
         n = specular;
         n.save(aux);
-        message += tr("Se exportó el apa especular.\n");
+        message += tr("Se exportó el mapa especular.\n");
     }
     if (ui->checkBoxExportOcclusion->isChecked()){
         fileName = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
