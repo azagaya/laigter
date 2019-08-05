@@ -247,10 +247,7 @@ void ImageProcessor::calculate_heightmap(){
     if(m_gray.type() != CV_32FC1)
         m_gray.convertTo(m_gray, CV_32FC1);
 
-
-    Mat gray;
-    m_gray.copyTo(gray);
-    m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
+    m_emboss_normal = calculate_normal(m_gray,normal_depth,normal_blur_radius);
 }
 
 int ImageProcessor::fill_neighbours(Mat src, Mat dst){
@@ -520,6 +517,7 @@ void ImageProcessor::set_normal_blur_radius(int radius){
     normal_blur_radius = radius;
     Mat gray;
     m_gray.copyTo(gray);
+    //calculate_heightmap();
     m_emboss_normal = calculate_normal(gray,normal_depth,normal_blur_radius);
     generate_normal_map();
 }
@@ -691,6 +689,7 @@ Mat ImageProcessor::modify_specular(){
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius){
     normal_bisel_blur_radius = radius;
+    new_distance = modify_distance();
     m_distance_normal = calculate_normal(new_distance,normal_bisel_depth*normal_bisel_distance
                                          ,normal_bisel_blur_radius);
     generate_normal_map();
@@ -1082,8 +1081,18 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
 
 QImage ImageProcessor::get_heightmap(){
     Mat m;
+    cvtColor(current_heightmap,m,CV_RGBA2GRAY);
+    cvtColor(m,m,CV_GRAY2RGB);
+    m.convertTo(m,CV_8UC3,1);
+    GaussianBlur(m,m,Size(normal_blur_radius*2+1,normal_blur_radius*2+1),0);
+    return QImage(static_cast<unsigned char *>(m.data),
+                  m.cols,m.rows,m.step,QImage::Format_RGB888);
+}
+
+QImage ImageProcessor::get_distance_map(){
+    Mat m;
     cvtColor(new_distance,m,CV_GRAY2RGBA);
-    m.convertTo(m,CV_8UC3,255);
+    m.convertTo(m,CV_8UC4,255);
     return QImage(static_cast<unsigned char *>(m.data),
                   m.cols,m.rows,m.step,QImage::Format_RGBA8888_Premultiplied);
 }

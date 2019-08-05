@@ -152,8 +152,6 @@ void OpenGlWidget::paintGL()
     if (need_to_update){
         need_to_update = false;
         update_scene();
-        calculate_normal(processor->get_heightmap(),processor->get_normal_depth(),
-                         processor->get_normal_invert_x(),processor->get_normal_invert_y());
     }
     if (export_render){
         export_render = false;
@@ -664,14 +662,20 @@ QImage OpenGlWidget::calculate_preview(){
         
         m_occlusionTexture->bind(4);
         m_program.setUniformValue("occlusionMap",4);
+
+
+        float scaleX = !tileX ? sx : 1;
+        float scaleY = !tileY ? sy : 1;
+        float zoomX = !tileX ? m_zoom : 1;
+        float zoomY = !tileY ? m_zoom : 1;
         
-        m_program.setUniformValue("viewPos",QVector3D(-texturePosition.x()*width()/m_image.width(),
-                                                      -texturePosition.y()*height()/m_image.height(),1));
+        m_program.setUniformValue("viewPos",QVector3D(-texturePosition.x(),
+                                                      -texturePosition.y(),1));
         m_program.setUniformValue("parallax",m_parallax);
         m_program.setUniformValue("height_scale",parallax_height);
         
-        QVector3D pos((lightPosition.x()-texturePosition.x())*width()/m_image.width(),
-                      (lightPosition.y()-texturePosition.y())*height()/m_image.height(),
+        QVector3D pos((lightPosition.x()-texturePosition.x())/scaleX/zoomX,
+                      (lightPosition.y()-texturePosition.y())/scaleY/zoomY,
                       lightPosition.z());
         
         m_program.setUniformValue("lightPos",pos);
