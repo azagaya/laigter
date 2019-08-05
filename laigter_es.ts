@@ -415,8 +415,10 @@
     </message>
     <message>
         <location filename="mainwindow.cpp" line="338"/>
-        <source>Se exportó el apa especular.
+        <source>Se exportó el mapa especular.
 </source>
+        <oldsource>Se exportó el apa especular.
+</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
