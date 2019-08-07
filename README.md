@@ -18,6 +18,7 @@ On itch.io, you can download the tool for free, or choose to pay any amount to s
 
 You can also support the development on [patreon](https://www.patreon.com/azagaya), 
 or support it by paypal: [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/PabloFonovich).
+
 Now you can also [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O110W22)
 
 If you wan't to contribute by coding, please contact me and we will see how can we work together! Many things are needed.
