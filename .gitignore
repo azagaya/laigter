@@ -1,2 +1,4 @@
 *.pro.user*
 *.autosave
+deploy/
+.ignore/
