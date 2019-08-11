@@ -34,6 +34,16 @@
 
 #include "src/imageprocessor.h"
 
+enum ViewMode
+{
+    Texture,
+    NormalMap,
+    SpecularMap,
+    ParallaxMap,
+    OcclusionMap,
+    Preview
+};
+
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT

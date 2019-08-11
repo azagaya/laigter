@@ -29,15 +29,7 @@
 #include <QList>
 #include "src/imageprocessor.h"
 #include "src/imageloader.h"
-enum ViewMode
-{
-    Texture,
-    NormalMap,
-    SpecularMap,
-    ParallaxMap,
-    OcclusionMap,
-    Preview
-};
+
 namespace Ui {
 class MainWindow;
 }
