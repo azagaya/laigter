@@ -27,6 +27,9 @@
 #include "src/imageprocessor.h"
 
 namespace Ui {
+
+typedef QString preset_codes_array[30];
+
 class PresetsManager;
 }
 
@@ -37,6 +40,7 @@ class PresetsManager : public QDialog
 public:
     explicit PresetsManager(ProcessorSettings settings, QList <ImageProcessor *> *processorList, QWidget *parent = nullptr);
     ~PresetsManager();
+    static Ui::preset_codes_array& get_preset_codes();
 
 signals:
     void settingAplied();

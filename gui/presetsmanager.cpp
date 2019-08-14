@@ -305,3 +305,8 @@ void PresetsManager::on_pushButtonImportPreset_clicked()
     }
     update_presets();
 }
+
+Ui::preset_codes_array& PresetsManager::get_preset_codes()
+{
+    return presetCodes;
+}
