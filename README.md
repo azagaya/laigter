@@ -71,3 +71,19 @@ If for some reason the opencv libraries do not get copied, copy them also
 copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_core320.dll .\deploy\
 copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_imgproc320.dll .\deploy\
 ```
+
+## Compiling on MAC
+
+I don't have a MAC, but a few tests i made on a friend's computer made me arrive to the following (maybe incomplete) steps:
+
+* Install pkg-config
+
+* Install Qt and Qt Creator: online installer is recommended.
+
+* Install opencv: in mac, like in linux, i could only install opencv4. After installing, you should add to includepaht in Qt Creator the path to opencv (i think it was: /usr/local/Cellar/opencv/4.0.1/include/opencv4/)
+
+* Add defines: add this line to imageprocessor.hpp `#define CV_DIST_L2 DIST_L2`. IDK why it's necessary on MAC and not on Linux.
+
+* As in windows, imgcodecs.hpp and imgproc.hpp should be included in imageprocessor.hpp (again, idk why in linux is not needed).
+
+And thats all the test i could make before i had to return the MAC. 
