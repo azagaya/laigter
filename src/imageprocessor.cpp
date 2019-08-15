@@ -753,9 +753,20 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
                 normals.at<Vec3f>(y,x) = Vec3f(0,0,1);
                 continue;
             }
-
-            dx = -aux.at<float>(y,(x-1)%aux.cols) + aux.at<float>(y,(x+1)%aux.cols);
-            dy = -aux.at<float>((y-1)%aux.rows,x) + aux.at<float>((y+1)%aux.rows,x);
+            if (x == 0){
+                dx = -3*aux.at<float>(y,x) + 4*aux.at<float>(y,x+1) - aux.at<float>(y,x+1);
+            }else if (x == aux.cols-1){
+                dx = 3*aux.at<float>(y,x) + 4*aux.at<float>(y,x-1) - aux.at<float>(y,x-2);
+            }else{
+                dx = -aux.at<float>(y,(x-1)) + aux.at<float>(y,(x+1));
+            }
+            if (y == 0){
+                dy = -3*aux.at<float>(y,x) + 4*aux.at<float>(y+1,x) - aux.at<float>(y+2,x);
+            }else if (y == aux.rows-1){
+                dy = 3*aux.at<float>(y,x) + 4*aux.at<float>(y-1,x) - aux.at<float>(y-2,x);
+            }else{
+                dy = -aux.at<float>(y-1,x) + aux.at<float>(y+1,x);
+            }
 
 
             Vec3f n = Vec3f(-dx*(depth/1000.0)*normalInvertX,
