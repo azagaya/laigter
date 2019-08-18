@@ -22,6 +22,7 @@
 #include "src/openglwidget.h"
 #include "gui/nbselector.h"
 #include "gui/presetsmanager.h"
+#include "gui/aboutdialog.h"
 
 #include <QFileDialog>
 #include <QColorDialog>
@@ -881,4 +882,10 @@ void MainWindow::on_actionExportPreview_triggered()
     }
     msgBox.exec();
     ui->comboBoxView->setCurrentIndex(current_view);
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    AboutDialog *ad = new AboutDialog;
+    ad->show();
 }

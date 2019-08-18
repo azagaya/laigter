@@ -42,6 +42,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += core ui c++11
 
 SOURCES += \
+    gui/aboutdialog.cpp \
     gui/presetsmanager.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -51,6 +52,7 @@ SOURCES += \
     gui/nbselector.cpp
 
 HEADERS += \
+    gui/aboutdialog.h \
     gui/presetsmanager.h \
         mainwindow.h \
     src/imageloader.h \
@@ -59,6 +61,7 @@ HEADERS += \
     gui/nbselector.h
 
 FORMS += \
+    gui/aboutdialog.ui \
     gui/presetsmanager.ui \
         mainwindow.ui \
     gui/nbselector.ui

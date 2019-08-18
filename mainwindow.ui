@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>1270</height>
+    <height>1311</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,7 +58,7 @@ QDockWidget::title{
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -80,6 +80,8 @@ QDockWidget::title{
    <addaction name="actionExportPreview"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>
+   <addaction name="separator"/>
+   <addaction name="actionAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="normalDockWidget">
@@ -1327,7 +1329,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>208</height>
+          <height>292</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1487,6 +1489,15 @@ QDockWidget::title{
    </property>
    <property name="toolTip">
     <string>Exportar Vista Previa</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/info.png</normaloff>:/icons/info.png</iconset>
+   </property>
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

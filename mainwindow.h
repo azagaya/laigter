@@ -112,6 +112,8 @@ private slots:
 
     void on_actionExportPreview_triggered();
 
+    void on_actionAbout_triggered();
+
 private:
     QImage image, normal, parallax, specular, occlusion;
     Ui::MainWindow *ui;

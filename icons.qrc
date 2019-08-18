@@ -10,5 +10,11 @@
         <file>icons/delete.png</file>
         <file>icons/import.png</file>
         <file>icons/export-preview.png</file>
+        <file>icons/itchio.png</file>
+        <file>icons/patreon.jpg</file>
+        <file>icons/twitter.png</file>
+        <file>icons/kofi.png</file>
+        <file>icons/info.png</file>
+        <file>icons/github.png</file>
     </qresource>
 </RCC>
