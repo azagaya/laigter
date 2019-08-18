@@ -87,9 +87,9 @@ RESOURCES += \
     translations.qrc \
     icons.qrc
 
-win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_core320.dll
-win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_imgproc320.dll
-win32: LIBS += C:\opencv-build\install\x86\mingw\bin\libopencv_imgcodecs320.dll
+win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_core320.dll
+win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgproc320.dll
+win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgcodecs320.dll
 
 win32: INCLUDEPATH += C:\opencv\build\include
 
