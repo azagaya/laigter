@@ -5,8 +5,8 @@
     <name>AboutDialog</name>
     <message>
         <location filename="gui/aboutdialog.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Acerca de</source>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="20"/>
@@ -1253,7 +1253,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="1500"/>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation>About</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="1503"/>
+        <source>Acerca de</source>
+        <translation>About</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="117"/>

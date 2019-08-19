@@ -5,7 +5,7 @@
     <name>AboutDialog</name>
     <message>
         <location filename="gui/aboutdialog.ui" line="14"/>
-        <source>Form</source>
+        <source>Acerca de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1225,6 +1225,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="1500"/>
         <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="1503"/>
+        <source>Acerca de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -1499,6 +1499,9 @@ QDockWidget::title{
    <property name="text">
     <string>About</string>
    </property>
+   <property name="toolTip">
+    <string>Acerca de</string>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
