@@ -102,7 +102,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 int ImageProcessor::loadImage(QString fileName, QImage image){
     m_fileName = fileName;
     m_name = fileName;
-    //m_img = imread(fileName.toStdString(),-1);
+    texture = QImage(fileName);
     m_img = Mat(image.height(),image.width(),CV_8UC4,image.scanLine(0));
     int aux = m_img.depth();
     switch (aux) {
@@ -189,7 +189,8 @@ void ImageProcessor::calculate_parallax(){
 
     QImage pa = QImage(static_cast<unsigned char *>(current_parallax.data),
                        current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
-    processed(pa,ProcessedImage::Parallax);
+    parallax = pa;
+    processed(&parallax,ProcessedImage::Parallax);
 }
 
 void ImageProcessor::calculate_specular(){
@@ -214,7 +215,8 @@ void ImageProcessor::calculate_specular(){
 
     QImage pa = QImage(static_cast<unsigned char *>(current_specular.data),
                        current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
-    processed(pa,ProcessedImage::Specular);
+    specular = pa;
+    processed(&specular,ProcessedImage::Specular);
 }
 
 void ImageProcessor::calculate_occlusion(){
@@ -239,7 +241,8 @@ void ImageProcessor::calculate_occlusion(){
 
     QImage pa = QImage(static_cast<unsigned char *>(current_occlusion.data),
                        current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
-    processed(pa,ProcessedImage::Occlusion);
+    occlussion = pa;
+    processed(&occlussion,ProcessedImage::Occlusion);
 }
 
 void ImageProcessor::calculate_heightmap(){
@@ -714,20 +717,21 @@ void ImageProcessor::generate_normal_map(){
     normals.copyTo(m_normal);
     QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
                      m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
-    processed(p, ProcessedImage::Normal);
+    normal = p;
+    processed(&normal, ProcessedImage::Normal);
 
     busy = false;
     on_idle();
 }
 
 void ImageProcessor::update(){
-    QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
-                     m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
+//    QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
+//                     m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
 
-    processed(p, ProcessedImage::Normal);
-    p = QImage(static_cast<unsigned char *>(current_parallax.data),
-               current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_RGB888);
-    processed(p,ProcessedImage::Parallax);
+//    processed(p, ProcessedImage::Normal);
+//    p = QImage(static_cast<unsigned char *>(current_parallax.data),
+//               current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_RGB888);
+//    processed(p,ProcessedImage::Parallax);
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
@@ -821,31 +825,24 @@ int ImageProcessor::get_normal_invert_y(){
     return normalInvertY;
 }
 
-QImage ImageProcessor::get_texture(){
-    Mat image;
-    cvtColor(m_img,m_aux,CV_BGRA2RGBA);
-    return QImage(static_cast<unsigned char *>(m_aux.data),
-                  m_aux.cols,m_aux.rows,m_aux.step,QImage::Format_RGBA8888_Premultiplied);
+QImage *ImageProcessor::get_texture(){
+    return &texture;
 }
 
-QImage ImageProcessor::get_normal(){
-    return QImage(static_cast<unsigned char *>(m_normal.data),
-                  m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
+QImage *ImageProcessor::get_normal(){
+    return &normal;
 }
 
-QImage ImageProcessor::get_parallax(){
-    return QImage(static_cast<unsigned char *>(current_parallax.data),
-                  current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
+QImage *ImageProcessor::get_parallax(){
+    return &parallax;
 }
 
-QImage ImageProcessor::get_specular(){
-    return QImage(static_cast<unsigned char *>(current_specular.data),
-                  current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
+QImage *ImageProcessor::get_specular(){
+    return &specular;
 }
 
-QImage ImageProcessor::get_occlusion(){
-    return QImage(static_cast<unsigned char *>(current_occlusion.data),
-                  current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
+QImage *ImageProcessor::get_occlusion(){
+    return &occlussion;
 }
 
 bool ImageProcessor::get_parallax_invert(){

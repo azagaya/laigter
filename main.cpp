@@ -203,22 +203,22 @@ int main(int argc, char *argv[])
         }
         QString pathWithoutExtension = info.absoluteFilePath().remove("."+suffix);
         if(argsParser.isSet(outputNormalTextureOption)){
-            QImage normal = processor->get_normal();
+            QImage normal = *processor->get_normal();
             QString name = pathWithoutExtension+"_n."+suffix;
             normal.save(name);
         }
         if(argsParser.isSet(outputSpecularTextureOption)){
-            QImage specular = processor->get_specular();
+            QImage specular = *processor->get_specular();
             QString name = pathWithoutExtension+"_s."+suffix;
             specular.save(name);
         }
         if(argsParser.isSet(outputOcclusionTextureOption)){
-            QImage occlusion = processor->get_occlusion();
+            QImage occlusion = *processor->get_occlusion();
             QString name = pathWithoutExtension+"_o."+suffix;
             occlusion.save(name);
         }
         if(argsParser.isSet(outputParallaxTextureOption)){
-            QImage parallax = processor->get_parallax();
+            QImage parallax = *processor->get_parallax();
             QString name = pathWithoutExtension+"_p."+suffix;
             parallax.save(name);
         }

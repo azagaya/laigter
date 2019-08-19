@@ -108,13 +108,22 @@ public:
     QString get_name();
     bool busy;
     QString m_fileName;
-    QImage get_texture();
+
+    QImage *get_texture();
     QImage get_heightmap();
     QImage get_distance_map();
-    QImage get_normal();
-    QImage get_parallax();    
-    QImage get_specular();
-    QImage get_occlusion();
+    QImage *get_normal();
+    QImage *get_parallax();
+    QImage *get_specular();
+    QImage *get_occlusion();
+
+
+    QImage texture;
+    QImage normal;
+    QImage parallax;
+    QImage specular;
+    QImage occlussion;
+
     void update();
     void calculate();
     void calculate_parallax();
@@ -122,7 +131,7 @@ public:
     void calculate_occlusion();
 
 signals:
-    void processed(QImage image, ProcessedImage type);
+    void processed(QImage *image, ProcessedImage type);
     void on_idle();
 public slots:
     void copy_settings(ProcessorSettings s);

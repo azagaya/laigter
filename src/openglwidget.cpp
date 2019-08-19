@@ -28,11 +28,11 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
-    m_image = QImage(":/images/sample.png");
-    normalMap = QImage(":/images/sample_n.png");
-    parallaxMap = QImage(":/images/sample_p.png");
-    specularMap = QImage(":/images/sample_p.png");
-    occlusionMap = QImage(":/images/sample_p.png");
+//    m_image = QImage(":/images/sample.png");
+//    normalMap = QImage(":/images/sample_n.png");
+//    parallaxMap = QImage(":/images/sample_p.png");
+//    specularMap = QImage(":/images/sample_p.png");
+//    occlusionMap = QImage(":/images/sample_p.png");
     laigter = QImage(":/images/laigter-texture.png");
     lightColor = QVector3D(0.0,1,0.7);
     specColor = QVector3D(0.0,1,0.7);
@@ -117,15 +117,6 @@ void OpenGlWidget::initializeGL()
                           (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
     
-    m_texture = new QOpenGLTexture(m_image);
-    pixelsX = m_image.width();
-    pixelsY = m_image.height();
-    m_parallaxTexture = new QOpenGLTexture(parallaxMap);
-    m_specularTexture = new QOpenGLTexture(specularMap);
-    m_normalTexture = new QOpenGLTexture(normalMap);
-    m_occlusionTexture = new QOpenGLTexture(occlusionMap);
-    laigterTexture = new QOpenGLTexture(laigter);
-    
     VAO.release();
     VBO.release();
     
@@ -146,6 +137,21 @@ void OpenGlWidget::initializeGL()
     
 }
 
+void OpenGlWidget::loadTextures(){
+    m_image = processor->get_texture();
+    parallaxMap = processor->get_parallax();
+    specularMap = processor->get_specular();
+    normalMap = processor->get_normal();
+    occlusionMap = processor->get_occlusion();
+    m_texture = new QOpenGLTexture(*m_image);
+    pixelsX = m_image->width();
+    pixelsY = m_image->height();
+    m_parallaxTexture = new QOpenGLTexture(*parallaxMap);
+    m_specularTexture = new QOpenGLTexture(*specularMap);
+    m_normalTexture = new QOpenGLTexture(*normalMap);
+    m_occlusionTexture = new QOpenGLTexture(*occlusionMap);
+    laigterTexture = new QOpenGLTexture(laigter);
+}
 
 void OpenGlWidget::paintGL()
 {
@@ -287,50 +293,50 @@ void OpenGlWidget::update_scene(){
 
 void OpenGlWidget::resizeGL(int w, int h)
 {
-    sx = (float)m_image.width()/w;
-    sy = (float)m_image.height()/h;
+    sx = (float)m_image->width()/w;
+    sy = (float)m_image->height()/h;
     need_to_update = true;
 }
 
 
-void OpenGlWidget::setImage(QImage image){
+void OpenGlWidget::setImage(QImage *image){
     m_image = image;
     m_texture->destroy();
     m_texture->create();
-    m_texture->setData(m_image);
-    sx = (float)m_image.width()/width();
-    sy = (float)m_image.height()/height();
-    pixelsX = image.width();
-    pixelsY = image.height();
+    m_texture->setData(*m_image);
+    sx = (float)m_image->width()/width();
+    sy = (float)m_image->height()/height();
+    pixelsX = image->width();
+    pixelsY = image->height();
     
 }
 
-void OpenGlWidget::setNormalMap(QImage image){
+void OpenGlWidget::setNormalMap(QImage *image){
     normalMap = image;
     m_normalTexture->destroy();
     m_normalTexture->create();
-    m_normalTexture->setData(normalMap);
+    m_normalTexture->setData(*normalMap);
 }
 
-void OpenGlWidget::setOcclusionMap(QImage image){
+void OpenGlWidget::setOcclusionMap(QImage *image){
     occlusionMap = image;
     m_occlusionTexture->destroy();
     m_occlusionTexture->create();
-    m_occlusionTexture->setData(occlusionMap);
+    m_occlusionTexture->setData(*occlusionMap);
 }
 
-void OpenGlWidget::setParallaxMap(QImage image){
+void OpenGlWidget::setParallaxMap(QImage *image){
     parallaxMap = image;
     m_parallaxTexture->destroy();
     m_parallaxTexture->create();
-    m_parallaxTexture->setData(parallaxMap);
+    m_parallaxTexture->setData(*parallaxMap);
 }
 
-void OpenGlWidget::setSpecularMap(QImage image){
+void OpenGlWidget::setSpecularMap(QImage *image){
     specularMap = image;
     m_specularTexture->destroy();
     m_specularTexture->create();
-    m_specularTexture->setData(specularMap);
+    m_specularTexture->setData(*specularMap);
 }
 
 void OpenGlWidget::setZoom(float zoom){
@@ -373,8 +379,8 @@ void OpenGlWidget::resetZoom(){
 
 void OpenGlWidget::fitZoom(){
     float x,y,s;
-    x = (float)m_image.width()/width();
-    y = (float)m_image.height()/height();
+    x = (float)m_image->width()/width();
+    y = (float)m_image->height()/height();
     s = qMax(x,y);
     setZoom(1/s);
     texturePosition = QVector3D(0,0,0);
@@ -509,7 +515,7 @@ QImage OpenGlWidget::calculate_preview(){
         QOpenGLFramebufferObjectFormat format;
         format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
         format.setSamples(16);
-        QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height(), format);
+        QOpenGLFramebufferObject frameBuffer(m_image->width(), m_image->height(), format);
         
         QMatrix4x4 transform;
         transform.setToIdentity();
@@ -517,7 +523,7 @@ QImage OpenGlWidget::calculate_preview(){
         /* Start first pass */
         
         frameBuffer.bind();
-        glViewport(0, 0, m_image.width(), m_image.height());
+        glViewport(0, 0, m_image->width(), m_image->height());
         m_program.bind();
         
         VAO.bind();

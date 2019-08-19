@@ -45,7 +45,7 @@ public:
     void dragEnterEvent(QDragEnterEvent *e);
 
 public slots:
-    void update_scene(QImage image, ProcessedImage type);
+    void update_scene(QImage *image, ProcessedImage type);
 
 signals:
     void normal_depth_changed(int value);
@@ -115,7 +115,6 @@ private slots:
     void on_actionAbout_triggered();
 
 private:
-    QImage image, normal, parallax, specular, occlusion;
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
     QGraphicsScene *m_normal_scene;

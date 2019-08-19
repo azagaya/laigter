@@ -46,8 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     sample_processor = new ImageProcessor();
-
     processor = sample_processor;
+
     ui->openGLPreviewWidget->processor = processor;
 
     currentColor = QVector3D(0.0,1.0,0.7);
@@ -55,9 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
     currentSpecColor = QVector3D(0.0,1.0,0.7);
     currentSpecBaseColor = QVector3D(0,0,0);
-
-    bool success;
-    image = il.loadImage(":/images/sample.png",&success);
 
     QPixmap pixmap(100,100);
     pixmap.fill(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
@@ -140,6 +137,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             }
         }
         delete item;
+
     }
     else if (action->text() == tr("Cargar mapa de altura")){
         QString fileName = QFileDialog::getOpenFileName(this,
@@ -191,34 +189,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::update_scene(QImage image, ProcessedImage type){
-    QPixmap pixmap = QPixmap::fromImage(image);
+void MainWindow::update_scene(QImage *image, ProcessedImage type){
     switch (type) {
 
     case ProcessedImage::Raw:
         ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Normal:
-        normal = image;
+        // normal = image;
         ui->openGLPreviewWidget->setNormalMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::NormalMap  )
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Parallax:
-        parallax = image;
-        ui->openGLPreviewWidget->setParallaxMap(parallax);
+        //  parallax = image;
+        ui->openGLPreviewWidget->setParallaxMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::ParallaxMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Specular:
-        specular = image;
-        ui->openGLPreviewWidget->setSpecularMap(specular);
+        //   specular = image;
+        ui->openGLPreviewWidget->setSpecularMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::SpecularMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Occlusion:
-        occlusion = image;
-        ui->openGLPreviewWidget->setOcclusionMap(occlusion);
+        //    occlusion = image;
+        ui->openGLPreviewWidget->setOcclusionMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::OcclusionMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
@@ -259,14 +256,13 @@ void MainWindow::open_files(QStringList fileNames){
             }
 
             if (i != ui->listWidget->count()) continue;
-            image = auximage;
             ImageProcessor *p = new ImageProcessor();
             processorList.append(p);
             p->copy_settings(processor->get_settings());
             disconnect_processor(processor);
             processor = p;
             connect_processor(processor);
-            processor->loadImage(fileName, image);
+            processor->loadImage(fileName, auximage);
             switch(ui->comboBoxView->currentIndex()){
             case ViewMode::Texture:
 
@@ -275,7 +271,8 @@ void MainWindow::open_files(QStringList fileNames){
             }
 
             on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-            ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(image)),processor->get_name()));
+            ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*processor->get_texture()).scaled(50,50)),
+                                                        processor->get_name()));
             ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
     }
@@ -322,25 +319,25 @@ void MainWindow::on_actionExport_triggered()
 
     if (ui->checkBoxExportNormal->isChecked()){
         aux = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
-        n = normal;
+        n = *processor->get_normal();
         n.save(aux);
         message += tr("Se exportó el mapa normal.\n");
     }
     if (ui->checkBoxExportParallax->isChecked()){
         aux = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
-        n = parallax;
+        n = *processor->get_parallax();
         n.save(aux);
         message += tr("Se exportó el mapa de paralaje.\n");
     }
     if (ui->checkBoxExportSpecular->isChecked()){
         aux = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
-        n = specular;
+        n = *processor->get_specular();
         n.save(aux);
         message += tr("Se exportó el mapa especular.\n");
     }
     if (ui->checkBoxExportOcclusion->isChecked()){
         fileName = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
-        n = occlusion;
+        n = *processor->get_occlusion();
         n.save(fileName);
         message += tr("Se exportó el mapa de oclusión.\n");
     }
@@ -354,10 +351,17 @@ void MainWindow::on_actionExport_triggered()
 
 
 void MainWindow::openGL_initialized(){
+    QString tmpImage = ":/images/sample.png";
+    bool success;
+
+    disconnect_processor(processor);
+    processor->loadImage(tmpImage,il.loadImage(tmpImage, &success));
+    ui->openGLPreviewWidget->processor = processor;
+    ui->openGLPreviewWidget->loadTextures();
+    update_scene(processor->get_texture(),ProcessedImage::Raw);
+    connect_processor(processor);
+
     on_comboBoxView_currentIndexChanged(0);
-    QString tmpImage = QDir::temp().path()+"/sample.png";
-    image.save(tmpImage);
-    processor->loadImage(tmpImage,image);
 }
 
 void MainWindow::on_pushButtonColor_clicked()
@@ -411,7 +415,7 @@ void MainWindow::on_actionReconocimientos_triggered()
 }
 
 void MainWindow::connect_processor(ImageProcessor *p){
-    connect(p,SIGNAL(processed(QImage, ProcessedImage)),this,SLOT(update_scene(QImage, ProcessedImage)));
+    connect(p,SIGNAL(processed(QImage*, ProcessedImage)),this,SLOT(update_scene(QImage*, ProcessedImage)));
     connect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_depth(int)));
     connect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_blur_radius(int)));
     connect(ui->normalBevelSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_bisel_depth(int)));
@@ -448,7 +452,7 @@ void MainWindow::connect_processor(ImageProcessor *p){
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
-    disconnect(p,SIGNAL(processed(QImage, ProcessedImage)),this,SLOT(update_scene(QImage, ProcessedImage)));
+    disconnect(p,SIGNAL(processed(QImage*, ProcessedImage)),this,SLOT(update_scene(QImage*, ProcessedImage)));
     disconnect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_depth(int)));
     disconnect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_blur_radius(int)));
     disconnect(ui->normalBevelSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_bisel_depth(int)));
@@ -537,13 +541,10 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
     ui->checkBoxOcclusionDistance->setChecked(processor->get_occlusion_distance_mode());
 
-    bool succes;
-    image = il.loadImage(processor->get_name(), &succes);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-
     //processor->update();
     on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
 
+    update_scene(processor->get_texture(),ProcessedImage::Raw);
     update_scene(processor->get_normal(),ProcessedImage::Normal);
     update_scene(processor->get_parallax(),ProcessedImage::Parallax);
     update_scene(processor->get_specular(),ProcessedImage::Specular);
@@ -565,7 +566,7 @@ void MainWindow::on_pushButton_clicked()
     QString message = "";
     if (ui->checkBoxExportNormal->isChecked()){
         foreach (ImageProcessor *p, processorList){
-            n = p->get_normal();
+            n = *p->get_normal();
             info = QFileInfo(p->get_name());
             suffix = info.completeSuffix();
             name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
@@ -575,7 +576,7 @@ void MainWindow::on_pushButton_clicked()
     }
     if (ui->checkBoxExportParallax->isChecked()){
         foreach (ImageProcessor *p, processorList){
-            n = p->get_parallax();
+            n = *p->get_parallax();
             info = QFileInfo(p->get_name());
             suffix = info.completeSuffix();
             name = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
@@ -585,7 +586,7 @@ void MainWindow::on_pushButton_clicked()
     }
     if (ui->checkBoxExportSpecular->isChecked()){
         foreach (ImageProcessor *p, processorList){
-            n = p->get_specular();
+            n = *p->get_specular();
             info = QFileInfo(p->get_name());
             suffix = info.completeSuffix();
             name = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
@@ -595,7 +596,7 @@ void MainWindow::on_pushButton_clicked()
     }
     if (ui->checkBoxExportOcclusion->isChecked()){
         foreach (ImageProcessor *p, processorList){
-            n = p->get_occlusion();
+            n = *p->get_occlusion();
             info = QFileInfo(p->get_name());
             suffix = info.completeSuffix();
             name = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
@@ -725,7 +726,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
     if (path != nullptr){
         if (ui->checkBoxExportNormal->isChecked()){
             foreach (ImageProcessor *p, processorList){
-                n = p->get_normal();
+                n = *p->get_normal();
                 info = QFileInfo(p->get_name());
                 suffix = info.completeSuffix();
                 name = path + "/" + info.baseName() + "_n." + suffix;
@@ -738,7 +739,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
         }
         if (ui->checkBoxExportParallax->isChecked()){
             foreach (ImageProcessor *p, processorList){
-                n = p->get_parallax();
+                n = *p->get_parallax();
                 info = QFileInfo(p->get_name());
                 suffix = info.completeSuffix();
                 name = path + "/" + info.baseName() + "_p." + suffix;
@@ -751,7 +752,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
         }
         if (ui->checkBoxExportSpecular->isChecked()){
             foreach (ImageProcessor *p, processorList){
-                n = p->get_specular();
+                n = *p->get_specular();
                 info = QFileInfo(p->get_name());
                 suffix = info.completeSuffix();
                 name = path + "/" + info.baseName() + "_s." + suffix;
@@ -764,7 +765,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
         }
         if (ui->checkBoxExportOcclusion->isChecked()){
             foreach (ImageProcessor *p, processorList){
-                n = p->get_occlusion();
+                n = *p->get_occlusion();
                 info = QFileInfo(p->get_name());
                 suffix = info.completeSuffix();
                 name = path + "/" + info.baseName() + "_o." + suffix;
@@ -835,32 +836,24 @@ void MainWindow::on_comboBoxView_currentIndexChanged(int index)
     ui->openGLPreviewWidget->setParallax(false);
     switch (index){
     case ViewMode::Texture:
-        if (!image.isNull())
-            update_scene(image,ProcessedImage::Raw);
+        update_scene(processor->get_texture(),ProcessedImage::Raw);
         break;
     case ViewMode::NormalMap:
-        if (!normal.isNull())
-            update_scene(normal,ProcessedImage::Raw);
+        update_scene(processor->get_normal(),ProcessedImage::Raw);
         break;
     case ViewMode::SpecularMap:
-        if (!specular.isNull())
-            update_scene(specular,ProcessedImage::Raw);
+        update_scene(processor->get_specular(),ProcessedImage::Raw);
         break;
     case ViewMode::ParallaxMap:
-        if (!parallax.isNull())
-            update_scene(parallax,ProcessedImage::Raw);
+        update_scene(processor->get_parallax(),ProcessedImage::Raw);
         break;
     case ViewMode::OcclusionMap:
-        if (!occlusion.isNull())
-            update_scene(occlusion,ProcessedImage::Raw);
+        update_scene(processor->get_occlusion(),ProcessedImage::Raw);
         break;
     case ViewMode::Preview:
         ui->openGLPreviewWidget->setLight(true);
         ui->openGLPreviewWidget->setParallax(ui->checkBoxParallax->isChecked());
-        if (!image.isNull()){
-            update_scene(normal,ProcessedImage::Normal);
-            update_scene(image,ProcessedImage::Raw);
-        }
+        update_scene(processor->get_texture(),ProcessedImage::Raw);
         break;
     }
 }

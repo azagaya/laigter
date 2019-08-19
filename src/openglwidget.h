@@ -55,11 +55,11 @@ public:
 public slots:
     void update();
     void force_update();
-    void setImage(QImage image);
-    void setNormalMap(QImage normalMap);
-    void setParallaxMap(QImage parallaxMap);
-    void setSpecularMap(QImage image);
-    void setOcclusionMap(QImage occlusionMap);
+    void setImage(QImage *image);
+    void setNormalMap(QImage *normalMap);
+    void setParallaxMap(QImage *parallaxMap);
+    void setSpecularMap(QImage *image);
+    void setOcclusionMap(QImage *occlusionMap);
     void setZoom(float zoom);
     void resetZoom();
     void fitZoom();
@@ -89,6 +89,8 @@ public slots:
     void update_scene();
 
     QImage renderBuffer();
+
+    void loadTextures();
 signals:
     void initialized();
 protected:
@@ -106,7 +108,7 @@ private:
     QOpenGLVertexArrayObject lightVAO;
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program, simpleProgram, lightProgram;
-    QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap, renderedPreview;
+    QImage *m_image, *normalMap, *parallaxMap, laigter, *specularMap, *occlusionMap, renderedPreview;
     QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
     QTimer refreshTimer;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
