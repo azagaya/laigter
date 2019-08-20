@@ -67,15 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_raw_scene = new QGraphicsScene(this);
 
-    //    ui->normalDockWidget->setFeatures(QDockWidget::DockWidgetMovable);
-    //    ui->dockWidget_2->setFeatures(QDockWidget::DockWidgetMovable);
-
     connect_processor(processor);
-
-
-    //    processingThread = new QThread();
-    //    processor->moveToThread(processingThread);
-    //    processingThread->start();
 
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
@@ -196,25 +188,21 @@ void MainWindow::update_scene(QImage *image, ProcessedImage type){
         ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Normal:
-        // normal = image;
         ui->openGLPreviewWidget->setNormalMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::NormalMap  )
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Parallax:
-        //  parallax = image;
         ui->openGLPreviewWidget->setParallaxMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::ParallaxMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Specular:
-        //   specular = image;
         ui->openGLPreviewWidget->setSpecularMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::SpecularMap)
             ui->openGLPreviewWidget->setImage(image);
         break;
     case ProcessedImage::Occlusion:
-        //    occlusion = image;
         ui->openGLPreviewWidget->setOcclusionMap(image);
         if (ui->comboBoxView->currentIndex() == ViewMode::OcclusionMap)
             ui->openGLPreviewWidget->setImage(image);
@@ -229,6 +217,20 @@ void MainWindow::on_actionOpen_triggered()
                                                           tr("Abrir Imagen"), "",
                                                           tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
     open_files(fileNames);
+}
+
+void MainWindow::add_processor(ImageProcessor *p){
+    processorList.append(p);
+    p->copy_settings(processor->get_settings());
+    disconnect_processor(processor);
+    processor = p;
+    connect_processor(processor);
+
+    ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*processor->get_texture()).scaled(50,50)),
+                                                processor->get_name()));
+
+    if (ui->listWidget->count() > 0)
+        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
 }
 
 void MainWindow::open_files(QStringList fileNames){
@@ -257,22 +259,12 @@ void MainWindow::open_files(QStringList fileNames){
 
             if (i != ui->listWidget->count()) continue;
             ImageProcessor *p = new ImageProcessor();
-            processorList.append(p);
-            p->copy_settings(processor->get_settings());
-            disconnect_processor(processor);
-            processor = p;
-            connect_processor(processor);
-            processor->loadImage(fileName, auximage);
-            switch(ui->comboBoxView->currentIndex()){
-            case ViewMode::Texture:
+            p->loadImage(fileName, auximage);
 
-                break;
-
-            }
+            add_processor(p);
 
             on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-            ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*processor->get_texture()).scaled(50,50)),
-                                                        processor->get_name()));
+
             ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
     }

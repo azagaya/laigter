@@ -102,7 +102,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 int ImageProcessor::loadImage(QString fileName, QImage image){
     m_fileName = fileName;
     m_name = fileName;
-    texture = QImage(fileName);
+    texture = image;
     m_img = Mat(image.height(),image.width(),CV_8UC4,image.scanLine(0));
     int aux = m_img.depth();
     switch (aux) {

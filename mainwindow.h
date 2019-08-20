@@ -46,6 +46,7 @@ public:
 
 public slots:
     void update_scene(QImage *image, ProcessedImage type);
+    void add_processor(ImageProcessor *p);
 
 signals:
     void normal_depth_changed(int value);

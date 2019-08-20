@@ -150,42 +150,46 @@ int main(int argc, char *argv[])
     argsParser.addVersionOption();
 
     QCommandLineOption softOpenGl(QStringList() << "s" << "software-opengl",
-        "Use software opengl renderer.");
+                                  "Use software opengl renderer.");
     argsParser.addOption(softOpenGl);
 
     QCommandLineOption noGuiOption(QStringList() << "g" << "no-gui",
-        "do not start graphical interface");
+                                   "do not start graphical interface");
     argsParser.addOption(noGuiOption);
 
     QCommandLineOption inputDiffuseTextureOption(QStringList() << "d" << "diffuse",
-        "diffuse texture to load",
-        "diffuse texture path");
+                                                 "diffuse texture to load",
+                                                 "diffuse texture path");
     argsParser.addOption(inputDiffuseTextureOption);
 
     QCommandLineOption outputNormalTextureOption(QStringList() << "n" << "normal",
-        "generate normals");
+                                                 "generate normals");
     argsParser.addOption(outputNormalTextureOption);
 
     QCommandLineOption outputSpecularTextureOption(QStringList() << "c" << "specular",
-        "generate specular");
+                                                   "generate specular");
     argsParser.addOption(outputSpecularTextureOption);
 
     QCommandLineOption outputOcclusionTextureOption(QStringList() << "o" << "occlusion",
-        "generate occlusion");
+                                                    "generate occlusion");
     argsParser.addOption(outputOcclusionTextureOption);
 
     QCommandLineOption outputParallaxTextureOption(QStringList() << "p" << "parallax",
-        "generate parallax");
+                                                   "generate parallax");
     argsParser.addOption(outputParallaxTextureOption);
 
     QCommandLineOption pressetOption(QStringList() << "r" << "preset",
-        "presset to load",
-        "preset file path");
+                                     "presset to load",
+                                     "preset file path");
     argsParser.addOption(pressetOption);
 
     QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
     argsParser.process(*app.data());
+    QImage auximage;
 
+    ImageProcessor *processor = new ImageProcessor();
+
+    bool succes = false;
     QString inputDiffuseTextureOptionValue = argsParser.value(inputDiffuseTextureOption);
     if(!inputDiffuseTextureOptionValue.trimmed().isEmpty()){
         QFileInfo info(inputDiffuseTextureOptionValue);
@@ -193,10 +197,8 @@ int main(int argc, char *argv[])
 
         QString pressetOptionValue = argsParser.value(pressetOption);
         ImageLoader il;
-        bool succes;
-        QImage auximage = il.loadImage(inputDiffuseTextureOptionValue , &succes);
+        auximage = il.loadImage(inputDiffuseTextureOptionValue , &succes);
         auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-        ImageProcessor *processor = new ImageProcessor();
         processor->loadImage(inputDiffuseTextureOptionValue , auximage);
         if(!pressetOptionValue.trimmed().isEmpty()){
             applyPresets(pressetOptionValue, *processor);
@@ -235,8 +237,16 @@ int main(int argc, char *argv[])
         }
         MainWindow w;
         QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));
+
         w.show();
         qRegisterMetaType<ProcessedImage>("ProcessedImage");
+
+        if (succes){
+            w.add_processor(processor);
+        } else {
+            delete processor;
+        }
+
         returnCode = app->exec();
     } else {
         // do CLI only things here
