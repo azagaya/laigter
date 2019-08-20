@@ -220,17 +220,14 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 void MainWindow::add_processor(ImageProcessor *p){
+
     processorList.append(p);
-    p->copy_settings(processor->get_settings());
     disconnect_processor(processor);
     processor = p;
     connect_processor(processor);
-
-    ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*processor->get_texture()).scaled(50,50)),
-                                                processor->get_name()));
-
-    if (ui->listWidget->count() > 0)
-        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+    on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
+    ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*p->get_texture())),p->get_name()));
+    ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
 }
 
 void MainWindow::open_files(QStringList fileNames){
@@ -259,13 +256,11 @@ void MainWindow::open_files(QStringList fileNames){
 
             if (i != ui->listWidget->count()) continue;
             ImageProcessor *p = new ImageProcessor();
+            p->copy_settings(processor->get_settings());
+
             p->loadImage(fileName, auximage);
 
             add_processor(p);
-
-            on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-
-            ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
         }
     }
 
