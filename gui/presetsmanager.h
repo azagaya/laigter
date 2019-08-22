@@ -41,6 +41,8 @@ public:
     explicit PresetsManager(ProcessorSettings settings, QList <ImageProcessor *> *processorList, QWidget *parent = nullptr);
     ~PresetsManager();
     static Ui::preset_codes_array& get_preset_codes();
+    static void applyPresetSettings(QByteArray& setting, ImageProcessor &p);
+    static void applyPresets(QString &preset, ImageProcessor &p);
 
 signals:
     void settingAplied();
