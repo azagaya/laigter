@@ -1456,7 +1456,7 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/nbselector.cpp" line="176"/>
         <location filename="gui/nbselector.cpp" line="191"/>
         <source>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</source>
-        <translation>Image Files (*.png *.jpg *.bmp .tga)</translation>
+        <translation>Image Files (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
         <source>Archivos de Imagen (*.png *.jpg *.bmp)</source>
