@@ -80,6 +80,8 @@ void OpenGlWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
+
+    setUpdateBehavior(QOpenGLWidget::PartialUpdate);
     
     m_program.create();
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
