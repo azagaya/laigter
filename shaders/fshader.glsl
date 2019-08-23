@@ -1,4 +1,10 @@
-#version 130
+#version 320 es
+#undef lowp
+#undef mediump
+#undef highp
+
+precision highp float;
+precision highp int;
 
 /*
  * Laigter: an automatic map generator for lighting effects.
@@ -23,7 +29,7 @@ in vec2 texCoord;
 in vec3 FragPos;
 out vec4 FragColor;
 
-uniform sampler2D texture;
+uniform sampler2D tex;
 uniform sampler2D normalMap;
 uniform sampler2D parallaxMap;
 uniform sampler2D specularMap;
@@ -70,8 +76,8 @@ void main()
 
     texCoords *= ratio;
 
-    vec3 normal = normalize(texture2D(normalMap,texCoords).xyz*2.0-1.0);
-    vec3 specMap = texture2D(specularMap,texCoords).xyz;
+    vec3 normal = normalize(texture(normalMap,texCoords).xyz*2.0-1.0);
+    vec3 specMap = texture(specularMap,texCoords).xyz;
     vec3 lightDir = normalize(lightPos - vec3(FragPos.xy,0.0));
 
     vec3 reflectDir = reflect(-lightDir, normal);
@@ -79,11 +85,11 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), specScatter);
     vec3 specular = specIntensity * spec * specColor* specMap;
 
-    float occlusion = texture2D(occlusionMap,texCoords).x;
+    float occlusion = texture(occlusionMap,texCoords).x;
 
     float diff = max(dot(normal,lightDir),0.0);
     vec3 diffuse = diff * lightColor * diffIntensity;
-    vec4 tex = texture2D(texture,texCoords);
+    vec4 tex = texture(tex,texCoords);
 
     vec4 l_color = tex*(vec4(diffuse,1.0)+vec4(specular,1.0)+vec4(ambientColor,1.0)*ambientIntensity*occlusion);
     if (light){
@@ -111,7 +117,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
 
     // get initial values
     vec2  currentTexCoords     = texCoords;
-    float currentDepthMapValue = texture2D(parallaxMap, currentTexCoords*ratio).r;
+    float currentDepthMapValue = texture(parallaxMap, currentTexCoords*ratio).r;
     vec2 finalTexCoords;
     while(currentLayerDepth < currentDepthMapValue)
     {
@@ -119,7 +125,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
         currentTexCoords.y += deltaTexCoords.y;
         currentTexCoords.x -= deltaTexCoords.x;
         // get depthmap value at current texture coordinates
-        currentDepthMapValue = texture2D(parallaxMap, currentTexCoords*ratio).r;
+        currentDepthMapValue = texture(parallaxMap, currentTexCoords*ratio).r;
         // get depth of next layer
         currentLayerDepth += layerDepth;
 
@@ -130,7 +136,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
 
     // get depth after and before collision for linear interpolation
     float afterDepth  = currentDepthMapValue - currentLayerDepth;
-    float beforeDepth = texture2D(parallaxMap, prevTexCoords*ratio).r - currentLayerDepth + layerDepth;
+    float beforeDepth = texture(parallaxMap, prevTexCoords*ratio).r - currentLayerDepth + layerDepth;
 
     // interpolation of texture coordinates
     float weight = afterDepth / (afterDepth - beforeDepth);

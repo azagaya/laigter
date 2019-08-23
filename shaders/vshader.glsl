@@ -1,4 +1,10 @@
-#version 130
+#version 320 es
+#undef lowp
+#undef mediump
+#undef highp
+
+precision highp float;
+precision highp int;
 
 /*
  * Laigter: an automatic map generator for lighting effects.
