@@ -26,6 +26,7 @@
 #include <QListWidgetItem>
 #include <QVector3D>
 #include <QThread>
+#include <QColor>
 #include <QList>
 #include "src/imageprocessor.h"
 #include "src/imageloader.h"
@@ -122,7 +123,7 @@ private:
     QGraphicsScene *m_raw_scene;
     ImageProcessor *processor;
     ImageProcessor *sample_processor;
-    QVector3D currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
+    QColor currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
     ImageLoader il;

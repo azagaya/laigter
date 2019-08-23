@@ -50,19 +50,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->openGLPreviewWidget->processor = processor;
 
-    currentColor = QVector3D(0.0,1.0,0.7);
-    currentAmbientcolor = QVector3D(1.0,1.0,1.0);
-    currentBackgroundColor = QVector3D(0.2, 0.2, 0.3);
-    currentSpecColor = QVector3D(0.0,1.0,0.7);
-    currentSpecBaseColor = QVector3D(0,0,0);
+    QColor c;
+    c.setRgbF(0.0,1.0,0.7);
+    currentColor = c;
+    currentAmbientcolor = QColor("white");
+    currentSpecColor = c;
+    c.setRgbF(0.2,0.2,0.3);
+    currentBackgroundColor = c;
+    currentSpecBaseColor = c;
 
     QPixmap pixmap(100,100);
-    pixmap.fill(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
+    pixmap.fill(currentColor);
     ui->pushButtonColor->setIcon(QIcon(pixmap));
     ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
-    pixmap.fill(QColor(currentAmbientcolor.x()*255,currentAmbientcolor.y()*255,currentAmbientcolor.z()*255));
+    pixmap.fill(currentAmbientcolor);
     ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
-    pixmap.fill(QColor(currentBackgroundColor.x()*255,currentBackgroundColor.y()*255,currentBackgroundColor.z()*255));
+    pixmap.fill(currentBackgroundColor);
     ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
 
     m_raw_scene = new QGraphicsScene(this);
@@ -353,13 +356,13 @@ void MainWindow::openGL_initialized(){
 
 void MainWindow::on_pushButtonColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(currentColor.x()*255,currentColor.y()*255,currentColor.z()*255));
+    QColor color = QColorDialog::getColor(currentColor);
     if (color.isValid()){
-        currentColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        currentColor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonColor->setIcon(QIcon(pixmap));
-        ui->openGLPreviewWidget->setLightColor(currentColor);
+        ui->openGLPreviewWidget->setLightColor(color);
     }
 }
 
@@ -381,9 +384,9 @@ void MainWindow::on_horizontalSliderAmbientLight_valueChanged(int value)
 
 void MainWindow::on_pushButtonAmbientColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(currentAmbientcolor.x()*255,currentAmbientcolor.y()*255,currentAmbientcolor.z()*255));
+    QColor color = QColorDialog::getColor(currentAmbientcolor);
     if (color.isValid()){
-        currentAmbientcolor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        currentAmbientcolor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
@@ -600,9 +603,9 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButtonBackgroundColor_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(currentBackgroundColor.x()*255,currentBackgroundColor.y()*255,currentBackgroundColor.z()*255));
+    QColor color = QColorDialog::getColor(currentBackgroundColor);
     if (color.isValid()){
-        currentBackgroundColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        currentBackgroundColor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
@@ -796,9 +799,9 @@ void MainWindow::on_actionPresets_triggered()
 
 void MainWindow::on_pushButtonColorSpec_clicked()
 {
-    QColor color = QColorDialog::getColor(QColor(currentSpecColor.x()*255,currentSpecColor.y()*255,currentSpecColor.z()*255));
+    QColor color = QColorDialog::getColor(currentSpecColor);
     if (color.isValid()){
-        currentSpecColor = QVector3D(color.redF(),color.greenF(),color.blueF());
+        currentSpecColor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonColorSpec->setIcon(QIcon(pixmap));

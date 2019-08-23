@@ -31,7 +31,9 @@
 #include <QWheelEvent>
 #include <QObject>
 #include <QTimer>
+#include <QList>
 
+#include "lightsource.h"
 #include "src/imageprocessor.h"
 
 enum ViewMode
@@ -65,15 +67,15 @@ public slots:
     void fitZoom();
     float getZoom();
     void setLight(bool light);
-    void setLightColor(QVector3D color);
-    void setSpecColor(QVector3D color);
+    void setLightColor(QColor color);
+    void setSpecColor(QColor color);
     void setLightHeight(float height);
     void setLightIntensity(float intensity);
     void setAmbientIntensity(float intensity);
     void setSpecIntensity(float intensity);
     void setSpecScatter(int scatter);
-    void setAmbientColor(QVector3D color);
-    void setBackgroundColor(QVector3D color);
+    void setAmbientColor(QColor color);
+    void setBackgroundColor(QColor color);
     void setTileX(bool x);
     void setTileY(bool y);
 
@@ -109,7 +111,7 @@ private:
     QOpenGLBuffer VBO;
     QOpenGLShaderProgram m_program, simpleProgram, lightProgram;
     QImage *m_image, *normalMap, *parallaxMap, laigter, *specularMap, *occlusionMap, renderedPreview;
-    QVector3D lightPosition, lightColor, specColor, ambientColor, backgroundColor, texturePosition, textureOffset;
+    QVector3D lightPosition, texturePosition, textureOffset;
     QTimer refreshTimer;
     bool m_light, tileX, tileY, m_parallax, m_pixelated;
     float sx, sy, parallax_height;
@@ -119,6 +121,12 @@ private:
     bool lightSelected;
 
     bool export_render, exportFullView;
+
+    QColor lightColor, specColor, ambientColor, backgroundColor;
+    QList <LightSource *> lightList;
+    LightSource *currentLight;
+
+    void apply_light_params();
 
 };
 

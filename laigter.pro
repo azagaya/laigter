@@ -48,6 +48,7 @@ SOURCES += \
         mainwindow.cpp \
     src/imageloader.cpp \
     src/imageprocessor.cpp \
+    src/lightsource.cpp \
     src/openglwidget.cpp \
     gui/nbselector.cpp
 
@@ -57,6 +58,7 @@ HEADERS += \
         mainwindow.h \
     src/imageloader.h \
     src/imageprocessor.h \
+    src/lightsource.h \
     src/openglwidget.h \
     gui/nbselector.h
 

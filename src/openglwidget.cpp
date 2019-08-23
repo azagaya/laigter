@@ -28,16 +28,9 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
-//    m_image = QImage(":/images/sample.png");
-//    normalMap = QImage(":/images/sample_n.png");
-//    parallaxMap = QImage(":/images/sample_p.png");
-//    specularMap = QImage(":/images/sample_p.png");
-//    occlusionMap = QImage(":/images/sample_p.png");
+
     laigter = QImage(":/images/laigter-texture.png");
-    lightColor = QVector3D(0.0,1,0.7);
-    specColor = QVector3D(0.0,1,0.7);
-    ambientColor = QVector3D(1.0,1.0,1.0);
-    backgroundColor = QVector3D(0.2, 0.2, 0.3);
+    ambientColor = QColor("white");
     ambientIntensity = 0.8;
     diffIntensity = 0.6;
     specIntensity = 0.6;
@@ -51,6 +44,19 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     m_pixelated = false;
     lightSelected = false;
     
+    currentLight = new LightSource(0);
+    currentLight->set_light_position(lightPosition);
+    QColor c;
+    c.setRgbF(0.0,1,0.7);
+    currentLight->set_diffuse_color(c);
+    currentLight->set_specular_color(c);
+    currentLight->set_specular_scatter(32);
+    currentLight->set_diffuse_intensity(0.6);
+    currentLight->set_specular_intensity(0.6);
+    lightList.append(currentLight);
+
+    backgroundColor.setRgbF(0.2,0.2,0.3);
+
     pixelSize = 3;
     
     QSurfaceFormat format;
@@ -79,7 +85,9 @@ void OpenGlWidget::initializeGL()
     
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
+    glClearColor(backgroundColor.redF()*ambientColor.redF()*ambientIntensity,
+                 backgroundColor.greenF()*ambientColor.greenF()*ambientIntensity,
+                 backgroundColor.blueF()*ambientColor.blueF()*ambientIntensity,1.0);
 
     setUpdateBehavior(QOpenGLWidget::PartialUpdate);
     
@@ -178,7 +186,9 @@ void OpenGlWidget::force_update(){
 }
 
 void OpenGlWidget::update_scene(){
-    glClearColor(backgroundColor.x(),backgroundColor.y(),backgroundColor.z(),1.0);
+    glClearColor(backgroundColor.redF()*ambientColor.redF()*ambientIntensity,
+                 backgroundColor.greenF()*ambientColor.greenF()*ambientIntensity,
+                 backgroundColor.blueF()*ambientColor.blueF()*ambientIntensity,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     
     QMatrix4x4 transform;
@@ -250,14 +260,7 @@ void OpenGlWidget::update_scene(){
     m_program.setUniformValue("parallax",m_parallax);
     m_program.setUniformValue("height_scale",parallax_height);
     
-    m_program.setUniformValue("lightPos",lightPosition);
-    m_program.setUniformValue("lightColor",lightColor);
-    m_program.setUniformValue("specColor",specColor);
-    m_program.setUniformValue("diffIntensity",diffIntensity);
-    m_program.setUniformValue("specIntensity",specIntensity);
-    m_program.setUniformValue("specScatter",specScatter);
-    m_program.setUniformValue("ambientColor",ambientColor);
-    m_program.setUniformValue("ambientIntensity",ambientIntensity);
+    apply_light_params();
     m_texture->bind(0);
     glDrawArrays(GL_QUADS, 0, 4);
     
@@ -268,7 +271,7 @@ void OpenGlWidget::update_scene(){
     float x = static_cast<float>(laigter.width())/width();
     float y = static_cast<float>(laigter.height())/height();
     transform.setToIdentity();
-    transform.translate(lightPosition);
+    transform.translate(lightList.at(0)->get_light_position());
     transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
     
     lightProgram.bind();
@@ -286,7 +289,10 @@ void OpenGlWidget::update_scene(){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         lightProgram.setUniformValue("texture",0);
-        lightProgram.setUniformValue("lightColor",lightColor);
+        double r,g,b;
+        lightList.at(0)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
+        QVector3D color = QVector3D(r,g,b);
+        lightProgram.setUniformValue("lightColor",color);
         glDrawArrays(GL_QUADS, 0, 4);
         
     }
@@ -399,11 +405,12 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
         float lightHeight = (float)laigter.height()/height()*0.3;
         float mouseX = (float)event->localPos().x()/width()*2-1;
         float mouseY = -(float)event->localPos().y()/height()*2+1;
-        
+        lightPosition = lightList.at(0)->get_light_position();
         if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
                 qAbs(mouseY-lightPosition.y()) < lightHeight &&
                 m_light){
             lightSelected = true;
+            currentLight = lightList.at(0);
         }else{
             textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
         }
@@ -427,6 +434,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
             lightPosition.setY(mouseY);
             if (lightPosition.y() > 1-lightHeight/2) lightPosition.setY(1-lightHeight/2);
             else if (lightPosition.y() < -1+lightHeight/2) lightPosition.setY(-1+lightHeight/2);
+            currentLight->set_light_position(lightPosition);
         }else{
             if (!tileX)
                 texturePosition.setX(mouseX-textureOffset.x());
@@ -454,42 +462,44 @@ void OpenGlWidget::setParallaxHeight(int height){
     need_to_update = true;
 }
 
-void OpenGlWidget::setLightColor(QVector3D color){
-    lightColor = color;
+void OpenGlWidget::setLightColor(QColor color){
+    currentLight->set_diffuse_color(color);
     need_to_update = true;
 }
 
-void OpenGlWidget::setSpecColor(QVector3D color){
-    specColor = color;
+void OpenGlWidget::setSpecColor(QColor color){
+    lightList.at(0)->set_specular_color(color);
     need_to_update = true;
 }
 
-void OpenGlWidget::setBackgroundColor(QVector3D color){
+void OpenGlWidget::setBackgroundColor(QColor color){
     backgroundColor = color;
     need_to_update = true;
 }
 
 void OpenGlWidget::setLightHeight(float height){
+    lightPosition = currentLight->get_light_position();
     lightPosition.setZ(height);
+    currentLight->set_light_position(lightPosition);
     need_to_update = true;
 }
 
 void OpenGlWidget::setLightIntensity(float intensity){
-    diffIntensity = intensity;
+    currentLight->set_diffuse_intensity(intensity);
     need_to_update = true;
 }
 
 void OpenGlWidget::setSpecIntensity(float intensity){
-    specIntensity = intensity;
+    currentLight->set_specular_intensity(intensity);
     need_to_update = true;
 }
 
 void OpenGlWidget::setSpecScatter(int scatter){
-    specScatter = scatter;
+    currentLight->set_specular_scatter(scatter);
     need_to_update = true;
 }
 
-void OpenGlWidget::setAmbientColor(QVector3D color){
+void OpenGlWidget::setAmbientColor(QColor color){
     ambientColor = color;
     need_to_update = true;
 }
@@ -588,14 +598,7 @@ QImage OpenGlWidget::calculate_preview(){
                       (lightPosition.y()-texturePosition.y())/scaleY/zoomY,
                       lightPosition.z());
         
-        m_program.setUniformValue("lightPos",pos);
-        m_program.setUniformValue("lightColor",lightColor);
-        m_program.setUniformValue("specColor",specColor);
-        m_program.setUniformValue("diffIntensity",diffIntensity);
-        m_program.setUniformValue("specIntensity",specIntensity);
-        m_program.setUniformValue("specScatter",specScatter);
-        m_program.setUniformValue("ambientColor",ambientColor);
-        m_program.setUniformValue("ambientIntensity",ambientIntensity);
+        apply_light_params();
         m_texture->bind(0);
         glDrawArrays(GL_QUADS, 0, 4);
         
@@ -678,14 +681,7 @@ QImage OpenGlWidget::calculate_preview(){
         m_program.setUniformValue("parallax",m_parallax);
         m_program.setUniformValue("height_scale",parallax_height);
 
-        m_program.setUniformValue("lightPos",lightPosition);
-        m_program.setUniformValue("lightColor",lightColor);
-        m_program.setUniformValue("specColor",specColor);
-        m_program.setUniformValue("diffIntensity",diffIntensity);
-        m_program.setUniformValue("specIntensity",specIntensity);
-        m_program.setUniformValue("specScatter",specScatter);
-        m_program.setUniformValue("ambientColor",ambientColor);
-        m_program.setUniformValue("ambientIntensity",ambientIntensity);
+        apply_light_params();
         m_texture->bind(0);
         glDrawArrays(GL_QUADS, 0, 4);
 
@@ -704,4 +700,22 @@ QImage OpenGlWidget::get_preview(){
         QApplication::processEvents();
     }
     return renderedPreview;
+}
+
+void OpenGlWidget::apply_light_params(){
+    double r,g,b;
+    lightList.at(0)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
+    QVector3D color(r,g,b);
+    m_program.setUniformValue("lightPos",lightList.at(0)->get_light_position());
+    m_program.setUniformValue("lightColor",color);
+    lightList.at(0)->get_specular_color().getRgbF(&r,&g,&b,nullptr);
+    color = QVector3D(r,g,b);
+    m_program.setUniformValue("specColor",color);
+    m_program.setUniformValue("diffIntensity",lightList.at(0)->get_diffuse_intensity());
+    m_program.setUniformValue("specIntensity",lightList.at(0)->get_specular_intesity());
+    m_program.setUniformValue("specScatter",lightList.at(0)->get_specular_scatter());
+    ambientColor.getRgbF(&r,&g,&b,nullptr);
+    color = QVector3D(r,g,b);
+    m_program.setUniformValue("ambientColor",color);
+    m_program.setUniformValue("ambientIntensity",ambientIntensity);
 }
