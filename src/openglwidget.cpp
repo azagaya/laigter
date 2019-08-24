@@ -432,9 +432,12 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
         }
     }
     else if (event->buttons() & Qt::RightButton){
+        int count = lightList.count();
         if (addLight && lightList.count() > 0){
             foreach (LightSource *light, lightList){
-                if (light == currentLight) continue;
+                if (light == currentLight){
+                    continue;
+                }
                 lightPosition = light->get_light_position();
                 if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
                         qAbs(mouseY-lightPosition.y()) < lightHeight &&
@@ -443,6 +446,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                     break;
                 }
             }
+            if (count == lightList.count())
+                stopAddingLight();
         }
     }
     need_to_update = true;

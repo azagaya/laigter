@@ -62,7 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap pixmap(100,100);
     pixmap.fill(currentColor);
     ui->pushButtonColor->setIcon(QIcon(pixmap));
-    ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
     pixmap.fill(currentAmbientcolor);
     ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
     pixmap.fill(currentBackgroundColor);
@@ -81,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
     connect(ui->openGLPreviewWidget,SIGNAL(selectedLightChanged(LightSource *)), this,SLOT(selectedLightChanged(LightSource*)));
+    connect(ui->openGLPreviewWidget,SIGNAL(stopAddingLight()),this,SLOT(stopAddingLight()));
 
     tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -365,6 +365,7 @@ void MainWindow::on_pushButtonColor_clicked()
         pixmap.fill(color);
         ui->pushButtonColor->setIcon(QIcon(pixmap));
         ui->openGLPreviewWidget->setLightColor(color);
+        ui->openGLPreviewWidget->setSpecColor(color);
     }
 }
 
@@ -806,7 +807,6 @@ void MainWindow::on_pushButtonColorSpec_clicked()
         currentSpecColor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
-        ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
         ui->openGLPreviewWidget->setSpecColor(currentSpecColor);
     }
 }
@@ -892,7 +892,9 @@ void MainWindow::selectedLightChanged(LightSource *light){
     pixmap.fill(currentColor);
     ui->pushButtonColor->setIcon(QIcon(pixmap));
 
-    currentSpecColor = light->get_specular_color();
-    pixmap.fill(currentSpecColor);
-    ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
+}
+
+void MainWindow::stopAddingLight(){
+    ui->actionAdd_Light->setChecked(false);
+    on_actionAdd_Light_triggered(false);
 }

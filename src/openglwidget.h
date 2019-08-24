@@ -100,6 +100,7 @@ public slots:
 signals:
     void initialized();
     void selectedLightChanged(LightSource *light);
+    void stopAddingLight();
 protected:
     void initializeGL() override;
     void paintGL() override;

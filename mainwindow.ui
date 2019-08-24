@@ -338,7 +338,25 @@ QDockWidget::title{
         <string>Luz</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>5</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>1</number>
+        </property>
+        <item row="0" column="0" colspan="2">
          <widget class="QTabWidget" name="tabWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -352,6 +370,12 @@ QDockWidget::title{
             <height>0</height>
            </size>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>110</height>
+           </size>
+          </property>
           <property name="tabPosition">
            <enum>QTabWidget::North</enum>
           </property>
@@ -359,7 +383,7 @@ QDockWidget::title{
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -386,55 +410,6 @@ QDockWidget::title{
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>Altura:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSlider" name="horizontalSliderDiffHeight">
-              <property name="minimum">
-               <number>-100</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>30</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Color:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="pushButtonColor">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tabSpec">
@@ -442,10 +417,35 @@ QDockWidget::title{
             <string>Especular</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_9">
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <property name="rightMargin">
+             <number>5</number>
+            </property>
+            <property name="bottomMargin">
+             <number>5</number>
+            </property>
+            <property name="horizontalSpacing">
+             <number>5</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>1</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
                <string>Intensidad:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Dispersión:</string>
               </property>
              </widget>
             </item>
@@ -462,13 +462,6 @@ QDockWidget::title{
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>Dispersión:</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QSlider" name="horizontalSliderSpecScatter">
               <property name="minimum">
@@ -482,32 +475,6 @@ QDockWidget::title{
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_14">
-              <property name="text">
-               <string>Color:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="pushButtonColorSpec">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>23</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
               </property>
              </widget>
             </item>
@@ -592,6 +559,55 @@ QDockWidget::title{
             </item>
            </layout>
           </widget>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Altura:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSlider" name="horizontalSliderDiffHeight">
+          <property name="minimum">
+           <number>-100</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Color:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pushButtonColor">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
          </widget>
         </item>
        </layout>
@@ -1329,8 +1345,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>254</width>
-          <height>292</height>
+          <width>247</width>
+          <height>162</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
