@@ -99,6 +99,7 @@ public slots:
     void remove_light(LightSource *light);
 signals:
     void initialized();
+    void selectedLightChanged(LightSource *light);
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -131,6 +132,7 @@ private:
     QList <LightSource *> lightList;
     LightSource *currentLight;
 
+    void select_light(LightSource *light);
     void apply_light_params();
 
 };

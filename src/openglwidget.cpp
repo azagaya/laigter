@@ -52,16 +52,6 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     currentLight->set_specular_intensity(0.6);
     lightList.append(currentLight);
 
-    currentLight = new LightSource();
-    currentLight->set_light_position(lightPosition);
-    c.setRgbF(0.0,1,0.7);
-    currentLight->set_diffuse_color(c);
-    currentLight->set_specular_color(c);
-    currentLight->set_specular_scatter(32);
-    currentLight->set_diffuse_intensity(0.6);
-    currentLight->set_specular_intensity(0.6);
-    lightList.append(currentLight);
-
     backgroundColor.setRgbF(0.2,0.2,0.3);
 
     pixelSize = 3;
@@ -302,6 +292,8 @@ void OpenGlWidget::update_scene(){
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
                 lightProgram.setUniformValue("texture",0);
+                lightProgram.setUniformValue("pixelSize",3.0/x,3.0/y);
+                lightProgram.setUniformValue("selected",currentLight == light);
                 double r,g,b;
                 light->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
                 QVector3D color = QVector3D(r,g,b);
@@ -430,7 +422,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                         qAbs(mouseY-lightPosition.y()) < lightHeight &&
                         m_light){
                     lightSelected = true;
-                    currentLight = light;
+                    select_light(light);
+
                     break;
                 }else{
                     textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
@@ -441,6 +434,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
     else if (event->buttons() & Qt::RightButton){
         if (addLight && lightList.count() > 0){
             foreach (LightSource *light, lightList){
+                if (light == currentLight) continue;
                 lightPosition = light->get_light_position();
                 if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
                         qAbs(mouseY-lightPosition.y()) < lightHeight &&
@@ -451,6 +445,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
             }
         }
     }
+    need_to_update = true;
 }
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
@@ -775,7 +770,7 @@ void OpenGlWidget::set_add_light(bool add){
     if (addLight){
         LightSource *l = new LightSource();
         l->copy_settings(currentLight);
-        currentLight = l;
+        select_light(l);
         lightList.append(l);
         need_to_update = true;
     }else{
@@ -787,8 +782,13 @@ void OpenGlWidget::remove_light(LightSource *light){
     if (lightList.count() > 1){
         lightList.removeOne(light);
         if (currentLight == light)
-            currentLight = lightList.last();
+            select_light(lightList.last());
         delete light;
         need_to_update = true;
     }
+}
+
+void OpenGlWidget::select_light(LightSource *light){
+    currentLight = light;
+    selectedLightChanged(currentLight);
 }

@@ -80,6 +80,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
+    connect(ui->openGLPreviewWidget,SIGNAL(selectedLightChanged(LightSource *)), this,SLOT(selectedLightChanged(LightSource*)));
+
     tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->occlusionDockWidget);
@@ -877,4 +879,20 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionAdd_Light_triggered(bool checked)
 {
     ui->openGLPreviewWidget->set_add_light(checked);
+}
+
+void MainWindow::selectedLightChanged(LightSource *light){
+    ui->horizontalSliderDiffLight->setValue(light->get_diffuse_intensity()*100);
+    ui->horizontalSliderSpec->setValue(light->get_specular_intesity()*100);
+    ui->horizontalSliderSpecScatter->setValue(light->get_specular_scatter());
+    ui->horizontalSliderDiffHeight->setValue(light->get_height()*100);
+
+    QPixmap pixmap(100,100);
+    currentColor = light->get_diffuse_color();
+    pixmap.fill(currentColor);
+    ui->pushButtonColor->setIcon(QIcon(pixmap));
+
+    currentSpecColor = light->get_specular_color();
+    pixmap.fill(currentSpecColor);
+    ui->pushButtonColorSpec->setIcon(QIcon(pixmap));
 }

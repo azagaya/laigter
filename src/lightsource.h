@@ -5,6 +5,12 @@
 #include <QColor>
 #include <QVector3D>
 
+struct LightSettings {
+    QColor diffuseColor, specularColor;
+    float diffuseIntensity, specularIntensity, specularScatter;
+    QVector3D lightPosition;
+};
+
 class LightSource : public QObject
 {
     Q_OBJECT
@@ -36,11 +42,9 @@ public slots:
     void copy_settings(LightSource *l);
 
 private:
-    QColor diffuseColor, specularColor;
-    float diffuseIntensity, specularIntensity, specularScatter, lightHeight;
-    QVector3D lightPosition;
     int id;
     bool selected;
+    LightSettings settings;
 
 
 };

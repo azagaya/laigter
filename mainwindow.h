@@ -30,6 +30,7 @@
 #include <QList>
 #include "src/imageprocessor.h"
 #include "src/imageloader.h"
+#include "src/lightsource.h"
 
 namespace Ui {
 class MainWindow;
@@ -48,6 +49,7 @@ public:
 public slots:
     void update_scene(QImage *image, ProcessedImage type);
     void add_processor(ImageProcessor *p);
+    void selectedLightChanged(LightSource *light);
 
 signals:
     void normal_depth_changed(int value);
