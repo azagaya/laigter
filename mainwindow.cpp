@@ -799,18 +799,6 @@ void MainWindow::on_actionPresets_triggered()
     disconnect(&pm, SIGNAL(settingAplied()),this,SLOT(on_listWidget_itemSelectionChanged()));
 }
 
-
-void MainWindow::on_pushButtonColorSpec_clicked()
-{
-    QColor color = QColorDialog::getColor(currentSpecColor);
-    if (color.isValid()){
-        currentSpecColor = color;
-        QPixmap pixmap(100,100);
-        pixmap.fill(color);
-        ui->openGLPreviewWidget->setSpecColor(currentSpecColor);
-    }
-}
-
 void MainWindow::on_horizontalSliderSpec_valueChanged(int value)
 {
     ui->openGLPreviewWidget->setSpecIntensity(static_cast<float>(value/100.0));

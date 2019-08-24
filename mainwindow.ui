@@ -1345,8 +1345,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>247</width>
-          <height>162</height>
+          <width>254</width>
+          <height>284</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">

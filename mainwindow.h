@@ -107,8 +107,6 @@ private slots:
 
     void on_actionPresets_triggered();
 
-    void on_pushButtonColorSpec_clicked();
-
     void on_horizontalSliderSpec_valueChanged(int value);
 
     void on_horizontalSliderSpecScatter_valueChanged(int value);
