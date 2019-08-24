@@ -78,6 +78,7 @@ QDockWidget::title{
    <addaction name="separator"/>
    <addaction name="actionExport"/>
    <addaction name="actionExportPreview"/>
+   <addaction name="actionAdd_Light"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>
    <addaction name="separator"/>
@@ -1501,6 +1502,21 @@ QDockWidget::title{
    </property>
    <property name="toolTip">
     <string>Acerca de</string>
+   </property>
+  </action>
+  <action name="actionAdd_Light">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/add-light.png</normaloff>:/icons/add-light.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Light</string>
+   </property>
+   <property name="toolTip">
+    <string>Agregar Fuente de Luz</string>
    </property>
   </action>
  </widget>

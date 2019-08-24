@@ -116,6 +116,8 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void on_actionAdd_Light_triggered(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;

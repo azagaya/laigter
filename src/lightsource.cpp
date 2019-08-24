@@ -1,6 +1,6 @@
 #include "lightsource.h"
 
-LightSource::LightSource(int id, QObject *parent) : QObject(parent), id(id)
+LightSource::LightSource(QObject *parent) : QObject(parent)
 {
 
 }
@@ -10,7 +10,7 @@ void LightSource::set_height(float height){
 }
 
 float LightSource::get_height(){
-    return lightHeight;
+    return lightPosition.z();
 }
 
 void LightSource::set_diffuse_color(QColor color){
@@ -59,4 +59,13 @@ void LightSource::set_specular_intensity(float intensity){
 
 float LightSource::get_specular_intesity(){
     return specularIntensity;
+}
+
+void LightSource::copy_settings(LightSource *l){
+    lightPosition = l->get_light_position();
+    specularColor = l->get_specular_color();
+    specularScatter = l->get_specular_scatter();
+    specularIntensity = l->get_specular_intesity();
+    diffuseColor = l->get_diffuse_color();
+    diffuseIntensity = l->get_diffuse_intensity();
 }

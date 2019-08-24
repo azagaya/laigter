@@ -872,3 +872,9 @@ void MainWindow::on_actionAbout_triggered()
     AboutDialog *ad = new AboutDialog;
     ad->show();
 }
+
+
+void MainWindow::on_actionAdd_Light_triggered(bool checked)
+{
+    ui->openGLPreviewWidget->set_add_light(checked);
+}

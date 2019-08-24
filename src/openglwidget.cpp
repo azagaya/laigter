@@ -32,9 +32,6 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     laigter = QImage(":/images/laigter-texture.png");
     ambientColor = QColor("white");
     ambientIntensity = 0.8;
-    diffIntensity = 0.6;
-    specIntensity = 0.6;
-    specScatter = 32;
     lightPosition = QVector3D(0.7,0.7,0.3);
     m_light = true;
     m_parallax = false;
@@ -44,9 +41,19 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     m_pixelated = false;
     lightSelected = false;
     
-    currentLight = new LightSource(0);
+    currentLight = new LightSource();
     currentLight->set_light_position(lightPosition);
     QColor c;
+    c.setRgbF(0.0,1,0.7);
+    currentLight->set_diffuse_color(c);
+    currentLight->set_specular_color(c);
+    currentLight->set_specular_scatter(32);
+    currentLight->set_diffuse_intensity(0.6);
+    currentLight->set_specular_intensity(0.6);
+    lightList.append(currentLight);
+
+    currentLight = new LightSource();
+    currentLight->set_light_position(lightPosition);
     c.setRgbF(0.0,1,0.7);
     currentLight->set_diffuse_color(c);
     currentLight->set_specular_color(c);
@@ -77,6 +84,9 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     export_render = false;
     exportFullView = false;
     
+    addLight = false;
+
+    this->setMouseTracking(true);
 }
 
 void OpenGlWidget::initializeGL()
@@ -268,35 +278,40 @@ void OpenGlWidget::update_scene(){
     
     /* Render light texture */
     
-    float x = static_cast<float>(laigter.width())/width();
-    float y = static_cast<float>(laigter.height())/height();
-    transform.setToIdentity();
-    transform.translate(lightList.at(0)->get_light_position());
-    transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
-    
-    lightProgram.bind();
-    lightVAO.bind();
-    lightProgram.setUniformValue("transform",transform);
-    
-    laigterTexture->bind(0);
-    if (m_light){
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        
-        glActiveTexture(GL_TEXTURE0);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        lightProgram.setUniformValue("texture",0);
-        double r,g,b;
-        lightList.at(0)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
-        QVector3D color = QVector3D(r,g,b);
-        lightProgram.setUniformValue("lightColor",color);
-        glDrawArrays(GL_QUADS, 0, 4);
-        
+
+    if (lightList.count() > 0){
+        foreach(LightSource *light, lightList){
+            float x = static_cast<float>(laigter.width())/width();
+            float y = static_cast<float>(laigter.height())/height();
+            transform.setToIdentity();
+            transform.translate(light->get_light_position());
+            transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
+
+            lightProgram.bind();
+            lightVAO.bind();
+            lightProgram.setUniformValue("transform",transform);
+
+            laigterTexture->bind(0);
+            if (m_light){
+
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+                glActiveTexture(GL_TEXTURE0);
+
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+                lightProgram.setUniformValue("texture",0);
+                double r,g,b;
+                light->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
+                QVector3D color = QVector3D(r,g,b);
+                lightProgram.setUniformValue("lightColor",color);
+                glDrawArrays(GL_QUADS, 0, 4);
+
+            }
+        }
+        lightProgram.release();
     }
-    lightProgram.release();
 }
 
 void OpenGlWidget::resizeGL(int w, int h)
@@ -399,42 +414,60 @@ float OpenGlWidget::getZoom(){
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event){
+    float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
+    float lightHeight = (float)laigter.height()/height()*0.3;
+    float mouseX = (float)event->localPos().x()/width()*2-1;
+    float mouseY = -(float)event->localPos().y()/height()*2+1;
     if (event->buttons() & Qt::LeftButton)
     {
-        float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
-        float lightHeight = (float)laigter.height()/height()*0.3;
-        float mouseX = (float)event->localPos().x()/width()*2-1;
-        float mouseY = -(float)event->localPos().y()/height()*2+1;
-        lightPosition = lightList.at(0)->get_light_position();
-        if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
-                qAbs(mouseY-lightPosition.y()) < lightHeight &&
-                m_light){
-            lightSelected = true;
-            currentLight = lightList.at(0);
-        }else{
-            textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
+        if (addLight){
+            set_add_light(true);
+        }
+        if (lightList.count() > 0){
+            foreach (LightSource *light, lightList){
+                lightPosition = light->get_light_position();
+                if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                        qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                        m_light){
+                    lightSelected = true;
+                    currentLight = light;
+                    break;
+                }else{
+                    textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
+                }
+            }
         }
     }
     else if (event->buttons() & Qt::RightButton){
-        
+        if (addLight && lightList.count() > 0){
+            foreach (LightSource *light, lightList){
+                lightPosition = light->get_light_position();
+                if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                        qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                        m_light){
+                    remove_light(light);
+                    break;
+                }
+            }
+        }
     }
 }
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
-    float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
-    float lightHeight = (float)laigter.height()/height()*0.3;
+
+    float mouseX = (float)event->localPos().x()/width()*2-1;
+    float mouseY = -(float)event->localPos().y()/height()*2+1;
+    QVector3D newLightPos(mouseX,mouseY,currentLight->get_height());
+
+    if (addLight){
+        update_light_position(newLightPos);
+        need_to_update = true;
+        return;
+    }
     if (event->buttons() & Qt::LeftButton)
     {
-        float mouseX = (float)event->localPos().x()/width()*2-1;
-        float mouseY = -(float)event->localPos().y()/height()*2+1;
         if (lightSelected){
-            lightPosition.setX(mouseX);
-            if (lightPosition.x() >= 1-lightWidth/2) lightPosition.setX(1-lightWidth/2);
-            else if (lightPosition.x() < -1+lightWidth/2) lightPosition.setX(-1+lightWidth/2);
-            lightPosition.setY(mouseY);
-            if (lightPosition.y() > 1-lightHeight/2) lightPosition.setY(1-lightHeight/2);
-            else if (lightPosition.y() < -1+lightHeight/2) lightPosition.setY(-1+lightHeight/2);
-            currentLight->set_light_position(lightPosition);
+            update_light_position(newLightPos);
         }else{
             if (!tileX)
                 texturePosition.setX(mouseX-textureOffset.x());
@@ -448,6 +481,17 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
     }
 }
 
+void OpenGlWidget::update_light_position(QVector3D new_pos){
+    float lightWidth = (float)laigter.width()/width()*0.3;//en paintgl la imagen la escalamos por 0.3
+    float lightHeight = (float)laigter.height()/height()*0.3;
+    lightPosition.setX(new_pos.x());
+    if (lightPosition.x() >= 1-lightWidth/2) lightPosition.setX(1-lightWidth/2);
+    else if (lightPosition.x() < -1+lightWidth/2) lightPosition.setX(-1+lightWidth/2);
+    lightPosition.setY(new_pos.y());
+    if (lightPosition.y() > 1-lightHeight/2) lightPosition.setY(1-lightHeight/2);
+    else if (lightPosition.y() < -1+lightHeight/2) lightPosition.setY(-1+lightHeight/2);
+    currentLight->set_light_position(lightPosition);
+}
 void OpenGlWidget::mouseReleaseEvent(QMouseEvent *event){
     lightSelected = false;
 }
@@ -468,7 +512,7 @@ void OpenGlWidget::setLightColor(QColor color){
 }
 
 void OpenGlWidget::setSpecColor(QColor color){
-    lightList.at(0)->set_specular_color(color);
+    currentLight->set_specular_color(color);
     need_to_update = true;
 }
 
@@ -531,7 +575,7 @@ QImage OpenGlWidget::calculate_preview(){
         
         QMatrix4x4 transform;
         transform.setToIdentity();
-              
+
         /* Start first pass */
         
         frameBuffer.bind();
@@ -704,18 +748,47 @@ QImage OpenGlWidget::get_preview(){
 
 void OpenGlWidget::apply_light_params(){
     double r,g,b;
-    lightList.at(0)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
-    QVector3D color(r,g,b);
-    m_program.setUniformValue("lightPos",lightList.at(0)->get_light_position());
-    m_program.setUniformValue("lightColor",color);
-    lightList.at(0)->get_specular_color().getRgbF(&r,&g,&b,nullptr);
-    color = QVector3D(r,g,b);
-    m_program.setUniformValue("specColor",color);
-    m_program.setUniformValue("diffIntensity",lightList.at(0)->get_diffuse_intensity());
-    m_program.setUniformValue("specIntensity",lightList.at(0)->get_specular_intesity());
-    m_program.setUniformValue("specScatter",lightList.at(0)->get_specular_scatter());
-    ambientColor.getRgbF(&r,&g,&b,nullptr);
-    color = QVector3D(r,g,b);
-    m_program.setUniformValue("ambientColor",color);
-    m_program.setUniformValue("ambientIntensity",ambientIntensity);
+    QVector3D color;
+    if (lightList.count() == 0) return;
+    m_program.setUniformValue("lightNum",lightList.count());
+    for(int i=0; i < lightList.count() ; i++){
+        lightList.at(i)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
+        color = QVector3D(r,g,b);
+        QString Light = "Light["+QString::number(i)+"]";
+        m_program.setUniformValue((Light+".lightPos").toUtf8().constData(),lightList.at(i)->get_light_position());
+        m_program.setUniformValue((Light+".lightColor").toUtf8().constData(),color);
+        lightList.at(i)->get_specular_color().getRgbF(&r,&g,&b,nullptr);
+        color = QVector3D(r,g,b);
+        m_program.setUniformValue((Light+".specColor").toUtf8().constData(),color);
+        m_program.setUniformValue((Light+".diffIntensity").toUtf8().constData(),lightList.at(i)->get_diffuse_intensity());
+        m_program.setUniformValue((Light+".specIntensity").toUtf8().constData(),lightList.at(i)->get_specular_intesity());
+        m_program.setUniformValue((Light+".specScatter").toUtf8().constData(),lightList.at(i)->get_specular_scatter());
+        ambientColor.getRgbF(&r,&g,&b,nullptr);
+        color = QVector3D(r,g,b);
+        m_program.setUniformValue("ambientColor",color);
+        m_program.setUniformValue("ambientIntensity",ambientIntensity);
+    }
+}
+
+void OpenGlWidget::set_add_light(bool add){
+    addLight = add;
+    if (addLight){
+        LightSource *l = new LightSource();
+        l->copy_settings(currentLight);
+        currentLight = l;
+        lightList.append(l);
+        need_to_update = true;
+    }else{
+        remove_light(currentLight);
+    }
+}
+
+void OpenGlWidget::remove_light(LightSource *light){
+    if (lightList.count() > 1){
+        lightList.removeOne(light);
+        if (currentLight == light)
+            currentLight = lightList.last();
+        delete light;
+        need_to_update = true;
+    }
 }

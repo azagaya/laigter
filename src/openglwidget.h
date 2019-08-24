@@ -93,6 +93,10 @@ public slots:
     QImage renderBuffer();
 
     void loadTextures();
+
+    void set_add_light(bool add);
+    void update_light_position(QVector3D new_pos);
+    void remove_light(LightSource *light);
 signals:
     void initialized();
 protected:
@@ -103,6 +107,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+
 private:
     GLuint shaderProgram, vertexShader, fragmentShader;
     QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
@@ -120,7 +125,7 @@ private:
     int pixelsX, pixelsY, pixelSize;
     bool lightSelected;
 
-    bool export_render, exportFullView;
+    bool export_render, exportFullView, addLight;
 
     QColor lightColor, specColor, ambientColor, backgroundColor;
     QList <LightSource *> lightList;

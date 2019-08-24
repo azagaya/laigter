@@ -9,7 +9,7 @@ class LightSource : public QObject
 {
     Q_OBJECT
 public:
-    explicit LightSource(int id,QObject *parent = nullptr);
+    explicit LightSource(QObject *parent = nullptr);
 
 
 signals:
@@ -32,6 +32,8 @@ public slots:
 
     void set_light_position(QVector3D position);
     QVector3D get_light_position();
+
+    void copy_settings(LightSource *l);
 
 private:
     QColor diffuseColor, specularColor;

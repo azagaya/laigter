@@ -25,6 +25,20 @@ precision highp int;
  * Contact: azagaya.games@gmail.com
  */
 
+
+struct lightSource
+{
+    vec3 lightPos;
+    vec3 lightColor;
+    float diffIntensity;
+    vec3 specColor;
+    float specIntensity;
+    float specScatter;
+};
+
+uniform lightSource Light[16];
+uniform int lightNum = 1;
+
 in vec2 texCoord;
 in vec3 FragPos;
 out vec4 FragColor;
@@ -78,20 +92,26 @@ void main()
 
     vec3 normal = normalize(texture(normalMap,texCoords).xyz*2.0-1.0);
     vec3 specMap = texture(specularMap,texCoords).xyz;
-    vec3 lightDir = normalize(lightPos - vec3(FragPos.xy,0.0));
-
-    vec3 reflectDir = reflect(-lightDir, normal);
-
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), specScatter);
-    vec3 specular = specIntensity * spec * specColor* specMap;
+    vec4 l_color = vec4(0.0);
+    vec4 tex = texture(tex,texCoords);
 
     float occlusion = texture(occlusionMap,texCoords).x;
 
-    float diff = max(dot(normal,lightDir),0.0);
-    vec3 diffuse = diff * lightColor * diffIntensity;
-    vec4 tex = texture(tex,texCoords);
+    for (int i = 0; i < lightNum; i++){
+        vec3 lightDir = normalize(Light[i].lightPos - vec3(FragPos.xy,0.0));
 
-    vec4 l_color = tex*(vec4(diffuse,1.0)+vec4(specular,1.0)+vec4(ambientColor,1.0)*ambientIntensity*occlusion);
+        vec3 reflectDir = reflect(-lightDir, normal);
+
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
+        vec3 specular = Light[i].specIntensity * spec * Light[i].specColor* specMap;
+
+        float diff = max(dot(normal,lightDir),0.0);
+        vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
+
+        l_color += vec4(diffuse,1.0)+vec4(specular,1.0);
+
+    }
+    l_color = tex*(l_color+vec4(ambientColor,1.0)*ambientIntensity*occlusion);
     if (light){
         FragColor = l_color;
     }else{
