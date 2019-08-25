@@ -1,4 +1,4 @@
-#version 410
+#version 100
 #undef lowp
 #undef mediump
 #undef highp
@@ -26,16 +26,15 @@ precision highp int;
  */
 
 in vec2 texCoord;
-out vec4 FragColor;
 uniform vec3 lightColor;
 uniform sampler2D tex;
 uniform vec2 pixelSize;
-uniform bool selected = false;
+uniform bool selected;
 
 void main()
 {
     vec2 pixSize = 2.0*pixelSize;
-    vec4 color = texture(tex,texCoord);
+    vec4 color = texture2D(tex,texCoord);
     float alpha = color.a;
     if (selected){
         alpha *= 1.5;
@@ -43,5 +42,5 @@ void main()
     }else{
         color.xyz *= (lightColor+vec3(0.8,0.8,0.8));
     }
-    FragColor = vec4(color.xyz,alpha);
+    gl_FragColor = vec4(color.xyz,alpha);
 }

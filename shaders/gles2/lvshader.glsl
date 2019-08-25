@@ -1,4 +1,4 @@
-#version 410
+#version 100
 #undef lowp
 #undef mediump
 #undef highp
@@ -27,7 +27,7 @@ precision highp int;
 
 in vec3 aPos;
 in vec2 aTexCoord;
-out vec2 texCoord;
+varying vec2 texCoord;
 uniform mat4 transform;
 void main()
 {
