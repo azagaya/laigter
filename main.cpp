@@ -26,6 +26,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QCommandLineParser>
+#include <QOpenGLContext>
 #include "gui/presetsmanager.h"
 
 
@@ -104,6 +105,12 @@ int main(int argc, char *argv[])
                                      "preset file path");
     argsParser.addOption(pressetOption);
 
+    QSurfaceFormat fmt;
+    fmt.setDepthBufferSize(24);
+    fmt.setSamples(16);
+    fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+
+    QSurfaceFormat::setDefaultFormat(fmt);
     QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
     argsParser.process(*app.data());
     QImage auximage;

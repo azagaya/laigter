@@ -1,8 +1,12 @@
 <RCC>
     <qresource prefix="/">
-        <file>shaders/fshader.glsl</file>
-        <file>shaders/vshader.glsl</file>
-        <file>shaders/lfshader.glsl</file>
-        <file>shaders/lvshader.glsl</file>
+        <file>shaders/gles2/fshader.glsl</file>
+        <file>shaders/gles2/lfshader.glsl</file>
+        <file>shaders/gles2/lvshader.glsl</file>
+        <file>shaders/gles2/vshader.glsl</file>
+        <file>shaders/gles3/fshader.glsl</file>
+        <file>shaders/gles3/lfshader.glsl</file>
+        <file>shaders/gles3/lvshader.glsl</file>
+        <file>shaders/gles3/vshader.glsl</file>
     </qresource>
 </RCC>

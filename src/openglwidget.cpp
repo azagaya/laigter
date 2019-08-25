@@ -55,14 +55,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     backgroundColor.setRgbF(0.2,0.2,0.3);
 
     pixelSize = 3;
-    
-    QSurfaceFormat format;
-    format.setProfile( QSurfaceFormat::CompatibilityProfile);
-    
-    format.setSamples(32);
-    
-    setFormat(format);
-    
+
     refreshTimer.setInterval(1.0/60.0*1000.0);
     refreshTimer.setSingleShot(false);
     
@@ -82,7 +75,10 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 void OpenGlWidget::initializeGL()
 {
     initializeOpenGLFunctions();
-    
+    int major, minor;
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glClearColor(backgroundColor.redF()*ambientColor.redF()*ambientIntensity,
@@ -91,14 +87,22 @@ void OpenGlWidget::initializeGL()
 
     setUpdateBehavior(QOpenGLWidget::PartialUpdate);
     
+    QString gles;
+    if (major == 1 && minor < 3){
+        gles = "gles2";
+    }
+    else {
+        gles = "gles3";
+    }
+
     m_program.create();
-    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
-    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/fshader.glsl");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/"+gles+"/vshader.glsl");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/"+gles+"/fshader.glsl");
     m_program.link();
     
     lightProgram.create();
-    lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/lvshader.glsl");
-    lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/lfshader.glsl");
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/"+gles+"/lvshader.glsl");
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/"+gles+"/lfshader.glsl");
     m_program.link();
     
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -568,10 +572,7 @@ QImage OpenGlWidget::renderBuffer(){
 
 QImage OpenGlWidget::calculate_preview(){
     if (!tileX && !tileY){
-        QOpenGLFramebufferObjectFormat format;
-        format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-        format.setSamples(16);
-        QOpenGLFramebufferObject frameBuffer(m_image->width(), m_image->height(), format);
+        QOpenGLFramebufferObject frameBuffer(m_image->width(), m_image->height());
         
         QMatrix4x4 transform;
         transform.setToIdentity();
@@ -651,10 +652,7 @@ QImage OpenGlWidget::calculate_preview(){
         frameBuffer.release();
         return frameBuffer.toImage();
     } else {
-        QOpenGLFramebufferObjectFormat format;
-        format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-        format.setSamples(16);
-        QOpenGLFramebufferObject frameBuffer(width(), height(), format);
+        QOpenGLFramebufferObject frameBuffer(width(), height());
 
         QMatrix4x4 transform;
         transform.setToIdentity();
