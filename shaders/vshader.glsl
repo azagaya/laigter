@@ -1,11 +1,3 @@
-#version 300 es
-#undef lowp
-#undef mediump
-#undef highp
-
-precision highp float;
-precision highp int;
-
 /*
  * Laigter: an automatic map generator for lighting effects.
  * Copyright (C) 2019  Pablo Ivan Fonovich
@@ -25,23 +17,15 @@ precision highp int;
  * Contact: azagaya.games@gmail.com
  */
 
-in vec2 texCoord;
-out vec4 FragColor;
-uniform vec3 lightColor;
-uniform sampler2D tex;
-uniform vec2 pixelSize;
-uniform bool selected;
+attribute vec3 aPos;
+attribute vec2 aTexCoord;
+varying vec2 texCoord;
+varying vec3 FragPos;
 
+uniform mat4 transform;
 void main()
 {
-    vec2 pixSize = 2.0*pixelSize;
-    vec4 color = texture(tex,texCoord);
-    float alpha = color.a;
-    if (selected){
-        alpha *= 1.5;
-        color.xyz = mix(3.0*lightColor,color.xyz*(lightColor+vec3(0.8,0.8,0.8)),color.a);
-    }else{
-        color.xyz *= (lightColor+vec3(0.8,0.8,0.8));
-    }
-    FragColor = vec4(color.xyz,alpha);
+    gl_Position = transform * vec4(aPos, 1.0);
+    FragPos = gl_Position.xyz;
+    texCoord = aTexCoord;
 }

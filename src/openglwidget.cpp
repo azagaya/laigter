@@ -24,6 +24,7 @@
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLVersionProfile>
 #include <QApplication>
+#include <math.h>
 
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
@@ -58,7 +59,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 
     pixelSize = 3;
 
-    refreshTimer.setInterval(1.0/60.0*1000.0);
+    refreshTimer.setInterval(1.0/30.0*1000.0);
     refreshTimer.setSingleShot(false);
     
     connect(&refreshTimer,SIGNAL(timeout()),this,SLOT(force_update()));
@@ -77,10 +78,6 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
 void OpenGlWidget::initializeGL()
 {
     initializeOpenGLFunctions();
-    int major, minor;
-    glGetIntegerv(GL_MAJOR_VERSION, &major);
-    glGetIntegerv(GL_MINOR_VERSION, &minor);
-
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glClearColor(backgroundColor.redF()*ambientColor.redF()*ambientIntensity,
@@ -89,22 +86,14 @@ void OpenGlWidget::initializeGL()
 
     setUpdateBehavior(QOpenGLWidget::PartialUpdate);
     
-    QString gles;
-    if (major == 1 && minor < 3){
-        gles = "gles2";
-    }
-    else {
-        gles = "gles3";
-    }
-
     m_program.create();
-    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/"+gles+"/vshader.glsl");
-    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/"+gles+"/fshader.glsl");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
+    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/fshader.glsl");
     m_program.link();
     
     lightProgram.create();
-    lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/"+gles+"/lvshader.glsl");
-    lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/"+gles+"/lfshader.glsl");
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/lvshader.glsl");
+    lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/lfshader.glsl");
     m_program.link();
     
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -187,6 +176,7 @@ void OpenGlWidget::update(){
 }
 
 void OpenGlWidget::force_update(){
+
     if (need_to_update)
         update();
 }

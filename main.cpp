@@ -109,8 +109,8 @@ int main(int argc, char *argv[])
     fmt.setDepthBufferSize(24);
     fmt.setSamples(16);
     fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-
     QSurfaceFormat::setDefaultFormat(fmt);
+
     QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
     argsParser.process(*app.data());
     QImage auximage;
