@@ -119,6 +119,8 @@ private slots:
 
     void on_actionAdd_Light_triggered(bool checked);
 
+    void on_checkBoxLightsPerTexture_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;

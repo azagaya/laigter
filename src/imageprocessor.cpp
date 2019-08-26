@@ -1104,3 +1104,16 @@ QImage ImageProcessor::get_distance_map(){
     return QImage(static_cast<unsigned char *>(m.data),
                   m.cols,m.rows,m.step,QImage::Format_RGBA8888_Premultiplied);
 }
+
+void ImageProcessor::set_light_list(QList <LightSource*> &list){
+    lightList.clear();
+    foreach (LightSource *light, list){
+        LightSource *l = new LightSource();
+        l->copy_settings(light);
+        lightList.append(l);
+    }
+}
+
+QList <LightSource *> * ImageProcessor::get_light_list_ptr(){
+    return &lightList;
+}

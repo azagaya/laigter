@@ -52,6 +52,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     currentLight->set_specular_intensity(0.6);
     lightList.append(currentLight);
 
+    currentLightList = &lightList;
+
     backgroundColor.setRgbF(0.2,0.2,0.3);
 
     pixelSize = 3;
@@ -273,8 +275,8 @@ void OpenGlWidget::update_scene(){
     /* Render light texture */
     
 
-    if (lightList.count() > 0){
-        foreach(LightSource *light, lightList){
+    if (currentLightList->count() > 0){
+        foreach(LightSource *light, *currentLightList){
             float x = static_cast<float>(laigter.width())/width();
             float y = static_cast<float>(laigter.height())/height();
             transform.setToIdentity();
@@ -419,8 +421,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
         if (addLight){
             set_add_light(true);
         }
-        if (lightList.count() > 0){
-            foreach (LightSource *light, lightList){
+        if (currentLightList->count() > 0){
+            foreach (LightSource *light, *currentLightList){
                 lightPosition = light->get_light_position();
                 if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
                         qAbs(mouseY-lightPosition.y()) < lightHeight &&
@@ -436,9 +438,9 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
         }
     }
     else if (event->buttons() & Qt::RightButton){
-        int count = lightList.count();
-        if (addLight && lightList.count() > 0){
-            foreach (LightSource *light, lightList){
+        int count = currentLightList->count();
+        if (addLight && currentLightList->count() > 0){
+            foreach (LightSource *light, *currentLightList){
                 if (light == currentLight){
                     continue;
                 }
@@ -450,7 +452,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                     break;
                 }
             }
-            if (count == lightList.count())
+            if (count == currentLightList->count())
                 stopAddingLight();
         }
     }
@@ -747,20 +749,22 @@ QImage OpenGlWidget::get_preview(){
 void OpenGlWidget::apply_light_params(){
     double r,g,b;
     QVector3D color;
-    if (lightList.count() == 0) return;
-    m_program.setUniformValue("lightNum",lightList.count());
-    for(int i=0; i < lightList.count() ; i++){
-        lightList.at(i)->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
+    int n = currentLightList->count();
+    if (n == 0) return;
+    m_program.setUniformValue("lightNum",n);
+    for(int i=0; i < n ; i++){
+        LightSource *light = currentLightList->at(i);
+        light->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
         color = QVector3D(r,g,b);
         QString Light = "Light["+QString::number(i)+"]";
-        m_program.setUniformValue((Light+".lightPos").toUtf8().constData(),lightList.at(i)->get_light_position());
+        m_program.setUniformValue((Light+".lightPos").toUtf8().constData(),light->get_light_position());
         m_program.setUniformValue((Light+".lightColor").toUtf8().constData(),color);
-        lightList.at(i)->get_specular_color().getRgbF(&r,&g,&b,nullptr);
+        light->get_specular_color().getRgbF(&r,&g,&b,nullptr);
         color = QVector3D(r,g,b);
         m_program.setUniformValue((Light+".specColor").toUtf8().constData(),color);
-        m_program.setUniformValue((Light+".diffIntensity").toUtf8().constData(),lightList.at(i)->get_diffuse_intensity());
-        m_program.setUniformValue((Light+".specIntensity").toUtf8().constData(),lightList.at(i)->get_specular_intesity());
-        m_program.setUniformValue((Light+".specScatter").toUtf8().constData(),lightList.at(i)->get_specular_scatter());
+        m_program.setUniformValue((Light+".diffIntensity").toUtf8().constData(),light->get_diffuse_intensity());
+        m_program.setUniformValue((Light+".specIntensity").toUtf8().constData(),light->get_specular_intesity());
+        m_program.setUniformValue((Light+".specScatter").toUtf8().constData(),light->get_specular_scatter());
         ambientColor.getRgbF(&r,&g,&b,nullptr);
         color = QVector3D(r,g,b);
         m_program.setUniformValue("ambientColor",color);
@@ -774,7 +778,7 @@ void OpenGlWidget::set_add_light(bool add){
         LightSource *l = new LightSource();
         l->copy_settings(currentLight);
         select_light(l);
-        lightList.append(l);
+        currentLightList->append(l);
         need_to_update = true;
     }else{
         remove_light(currentLight);
@@ -782,10 +786,10 @@ void OpenGlWidget::set_add_light(bool add){
 }
 
 void OpenGlWidget::remove_light(LightSource *light){
-    if (lightList.count() > 1){
-        lightList.removeOne(light);
+    if (currentLightList->count() > 1){
+        currentLightList->removeOne(light);
         if (currentLight == light)
-            select_light(lightList.last());
+            select_light(currentLightList->last());
         delete light;
         need_to_update = true;
     }
@@ -794,4 +798,14 @@ void OpenGlWidget::remove_light(LightSource *light){
 void OpenGlWidget::select_light(LightSource *light){
     currentLight = light;
     selectedLightChanged(currentLight);
+}
+
+void OpenGlWidget::set_current_light_list(QList<LightSource*>* list){
+    currentLightList = list;
+    select_light(currentLightList->last());
+    need_to_update = true;
+}
+
+QList <LightSource*> *OpenGlWidget::get_current_light_list_ptr(){
+    return currentLightList;
 }

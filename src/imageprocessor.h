@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QImage>
+#include <QList>
 #include <opencv2/opencv.hpp>
 #if defined(Q_OS_WIN)
 #include <opencv2/imgcodecs.hpp>
@@ -29,6 +30,7 @@
 #endif
 #include <QPixmap>
 #include "src/imageloader.h"
+#include "src/lightsource.h"
 
 using namespace cv;
 
@@ -130,6 +132,7 @@ public:
     void calculate_specular();
     void calculate_occlusion();
 
+
 signals:
     void processed(QImage *image, ProcessedImage type);
     void on_idle();
@@ -218,6 +221,9 @@ public slots:
     void set_current_heightmap();
     QImage get_neighbour(int x, int y);
 
+    void set_light_list(QList<LightSource *> &list);
+    QList <LightSource*> * get_light_list_ptr();
+
 private:
     ProcessorSettings settings;
 
@@ -276,6 +282,9 @@ private:
     bool occlusion_invert;
     bool occlusion_distance_mode;
     int occlusion_distance;
+
+
+    QList <LightSource *> lightList;
 
 };
 

@@ -338,25 +338,7 @@ QDockWidget::title{
         <string>Luz</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
-        <property name="leftMargin">
-         <number>5</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
-         <number>5</number>
-        </property>
-        <property name="horizontalSpacing">
-         <number>5</number>
-        </property>
-        <property name="verticalSpacing">
-         <number>1</number>
-        </property>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0" colspan="3">
          <widget class="QTabWidget" name="tabWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -373,7 +355,7 @@ QDockWidget::title{
           <property name="maximumSize">
            <size>
             <width>16777215</width>
-            <height>110</height>
+            <height>118</height>
            </size>
           </property>
           <property name="tabPosition">
@@ -383,7 +365,7 @@ QDockWidget::title{
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -568,7 +550,7 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="1" column="1" colspan="2">
          <widget class="QSlider" name="horizontalSliderDiffHeight">
           <property name="minimum">
            <number>-100</number>
@@ -610,6 +592,19 @@ QDockWidget::title{
           </property>
          </widget>
         </item>
+        <item row="2" column="2">
+         <widget class="QCheckBox" name="checkBoxLightsPerTexture">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Luces por textura</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -625,6 +620,21 @@ QDockWidget::title{
         <string>Vista</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>3</number>
+        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_24">
           <property name="maximumSize">
@@ -701,6 +711,15 @@ QDockWidget::title{
         <string>Mosaico</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_12">
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>3</number>
+        </property>
         <item row="0" column="1">
          <widget class="QCheckBox" name="checkBoxMosaicoY">
           <property name="text">
@@ -1346,7 +1365,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>284</height>
+          <height>274</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1532,7 +1551,7 @@ QDockWidget::title{
     <string>Add Light</string>
    </property>
    <property name="toolTip">
-    <string>Agregar Fuente de Luz</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Click izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Click izquierdo para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>

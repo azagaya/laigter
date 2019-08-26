@@ -97,6 +97,8 @@ public slots:
     void set_add_light(bool add);
     void update_light_position(QVector3D new_pos);
     void remove_light(LightSource *light);
+    void set_current_light_list(QList<LightSource *> *list);
+    QList<LightSource *> *get_current_light_list_ptr();
 signals:
     void initialized();
     void selectedLightChanged(LightSource *light);
@@ -131,6 +133,7 @@ private:
 
     QColor lightColor, specColor, ambientColor, backgroundColor;
     QList <LightSource *> lightList;
+    QList <LightSource *> * currentLightList;
     LightSource *currentLight;
 
     void select_light(LightSource *light);

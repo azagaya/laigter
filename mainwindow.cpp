@@ -264,7 +264,7 @@ void MainWindow::open_files(QStringList fileNames){
             p->copy_settings(processor->get_settings());
 
             p->loadImage(fileName, auximage);
-
+            p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
             add_processor(p);
         }
     }
@@ -353,6 +353,8 @@ void MainWindow::openGL_initialized(){
     update_scene(processor->get_texture(),ProcessedImage::Raw);
     connect_processor(processor);
 
+    processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
+    ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
     on_comboBoxView_currentIndexChanged(0);
 }
 
@@ -544,6 +546,10 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     update_scene(processor->get_occlusion(),ProcessedImage::Occlusion);
 
     connect_processor(processor);
+
+    if (ui->checkBoxLightsPerTexture->isChecked()){
+        ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
+    }
 }
 
 
@@ -885,4 +891,13 @@ void MainWindow::selectedLightChanged(LightSource *light){
 void MainWindow::stopAddingLight(){
     ui->actionAdd_Light->setChecked(false);
     on_actionAdd_Light_triggered(false);
+}
+
+void MainWindow::on_checkBoxLightsPerTexture_toggled(bool checked)
+{
+    if (!checked){
+        ui->openGLPreviewWidget->set_current_light_list(sample_processor->get_light_list_ptr());
+    }else{
+        ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
+    }
 }
