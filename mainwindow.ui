@@ -1365,7 +1365,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>274</height>
+          <height>283</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1551,7 +1551,7 @@ QDockWidget::title{
     <string>Add Light</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Click izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Click izquierdo para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Click izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Click derecho para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>
