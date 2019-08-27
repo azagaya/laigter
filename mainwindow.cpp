@@ -264,7 +264,7 @@ void MainWindow::open_files(QStringList fileNames){
             p->copy_settings(processor->get_settings());
 
             p->loadImage(fileName, auximage);
-            p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
+            //p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
             add_processor(p);
         }
     }

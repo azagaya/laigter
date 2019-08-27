@@ -97,6 +97,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.occlusion_distance = &occlusion_distance;
     settings.occlusion_distance_mode = &occlusion_distance_mode;
 
+    settings.lightList = &lightList;
 
 }
 
@@ -1086,6 +1087,12 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *occlusion_distance = *(other.occlusion_distance);
     *occlusion_distance_mode = *(other.occlusion_distance_mode);
 
+    lightList->clear();
+    foreach (LightSource *light, *(other.lightList)){
+        LightSource *l = new LightSource();
+        l->copy_settings(light);
+        lightList->append(l);
+    }
     return *this;
 }
 

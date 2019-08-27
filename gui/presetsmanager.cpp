@@ -33,7 +33,7 @@ static QString presetCodes[30] = {"EnhanceHeight ", "EnhanceSoft ", "BumpHeight 
                                   "HeightMapContrast ", "InvertParallax ", "SpecularBlur ",
                                   "SpecularBright ", "SpecularContrast ", "SpecularThresh ",
                                   "SpecularInvert ", "OcclusionBlur ", "OcclusionBright ",
-                                  "OcclusionInvert ", "OcclusionThresh ", "OcclusionContrast "
+                                  "OcclusionInvert ", "OcclusionThresh ", "OcclusionContrast ",
                                   "OcclusionDistance ", "OcclusionDistanceMode "};
 
 PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor*> *processorList, QWidget *parent) :
@@ -88,6 +88,13 @@ PresetsManager::PresetsManager(ProcessorSettings settings, QList <ImageProcessor
     currentValues[28] = QString::number(*mSettings.occlusion_distance);
     currentValues[29] = *mSettings.occlusion_distance_mode ? "1" : "0";
 
+    lightList.clear();
+    foreach(LightSource *light, *(mSettings.lightList)){
+        LightSource *l = new LightSource();
+        l->copy_settings(light);
+        lightList.append(l);
+    }
+
     ui->listWidgetTextures->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     ui->treeWidget->setColumnHidden(1,true);
@@ -131,17 +138,36 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
         QTextStream in(&preset);
 
         in << "[Laigter Preset]";
-
+        bool saveLights = false;
         QTreeWidgetItemIterator it(ui->treeWidget);
         while (*it) {
             if ((*it)->checkState(0) == Qt::Checked){
+
                 QString code = (*it)->text(1);
-                if (code != ""){
+                if ((*it)->text(0) == tr("Luces")){
+                    saveLights = true;
+                }
+               else if (code != ""){
                     int i = (*it)->text(1).toInt();
                     in << "\n" << presetCodes[i] << "\t" << currentValues[i];
                 }
             }
             ++it;
+        }
+
+        if (saveLights){
+            foreach (LightSource* light, lightList){
+                QColor diffuseColor = light->get_diffuse_color();
+                QColor specularColor = light->get_specular_color();
+                QVector3D position = light->get_light_position();
+                in << "\nLightSource\n";
+                in << "DiffuseColor \t" << diffuseColor.red() << "\t" << diffuseColor.green() << "\t" << diffuseColor.blue() << "\n";
+                in << "DiffuseIntensity \t" << light->get_diffuse_intensity() << "\n";
+                in << "SpecularColor \t" << specularColor.red() << "\t" << specularColor.green() << "\t" << specularColor.blue() << "\n";
+                in << "SpecularScatter \t" << light->get_specular_scatter() << "\n";
+                in << "SpecularIntensity \t" << light->get_specular_intesity() << "\n";
+                in << "Position \t" << position.x() << "\t" << position.y() << "\t" << position.z() << "\t";
+            }
         }
 
         preset.close();
@@ -188,6 +214,10 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
     foreach(ImageProcessor *p, *mProcessorList){
         if (!processorList.contains(p->get_name()))
             continue;
+
+        if (settings.contains("LightSource")){
+            p->get_light_list_ptr()->clear();
+        }
 
         ui->labelMessage->setText(tr("Aplicando ")+ preset + tr(" a ") + p->get_name() + "...");
         QApplication::processEvents();
@@ -314,6 +344,28 @@ void PresetsManager::applyPresetSettings(QByteArray& setting, ImageProcessor &p)
         p.set_occlusion_distance(aux[1].toInt());
     }else if (aux[0] == presetCodes[29]){
         p.set_occlusion_distance_mode((bool)aux[1].toInt());
+    }else if (aux[0] == "LightSource"){
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        LightSource *light = new LightSource;
+        pLightList->append(light);
+    }else if (aux[0] == "DiffuseColor ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_diffuse_color(QColor(aux[1].toInt(),aux[2].toInt(),aux[3].toInt()));
+    }else if (aux[0] == "DiffuseIntensity ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_diffuse_intensity(aux[1].toFloat());
+    }else if (aux[0] == "SpecularColor ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_specular_color(QColor(aux[1].toInt(),aux[2].toInt(),aux[3].toInt()));
+    }else if (aux[0] == "SpecularScatter ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_specular_scatter(aux[1].toInt());
+    }else if (aux[0] == "SpecularIntensity ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_specular_intensity(aux[1].toFloat());
+    }else if (aux[0] == "Position ") {
+        QList<LightSource*>* pLightList = p.get_light_list_ptr();
+        pLightList->last()->set_light_position(QVector3D(aux[1].toFloat(),aux[2].toFloat(),aux[3].toFloat()));
     }
 }
 
@@ -323,6 +375,10 @@ void PresetsManager::applyPresets(QString &preset, ImageProcessor &p){
         return;
     }
     QByteArray settings = selected_preset.readAll();
+    if (settings.contains("LightSource")){
+        p.get_light_list_ptr()->clear();
+    }
+
     QList<QByteArray> settings_list = settings.split('\n');
 
     for (int i=0; i< settings_list.count(); i++){

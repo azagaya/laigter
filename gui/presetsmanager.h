@@ -24,6 +24,8 @@
 #include <QList>
 #include <QListWidgetItem>
 #include <QDir>
+
+#include "src/lightsource.h"
 #include "src/imageprocessor.h"
 
 namespace Ui {
@@ -67,6 +69,8 @@ private:
     QString presetsPath;
     QDir presetsDir;
     QString currentValues[30];
+    QList<LightSource *> lightList;
+
 };
 
 #endif // PRESETSMANAGER_H

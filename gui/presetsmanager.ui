@@ -662,6 +662,17 @@
           </property>
          </item>
         </item>
+        <item>
+         <property name="text">
+          <string>Luces</string>
+         </property>
+         <property name="checkState">
+          <enum>Unchecked</enum>
+         </property>
+         <property name="text">
+          <string>30</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="2" column="0" colspan="2">

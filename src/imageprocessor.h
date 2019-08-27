@@ -88,6 +88,8 @@ public:
     bool *occlusion_distance_mode;
     int *occlusion_distance;
 
+
+    QList <LightSource *> *lightList;
 };
 
 class ImageProcessor : public QObject
@@ -283,7 +285,6 @@ private:
     bool occlusion_invert;
     bool occlusion_distance_mode;
     int occlusion_distance;
-
 
     QList <LightSource *> lightList;
 
