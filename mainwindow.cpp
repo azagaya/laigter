@@ -360,7 +360,14 @@ void MainWindow::openGL_initialized(){
 
 void MainWindow::on_pushButtonColor_clicked()
 {
-    QColor color = QColorDialog::getColor(currentColor);
+    QColorDialog *cd = new QColorDialog(currentColor);
+    connect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_light_color(const QColor&)));
+    cd->exec();
+    disconnect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_light_color(const QColor&)));
+    delete cd;
+}
+
+void MainWindow::set_light_color(const QColor &color){
     if (color.isValid()){
         currentColor = color;
         QPixmap pixmap(100,100);
@@ -389,13 +396,20 @@ void MainWindow::on_horizontalSliderAmbientLight_valueChanged(int value)
 
 void MainWindow::on_pushButtonAmbientColor_clicked()
 {
-    QColor color = QColorDialog::getColor(currentAmbientcolor);
+    QColorDialog *cd = new QColorDialog(currentColor);
+    connect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_ambient_color(const QColor&)));
+    cd->exec();
+    disconnect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_ambient_color(const QColor&)));
+    delete cd;
+}
+
+void MainWindow::set_ambient_color(const QColor & color){
     if (color.isValid()){
         currentAmbientcolor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
-        ui->openGLPreviewWidget->setAmbientColor(currentAmbientcolor);
+        ui->openGLPreviewWidget->setAmbientColor(color);
     }
 }
 
@@ -612,13 +626,20 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButtonBackgroundColor_clicked()
 {
-    QColor color = QColorDialog::getColor(currentBackgroundColor);
+    QColorDialog *cd = new QColorDialog(currentColor);
+    connect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_background_color(const QColor&)));
+    cd->exec();
+    disconnect(cd,SIGNAL(currentColorChanged(const QColor&)),this,SLOT(set_background_color(const QColor&)));
+    delete cd;
+}
+
+void MainWindow::set_background_color(const QColor& color){
     if (color.isValid()){
         currentBackgroundColor = color;
         QPixmap pixmap(100,100);
         pixmap.fill(color);
         ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
-        ui->openGLPreviewWidget->setBackgroundColor(currentBackgroundColor);
+        ui->openGLPreviewWidget->setBackgroundColor(color);
     }
 }
 

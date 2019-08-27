@@ -51,6 +51,9 @@ public slots:
     void add_processor(ImageProcessor *p);
     void selectedLightChanged(LightSource *light);
     void stopAddingLight();
+    void set_light_color(const QColor &color);
+    void set_ambient_color(const QColor &color);
+    void set_background_color(const QColor &color);
 
 signals:
     void normal_depth_changed(int value);

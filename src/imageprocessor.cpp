@@ -97,6 +97,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.occlusion_distance = &occlusion_distance;
     settings.occlusion_distance_mode = &occlusion_distance_mode;
 
+
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image){
@@ -1084,6 +1085,7 @@ ProcessorSettings& ProcessorSettings::operator=( ProcessorSettings other){
     *occlusion_contrast = *(other.occlusion_contrast);
     *occlusion_distance = *(other.occlusion_distance);
     *occlusion_distance_mode = *(other.occlusion_distance_mode);
+
     return *this;
 }
 

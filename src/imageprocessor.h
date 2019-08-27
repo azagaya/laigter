@@ -87,6 +87,7 @@ public:
     bool *occlusion_invert;
     bool *occlusion_distance_mode;
     int *occlusion_distance;
+
 };
 
 class ImageProcessor : public QObject
