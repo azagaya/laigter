@@ -73,8 +73,18 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix: CONFIG += link_pkgconfig
-unix: PKGCONFIG += opencv
+unix{
+    CONFIG += link_pkgconfig
+    packagesExist(opencv4){
+        PKGCONFIG += opencv4
+        DEFINES += CV_RGBA2GRAY=COLOR_RGBA2GRAY
+        DEFINES += CV_RGB2GRAY=COLOR_RGB2GRAY
+        DEFINES += CV_GRAY2RGB=COLOR_GRAY2RGB
+        DEFINES += CV_GRAY2RGBA=COLOR_GRAY2RGBA
+    } else {
+        PKGCONFIG += opencv
+    }
+}
 
 DISTFILES += \
     ACKNOWLEDGEMETS \
