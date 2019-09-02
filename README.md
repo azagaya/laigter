@@ -82,8 +82,6 @@ I don't have a MAC, but a few tests i made on a friend's computer made me arrive
 
 * Install opencv: in mac, like in linux, i could only install opencv4. After installing, you should add to includepaht in Qt Creator the path to opencv (i think it was: /usr/local/Cellar/opencv/4.0.1/include/opencv4/)
 
-* Add defines: add this line to imageprocessor.hpp `#define CV_DIST_L2 DIST_L2`. IDK why it's necessary on MAC and not on Linux.
-
-* As in windows, imgcodecs.hpp and imgproc.hpp should be included in imageprocessor.hpp (again, idk why in linux is not needed).
+* If pkg-config does not find opencv, add a variable PKG_CONFIG_PATH to the project environment, with the path to opencv.pc
 
 And thats all the test i could make before i had to return the MAC. 
