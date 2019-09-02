@@ -513,7 +513,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     else {
         processor= sample_processor;
     }
-
+    ui->openGLPreviewWidget->processor = processor;
     ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
     ui->normalInvertY->setChecked(processor->get_normal_invert_y() == -1);
     ui->biselSoftRadio->setChecked(processor->get_normal_bisel_soft());

@@ -47,7 +47,8 @@ int main(int argc, char *argv[])
 
     QString locale = QLocale::system().name().split("_").at(0);
     QTranslator translator;
-    bool loaded = translator.load(":/laigter_"+locale);
+//    bool loaded = translator.load(":/laigter_"+locale);
+    bool loaded = translator.load(":/laigter_en");
     if (!loaded)
         translator.load(":/laigter_en");
 

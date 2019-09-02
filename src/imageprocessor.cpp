@@ -23,6 +23,10 @@
 #include <cmath>
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
+    position = QVector2D(0,0);
+    zoom = 1.0;
+    selected = false;
+
     normal_bisel_depth = 1000;
     normal_bisel_distance = 60;
     normal_depth = 100;
@@ -1125,4 +1129,28 @@ void ImageProcessor::set_light_list(QList <LightSource*> &list){
 
 QList <LightSource *> * ImageProcessor::get_light_list_ptr(){
     return &lightList;
+}
+
+void ImageProcessor::set_position(QVector3D new_pos){
+    position = new_pos;
+}
+
+QVector3D *ImageProcessor::get_position(){
+    return &position;
+}
+
+void ImageProcessor::set_selected(bool s){
+    selected = s;
+}
+
+bool ImageProcessor::get_selected(){
+    return selected;
+}
+
+void ImageProcessor::set_zoom(float new_zoom){
+    zoom = new_zoom;
+}
+
+float ImageProcessor::get_zoom(){
+    return zoom;
 }

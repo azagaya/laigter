@@ -99,6 +99,11 @@ public slots:
     void remove_light(LightSource *light);
     void set_current_light_list(QList<LightSource *> *list);
     QList<LightSource *> *get_current_light_list_ptr();
+
+    void add_processor(ImageProcessor *p);
+    void set_current_processor(ImageProcessor *p);
+    ImageProcessor *get_current_processor();
+
 signals:
     void initialized();
     void selectedLightChanged(LightSource *light);
@@ -138,6 +143,8 @@ private:
 
     void select_light(LightSource *light);
     void apply_light_params();
+
+    QList <ImageProcessor *> processorList;
 
 };
 

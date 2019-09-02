@@ -189,12 +189,12 @@ void OpenGlWidget::update_scene(){
     
     QMatrix4x4 transform;
     transform.setToIdentity();
-    transform.translate(texturePosition);
+    transform.translate(*processor->get_position());
     float scaleX = !tileX ? sx : 1;
     float scaleY = !tileY ? sy : 1;
     transform.scale(scaleX,scaleY,1);
-    float zoomX = !tileX ? m_zoom : 1;
-    float zoomY = !tileY ? m_zoom : 1;
+    float zoomX = !tileX ? processor->get_zoom() : 1;
+    float zoomY = !tileY ? processor->get_zoom() : 1;
     transform.scale(zoomX,zoomY,1);
     
     /* Start first pass */
@@ -232,8 +232,8 @@ void OpenGlWidget::update_scene(){
     
     scaleX = tileX ? sx : 1;
     scaleY = tileY ? sy : 1;
-    zoomX = tileX ? m_zoom : 1;
-    zoomY = tileY ? m_zoom : 1;
+    zoomX = tileX ? processor->get_zoom() : 1;
+    zoomY = tileY ? processor->get_zoom() : 1;
     m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
     
     
@@ -351,19 +351,19 @@ void OpenGlWidget::setSpecularMap(QImage *image){
 }
 
 void OpenGlWidget::setZoom(float zoom){
-    m_zoom = zoom;
+    processor->set_zoom(zoom);
     need_to_update = true;
 }
 
 void OpenGlWidget::setTileX(bool x){
     tileX = x;
-    texturePosition.setX(0);
+    processor->get_position()->setX(0);
     need_to_update = true;
 }
 
 void OpenGlWidget::setTileY(bool y){
     tileY = y;
-    texturePosition.setY(0);
+    processor->get_position()->setY(0);
     need_to_update = true;
 }
 
@@ -379,13 +379,13 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
     if(!degree.isNull() && degree.y()!= 0)
     {
         QPoint step = degree/qAbs(degree.y());
-        setZoom(step.y() > 0 ? m_zoom * 1.1 * step.y() : - m_zoom * 0.9 * step.y());
+        setZoom(step.y() > 0 ? processor->get_zoom() * 1.1 * step.y() : - processor->get_zoom() * 0.9 * step.y());
     }
 }
 
 void OpenGlWidget::resetZoom(){
     setZoom(1.0);
-    texturePosition = QVector3D(0,0,0);
+    processor->set_position(QVector3D(0,0,0));
 }
 
 void OpenGlWidget::fitZoom(){
@@ -394,11 +394,11 @@ void OpenGlWidget::fitZoom(){
     y = (float)m_image->height()/height();
     s = qMax(x,y);
     setZoom(1/s);
-    texturePosition = QVector3D(0,0,0);
+    processor->set_position(QVector3D(0,0,0));
 }
 
 float OpenGlWidget::getZoom(){
-    return m_zoom;
+    return processor->get_zoom();
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event){
@@ -422,7 +422,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
 
                     break;
                 }else{
-                    textureOffset = QVector3D(mouseX,mouseY,0)- texturePosition;
+                    textureOffset = QVector3D(mouseX,mouseY,0)- *processor->get_position();
                 }
             }
         }
@@ -466,9 +466,9 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
             update_light_position(newLightPos);
         }else{
             if (!tileX)
-                texturePosition.setX(mouseX-textureOffset.x());
+                processor->get_position()->setX(mouseX-textureOffset.x());
             if (!tileY)
-                texturePosition.setY(mouseY-textureOffset.y());
+                processor->get_position()->setY(mouseY-textureOffset.y());
         }
         need_to_update = true;
     }
@@ -623,16 +623,16 @@ QImage OpenGlWidget::calculate_preview(){
 
         float scaleX = !tileX ? sx : 1;
         float scaleY = !tileY ? sy : 1;
-        float zoomX = !tileX ? m_zoom : 1;
-        float zoomY = !tileY ? m_zoom : 1;
+        float zoomX = !tileX ? processor->get_zoom() : 1;
+        float zoomY = !tileY ? processor->get_zoom() : 1;
         
-        m_program.setUniformValue("viewPos",QVector3D(-texturePosition.x(),
-                                                      -texturePosition.y(),1));
+        m_program.setUniformValue("viewPos",QVector3D(-processor->get_position()->x(),
+                                                      -processor->get_position()->y(),1));
         m_program.setUniformValue("parallax",m_parallax);
         m_program.setUniformValue("height_scale",parallax_height);
         
-        QVector3D pos((lightPosition.x()-texturePosition.x())/scaleX/zoomX,
-                      (lightPosition.y()-texturePosition.y())/scaleY/zoomY,
+        QVector3D pos((lightPosition.x()-processor->get_position()->x())/scaleX/zoomX,
+                      (lightPosition.y()-processor->get_position()->y())/scaleY/zoomY,
                       lightPosition.z());
         
         apply_light_params();
@@ -648,12 +648,12 @@ QImage OpenGlWidget::calculate_preview(){
 
         QMatrix4x4 transform;
         transform.setToIdentity();
-        transform.translate(texturePosition);
+        transform.translate(*processor->get_position());
         float scaleX = !tileX ? sx : 1;
         float scaleY = !tileY ? sy : 1;
         transform.scale(scaleX,scaleY,1);
-        float zoomX = !tileX ? m_zoom : 1;
-        float zoomY = !tileY ? m_zoom : 1;
+        float zoomX = !tileX ? processor->get_zoom() : 1;
+        float zoomY = !tileY ? processor->get_zoom() : 1;
         transform.scale(zoomX,zoomY,1);
 
         /* Start first pass */
@@ -691,8 +691,8 @@ QImage OpenGlWidget::calculate_preview(){
 
         scaleX = tileX ? sx : 1;
         scaleY = tileY ? sy : 1;
-        zoomX = tileX ? m_zoom : 1;
-        zoomY = tileY ? m_zoom : 1;
+        zoomX = tileX ? processor->get_zoom() : 1;
+        zoomY = tileY ? processor->get_zoom() : 1;
         m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
 
 
@@ -798,4 +798,17 @@ void OpenGlWidget::set_current_light_list(QList<LightSource*>* list){
 
 QList <LightSource*> *OpenGlWidget::get_current_light_list_ptr(){
     return currentLightList;
+}
+
+void OpenGlWidget::add_processor(ImageProcessor *p){
+    processorList.append(p);
+    set_current_processor(p);
+}
+
+void OpenGlWidget::set_current_processor(ImageProcessor *p){
+    processor = p;
+}
+
+ImageProcessor * OpenGlWidget::get_current_processor(){
+    return  processor;
 }

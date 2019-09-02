@@ -227,6 +227,13 @@ public slots:
     void set_light_list(QList<LightSource *> &list);
     QList <LightSource*> * get_light_list_ptr();
 
+    void set_position(QVector3D new_pos);
+    QVector3D *get_position();
+    void set_selected(bool s);
+    bool get_selected();
+    void set_zoom(float new_zoom);
+    float get_zoom();
+
 private:
     ProcessorSettings settings;
 
@@ -287,6 +294,10 @@ private:
     int occlusion_distance;
 
     QList <LightSource *> lightList;
+
+    QVector3D position;
+    float zoom;
+    bool selected;
 
 };
 
