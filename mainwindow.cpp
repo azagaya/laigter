@@ -487,14 +487,16 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
 void MainWindow::on_listWidget_itemSelectionChanged()
 {
     ImageProcessor *p = nullptr;
-    if (ui->listWidget->selectedItems().count() > 0){
+    if (ui->listWidget->count() == 0){
+      processor_selected(sample_processor,true);
+    } else if (ui->listWidget->selectedItems().count() > 0){
+        processor_selected(sample_processor,false);
         ui->openGLPreviewWidget->clear_processor_list();
         foreach(QListWidgetItem *item, ui->listWidget->selectedItems()){
             for(int i = 0; i < processorList.count(); i++){
                 if (processorList.at(i)->get_name() == item->text()){
                     p = processorList.at(i);
                     ui->openGLPreviewWidget->add_processor(p);
-                    p->set_selected(true);
                     processor_selected(p,true);
                 }
             }
@@ -869,6 +871,7 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
     foreach(ImageProcessor *p, processorList){
         disconnect_processor(p);
     }
+    processor->set_selected(selected);
     if(selected){
         ui->openGLPreviewWidget->processor = processor;
         ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
@@ -910,8 +913,19 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
 
         ui->checkBoxMosaicoX->setChecked(processor->get_tile_x());
         ui->checkBoxMosaicoY->setChecked(processor->get_tile_y());
+
+
+    }
+    if (ui->listWidget->selectedItems().count() == 1){
+        foreach (ImageProcessor *p, processorList){
+            if (p->get_name() == ui->listWidget->selectedItems().at(0)->text()){
+                p->set_selected(true);
+            }
+        }
     }
     foreach(ImageProcessor *p, processorList){
         if (p->get_selected()) connect_processor(p);
     }
+    if (sample_processor->get_selected()) connect_processor(sample_processor);
+
 }

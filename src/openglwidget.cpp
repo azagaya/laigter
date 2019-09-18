@@ -887,7 +887,6 @@ ImageProcessor * OpenGlWidget::get_current_processor(){
 }
 
 void OpenGlWidget::set_processor_selected(ImageProcessor *processor, bool selected){
-    processor->set_selected(selected);
     processor_selected(processor,selected);
 }
 
