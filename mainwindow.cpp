@@ -48,8 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
     sample_processor = new ImageProcessor();
     processor = sample_processor;
 
-    ui->openGLPreviewWidget->processor = processor;
-
     QColor c;
     c.setRgbF(0.0,1.0,0.7);
     currentColor = c;
@@ -67,15 +65,11 @@ MainWindow::MainWindow(QWidget *parent) :
     pixmap.fill(currentBackgroundColor);
     ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
 
-    m_raw_scene = new QGraphicsScene(this);
-
-    connect_processor(processor);
-
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
             SLOT(showContextMenuForListWidget(const QPoint &)));
-    connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
-    connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
+//    connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
+//    connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
@@ -103,6 +97,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setAcceptDrops(true);
 
+    ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    connect(ui->openGLPreviewWidget,SIGNAL(processor_selected(ImageProcessor*,bool)),
+            this,SLOT(processor_selected(ImageProcessor*,bool)));
+
+    connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos){
@@ -121,11 +121,12 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
 
     contextMenu.exec(ui->listWidget->mapToGlobal(pos));
     disconnect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
+
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action){
     if (action->text() == tr("Quitar")){
-        QListWidgetItem *item =  ui->listWidget->takeItem(ui->listWidget->currentRow());
+        QListWidgetItem *item =  ui->listWidget->selectedItems().at(0);
         for (int i=0; i<processorList.count(); i++){
             if (processorList.at(i)->get_name() == item->text()){
                 processorList.at(i)->deleteLater();
@@ -134,7 +135,11 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             }
         }
         delete item;
-
+        if (processorList.count() == 0){
+            ui->openGLPreviewWidget->clear_processor_list();
+            processor_selected(sample_processor,true);
+            ui->openGLPreviewWidget->add_processor(sample_processor);
+        }
     }
     else if (action->text() == tr("Cargar mapa de altura")){
         QString fileName = QFileDialog::getOpenFileName(this,
@@ -178,7 +183,6 @@ void MainWindow::list_menu_action_triggered(QAction *action){
         processor->loadSpecularMap(processor->get_name(),specular);
 
     }
-
 }
 
 MainWindow::~MainWindow()
@@ -186,33 +190,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::update_scene(QImage *image, ProcessedImage type){
-    switch (type) {
-
-    case ProcessedImage::Raw:
-        ui->openGLPreviewWidget->setImage(image);
-        break;
-    case ProcessedImage::Normal:
-        ui->openGLPreviewWidget->setNormalMap(image);
-        if (ui->comboBoxView->currentIndex() == ViewMode::NormalMap  )
-            ui->openGLPreviewWidget->setImage(image);
-        break;
-    case ProcessedImage::Parallax:
-        ui->openGLPreviewWidget->setParallaxMap(image);
-        if (ui->comboBoxView->currentIndex() == ViewMode::ParallaxMap)
-            ui->openGLPreviewWidget->setImage(image);
-        break;
-    case ProcessedImage::Specular:
-        ui->openGLPreviewWidget->setSpecularMap(image);
-        if (ui->comboBoxView->currentIndex() == ViewMode::SpecularMap)
-            ui->openGLPreviewWidget->setImage(image);
-        break;
-    case ProcessedImage::Occlusion:
-        ui->openGLPreviewWidget->setOcclusionMap(image);
-        if (ui->comboBoxView->currentIndex() == ViewMode::OcclusionMap)
-            ui->openGLPreviewWidget->setImage(image);
-        break;
-    }
+void MainWindow::update_scene(){
     ui->openGLPreviewWidget->need_to_update = true;
 }
 
@@ -227,9 +205,7 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::add_processor(ImageProcessor *p){
 
     processorList.append(p);
-    disconnect_processor(processor);
     processor = p;
-    connect_processor(processor);
     on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
     ui->listWidget->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(*p->get_texture())),p->get_name()));
     ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
@@ -346,16 +322,17 @@ void MainWindow::openGL_initialized(){
     QString tmpImage = ":/images/sample.png";
     bool success;
 
-    disconnect_processor(processor);
+    processor_selected(processor,false);
     processor->loadImage(tmpImage,il.loadImage(tmpImage, &success));
-    ui->openGLPreviewWidget->processor = processor;
+    ui->openGLPreviewWidget->add_processor(processor);
     ui->openGLPreviewWidget->loadTextures();
-    update_scene(processor->get_texture(),ProcessedImage::Raw);
-    connect_processor(processor);
 
+    update_scene();
+
+    processor_selected(processor,true);
     processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
     ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
-    on_comboBoxView_currentIndexChanged(0);
+
 }
 
 void MainWindow::on_pushButtonColor_clicked()
@@ -424,7 +401,7 @@ void MainWindow::on_actionReconocimientos_triggered()
 }
 
 void MainWindow::connect_processor(ImageProcessor *p){
-    connect(p,SIGNAL(processed(QImage*, ProcessedImage)),this,SLOT(update_scene(QImage*, ProcessedImage)));
+    connect(p,SIGNAL(processed()),this,SLOT(update_scene()));
     connect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_depth(int)));
     connect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_blur_radius(int)));
     connect(ui->normalBevelSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_bisel_depth(int)));
@@ -433,7 +410,6 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->biselSoftRadio,SIGNAL(toggled(bool)),p,SLOT(set_normal_bisel_soft(bool)));
     connect(ui->normalInvertX,SIGNAL(toggled(bool)),p,SLOT(set_normal_invert_x(bool)));
     connect(ui->normalInvertY,SIGNAL(toggled(bool)),p,SLOT(set_normal_invert_y(bool)));
-    connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
     connect(ui->checkBoxTileable,SIGNAL(toggled(bool)),p,SLOT(set_tileable(bool)));
     connect(ui->checkBoxParallaxInvert,SIGNAL(toggled(bool)),p,SLOT(set_parallax_invert(bool)));
     connect(ui->parallaxSoftSlider,SIGNAL(valueChanged(int)),p,SLOT(set_parallax_soft(int)));
@@ -458,10 +434,16 @@ void MainWindow::connect_processor(ImageProcessor *p){
     connect(ui->checkBoxOcclusionInvert,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_invert(bool)));
     connect(ui->checkBoxOcclusionDistance,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_distance_mode(bool)));
     connect(ui->sliderOcclusionDistance,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_distance(int)));
+
+    connect(ui->checkBoxMosaicoX,SIGNAL(toggled(bool)),p,SLOT(set_tile_x(bool)));
+    connect(ui->checkBoxMosaicoY,SIGNAL(toggled(bool)),p,SLOT(set_tile_y(bool)));
+    connect(ui->checkBoxParallax,SIGNAL(toggled(bool)),p,SLOT(set_is_parallax(bool)));
+
+    p->set_connected(true);
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p){
-    disconnect(p,SIGNAL(processed(QImage*, ProcessedImage)),this,SLOT(update_scene(QImage*, ProcessedImage)));
+    disconnect(p,SIGNAL(processed()),this,SLOT(update_scene()));
     disconnect(ui->normalDepthSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_depth(int)));
     disconnect(ui->normalBlurSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_blur_radius(int)));
     disconnect(ui->normalBevelSlider,SIGNAL(valueChanged(int)),p,SLOT(set_normal_bisel_depth(int)));
@@ -496,74 +478,33 @@ void MainWindow::disconnect_processor(ImageProcessor *p){
     disconnect(ui->checkBoxOcclusionDistance,SIGNAL(toggled(bool)),p,SLOT(set_occlusion_distance_mode(bool)));
     disconnect(ui->sliderOcclusionDistance,SIGNAL(valueChanged(int)),p,SLOT(set_occlusion_distance(int)));
 
+    disconnect(ui->checkBoxMosaicoX,SIGNAL(toggled(bool)),p,SLOT(set_tile_x(bool)));
+    disconnect(ui->checkBoxMosaicoY,SIGNAL(toggled(bool)),p,SLOT(set_tile_y(bool)));
+    disconnect(ui->checkBoxParallax,SIGNAL(toggled(bool)),p,SLOT(set_is_parallax(bool)));
+    p->set_connected(false);
 }
 
 void MainWindow::on_listWidget_itemSelectionChanged()
 {
+    ImageProcessor *p = nullptr;
     if (ui->listWidget->selectedItems().count() > 0){
-        QListWidgetItem *item = ui->listWidget->currentItem();
-        for(int i = 0; i < processorList.count(); i++){
-            if (processorList.at(i)->get_name() == item->text()){
-                disconnect_processor(processor);
-                processor = processorList.at(i);
-                break;
+        ui->openGLPreviewWidget->clear_processor_list();
+        foreach(QListWidgetItem *item, ui->listWidget->selectedItems()){
+            for(int i = 0; i < processorList.count(); i++){
+                if (processorList.at(i)->get_name() == item->text()){
+                    p = processorList.at(i);
+                    ui->openGLPreviewWidget->add_processor(p);
+                    p->set_selected(true);
+                    processor_selected(p,true);
+                }
             }
         }
     }
     else {
-        processor= sample_processor;
+        ui->listWidget->setCurrentRow(0);
     }
-    ui->openGLPreviewWidget->processor = processor;
-    ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
-    ui->normalInvertY->setChecked(processor->get_normal_invert_y() == -1);
-    ui->biselSoftRadio->setChecked(processor->get_normal_bisel_soft());
-    ui->biselAbruptRadio->setChecked(!processor->get_normal_bisel_soft());
-    ui->normalBlurSlider->setValue(processor->get_normal_blur_radius());
-    ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
-    ui->normalDepthSlider->setValue(processor->get_normal_depth());
-    ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
-    ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
-    ui->checkBoxTileable->setChecked(processor->get_tileable());
 
-    ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
-    ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
-    ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
-    ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
-    ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
-    ui->parallaxMinHeight->setValue(processor->get_parallax_min());
-    ui->parallaxQuantizationSlider->setValue(processor->get_parallax_quantization());
-    ui->sliderParallaxBright->setValue(processor->get_parallax_brightness());
-    ui->sliderParallaxContrast->setValue(static_cast<int>(processor->get_parallax_contrast()*1000));
-    ui->sliderParallaxErodeDilate->setValue(processor->get_parallax_erode_dilate());
-
-    ui->sliderSpecSoft->setValue(processor->get_specular_blur());
-    ui->sliderSpecBright->setValue(processor->get_specular_bright());
-    ui->sliderSpecThresh->setValue(processor->get_specular_trhesh());
-    ui->sliderSpecContrast->setValue(static_cast<int>(processor->get_specular_contrast()*1000));
-    ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
-
-    ui->sliderOcclusionSoft->setValue(processor->get_occlusion_blur());
-    ui->sliderOcclusionBright->setValue(processor->get_occlusion_bright());
-    ui->sliderOcclusionThresh->setValue(processor->get_occlusion_trhesh());
-    ui->sliderOcclusionContrast->setValue(static_cast<int>(processor->get_occlusion_contrast()*1000));
-    ui->sliderOcclusionDistance->setValue(processor->get_occlusion_distance());
-    ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
-    ui->checkBoxOcclusionDistance->setChecked(processor->get_occlusion_distance_mode());
-
-    //processor->update();
-    on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-
-    update_scene(processor->get_texture(),ProcessedImage::Raw);
-    update_scene(processor->get_normal(),ProcessedImage::Normal);
-    update_scene(processor->get_parallax(),ProcessedImage::Parallax);
-    update_scene(processor->get_specular(),ProcessedImage::Specular);
-    update_scene(processor->get_occlusion(),ProcessedImage::Occlusion);
-
-    connect_processor(processor);
-
-    if (ui->checkBoxLightsPerTexture->isChecked()){
-        ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
-    }
+    ui->openGLPreviewWidget->need_to_update = true;
 }
 
 
@@ -650,22 +591,14 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
-
-void MainWindow::on_checkBoxParallax_toggled(bool checked)
-{
-    ui->openGLPreviewWidget->setParallax(checked && ui->comboBoxView->currentIndex() == ViewMode::Preview);
-}
-
-void MainWindow::on_sliderParallax_sliderReleased()
-{
-
-}
-
 void MainWindow::on_comboBox_currentIndexChanged(int index)
 {
 
     ParallaxType ptype = static_cast<ParallaxType>(index);
-    processor->set_parallax_type(ptype);
+    foreach(ImageProcessor * processor, processorList){
+        if (processor->get_selected() && processor->get_connected())
+            processor->set_parallax_type(ptype);
+    }
 
     switch (ptype) {
     case ParallaxType::Binary:
@@ -840,27 +773,25 @@ void MainWindow::on_comboBoxView_currentIndexChanged(int index)
 {
 
     ui->openGLPreviewWidget->setLight(false);
-    ui->openGLPreviewWidget->setParallax(false);
     switch (index){
     case ViewMode::Texture:
-        update_scene(processor->get_texture(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(Texture);
         break;
     case ViewMode::NormalMap:
-        update_scene(processor->get_normal(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(NormalMap);
         break;
     case ViewMode::SpecularMap:
-        update_scene(processor->get_specular(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(SpecularMap);
         break;
     case ViewMode::ParallaxMap:
-        update_scene(processor->get_parallax(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(ParallaxMap);
         break;
     case ViewMode::OcclusionMap:
-        update_scene(processor->get_occlusion(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(OcclusionMap);
         break;
     case ViewMode::Preview:
         ui->openGLPreviewWidget->setLight(true);
-        ui->openGLPreviewWidget->setParallax(ui->checkBoxParallax->isChecked());
-        update_scene(processor->get_texture(),ProcessedImage::Raw);
+        ui->openGLPreviewWidget->set_view_mode(Preview);
         break;
     }
 }
@@ -920,5 +851,67 @@ void MainWindow::on_checkBoxLightsPerTexture_toggled(bool checked)
         ui->openGLPreviewWidget->set_current_light_list(sample_processor->get_light_list_ptr());
     }else{
         ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
+    }
+}
+
+void MainWindow::selectedProcessorsChanged(QList<ImageProcessor *> list){
+    selectedProcessors = list;
+    foreach(ImageProcessor * p, processorList){
+        disconnect_processor(p);
+    }
+    foreach(ImageProcessor* p, selectedProcessors){
+        connect_processor(p);
+    }
+}
+
+void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
+
+    foreach(ImageProcessor *p, processorList){
+        disconnect_processor(p);
+    }
+    if(selected){
+        ui->openGLPreviewWidget->processor = processor;
+        ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
+        ui->normalInvertY->setChecked(processor->get_normal_invert_y() == -1);
+        ui->biselSoftRadio->setChecked(processor->get_normal_bisel_soft());
+        ui->biselAbruptRadio->setChecked(!processor->get_normal_bisel_soft());
+        ui->normalBlurSlider->setValue(processor->get_normal_blur_radius());
+        ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
+        ui->normalDepthSlider->setValue(processor->get_normal_depth());
+        ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
+        ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
+        ui->checkBoxTileable->setChecked(processor->get_tileable());
+
+        ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
+        ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
+        ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
+        ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
+        ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
+        ui->parallaxMinHeight->setValue(processor->get_parallax_min());
+        ui->parallaxQuantizationSlider->setValue(processor->get_parallax_quantization());
+        ui->sliderParallaxBright->setValue(processor->get_parallax_brightness());
+        ui->sliderParallaxContrast->setValue(static_cast<int>(processor->get_parallax_contrast()*1000));
+        ui->sliderParallaxErodeDilate->setValue(processor->get_parallax_erode_dilate());
+
+        ui->sliderSpecSoft->setValue(processor->get_specular_blur());
+        ui->sliderSpecBright->setValue(processor->get_specular_bright());
+        ui->sliderSpecThresh->setValue(processor->get_specular_trhesh());
+        ui->sliderSpecContrast->setValue(static_cast<int>(processor->get_specular_contrast()*1000));
+        ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
+
+        ui->sliderOcclusionSoft->setValue(processor->get_occlusion_blur());
+        ui->sliderOcclusionBright->setValue(processor->get_occlusion_bright());
+        ui->sliderOcclusionThresh->setValue(processor->get_occlusion_trhesh());
+        ui->sliderOcclusionContrast->setValue(static_cast<int>(processor->get_occlusion_contrast()*1000));
+        ui->sliderOcclusionDistance->setValue(processor->get_occlusion_distance());
+        ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
+        ui->checkBoxOcclusionDistance->setChecked(processor->get_occlusion_distance_mode());
+        this->processor = processor;
+
+        ui->checkBoxMosaicoX->setChecked(processor->get_tile_x());
+        ui->checkBoxMosaicoY->setChecked(processor->get_tile_y());
+    }
+    foreach(ImageProcessor *p, processorList){
+        if (p->get_selected()) connect_processor(p);
     }
 }

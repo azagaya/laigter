@@ -23,7 +23,7 @@
 #include <cmath>
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
-    position = QVector2D(0,0);
+    position = offset = QVector2D(0,0);
     zoom = 1.0;
     selected = false;
 
@@ -36,6 +36,8 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     normal_bisel_soft = true;
     normalInvertX = normalInvertY = normalInvertZ = 1;
     tileable = false;
+    tileX = false;
+    tileY = false;
     busy = false;
 
     parallax_max = 140;
@@ -102,6 +104,9 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     settings.occlusion_distance_mode = &occlusion_distance_mode;
 
     settings.lightList = &lightList;
+
+    is_parallax = false;
+    connected = false;
 
 }
 
@@ -196,7 +201,7 @@ void ImageProcessor::calculate_parallax(){
     QImage pa = QImage(static_cast<unsigned char *>(current_parallax.data),
                        current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_Grayscale8);
     parallax = pa;
-    processed(&parallax,ProcessedImage::Parallax);
+    processed();
 }
 
 void ImageProcessor::calculate_specular(){
@@ -222,7 +227,7 @@ void ImageProcessor::calculate_specular(){
     QImage pa = QImage(static_cast<unsigned char *>(current_specular.data),
                        current_specular.cols,current_specular.rows,current_specular.step,QImage::Format_Grayscale8);
     specular = pa;
-    processed(&specular,ProcessedImage::Specular);
+    processed();
 }
 
 void ImageProcessor::calculate_occlusion(){
@@ -248,7 +253,7 @@ void ImageProcessor::calculate_occlusion(){
     QImage pa = QImage(static_cast<unsigned char *>(current_occlusion.data),
                        current_occlusion.cols,current_occlusion.rows,current_occlusion.step,QImage::Format_Grayscale8);
     occlussion = pa;
-    processed(&occlussion,ProcessedImage::Occlusion);
+    processed();
 }
 
 void ImageProcessor::calculate_heightmap(){
@@ -724,20 +729,10 @@ void ImageProcessor::generate_normal_map(){
     QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
                      m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
     normal = p;
-    processed(&normal, ProcessedImage::Normal);
+    processed();
 
     busy = false;
     on_idle();
-}
-
-void ImageProcessor::update(){
-//    QImage p =QImage(static_cast<unsigned char *>(m_normal.data),
-//                     m_normal.cols,m_normal.rows,m_normal.step,QImage::Format_RGB888);
-
-//    processed(p, ProcessedImage::Normal);
-//    p = QImage(static_cast<unsigned char *>(current_parallax.data),
-//               current_parallax.cols,current_parallax.rows,current_parallax.step,QImage::Format_RGB888);
-//    processed(p,ProcessedImage::Parallax);
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
@@ -1139,6 +1134,14 @@ QVector3D *ImageProcessor::get_position(){
     return &position;
 }
 
+void ImageProcessor::set_offset(QVector3D new_off){
+    offset = new_off;
+}
+
+QVector3D *ImageProcessor::get_offset(){
+    return &offset;
+}
+
 void ImageProcessor::set_selected(bool s){
     selected = s;
 }
@@ -1153,4 +1156,55 @@ void ImageProcessor::set_zoom(float new_zoom){
 
 float ImageProcessor::get_zoom(){
     return zoom;
+}
+
+void ImageProcessor::set_sx(float new_sx){
+    sx = new_sx;
+}
+
+float ImageProcessor::get_sx(){
+    return  sx;
+}
+
+void ImageProcessor::set_sy(float new_sy){
+    sy = new_sy;
+}
+
+float ImageProcessor::get_sy(){
+    return  sy;
+}
+
+void ImageProcessor::set_tile_x(bool tx){
+    tileX = tx;
+    processed();
+}
+
+bool ImageProcessor::get_tile_x(){
+    return  tileX;
+}
+
+void ImageProcessor::set_tile_y(bool ty){
+    tileY = ty;
+    processed();
+}
+
+bool ImageProcessor::get_tile_y(){
+    return  tileY;
+}
+
+void ImageProcessor::set_is_parallax(bool p){
+    is_parallax = p;
+    processed();
+}
+
+bool ImageProcessor::get_is_parallax(){
+    return is_parallax;
+}
+
+void ImageProcessor::set_connected(bool c){
+    connected = c;
+}
+
+bool ImageProcessor::get_connected(){
+    return connected;
 }

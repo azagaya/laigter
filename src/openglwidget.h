@@ -102,12 +102,22 @@ public slots:
 
     void add_processor(ImageProcessor *p);
     void set_current_processor(ImageProcessor *p);
+    void set_processor_list(QList<ImageProcessor*> list);
+    void clear_processor_list();
     ImageProcessor *get_current_processor();
+
+    void set_processor_selected(ImageProcessor* processor, bool selected);
+    void set_all_processors_selected(bool selected);
+    QList<ImageProcessor*> get_all_selected_processors();
+
+    void set_view_mode(int mode);
 
 signals:
     void initialized();
     void selectedLightChanged(LightSource *light);
     void stopAddingLight();
+    void selectedProcessorsChanged(QList<ImageProcessor *> list);
+    void processor_selected(ImageProcessor *processor, bool selected);
 protected:
     void initializeGL() override;
     void paintGL() override;
@@ -144,7 +154,9 @@ private:
     void select_light(LightSource *light);
     void apply_light_params();
 
-    QList <ImageProcessor *> processorList;
+    QList <ImageProcessor *> processorList, selectedProcessors;
+
+    int viewmode;
 
 };
 

@@ -47,13 +47,15 @@ public:
     void dragEnterEvent(QDragEnterEvent *e);
 
 public slots:
-    void update_scene(QImage *image, ProcessedImage type);
+    void update_scene();
     void add_processor(ImageProcessor *p);
     void selectedLightChanged(LightSource *light);
     void stopAddingLight();
     void set_light_color(const QColor &color);
     void set_ambient_color(const QColor &color);
     void set_background_color(const QColor &color);
+    void selectedProcessorsChanged(QList<ImageProcessor*> list);
+    void processor_selected(ImageProcessor *processor, bool selected);
 
 signals:
     void normal_depth_changed(int value);
@@ -98,10 +100,6 @@ private slots:
 
     void on_pushButton_2_clicked();
 
-    void on_checkBoxParallax_toggled(bool checked);
-
-    void on_sliderParallax_sliderReleased();
-
     void on_comboBox_currentIndexChanged(int index);
 
     void on_pushButtonExportTo_clicked();
@@ -134,6 +132,7 @@ private:
     QColor currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
     QThread *processingThread;
     QList <ImageProcessor *> processorList;
+    QList <ImageProcessor *> selectedProcessors;
     ImageLoader il;
 };
 

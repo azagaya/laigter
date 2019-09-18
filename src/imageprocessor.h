@@ -129,7 +129,6 @@ public:
     QImage specular;
     QImage occlussion;
 
-    void update();
     void calculate();
     void calculate_parallax();
     void calculate_specular();
@@ -137,7 +136,7 @@ public:
 
 
 signals:
-    void processed(QImage *image, ProcessedImage type);
+    void processed();
     void on_idle();
 public slots:
     void copy_settings(ProcessorSettings s);
@@ -229,10 +228,24 @@ public slots:
 
     void set_position(QVector3D new_pos);
     QVector3D *get_position();
+    void set_offset(QVector3D new_off);
+    QVector3D *get_offset();
     void set_selected(bool s);
     bool get_selected();
     void set_zoom(float new_zoom);
     float get_zoom();
+    void set_sx(float new_sx);
+    void set_sy(float new_sy);
+    float get_sx();
+    float get_sy();
+    void set_tile_x(bool tx);
+    void set_tile_y(bool ty);
+    bool get_tile_x();
+    bool get_tile_y();
+    void set_is_parallax(bool p);
+    bool get_is_parallax();
+    bool get_connected();
+    void set_connected(bool c);
 
 private:
     ProcessorSettings settings;
@@ -296,8 +309,10 @@ private:
     QList <LightSource *> lightList;
 
     QVector3D position;
+    QVector3D offset;
     float zoom;
-    bool selected;
+    float sx, sy;
+    bool selected, tileX, tileY, is_parallax, connected;
 
 };
 
