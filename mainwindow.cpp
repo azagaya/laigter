@@ -76,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->openGLPreviewWidget,SIGNAL(selectedLightChanged(LightSource *)), this,SLOT(selectedLightChanged(LightSource*)));
     connect(ui->openGLPreviewWidget,SIGNAL(stopAddingLight()),this,SLOT(stopAddingLight()));
+    connect(ui->openGLPreviewWidget,SIGNAL(set_enabled_map_controls(bool)),this,SLOT(set_enabled_map_controls(bool)));
 
     tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
     tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -868,6 +869,7 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
         disconnect_processor(p);
     }
     processor->set_selected(selected);
+    set_enabled_map_controls(false);
     if(selected){
         ui->openGLPreviewWidget->processor = processor;
         ui->normalInvertX->setChecked(processor->get_normal_invert_x() == -1);
@@ -916,7 +918,6 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
         foreach (ImageProcessor *p, processorList){
             if (p->get_name() == ui->listWidget->selectedItems().at(0)->text()){
                 p->set_selected(true);
-
             }
         }
     }
@@ -924,8 +925,25 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
         if (p->get_selected()){
             connect_processor(p);
             ui->openGLPreviewWidget->set_current_light_list(p->get_light_list_ptr());
+            set_enabled_map_controls(true);
         }
     }
-    if (sample_processor->get_selected()) connect_processor(sample_processor);
+    if (sample_processor->get_selected()){
+        connect_processor(sample_processor);
+    }
+    if (ui->listWidget->count() == 0){
+        set_enabled_map_controls(true);
+    }
 
+}
+
+void MainWindow::set_enabled_map_controls(bool e){
+    ui->normalDockWidget->setEnabled(e);
+    ui->specularDockWidget->setEnabled(e);
+    ui->parallaxDockWidget->setEnabled(e);
+    ui->occlusionDockWidget->setEnabled(e);
+    ui->TileDockWidget->setEnabled(e);
+    ui->checkBoxMosaicoX->setEnabled(e);
+    ui->checkBoxMosaicoY->setEnabled(e);
+    ui->checkBoxParallax->setEnabled(e);
 }

@@ -56,6 +56,7 @@ public slots:
     void set_background_color(const QColor &color);
     void selectedProcessorsChanged(QList<ImageProcessor*> list);
     void processor_selected(ImageProcessor *processor, bool selected);
+    void set_enabled_map_controls(bool e);
 
 signals:
     void normal_depth_changed(int value);

@@ -700,7 +700,7 @@ QDockWidget::title{
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QGroupBox" name="groupBox_7">
+      <widget class="QGroupBox" name="groupBox_Tile_Preview">
        <property name="maximumSize">
         <size>
          <width>16777215</width>

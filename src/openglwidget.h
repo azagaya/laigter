@@ -120,6 +120,7 @@ signals:
     void stopAddingLight();
     void selectedProcessorsChanged(QList<ImageProcessor *> list);
     void processor_selected(ImageProcessor *processor, bool selected);
+    void set_enabled_map_controls(bool e);
 protected:
     void initializeGL() override;
     void paintGL() override;

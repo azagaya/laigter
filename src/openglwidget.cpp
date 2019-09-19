@@ -472,19 +472,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
         if (QApplication::keyboardModifiers() != Qt::CTRL)
             set_all_processors_selected(false);
         bool selected = false;
-        for(int i = processorList.count() - 1; i >= 0; i--){
-            ImageProcessor *processor = processorList.at(i);
-            processor->set_offset(QVector3D(mouseX,mouseY,0) - *processor->get_position());
-            float w = processor->get_tile_x() ? 2 : processor->get_zoom()*processor->texture.width()/width();
-            float h = processor->get_tile_y() ? 2 : processor->get_zoom()*processor->texture.height()/height();
-            if (qAbs(mouseX - processor->get_position()->x()) < w &&
-                    qAbs(mouseY - processor->get_position()->y()) < h
-                    && not selected){
-                set_processor_selected(processor,true);
-                selected = true;
-            }
-        }
-        /* If no texture was selected, loop for lights */
+
+        /* TODO: If no texture was selected, loop for lights */
         if (sample_light_list_used){
             foreach (LightSource *light, *sampleLightList){
                 lightPosition = light->get_light_position();
@@ -512,14 +501,27 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                 if (lightSelected) break;
             }
         }
+        if (!lightSelected){
+            for(int i = processorList.count() - 1; i >= 0; i--){
+                ImageProcessor *processor = processorList.at(i);
+                processor->set_offset(QVector3D(mouseX,mouseY,0) - *processor->get_position());
+                float w = processor->get_tile_x() ? 2 : processor->get_zoom()*processor->texture.width()/width();
+                float h = processor->get_tile_y() ? 2 : processor->get_zoom()*processor->texture.height()/height();
+                if (qAbs(mouseX - processor->get_position()->x()) < w &&
+                        qAbs(mouseY - processor->get_position()->y()) < h
+                        && not selected){
+                    set_processor_selected(processor,true);
+                    selected = true;
+                }
+            }
+        }
     }
     else if (event->buttons() & Qt::RightButton){
-        QList<LightSource *> *lList = sample_light_list_used ? sampleLightList : currentLightList;
-        int count = lList->count();
-
+        int count;
         if (sample_light_list_used){
-            if (addLight && lList->count() > 0){
-                foreach (LightSource *light, *lList){
+            count = sampleLightList->count();
+            if (addLight && sampleLightList->count() > 0){
+                foreach (LightSource *light, *sampleLightList){
                     if (light == currentLight){
                         continue;
                     }
@@ -531,13 +533,14 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                         break;
                     }
                 }
-                if (count == lList->count())
+                if (count == sampleLightList->count())
                     stopAddingLight();
             }
         }else{
             bool removed = false;
             foreach(ImageProcessor *p, processorList){
                 currentLightList = p->get_light_list_ptr();
+                count = currentLightList->count();
                 foreach(LightSource *light, *currentLightList){
                     if (light == currentLight){
                         continue;
