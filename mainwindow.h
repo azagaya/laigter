@@ -20,6 +20,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QFileSystemWatcher>
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QOpenGLWidget>
@@ -123,6 +124,8 @@ private slots:
 
     void on_checkBoxLightsPerTexture_toggled(bool checked);
 
+    void onFileChanged(const QString &file_path);
+
 private:
     Ui::MainWindow *ui;
     QOpenGLWidget *gl;
@@ -135,6 +138,7 @@ private:
     QList <ImageProcessor *> processorList;
     QList <ImageProcessor *> selectedProcessors;
     ImageLoader il;
+    QFileSystemWatcher fs_watcher;
 };
 
 #endif // MAINWINDOW_H

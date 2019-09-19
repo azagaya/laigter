@@ -36,8 +36,6 @@
 #include <QMimeData>
 #include <QDragEnterEvent>
 
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -105,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this,SLOT(processor_selected(ImageProcessor*,bool)));
 
     connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
+	connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos){
@@ -242,11 +241,14 @@ void MainWindow::open_files(QStringList fileNames){
             p->copy_settings(processor->get_settings());
 
             p->loadImage(fileName, auximage);
+
+            fs_watcher.addPath(fileName);
+			QStringList directoryList = fs_watcher.directories();
+
             //p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
             add_processor(p);
         }
     }
-
 }
 
 void MainWindow::on_actionFitZoom_triggered()
@@ -946,4 +948,21 @@ void MainWindow::set_enabled_map_controls(bool e){
     ui->checkBoxMosaicoX->setEnabled(e);
     ui->checkBoxMosaicoY->setEnabled(e);
     ui->checkBoxParallax->setEnabled(e);
+}
+
+void MainWindow::onFileChanged(const QString &file_path){
+	QMessageBox::information(this, "File Modified", "Your file is modified");
+
+    Q_FOREACH(ImageProcessor *ip, processorList)
+    {
+    	if (file_path.compare(ip->get_name()))
+    	{
+    		QImage auximage;
+            ImageLoader il;
+            bool success;
+            auximage = il.loadImage(file_path,&success);
+            ip->copy_settings(processor->get_settings());
+            ip->loadImage(file_path, auximage);
+    	}
+    }
 }
