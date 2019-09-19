@@ -29,7 +29,7 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
     m_zoom = 1.0;
-    
+
     laigter = QImage(":/images/laigter-texture.png");
     ambientColor = QColor("white");
     ambientIntensity = 0.8;
@@ -41,7 +41,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     //    processor->set_tile_y(false);
     m_pixelated = false;
     lightSelected = false;
-    
+
     currentLight = new LightSource();
     currentLight->set_light_position(lightPosition);
     QColor c;
@@ -52,29 +52,31 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
     currentLight->set_diffuse_intensity(0.6);
     currentLight->set_specular_intensity(0.6);
     lightList.append(currentLight);
-    
+
     currentLightList = &lightList;
-    
+
     backgroundColor.setRgbF(0.2,0.2,0.3);
-    
+
     pixelSize = 3;
-    
+
     refreshTimer.setInterval(1.0/30.0*1000.0);
     refreshTimer.setSingleShot(false);
-    
+
     connect(&refreshTimer,SIGNAL(timeout()),this,SLOT(force_update()));
-    
+
     refreshTimer.start();
-    
+
     need_to_update = true;
     export_render = false;
     exportFullView = false;
-    
+
     addLight = false;
-    
+
     this->setMouseTracking(true);
 
     viewmode = 0;
+
+    sample_light_list_used = false;
 }
 
 void OpenGlWidget::initializeGL()
@@ -85,19 +87,19 @@ void OpenGlWidget::initializeGL()
     glClearColor(backgroundColor.redF()*ambientColor.redF()*ambientIntensity,
                  backgroundColor.greenF()*ambientColor.greenF()*ambientIntensity,
                  backgroundColor.blueF()*ambientColor.blueF()*ambientIntensity,1.0);
-    
+
     setUpdateBehavior(QOpenGLWidget::PartialUpdate);
-    
+
     m_program.create();
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/vshader.glsl");
     m_program.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/fshader.glsl");
     m_program.link();
-    
+
     lightProgram.create();
     lightProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,":/shaders/lvshader.glsl");
     lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,":/shaders/lfshader.glsl");
     m_program.link();
-    
+
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
@@ -106,42 +108,42 @@ void OpenGlWidget::initializeGL()
         1.0f,  1.0f, 0.0f,      1.0f, 0.0f,  // top right
         -1.0f,  1.0f, 0.0f,     0.0f, 0.0f // top left
     };
-    
+
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    
+
     VAO.bind();
     VBO.create();
     VBO.bind();
-    
+
     VBO.allocate(vertices,sizeof(vertices));
-    
+
     int vertexLocation = m_program.attributeLocation("aPos");
     glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
     glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
-    
+
     int texCoordLocation = m_program.attributeLocation("aTexCoord");
     glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
                           (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
-    
+
     VAO.release();
     VBO.release();
-    
+
     lightVAO.bind();
     VBO.bind();
     vertexLocation = m_program.attributeLocation("aPos");
     glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), nullptr);
     glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
-    
+
     texCoordLocation = m_program.attributeLocation("aTexCoord");
     glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
                           (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
     lightVAO.release();
     VBO.release();
-    
+
     initialized();
-    
+
 }
 
 void OpenGlWidget::loadTextures(){
@@ -179,7 +181,7 @@ void OpenGlWidget::update(){
 }
 
 void OpenGlWidget::force_update(){
-    
+
     if (need_to_update)
         update();
 }
@@ -189,18 +191,18 @@ void OpenGlWidget::update_scene(){
                  backgroundColor.greenF()*ambientColor.greenF()*ambientIntensity,
                  backgroundColor.blueF()*ambientColor.blueF()*ambientIntensity,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     QVector3D color;
     double r,g,b;
     GLfloat bkColor[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
-    
-    
+
+
     int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-    
+
     QMatrix4x4 transform;
-    
+
     foreach(ImageProcessor *processor, processorList){
         setImage(&processor->texture);
         setNormalMap(processor->get_normal());
@@ -218,16 +220,16 @@ void OpenGlWidget::update_scene(){
         float zoomX = !processor->get_tile_x() ? processor->get_zoom() : 1;
         float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
         transform.scale(zoomX,zoomY,1);
-        
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-        
+
         /* Start first pass */
-        
+
         m_program.bind();
-        
+
         VAO.bind();
-        
+
         if (processor->get_tile_x() || processor->get_tile_y()){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -235,7 +237,7 @@ void OpenGlWidget::update_scene(){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         }
-        
+
         glActiveTexture(GL_TEXTURE0);
         m_program.setUniformValue("light",m_light);
         switch (viewmode) {
@@ -294,34 +296,43 @@ void OpenGlWidget::update_scene(){
         m_program.setUniformValue("height_scale",parallax_height);
 
         apply_light_params();
-//        m_texture->bind(0);
+        //        m_texture->bind(0);
         glDrawArrays(GL_QUADS, 0, 4);
 
         m_program.release();
+
+        /* Render light texture */
     }
-    /* Render light texture */
-    
-    
-    if (currentLightList->count() > 0){
-        foreach(LightSource *light, *currentLightList){
+    QList <LightSource *> currentLightList;
+    if (sample_light_list_used){
+        currentLightList = *sampleLightList;
+    }else{
+        foreach(ImageProcessor *processor, processorList){
+            foreach(LightSource *l, *processor->get_light_list_ptr()){
+                currentLightList.append(l);
+            }
+        }
+    }
+    if (currentLightList.count() > 0){
+        foreach(LightSource *light, currentLightList){
             float x = static_cast<float>(laigter.width())/width();
             float y = static_cast<float>(laigter.height())/height();
             transform.setToIdentity();
             transform.translate(light->get_light_position());
             transform.scale(static_cast<float>(0.3)*x,static_cast<float>(0.3)*y,1);
-            
+
             lightProgram.bind();
             lightVAO.bind();
             lightProgram.setUniformValue("transform",transform);
-            
+
             laigterTexture->bind(0);
             if (m_light){
-                
+
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                
+
                 glActiveTexture(GL_TEXTURE0);
-                
+
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
                 lightProgram.setUniformValue("texture",0);
@@ -331,7 +342,7 @@ void OpenGlWidget::update_scene(){
                 color = QVector3D(r,g,b);
                 lightProgram.setUniformValue("lightColor",color);
                 glDrawArrays(GL_QUADS, 0, 4);
-                
+
             }
         }
         lightProgram.release();
@@ -349,7 +360,7 @@ void OpenGlWidget::resizeGL(int w, int h)
 void OpenGlWidget::setImage(QImage *image){
     m_image = image;
     if(m_texture->isCreated()){
-        
+
         m_texture->destroy();
     }
     m_texture->create();
@@ -358,7 +369,7 @@ void OpenGlWidget::setImage(QImage *image){
     sy = (float)m_image->height()/height();
     pixelsX = image->width();
     pixelsY = image->height();
-    
+
 }
 
 void OpenGlWidget::setNormalMap(QImage *image){
@@ -474,8 +485,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
             }
         }
         /* If no texture was selected, loop for lights */
-        if (currentLightList->count() > 0){
-            foreach (LightSource *light, *currentLightList){
+        if (sample_light_list_used){
+            foreach (LightSource *light, *sampleLightList){
                 lightPosition = light->get_light_position();
                 if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
                         qAbs(mouseY-lightPosition.y()) < lightHeight &&
@@ -485,36 +496,78 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event){
                     break;
                 }
             }
+        }else{
+            foreach(ImageProcessor *p, processorList){
+                currentLightList = p->get_light_list_ptr();
+                foreach (LightSource *light, *currentLightList){
+                    lightPosition = light->get_light_position();
+                    if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                            qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                            m_light){
+                        lightSelected = true;
+                        select_light(light);
+                        break;
+                    }
+                }
+                if (lightSelected) break;
+            }
         }
     }
     else if (event->buttons() & Qt::RightButton){
-        int count = currentLightList->count();
-        if (addLight && currentLightList->count() > 0){
-            foreach (LightSource *light, *currentLightList){
-                if (light == currentLight){
-                    continue;
+        QList<LightSource *> *lList = sample_light_list_used ? sampleLightList : currentLightList;
+        int count = lList->count();
+
+        if (sample_light_list_used){
+            if (addLight && lList->count() > 0){
+                foreach (LightSource *light, *lList){
+                    if (light == currentLight){
+                        continue;
+                    }
+                    lightPosition = light->get_light_position();
+                    if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                            qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                            m_light){
+                        remove_light(light);
+                        break;
+                    }
                 }
-                lightPosition = light->get_light_position();
-                if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
-                        qAbs(mouseY-lightPosition.y()) < lightHeight &&
-                        m_light){
-                    remove_light(light);
-                    break;
-                }
+                if (count == lList->count())
+                    stopAddingLight();
             }
-            if (count == currentLightList->count())
+        }else{
+            bool removed = false;
+            foreach(ImageProcessor *p, processorList){
+                currentLightList = p->get_light_list_ptr();
+                foreach(LightSource *light, *currentLightList){
+                    if (light == currentLight){
+                        continue;
+                    }
+                    lightPosition = light->get_light_position();
+                    if (qAbs(mouseX-lightPosition.x()) < lightWidth &&
+                            qAbs(mouseY-lightPosition.y()) < lightHeight &&
+                            m_light){
+                        remove_light(light);
+                        removed = true;
+                        break;
+                    }
+                }
+                if (removed)
+                    break;
+            }
+            if (!removed)
                 stopAddingLight();
         }
+
     }
     need_to_update = true;
 }
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
-    
+
     float mouseX = (float)event->localPos().x()/width()*2-1;
     float mouseY = -(float)event->localPos().y()/height()*2+1;
     QVector3D newLightPos(mouseX,mouseY,currentLight->get_height());
-    
+
     if (addLight){
         update_light_position(newLightPos);
         need_to_update = true;
@@ -537,7 +590,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event){
         need_to_update = true;
     }
     else if (event->buttons() & Qt::RightButton){
-        
+
     }
 }
 
@@ -629,25 +682,25 @@ QImage OpenGlWidget::renderBuffer(){
 QImage OpenGlWidget::calculate_preview(){
     if (!processor->get_tile_x() && !processor->get_tile_y()){
         QOpenGLFramebufferObject frameBuffer(m_image->width(), m_image->height());
-        
+
         QMatrix4x4 transform;
         transform.setToIdentity();
-        
+
         /* Start first pass */
-        
+
         frameBuffer.bind();
         glViewport(0, 0, m_image->width(), m_image->height());
         m_program.bind();
-        
+
         VAO.bind();
-        
+
         int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
         int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-        
-        
+
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-        
+
         if (processor->get_tile_x() || processor->get_tile_y()){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -655,7 +708,7 @@ QImage OpenGlWidget::calculate_preview(){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         }
-        
+
         glActiveTexture(GL_TEXTURE0);
         m_program.setUniformValue("light",m_light);
         m_texture->bind(0);
@@ -665,51 +718,51 @@ QImage OpenGlWidget::calculate_preview(){
         m_program.setUniformValue("pixelsY",pixelsY);
         m_program.setUniformValue("pixelSize",pixelSize);
         m_program.setUniformValue("pixelated",m_pixelated);
-        
+
         m_program.setUniformValue("ratio",QVector2D(1,1));
-        
-        
+
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-        
+
         m_normalTexture->bind(1);
         m_program.setUniformValue("normalMap",1);
-        
+
         m_parallaxTexture->bind(2);
         m_program.setUniformValue("parallaxMap",2);
-        
+
         m_specularTexture->bind(3);
         m_program.setUniformValue("specularMap",3);
-        
+
         m_occlusionTexture->bind(4);
         m_program.setUniformValue("occlusionMap",4);
-        
-        
+
+
         float scaleX = !processor->get_tile_x() ? sx : 1;
         float scaleY = !processor->get_tile_y() ? sy : 1;
         float zoomX = !processor->get_tile_x() ? processor->get_zoom() : 1;
         float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
-        
+
         m_program.setUniformValue("viewPos",QVector3D(-processor->get_position()->x(),
                                                       -processor->get_position()->y(),1));
         m_program.setUniformValue("parallax",processor->get_is_parallax());
         m_program.setUniformValue("height_scale",parallax_height);
-        
+
         QVector3D pos((lightPosition.x()-processor->get_position()->x())/scaleX/zoomX,
                       (lightPosition.y()-processor->get_position()->y())/scaleY/zoomY,
                       lightPosition.z());
-        
+
         apply_light_params();
         m_texture->bind(0);
         glDrawArrays(GL_QUADS, 0, 4);
-        
+
         m_program.release();
-        
+
         frameBuffer.release();
         return frameBuffer.toImage();
     } else {
         QOpenGLFramebufferObject frameBuffer(width(), height());
-        
+
         QMatrix4x4 transform;
         transform.setToIdentity();
         transform.translate(*processor->get_position());
@@ -719,20 +772,20 @@ QImage OpenGlWidget::calculate_preview(){
         float zoomX = !processor->get_tile_x() ? processor->get_zoom() : 1;
         float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
         transform.scale(zoomX,zoomY,1);
-        
+
         /* Start first pass */
         frameBuffer.bind();
         m_program.bind();
-        
+
         VAO.bind();
-        
+
         int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
         int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-        
-        
+
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-        
+
         if (processor->get_tile_x() || processor->get_tile_y()){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -740,7 +793,7 @@ QImage OpenGlWidget::calculate_preview(){
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         }
-        
+
         glActiveTexture(GL_TEXTURE0);
         m_program.setUniformValue("light",m_light);
         m_texture->bind(0);
@@ -750,44 +803,44 @@ QImage OpenGlWidget::calculate_preview(){
         m_program.setUniformValue("pixelsY",pixelsY);
         m_program.setUniformValue("pixelSize",pixelSize);
         m_program.setUniformValue("pixelated",m_pixelated);
-        
-        
-        
+
+
+
         scaleX = processor->get_tile_x() ? sx : 1;
         scaleY = processor->get_tile_y() ? sy : 1;
         zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
         zoomY = processor->get_tile_y() ? processor->get_zoom() : 1;
         m_program.setUniformValue("ratio",QVector2D(1/scaleX/zoomX,1/scaleY/zoomY));
-        
-        
+
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-        
+
         m_normalTexture->bind(1);
         m_program.setUniformValue("normalMap",1);
-        
+
         m_parallaxTexture->bind(2);
         m_program.setUniformValue("parallaxMap",2);
-        
+
         m_specularTexture->bind(3);
         m_program.setUniformValue("specularMap",3);
-        
+
         m_occlusionTexture->bind(4);
         m_program.setUniformValue("occlusionMap",4);
-        
+
         m_program.setUniformValue("viewPos",QVector3D(0,0,1));
         m_program.setUniformValue("parallax",processor->get_is_parallax());
         m_program.setUniformValue("height_scale",parallax_height);
-        
+
         apply_light_params();
         m_texture->bind(0);
         glDrawArrays(GL_QUADS, 0, 4);
-        
+
         m_program.release();
         frameBuffer.release();
-        
+
         return frameBuffer.toImage();
-        
+
     }
 }
 
@@ -803,11 +856,22 @@ QImage OpenGlWidget::get_preview(){
 void OpenGlWidget::apply_light_params(){
     double r,g,b;
     QVector3D color;
-    int n = currentLightList->count();
+
+    QList <LightSource *> currentLightList;
+    if (sample_light_list_used){
+        currentLightList = *sampleLightList;
+    }else{
+        foreach(ImageProcessor *processor, processorList){
+            foreach(LightSource *l, *processor->get_light_list_ptr()){
+                currentLightList.append(l);
+            }
+        }
+    }
+    int n = currentLightList.count();
     if (n == 0) return;
     m_program.setUniformValue("lightNum",n);
     for(int i=0; i < n ; i++){
-        LightSource *light = currentLightList->at(i);
+        LightSource *light = currentLightList.at(i);
         light->get_diffuse_color().getRgbF(&r,&g,&b,nullptr);
         color = QVector3D(r,g,b);
         QString Light = "Light["+QString::number(i)+"]";
@@ -832,7 +896,10 @@ void OpenGlWidget::set_add_light(bool add){
         LightSource *l = new LightSource();
         l->copy_settings(currentLight);
         select_light(l);
-        currentLightList->append(l);
+        if (sample_light_list_used)
+            sampleLightList->append(l);
+        else
+            currentLightList->append(l);
         need_to_update = true;
     }else{
         remove_light(currentLight);
@@ -840,10 +907,16 @@ void OpenGlWidget::set_add_light(bool add){
 }
 
 void OpenGlWidget::remove_light(LightSource *light){
-    if (currentLightList->count() > 1){
-        currentLightList->removeOne(light);
+    QList <LightSource *> *lList;
+    if(sample_light_list_used){
+        lList = sampleLightList;
+    }else{
+        lList = currentLightList;
+    }
+    if (lList->count() > 1){
+        lList->removeOne(light);
         if (currentLight == light)
-            select_light(currentLightList->last());
+            select_light(lList->last());
         delete light;
         need_to_update = true;
     }
@@ -852,12 +925,6 @@ void OpenGlWidget::remove_light(LightSource *light){
 void OpenGlWidget::select_light(LightSource *light){
     currentLight = light;
     selectedLightChanged(currentLight);
-}
-
-void OpenGlWidget::set_current_light_list(QList<LightSource*>* list){
-    currentLightList = list;
-    select_light(currentLightList->last());
-    need_to_update = true;
 }
 
 QList <LightSource*> *OpenGlWidget::get_current_light_list_ptr(){
@@ -906,4 +973,15 @@ QList <ImageProcessor*> OpenGlWidget::get_all_selected_processors(){
 
 void OpenGlWidget::set_view_mode(int mode){
     viewmode = mode;
+}
+
+void OpenGlWidget::use_sample_light_list(bool l){
+    sample_light_list_used = l;
+    need_to_update = true;
+}
+
+void OpenGlWidget::set_current_light_list(QList<LightSource*>* list){
+    currentLightList = list;
+    select_light(currentLightList->last());
+    need_to_update = true;
 }

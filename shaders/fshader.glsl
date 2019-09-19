@@ -28,7 +28,7 @@ struct lightSource
     float specScatter;
 };
 
-uniform lightSource Light[16];
+uniform lightSource Light[32];
 uniform int lightNum;
 
 varying vec2 texCoord;

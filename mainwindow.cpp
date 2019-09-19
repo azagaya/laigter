@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     sample_processor = new ImageProcessor();
     processor = sample_processor;
+    ui->openGLPreviewWidget->sampleLightList = sample_processor->get_light_list_ptr();
 
     QColor c;
     c.setRgbF(0.0,1.0,0.7);
@@ -331,7 +332,6 @@ void MainWindow::openGL_initialized(){
 
     processor_selected(processor,true);
     processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
-    ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
 
 }
 
@@ -849,11 +849,7 @@ void MainWindow::stopAddingLight(){
 
 void MainWindow::on_checkBoxLightsPerTexture_toggled(bool checked)
 {
-    if (!checked){
-        ui->openGLPreviewWidget->set_current_light_list(sample_processor->get_light_list_ptr());
-    }else{
-        ui->openGLPreviewWidget->set_current_light_list(processor->get_light_list_ptr());
-    }
+    ui->openGLPreviewWidget->use_sample_light_list(!checked);
 }
 
 void MainWindow::selectedProcessorsChanged(QList<ImageProcessor *> list){
@@ -920,11 +916,15 @@ void MainWindow::processor_selected(ImageProcessor* processor, bool selected){
         foreach (ImageProcessor *p, processorList){
             if (p->get_name() == ui->listWidget->selectedItems().at(0)->text()){
                 p->set_selected(true);
+
             }
         }
     }
     foreach(ImageProcessor *p, processorList){
-        if (p->get_selected()) connect_processor(p);
+        if (p->get_selected()){
+            connect_processor(p);
+            ui->openGLPreviewWidget->set_current_light_list(p->get_light_list_ptr());
+        }
     }
     if (sample_processor->get_selected()) connect_processor(sample_processor);
 

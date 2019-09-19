@@ -53,6 +53,7 @@ public:
     OpenGlWidget(QWidget *parent = nullptr);
     bool need_to_update;
     ImageProcessor * processor;
+    QList <LightSource *> * sampleLightList;
 
 public slots:
     void update();
@@ -97,8 +98,8 @@ public slots:
     void set_add_light(bool add);
     void update_light_position(QVector3D new_pos);
     void remove_light(LightSource *light);
-    void set_current_light_list(QList<LightSource *> *list);
     QList<LightSource *> *get_current_light_list_ptr();
+    void set_current_light_list(QList<LightSource*>* list);
 
     void add_processor(ImageProcessor *p);
     void set_current_processor(ImageProcessor *p);
@@ -111,6 +112,7 @@ public slots:
     QList<ImageProcessor*> get_all_selected_processors();
 
     void set_view_mode(int mode);
+    void use_sample_light_list(bool l);
 
 signals:
     void initialized();
@@ -128,6 +130,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
+    void select_current_light_list();
+
     GLuint shaderProgram, vertexShader, fragmentShader;
     QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
     QOpenGLVertexArrayObject VAO;
@@ -157,6 +161,8 @@ private:
     QList <ImageProcessor *> processorList, selectedProcessors;
 
     int viewmode;
+
+    bool sample_light_list_used;
 
 };
 
