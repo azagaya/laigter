@@ -334,6 +334,7 @@ void MainWindow::openGL_initialized(){
     processor_selected(processor,true);
     processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
 
+    on_comboBoxView_currentIndexChanged(Texture);
 }
 
 void MainWindow::on_pushButtonColor_clicked()
