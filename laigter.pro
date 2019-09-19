@@ -92,7 +92,8 @@ DISTFILES += \
     LICENSE
 
 TRANSLATIONS = laigter_es.ts \
-               laigter_en.ts
+               laigter_en.ts \
+               laigter_fr.ts
 
 RESOURCES += \
     shaders.qrc \
