@@ -108,8 +108,8 @@ void main()
     l_color = tex*(l_color+vec4(ambientColor,1.0)*ambientIntensity*occlusion);
 
 
-    if (selected && (texCoord.x <= 1.0/pixelsX || texCoord.x >= (pixelsX-1.0)/pixelsX ||
-                 texCoord.y <= 1.0/pixelsY || texCoord.y >= (pixelsY-1.0)/pixelsY)){
+    if (selected && (texCoord.x <= 1.0/float(pixelsX) || texCoord.x >= (float(pixelsX)-1.0)/float(pixelsX) ||
+                 texCoord.y <= 1.0/float(pixelsY) || texCoord.y >= (float(pixelsY)-1.0)/float(pixelsY))){
         gl_FragColor.xyz = 1.0 - outlineColor;
         gl_FragColor.a = 0.5;
     }

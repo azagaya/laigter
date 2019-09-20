@@ -243,7 +243,6 @@ void MainWindow::open_files(QStringList fileNames){
             p->loadImage(fileName, auximage);
 
             fs_watcher.addPath(fileName);
-			QStringList directoryList = fs_watcher.directories();
 
             //p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
             add_processor(p);
@@ -951,17 +950,21 @@ void MainWindow::set_enabled_map_controls(bool e){
 }
 
 void MainWindow::onFileChanged(const QString &file_path){
-	QMessageBox::information(this, "File Modified", "Your file is modified");
+	QMessageBox::information(this, tr("Image was modified"), tr("Your image was modified"));
+
+	QStringList directoryList = fs_watcher.directories();
+	if (!fs_watcher.files().contains(file_path)){
+    	fs_watcher.addPath(file_path);
+	}
 
     Q_FOREACH(ImageProcessor *ip, processorList)
     {
-    	if (file_path.compare(ip->get_name()))
+    	if (file_path ==ip->get_name())
     	{
     		QImage auximage;
             ImageLoader il;
             bool success;
             auximage = il.loadImage(file_path,&success);
-            ip->copy_settings(processor->get_settings());
             ip->loadImage(file_path, auximage);
     	}
     }
