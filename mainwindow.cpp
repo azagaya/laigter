@@ -178,8 +178,8 @@ void MainWindow::list_menu_action_triggered(QAction *action){
 
     }
     else if (action->text() == tr("Reiniciar mapa especular")){
-        bool succes;
-        QImage specular = il.loadImage(processor->get_name(),&succes);
+        bool success;
+        QImage specular = il.loadImage(processor->get_name(),&success);
         specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
         processor->loadSpecularMap(processor->get_name(),specular);
 
@@ -217,9 +217,9 @@ void MainWindow::open_files(QStringList fileNames){
     foreach (QString fileName, fileNames){
         if (fileName != nullptr){
             ImageLoader il;
-            bool succes;
-            auximage = il.loadImage(fileName,&succes);
-            if (!succes || auximage.isNull()){
+            bool success;
+            auximage = il.loadImage(fileName,&success);
+            if (!success || auximage.isNull()){
                 QMessageBox msgBox;
                 msgBox.setText(tr("No se puede abrir ")+fileName+".\n"+tr("Formato no soportado o incorrecto."));
                 msgBox.exec();
