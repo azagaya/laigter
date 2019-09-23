@@ -312,6 +312,10 @@ void MainWindow::on_actionExport_triggered()
         n.save(fileName);
         message += tr("Se exportó el mapa de oclusión.\n");
     }
+    if (ui->checkBoxExportPreview->isChecked()){
+        ui->openGLPreviewWidget->get_preview(false);
+        message += tr("Se exportó el mapa de oclusión.\n");
+    }
     if (message != ""){
         QMessageBox msgBox;
         msgBox.setText(message);
@@ -563,6 +567,10 @@ void MainWindow::on_pushButton_clicked()
         }
         message += tr("Se exportaron todos los mapas de oclusión.\n");
     }
+    if (ui->checkBoxExportPreview->isChecked()){
+        ui->openGLPreviewWidget->get_preview(false);
+        message += tr("All preview were exported.\n");
+    }
     if (message != ""){
         QMessageBox msgBox;
         msgBox.setText(message);
@@ -805,7 +813,7 @@ void MainWindow::on_actionExportPreview_triggered()
 {
     int current_view = ui->comboBoxView->currentIndex();
     ui->comboBoxView->setCurrentIndex(ViewMode::Preview);
-    QImage preview(ui->openGLPreviewWidget->get_preview());
+    QImage preview = ui->openGLPreviewWidget->get_preview();
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Guardar Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));

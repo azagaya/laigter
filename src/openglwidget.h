@@ -86,8 +86,8 @@ public slots:
     void setParallaxHeight(int height);
     void setParallax(bool p);
 
-    QImage calculate_preview();
-    QImage get_preview();
+    QImage calculate_preview(bool fullPreview = false);
+    QImage get_preview(bool fullPreview = true);
 
     void update_scene();
 
@@ -164,6 +164,7 @@ private:
     int viewmode;
 
     bool sample_light_list_used;
+    bool m_fullPreview;
 
 };
 

@@ -1369,6 +1369,26 @@ QDockWidget::title{
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBoxExportNormal">
+           <property name="text">
+            <string>Normal</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="checkBoxExportSpecular">
+           <property name="text">
+            <string>Especular</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="0">
           <widget class="QCheckBox" name="checkBoxExportOcclusion">
            <property name="text">
@@ -1389,23 +1409,13 @@ QDockWidget::title{
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBoxExportSpecular">
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="checkBoxExportPreview">
            <property name="text">
-            <string>Especular</string>
+            <string>Preview</string>
            </property>
            <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBoxExportNormal">
-           <property name="text">
-            <string>Normal</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
