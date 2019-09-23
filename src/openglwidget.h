@@ -87,7 +87,7 @@ public slots:
     void setParallax(bool p);
 
     QImage calculate_preview(bool fullPreview = false);
-    QImage get_preview(bool fullPreview = true);
+    QImage get_preview(bool fullPreview = true, bool autosave = false, QString basePath = "");
 
     void update_scene();
 
@@ -164,7 +164,8 @@ private:
     int viewmode;
 
     bool sample_light_list_used;
-    bool m_fullPreview;
+    bool m_fullPreview, m_autosave;
+    QString exportBasePath;
 
 };
 

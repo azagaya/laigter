@@ -276,6 +276,8 @@ void MainWindow::on_actionExport_triggered()
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Guardar Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+    if (fileName == "")
+        return;
     QString aux;
 
     QImage n;
@@ -286,6 +288,7 @@ void MainWindow::on_actionExport_triggered()
     info = QFileInfo(fileName);
     suffix = info.completeSuffix();
 
+    ui->listWidget->setCurrentItem(ui->listWidget->selectedItems().at(0));
     if (suffix == "") suffix = "png";
 
     if (ui->checkBoxExportNormal->isChecked()){
@@ -313,8 +316,10 @@ void MainWindow::on_actionExport_triggered()
         message += tr("Se exportó el mapa de oclusión.\n");
     }
     if (ui->checkBoxExportPreview->isChecked()){
-        ui->openGLPreviewWidget->get_preview(false);
-        message += tr("Se exportó el mapa de oclusión.\n");
+        n = ui->openGLPreviewWidget->get_preview(false);
+        fileName = info.absoluteFilePath().remove("."+suffix)+"_v."+suffix;
+        n.save(fileName);
+        message += tr("Preview was exported.\n");
     }
     if (message != ""){
         QMessageBox msgBox;
@@ -568,7 +573,7 @@ void MainWindow::on_pushButton_clicked()
         message += tr("Se exportaron todos los mapas de oclusión.\n");
     }
     if (ui->checkBoxExportPreview->isChecked()){
-        ui->openGLPreviewWidget->get_preview(false);
+        ui->openGLPreviewWidget->get_preview(false,true);
         message += tr("All preview were exported.\n");
     }
     if (message != ""){
@@ -742,6 +747,10 @@ void MainWindow::on_pushButtonExportTo_clicked()
             }
             message += tr("Se exportaron todos los mapas de oclusión.\n");
         }
+        if (ui->checkBoxExportPreview->isChecked()){
+            ui->openGLPreviewWidget->get_preview(false,true,path);
+            message += tr("All preview were exported.\n");
+        }
         if (message != ""){
             QMessageBox msgBox;
             msgBox.setText(message);
@@ -817,6 +826,8 @@ void MainWindow::on_actionExportPreview_triggered()
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Guardar Imagen"), "",
                                                     tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+    if (fileName == "")
+        return;
 
     QMessageBox msgBox;
     if(preview.save(fileName)){

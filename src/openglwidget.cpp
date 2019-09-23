@@ -780,13 +780,23 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview){
 
             frameBuffer.release();
 
-            info = QFileInfo(processor->get_name());
-            suffix = info.completeSuffix();
-            if (suffix == "") suffix = "png";
-            aux = info.absoluteFilePath().remove("."+suffix)+"_v."+suffix;
-
             renderedPreview = frameBuffer.toImage();
-            renderedPreview.save(aux);
+            if (m_autosave){
+                if (exportBasePath == ""){
+                    info = QFileInfo(processor->get_name());
+                    suffix = info.completeSuffix();
+                    if (suffix == "") suffix = "png";
+                    aux = info.absoluteFilePath().remove("."+suffix)+"_v."+suffix;
+                }else{
+                    info = QFileInfo(processor->get_name());
+                    suffix = info.completeSuffix();
+                    aux = exportBasePath + "/" + info.baseName() + "_v." + suffix;
+                    int i=1;
+                    while (QFileInfo::exists(aux))
+                        aux = exportBasePath + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_v." + suffix;
+                }
+                renderedPreview.save(aux);
+            }
         }
     } else {
         QOpenGLFramebufferObject frameBuffer(width(), height());
@@ -911,8 +921,10 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview){
     return renderedPreview;
 }
 
-QImage OpenGlWidget::get_preview(bool fullPreview){
+QImage OpenGlWidget::get_preview(bool fullPreview, bool autosave, QString basePath){
     m_fullPreview = fullPreview;
+    m_autosave = autosave;
+    exportBasePath = basePath;
     export_render = true;
     need_to_update = true;
     while(export_render){
