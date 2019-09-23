@@ -67,8 +67,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
             SLOT(showContextMenuForListWidget(const QPoint &)));
-//    connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
-//    connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
+    //    connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
+    //    connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
     connect(ui->sliderParallax,SIGNAL(valueChanged(int)),ui->openGLPreviewWidget,SLOT(setParallaxHeight(int)));
     connect(ui->checkBoxPixelated,SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setPixelated(bool)));
 
@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent) :
             this,SLOT(processor_selected(ImageProcessor*,bool)));
 
     connect(ui->openGLPreviewWidget,SIGNAL(initialized()),this,SLOT(openGL_initialized()));
-	connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
+    connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos){
@@ -500,7 +500,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
 {
     ImageProcessor *p = nullptr;
     if (ui->listWidget->count() == 0){
-      processor_selected(sample_processor,true);
+        processor_selected(sample_processor,true);
     } else if (ui->listWidget->selectedItems().count() > 0){
         processor_selected(sample_processor,false);
         ui->openGLPreviewWidget->clear_processor_list();
@@ -970,22 +970,26 @@ void MainWindow::set_enabled_map_controls(bool e){
 }
 
 void MainWindow::onFileChanged(const QString &file_path){
-	QMessageBox::information(this, tr("Image was modified"), tr("Your image was modified"));
 
-	QStringList directoryList = fs_watcher.directories();
-	if (!fs_watcher.files().contains(file_path)){
-    	fs_watcher.addPath(file_path);
-	}
+    if (!QFile(file_path).exists()){
+        return;
+    }
+
+    QMessageBox::information(this, tr("Image was modified"), tr("Your image was modified"));
+
+    if (!fs_watcher.files().contains(file_path)){
+        fs_watcher.addPath(file_path);
+    }
 
     Q_FOREACH(ImageProcessor *ip, processorList)
     {
-    	if (file_path ==ip->get_name())
-    	{
-    		QImage auximage;
+        if (file_path ==ip->get_name())
+        {
+            QImage auximage;
             ImageLoader il;
             bool success;
             auximage = il.loadImage(file_path,&success);
             ip->loadImage(file_path, auximage);
-    	}
+        }
     }
 }
