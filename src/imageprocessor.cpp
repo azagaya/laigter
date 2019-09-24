@@ -108,6 +108,10 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
     is_parallax = false;
     connected = false;
 
+
+    customSpecularMap = false;
+    customHeightMap = false;
+
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image){
@@ -143,14 +147,18 @@ int ImageProcessor::loadImage(QString fileName, QImage image){
             cvtColor(m_img,m_img,COLOR_GRAY2RGBA);
         }
     }
+    if (!customSpecularMap){
+        m_img.copyTo(m_specular);
+    }
+    if (!customHeightMap){
+        neighbours = Mat::zeros(m_img.rows*3,m_img.cols*3,m_img.type());
 
-    neighbours = Mat::zeros(m_img.rows*3,m_img.cols*3,m_img.type());
+        m_img.copyTo(m_heightmap);
+        m_img.copyTo(m_occlusion);
 
-    m_img.copyTo(m_heightmap);
-    m_img.copyTo(m_specular);
-    m_img.copyTo(m_occlusion);
+        fill_neighbours(m_heightmap,neighbours);
+    }
 
-    fill_neighbours(m_heightmap,neighbours);
 
     return 0;
 }
@@ -350,9 +358,22 @@ QImage ImageProcessor::get_neighbour(int x, int y){
 
 }
 
-int ImageProcessor::loadSpecularMap(QString fileName, QImage specular){
+QString ImageProcessor::get_specular_path(){
+    return m_specularPath;
+}
 
-    //m_heightmap = imread(fileName.toStdString(),-1);
+QString ImageProcessor::get_heightmap_path(){
+    return m_heightmapPath;
+}
+
+int ImageProcessor::loadSpecularMap(QString fileName, QImage specular){
+    if (fileName == get_name()){
+        m_specularPath = "";
+        customSpecularMap = false;
+    }else{
+        m_specularPath = fileName;
+    }
+    customSpecularMap = true;
     m_specular = Mat(specular.height(),specular.width(),CV_8UC4,specular.scanLine(0));
 
     int aux = m_specular.depth();
@@ -393,8 +414,13 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular){
 }
 
 int ImageProcessor::loadHeightMap(QString fileName, QImage height){
-
-    //m_heightmap = imread(fileName.toStdString(),-1);
+    if (fileName == get_name()){
+        m_heightmapPath = "";
+        customHeightMap = false;
+    }else{
+        m_heightmapPath = fileName;
+    }
+    customHeightMap = true;
     m_heightmap = Mat(height.height(),height.width(),CV_8UC4,height.scanLine(0));
 
     int aux = m_heightmap.depth();
@@ -742,11 +768,11 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius){
     Rect rect(m_img.cols,m_img.rows,m_img.cols,m_img.rows);
     float dx, dy;
     GaussianBlur(mat,aux,Size(blur_radius*2+1,blur_radius*2+1),0);
-//    if(tileable && aux.rows == m_img.rows*3){
-//        current_heightmap(rect).copyTo(heightMap);
-//    }else{
-//        m_heightmap.copyTo(heightMap);
-//    }
+    //    if(tileable && aux.rows == m_img.rows*3){
+    //        current_heightmap(rect).copyTo(heightMap);
+    //    }else{
+    //        m_heightmap.copyTo(heightMap);
+    //    }
 
     current_heightmap.copyTo(heightMap);
     Mat normals(aux.size(), CV_32FC3);

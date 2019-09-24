@@ -151,6 +151,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             bool success;
             QImage height = il.loadImage(fileName, &success);
             if (!success) return;
+            fs_watcher.addPath(fileName);
             height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
             processor->loadHeightMap(fileName, height);
@@ -171,6 +172,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             bool success;
             QImage spec = il.loadImage(fileName, &success);
             if (!success) return;
+            fs_watcher.addPath(fileName);
             spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
             processor->loadSpecularMap(fileName, spec);
@@ -975,21 +977,29 @@ void MainWindow::onFileChanged(const QString &file_path){
         return;
     }
 
-    QMessageBox::information(this, tr("Image was modified"), tr("Your image was modified"));
-
     if (!fs_watcher.files().contains(file_path)){
         fs_watcher.addPath(file_path);
     }
 
     Q_FOREACH(ImageProcessor *ip, processorList)
     {
+        QImage auximage;
+        ImageLoader il;
+        bool success;
+        auximage = il.loadImage(file_path,&success);
         if (file_path ==ip->get_name())
         {
-            QImage auximage;
-            ImageLoader il;
-            bool success;
-            auximage = il.loadImage(file_path,&success);
+            QMessageBox::information(this, tr("Image modified"), tr("An image was modified"));
             ip->loadImage(file_path, auximage);
         }
+        if (file_path == ip->get_specular_path()){
+            QMessageBox::information(this, tr("Specular map modified"), tr("A custom specular map was modified"));
+            ip->loadSpecularMap(file_path,auximage);
+        }
+        if (file_path == ip->get_heightmap_path()){
+            QMessageBox::information(this, tr("Height map modified"), tr("A custom height map was modified"));
+            ip->loadHeightMap(file_path,auximage);
+        }
     }
+    ui->openGLPreviewWidget->need_to_update = true;
 }

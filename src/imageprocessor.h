@@ -111,6 +111,8 @@ public:
     Mat modify_occlusion();
     void set_name(QString name);
     QString get_name();
+    QString get_specular_path();
+    QString get_heightmap_path();
     bool busy;
     QString m_fileName;
 
@@ -251,7 +253,7 @@ private:
     ProcessorSettings settings;
 
     ImageLoader il;
-    QString m_name;
+    QString m_name, m_heightmapPath, m_specularPath;
     Mat m_img;
     Mat m_gray;
     Mat m_gradient;
@@ -313,6 +315,8 @@ private:
     float zoom;
     float sx, sy;
     bool selected, tileX, tileY, is_parallax, connected;
+
+    bool customHeightMap, customSpecularMap;
 
 };
 
