@@ -2,3 +2,5 @@
 *.autosave
 deploy/
 .ignore/
+compile_commands.json
+*.qm
