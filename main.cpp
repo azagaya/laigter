@@ -37,7 +37,6 @@ QCoreApplication *createApplication(int &argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-  int a = 0;
   QCoreApplication::setApplicationName("laigter");
   QCoreApplication::setApplicationVersion("1.6-beta");
 
