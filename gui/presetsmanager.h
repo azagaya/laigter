@@ -21,56 +21,56 @@
 #define PRESETSMANAGER_H
 
 #include <QDialog>
+#include <QDir>
 #include <QList>
 #include <QListWidgetItem>
-#include <QDir>
 
-#include "src/lightsource.h"
 #include "src/imageprocessor.h"
+#include "src/lightsource.h"
 
 namespace Ui {
 
 typedef QString preset_codes_array[30];
 
 class PresetsManager;
-}
+} // namespace Ui
 
-class PresetsManager : public QDialog
-{
-    Q_OBJECT
+class PresetsManager : public QDialog {
+  Q_OBJECT
 
 public:
-    explicit PresetsManager(ProcessorSettings settings, QList <ImageProcessor *> *processorList, QWidget *parent = nullptr);
-    ~PresetsManager();
-    static Ui::preset_codes_array& get_preset_codes();
-    static void applyPresetSettings(QByteArray& setting, ImageProcessor &p);
-    static void applyPresets(QString &preset, ImageProcessor &p);
+  explicit PresetsManager(ProcessorSettings settings,
+                          QList<ImageProcessor *> *processorList,
+                          QWidget *parent = nullptr);
+  ~PresetsManager();
+  static Ui::preset_codes_array &get_preset_codes();
+  static void applyPresetSettings(QByteArray &setting, ImageProcessor &p);
+  static void applyPresets(QString &preset, ImageProcessor &p);
 
 signals:
-    void settingAplied();
+  void settingAplied();
 
 private slots:
-    void on_pushButtonSavePreset_clicked();
-    void update_presets();
-    QStringList scan_presets();
+  void on_pushButtonSavePreset_clicked();
+  void update_presets();
+  QStringList scan_presets();
 
-    void on_pushButtonDeletePreset_clicked();
+  void on_pushButtonDeletePreset_clicked();
 
-    void on_pushButtonAplyPreset_clicked();
+  void on_pushButtonAplyPreset_clicked();
 
-    void on_pushButtonExportPreset_clicked();
+  void on_pushButtonExportPreset_clicked();
 
-    void on_pushButtonImportPreset_clicked();
+  void on_pushButtonImportPreset_clicked();
 
 private:
-    Ui::PresetsManager *ui;
-    ProcessorSettings mSettings, loadedSettings;
-    QList <ImageProcessor *> *mProcessorList;
-    QString presetsPath;
-    QDir presetsDir;
-    QString currentValues[30];
-    QList<LightSource *> lightList;
-
+  Ui::PresetsManager *ui;
+  ProcessorSettings mSettings, loadedSettings;
+  QList<ImageProcessor *> *mProcessorList;
+  QString presetsPath;
+  QDir presetsDir;
+  QString currentValues[30];
+  QList<LightSource *> lightList;
 };
 
 #endif // PRESETSMANAGER_H

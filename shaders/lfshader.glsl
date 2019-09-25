@@ -23,16 +23,16 @@ uniform sampler2D tex;
 uniform vec2 pixelSize;
 uniform bool selected;
 
-void main()
-{
-    vec2 pixSize = 2.0*pixelSize;
-    vec4 color = texture2D(tex,texCoord);
-    float alpha = color.a;
-    if (selected){
-        alpha *= 1.5;
-        color.xyz = mix(3.0*lightColor,color.xyz*(lightColor+vec3(0.8,0.8,0.8)),color.a);
-    }else{
-        color.xyz *= (lightColor+vec3(0.8,0.8,0.8));
-    }
-    gl_FragColor = vec4(color.xyz,alpha);
+void main() {
+  vec2 pixSize = 2.0 * pixelSize;
+  vec4 color = texture2D(tex, texCoord);
+  float alpha = color.a;
+  if (selected) {
+    alpha *= 1.5;
+    color.xyz = mix(3.0 * lightColor,
+                    color.xyz * (lightColor + vec3(0.8, 0.8, 0.8)), color.a);
+  } else {
+    color.xyz *= (lightColor + vec3(0.8, 0.8, 0.8));
+  }
+  gl_FragColor = vec4(color.xyz, alpha);
 }
