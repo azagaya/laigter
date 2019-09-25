@@ -1,3 +1,4 @@
+*.qm
 *.pro.user*
 *.autosave
 deploy/
