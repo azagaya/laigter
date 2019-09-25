@@ -110,13 +110,13 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
     if (ui->listWidget->selectedItems().count() == 0)
         return;
     QMenu contextMenu(tr("Context menu"), ui->listWidget);
-    contextMenu.addAction(new QAction(tr("Quitar"), ui->listWidget));
+    contextMenu.addAction(new QAction(tr("Remove"), ui->listWidget));
     contextMenu.addSeparator();
-    contextMenu.addAction(new QAction(tr("Cargar mapa de altura")));
-    contextMenu.addAction(new QAction(tr("Reiniciar mapa de altura")));
+    contextMenu.addAction(new QAction(tr("Load heightmap")));
+    contextMenu.addAction(new QAction(tr("Reset heightmap")));
     contextMenu.addSeparator();
-    contextMenu.addAction(new QAction(tr("Cargar mapa especular")));
-    contextMenu.addAction(new QAction(tr("Reiniciar mapa especular")));
+    contextMenu.addAction(new QAction(tr("Load specular map")));
+    contextMenu.addAction(new QAction(tr("Reset specular map")));
 
     connect(&contextMenu,SIGNAL(triggered(QAction*)),this,SLOT(list_menu_action_triggered(QAction*)));
 
@@ -126,7 +126,7 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos){
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action){
-    if (action->text() == tr("Quitar")){
+    if (action->text() == tr("Remove")){
         QListWidgetItem *item =  ui->listWidget->selectedItems().at(0);
         for (int i=0; i<processorList.count(); i++){
             if (processorList.at(i)->get_name() == item->text()){
@@ -142,10 +142,10 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             ui->openGLPreviewWidget->add_processor(sample_processor);
         }
     }
-    else if (action->text() == tr("Cargar mapa de altura")){
+    else if (action->text() == tr("Load heightmap")){
         QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Abrir Imagen"), "",
-                                                        tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                        tr("Open Image"), "",
+                                                        tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
         if (fileName != nullptr){
             bool success;
@@ -157,16 +157,16 @@ void MainWindow::list_menu_action_triggered(QAction *action){
             processor->loadHeightMap(fileName, height);
         }
     }
-    else if (action->text() == tr("Reiniciar mapa de altura")){
+    else if (action->text() == tr("Reset heightmap")){
         bool succes;
         QImage height = il.loadImage(processor->get_name(),&succes);
         height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
         processor->loadHeightMap(processor->get_name(),height);
     }
-    else if (action->text() == tr("Cargar mapa especular")){
+    else if (action->text() == tr("Load specular map")){
         QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Abrir Imagen"), "",
-                                                        tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                        tr("Open Image"), "",
+                                                        tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
         if (fileName != nullptr){
             bool success;
@@ -179,7 +179,7 @@ void MainWindow::list_menu_action_triggered(QAction *action){
         }
 
     }
-    else if (action->text() == tr("Reiniciar mapa especular")){
+    else if (action->text() == tr("Reset specular map")){
         bool succes;
         QImage specular = il.loadImage(processor->get_name(),&succes);
         specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
@@ -200,8 +200,8 @@ void MainWindow::update_scene(){
 void MainWindow::on_actionOpen_triggered()
 {
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                          tr("Open Image"), "",
+                                                          tr("Image File (*.png *.jpg *.bmp *.tga)"));
     open_files(fileNames);
 }
 
@@ -223,7 +223,7 @@ void MainWindow::open_files(QStringList fileNames){
             auximage = il.loadImage(fileName,&succes);
             if (!succes || auximage.isNull()){
                 QMessageBox msgBox;
-                msgBox.setText(tr("No se puede abrir ")+fileName+".\n"+tr("Formato no soportado o incorrecto."));
+                msgBox.setText(tr("Cannot open ")+fileName+".\n"+tr("Unsupported or incorrect format."));
                 msgBox.exec();
                 continue;
             }
@@ -232,7 +232,7 @@ void MainWindow::open_files(QStringList fileNames){
             for(i = 0; i < ui->listWidget->count(); i++){
                 if (ui->listWidget->item(i)->text() == fileName){
                     QMessageBox msgBox;
-                    msgBox.setText(tr("La imagen ya se encuentra abierta en laigter."));
+                    msgBox.setText(tr("The image is already opened in Laigter."));
                     msgBox.exec();
                     break;
                 }
@@ -246,7 +246,6 @@ void MainWindow::open_files(QStringList fileNames){
 
             fs_watcher.addPath(fileName);
 
-            //p->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
             add_processor(p);
         }
     }
@@ -276,8 +275,8 @@ void MainWindow::on_actionZoomOut_triggered()
 void MainWindow::on_actionExport_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Guardar Imagen"), "",
-                                                    tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+                                                    tr("Save Image"), "",
+                                                    tr("Image File (*.png *.jpg *.bmp)"));
     if (fileName == "")
         return;
     QString aux;
@@ -297,25 +296,25 @@ void MainWindow::on_actionExport_triggered()
         aux = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
         n = *processor->get_normal();
         n.save(aux);
-        message += tr("Se exportó el mapa normal.\n");
+        message += tr("Normal map was exported.\n");
     }
     if (ui->checkBoxExportParallax->isChecked()){
         aux = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
         n = *processor->get_parallax();
         n.save(aux);
-        message += tr("Se exportó el mapa de paralaje.\n");
+        message += tr("Parallax map was exported.\n");
     }
     if (ui->checkBoxExportSpecular->isChecked()){
         aux = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
         n = *processor->get_specular();
         n.save(aux);
-        message += tr("Se exportó el mapa especular.\n");
+        message += tr("Specular map was exported.\n");
     }
     if (ui->checkBoxExportOcclusion->isChecked()){
         fileName = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
         n = *processor->get_occlusion();
         n.save(fileName);
-        message += tr("Se exportó el mapa de oclusión.\n");
+        message += tr("Occlussion map was exported.\n");
     }
     if (ui->checkBoxExportPreview->isChecked()){
         n = ui->openGLPreviewWidget->get_preview(false);
@@ -402,16 +401,6 @@ void MainWindow::set_ambient_color(const QColor & color){
         ui->pushButtonAmbientColor->setIcon(QIcon(pixmap));
         ui->openGLPreviewWidget->setAmbientColor(color);
     }
-}
-
-void MainWindow::on_actionLicencia_triggered()
-{
-    QDesktopServices::openUrl(QUrl("license.html"));
-}
-
-void MainWindow::on_actionReconocimientos_triggered()
-{
-    QDesktopServices::openUrl(QUrl("acknowledgements.html"));
 }
 
 void MainWindow::connect_processor(ImageProcessor *p){
@@ -542,7 +531,7 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_n."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas normales.\n");
+        message += tr("All normal maps were exported.\n");
     }
     if (ui->checkBoxExportParallax->isChecked()){
         foreach (ImageProcessor *p, processorList){
@@ -552,7 +541,7 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_p."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas de paralaje.\n");
+        message += tr("All parallax maps were exported.\n");
     }
     if (ui->checkBoxExportSpecular->isChecked()){
         foreach (ImageProcessor *p, processorList){
@@ -562,7 +551,7 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_s."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas especulares.\n");
+        message += tr("All specular maps were exported.\n");
     }
     if (ui->checkBoxExportOcclusion->isChecked()){
         foreach (ImageProcessor *p, processorList){
@@ -572,11 +561,11 @@ void MainWindow::on_pushButton_clicked()
             name = info.absoluteFilePath().remove("."+suffix)+"_o."+suffix;
             n.save(name);
         }
-        message += tr("Se exportaron todos los mapas de oclusión.\n");
+        message += tr("All occlussion maps were exported.\n");
     }
     if (ui->checkBoxExportPreview->isChecked()){
         ui->openGLPreviewWidget->get_preview(false,true);
-        message += tr("All preview were exported.\n");
+        message += tr("All previews were exported.\n");
     }
     if (message != ""){
         QMessageBox msgBox;
@@ -708,7 +697,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_n." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas normales.\n");
+            message += tr("All normal maps were exported.\n");
         }
         if (ui->checkBoxExportParallax->isChecked()){
             foreach (ImageProcessor *p, processorList){
@@ -721,7 +710,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_p." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas de paralaje.\n");
+            message += tr("All parallax maps were exported.\n");
         }
         if (ui->checkBoxExportSpecular->isChecked()){
             foreach (ImageProcessor *p, processorList){
@@ -734,7 +723,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_s." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas especulares.\n");
+            message += tr("All specular maps were exported.\n");
         }
         if (ui->checkBoxExportOcclusion->isChecked()){
             foreach (ImageProcessor *p, processorList){
@@ -747,11 +736,11 @@ void MainWindow::on_pushButtonExportTo_clicked()
                     name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_o." + suffix;
                 n.save(name);
             }
-            message += tr("Se exportaron todos los mapas de oclusión.\n");
+            message += tr("All occlussion maps were exported.\n");
         }
         if (ui->checkBoxExportPreview->isChecked()){
             ui->openGLPreviewWidget->get_preview(false,true,path);
-            message += tr("All preview were exported.\n");
+            message += tr("All previews were exported.\n");
         }
         if (message != ""){
             QMessageBox msgBox;
@@ -826,16 +815,16 @@ void MainWindow::on_actionExportPreview_triggered()
     ui->comboBoxView->setCurrentIndex(ViewMode::Preview);
     QImage preview = ui->openGLPreviewWidget->get_preview();
     QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Guardar Imagen"), "",
-                                                    tr("Archivos de Imagen (*.png *.jpg *.bmp)"));
+                                                    tr("Save Image"), "",
+                                                    tr("Image File (*.png *.jpg *.bmp)"));
     if (fileName == "")
         return;
 
     QMessageBox msgBox;
     if(preview.save(fileName)){
-        msgBox.setText("Se exportó la vista previa.");
+        msgBox.setText("Preview was exported.");
     }else{
-        msgBox.setText("No se pudo exportar la vista previa.");
+        msgBox.setText("Could not export preview.");
     }
     msgBox.exec();
     ui->comboBoxView->setCurrentIndex(current_view);

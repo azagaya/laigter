@@ -121,14 +121,14 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
     QMessageBox msg;
     QString presetName = ui->lineEditPresetName->text();
     if (presetName == ""){
-        msg.setText(tr("Debe ingresar un nombre para el preset!"));
+        msg.setText(tr("You must input a name for the preset!"));
         msg.exec();
         return;
     }
 
     QFile preset(presetsPath + presetName);
     if (preset.exists()){
-        msg.setText(tr("Ya existe un preset con ese nombre!"));
+        msg.setText(tr("There is already a preset with that name!"));
         msg.exec();
         return;
     }
@@ -144,7 +144,7 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
             if ((*it)->checkState(0) == Qt::Checked){
 
                 QString code = (*it)->text(1);
-                if ((*it)->text(0) == tr("Luces")){
+                if ((*it)->text(0) == tr("Lights")){
                     saveLights = true;
                 }
                else if (code != ""){
@@ -190,14 +190,14 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
     QString preset = ui->comboBoxPreset->currentText();
     QFile selected_preset(presetsPath+preset);
     if(!selected_preset.open(QIODevice::ReadOnly)){
-        msg.setText(tr("No se pudo abrir el preset especificado."));
+        msg.setText(tr("Cannot open the specified preset."));
         msg.exec();
         return;
     }
     QByteArray settings = selected_preset.readAll();
     QList<QByteArray> settings_list = settings.split('\n');
     if (settings_list[0] != "[Laigter Preset]"){
-        msg.setText(tr("Archivo con formato incorrecto."));
+        msg.setText(tr("Incorrect format."));
         msg.exec();
         return;
     }
@@ -219,7 +219,7 @@ void PresetsManager::on_pushButtonAplyPreset_clicked()
             p->get_light_list_ptr()->clear();
         }
 
-        ui->labelMessage->setText(tr("Aplicando ")+ preset + tr(" a ") + p->get_name() + "...");
+        ui->labelMessage->setText(tr("Applying ")+ preset + tr(" to ") + p->get_name() + "...");
         QApplication::processEvents();
         for (int i=0; i< settings_list.count(); i++){
             QByteArray setting = settings_list.at(i);
@@ -262,14 +262,14 @@ void PresetsManager::on_pushButtonImportPreset_clicked()
                 }
                 else{
                     QMessageBox msg;
-                    msg.setText(tr("Formato de preset incorrecto."));
+                    msg.setText(tr("Incorrect format."));
                     msg.exec();
                 }
             }
         }
         else{
             QMessageBox msg;
-            msg.setText(tr("Ya existe un preset con ese nombre."));
+            msg.setText(tr("There is already a preset with that name."));
             msg.exec();
         }
     }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Acerca de</string>
+   <string>About</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="2" column="0">
@@ -24,7 +24,7 @@
    <item row="4" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Sígueme o Apóyame en:</string>
+      <string>Follow and Support me on:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="3">
@@ -178,18 +178,18 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Laigter, por Azagaya</string>
+      <string>Laigter, by Azagaya</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Contribuciones</string>
+       <string>Contributions</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="1" column="0">
@@ -212,7 +212,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Programadores</string>
+       <string>Programmers</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -254,7 +254,7 @@
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>Reconociemientos</string>
+       <string>Acknowledgements</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">

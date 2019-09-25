@@ -66,8 +66,8 @@ void NBSelector::on_pushButtonResetNeighbours_clicked()
 void NBSelector::on_NUL_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -82,8 +82,8 @@ void NBSelector::on_NUL_clicked()
 void NBSelector::on_NUM_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -97,8 +97,8 @@ void NBSelector::on_NUM_clicked()
 void NBSelector::on_NUR_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -112,8 +112,8 @@ void NBSelector::on_NUR_clicked()
 void NBSelector::on_NML_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -127,8 +127,8 @@ void NBSelector::on_NML_clicked()
 void NBSelector::on_NMM_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -142,8 +142,8 @@ void NBSelector::on_NMM_clicked()
 void NBSelector::on_NMR_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -157,8 +157,8 @@ void NBSelector::on_NMR_clicked()
 void NBSelector::on_NBL_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -172,8 +172,8 @@ void NBSelector::on_NBL_clicked()
 void NBSelector::on_NBM_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);
@@ -187,8 +187,8 @@ void NBSelector::on_NBM_clicked()
 void NBSelector::on_NBR_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                          tr("Abrir Imagen"), "",
-                                                          tr("Archivos de Imagen (*.png *.jpg *.bmp *.tga)"));
+                                                    tr("Open Image"), "",
+                                                    tr("Image Files (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr){
         bool success;
         QImage image = il->loadImage(fileName,&success);

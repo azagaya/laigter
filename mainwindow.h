@@ -90,10 +90,6 @@ private slots:
 
     void on_pushButtonAmbientColor_clicked();
 
-    void on_actionLicencia_triggered();
-
-    void on_actionReconocimientos_triggered();
-
     void on_listWidget_itemSelectionChanged();
 
     void on_pushButton_clicked();

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Administrador de Presets</string>
+   <string>Presets Manager</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="1" column="0" colspan="3">
@@ -30,7 +30,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Aplicar Preset:</string>
+      <string>Apply preset:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -71,7 +71,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Exportar</string>
+         <string>Export</string>
         </property>
         <property name="text">
          <string/>
@@ -97,7 +97,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Importar</string>
+         <string>Import</string>
         </property>
         <property name="text">
          <string/>
@@ -117,7 +117,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Eliminar</string>
+         <string>Delete</string>
         </property>
         <property name="text">
          <string/>
@@ -156,7 +156,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Aplicar</string>
+         <string>Apply</string>
         </property>
        </widget>
       </item>
@@ -172,7 +172,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Guardar Preset Actual:</string>
+      <string>Save current preset:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -184,7 +184,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Nombre:</string>
+         <string>Name:</string>
         </property>
        </widget>
       </item>
@@ -195,12 +195,12 @@
        <widget class="QTreeWidget" name="treeWidget">
         <column>
          <property name="text">
-          <string>Controles</string>
+          <string>Controls</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Código</string>
+          <string>Code</string>
          </property>
         </column>
         <item>
@@ -215,7 +215,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Realzar</string>
+           <string>Enhance</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -228,7 +228,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Altura</string>
+            <string>Height</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -239,7 +239,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Suavizado</string>
+            <string>Soft</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -251,7 +251,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Bisel</string>
+           <string>Bump</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -264,7 +264,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Altura</string>
+            <string>Height</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -275,7 +275,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Distancia</string>
+            <string>Distance</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -286,7 +286,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Suavizado</string>
+            <string>Soft</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -297,7 +297,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Corte</string>
+            <string>Cut</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -309,7 +309,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -322,7 +322,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Eje x</string>
+            <string>X Axis</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -333,7 +333,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Eje y</string>
+            <string>Y Axis</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -346,7 +346,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Mozaico</string>
+          <string>Tile</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
@@ -360,7 +360,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Paralaje</string>
+          <string>Parallax</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
@@ -370,7 +370,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Tipo</string>
+           <string>Type</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -381,7 +381,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Binario</string>
+           <string>Binary</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -394,7 +394,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Umbral</string>
+            <string>Threshold</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -405,7 +405,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Enfoque</string>
+            <string>Focus</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -416,7 +416,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Altura Mínima</string>
+            <string>Minimum Height</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -427,7 +427,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Erosión / Dilatación</string>
+            <string>Erode / Dilate</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -439,7 +439,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Suavizado</string>
+           <string>Soft</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -450,7 +450,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Mapa de Altura</string>
+           <string>Height Map</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -460,7 +460,7 @@
           </property>
           <item>
            <property name="text">
-            <string>Brillo</string>
+            <string>Brightness</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -471,7 +471,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Contraste</string>
+            <string>Contrast</string>
            </property>
            <property name="checkState">
             <enum>Checked</enum>
@@ -483,7 +483,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -495,7 +495,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Especular</string>
+          <string>Specular</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
@@ -505,7 +505,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Suavizado</string>
+           <string>Soft</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -519,7 +519,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Brillo</string>
+           <string>Brightness</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -533,7 +533,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Contraste</string>
+           <string>Contrast</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -547,7 +547,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Umbral</string>
+           <string>Threshold</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -561,7 +561,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -576,7 +576,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Oclusión</string>
+          <string>Occlussion</string>
          </property>
          <property name="checkState">
           <enum>Checked</enum>
@@ -586,7 +586,7 @@
          </property>
          <item>
           <property name="text">
-           <string>Suavizado</string>
+           <string>Soft</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -597,7 +597,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Brillo</string>
+           <string>Brightness</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -608,7 +608,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -619,7 +619,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Umbral</string>
+           <string>Threshold</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -630,7 +630,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Contraste</string>
+           <string>Contrast</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -641,7 +641,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Distancia</string>
+           <string>Distance</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -652,7 +652,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Modo distancia</string>
+           <string>Distance Mode</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -664,7 +664,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Luces</string>
+          <string>Lights</string>
          </property>
          <property name="checkState">
           <enum>Unchecked</enum>
@@ -684,7 +684,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Guardar</string>
+         <string>Save</string>
         </property>
        </widget>
       </item>

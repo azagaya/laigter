@@ -112,7 +112,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Realzar:</string>
+        <string>Enhance:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
@@ -120,7 +120,7 @@ QDockWidget::title{
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Altura:</string>
+             <string>Height:</string>
             </property>
            </widget>
           </item>
@@ -143,7 +143,7 @@ QDockWidget::title{
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Suavizado:</string>
+             <string>Soft:</string>
             </property>
            </widget>
           </item>
@@ -180,20 +180,20 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Ejes:</string>
+        <string>Axis:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="0" column="0">
          <widget class="QCheckBox" name="normalInvertX">
           <property name="text">
-           <string>Invertir x</string>
+           <string>Invert x</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
          <widget class="QCheckBox" name="normalInvertY">
           <property name="text">
-           <string>Invertir y</string>
+           <string>Invert y</string>
           </property>
          </widget>
         </item>
@@ -209,7 +209,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Bisel:</string>
+        <string>Bump:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_6">
         <item row="0" column="0">
@@ -217,7 +217,7 @@ QDockWidget::title{
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Altura:</string>
+             <string>Height:</string>
             </property>
            </widget>
           </item>
@@ -237,7 +237,7 @@ QDockWidget::title{
           <item row="1" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Distancia:</string>
+             <string>Distance:</string>
             </property>
            </widget>
           </item>
@@ -257,7 +257,7 @@ QDockWidget::title{
           <item row="2" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Suavizado:</string>
+             <string>Soft:</string>
             </property>
            </widget>
           </item>
@@ -283,7 +283,7 @@ QDockWidget::title{
           <item row="3" column="0">
            <widget class="QRadioButton" name="biselSoftRadio">
             <property name="text">
-             <string>Suave</string>
+             <string>Soft</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -296,7 +296,7 @@ QDockWidget::title{
              <enum>Qt::LeftToRight</enum>
             </property>
             <property name="text">
-             <string>Abrupto</string>
+             <string>Abrupt</string>
             </property>
            </widget>
           </item>
@@ -319,7 +319,7 @@ QDockWidget::title{
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Visualización</string>
+    <string>Visualization</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -335,7 +335,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Luz</string>
+        <string>Light</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0" colspan="3">
@@ -365,17 +365,17 @@ QDockWidget::title{
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
-            <string>Difusa</string>
+            <string>Diffuse</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_16">
             <item row="0" column="0">
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>Intensidad:</string>
+               <string>Intensity:</string>
               </property>
              </widget>
             </item>
@@ -396,7 +396,7 @@ QDockWidget::title{
           </widget>
           <widget class="QWidget" name="tabSpec">
            <attribute name="title">
-            <string>Especular</string>
+            <string>Specular</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_9">
             <property name="leftMargin">
@@ -420,14 +420,14 @@ QDockWidget::title{
             <item row="0" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Intensidad:</string>
+               <string>Intensity:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>Dispersión:</string>
+               <string>Scatter:</string>
               </property>
              </widget>
             </item>
@@ -464,13 +464,13 @@ QDockWidget::title{
           </widget>
           <widget class="QWidget" name="tabAmb">
            <attribute name="title">
-            <string>Ambiente</string>
+            <string>Ambient</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_17">
             <item row="0" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
-               <string>Intensidad:</string>
+               <string>Intensity:</string>
               </property>
              </widget>
             </item>
@@ -516,7 +516,7 @@ QDockWidget::title{
             <item row="2" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>Fondo:</string>
+               <string>Background:</string>
               </property>
              </widget>
             </item>
@@ -546,7 +546,7 @@ QDockWidget::title{
         <item row="1" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Altura:</string>
+           <string>Height:</string>
           </property>
          </widget>
         </item>
@@ -595,10 +595,10 @@ QDockWidget::title{
         <item row="2" column="2">
          <widget class="QCheckBox" name="checkBoxLightsPerTexture">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Luces por textura</string>
+           <string>Lights per texture</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -617,7 +617,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Vista</string>
+        <string>View</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_3">
         <property name="leftMargin">
@@ -644,7 +644,7 @@ QDockWidget::title{
            </size>
           </property>
           <property name="text">
-           <string>Modo:</string>
+           <string>Mode:</string>
           </property>
          </widget>
         </item>
@@ -652,32 +652,32 @@ QDockWidget::title{
          <widget class="QComboBox" name="comboBoxView">
           <item>
            <property name="text">
-            <string>Textura</string>
+            <string>Texture</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mapa Normal</string>
+            <string>Normal Map</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mapa Especular</string>
+            <string>Specular Map</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mapa de Paralaje</string>
+            <string>Parallax Map</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mapa de Oclusión</string>
+            <string>Occlussion Map</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Vista Previa</string>
+            <string>Preview</string>
            </property>
           </item>
          </widget>
@@ -692,7 +692,7 @@ QDockWidget::title{
         <item row="2" column="0">
          <widget class="QCheckBox" name="checkBoxPixelated">
           <property name="text">
-           <string>Pixelado</string>
+           <string>Pixelated</string>
           </property>
          </widget>
         </item>
@@ -708,7 +708,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Mosaico</string>
+        <string>Tile</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_12">
         <property name="topMargin">
@@ -723,21 +723,21 @@ QDockWidget::title{
         <item row="0" column="1">
          <widget class="QCheckBox" name="checkBoxMosaicoY">
           <property name="text">
-           <string>Mosaico y</string>
+           <string>Tile y</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QCheckBox" name="checkBoxMosaicoX">
           <property name="text">
-           <string>Mosaico x</string>
+           <string>Tile x</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QCheckBox" name="checkBoxParallax">
           <property name="text">
-           <string>Paralaje</string>
+           <string>Parallax</string>
           </property>
          </widget>
         </item>
@@ -765,7 +765,7 @@ QDockWidget::title{
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Texturas</string>
+    <string>Textures</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -783,7 +783,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="parallaxDockWidget">
    <property name="windowTitle">
-    <string>Paralaje</string>
+    <string>Parallax</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -793,7 +793,7 @@ QDockWidget::title{
      <item row="0" column="0">
       <widget class="QLabel" name="label_16">
        <property name="text">
-        <string>Tipo:</string>
+        <string>Type</string>
        </property>
       </widget>
      </item>
@@ -801,12 +801,12 @@ QDockWidget::title{
       <widget class="QComboBox" name="comboBox">
        <item>
         <property name="text">
-         <string>Binario</string>
+         <string>Binary</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Mapa de Altura</string>
+         <string>Height Map</string>
         </property>
        </item>
       </widget>
@@ -814,7 +814,7 @@ QDockWidget::title{
      <item row="1" column="0" colspan="2">
       <widget class="QGroupBox" name="groupBox_9">
        <property name="title">
-        <string>Controles:</string>
+        <string>Controls:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_15">
         <item row="8" column="0">
@@ -833,28 +833,28 @@ QDockWidget::title{
         <item row="4" column="0">
          <widget class="QLabel" name="labelQuantization">
           <property name="text">
-           <string>Cuantización:</string>
+           <string>Quantization:</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="labelThreshParallax">
           <property name="text">
-           <string>Umbral:</string>
+           <string>Threshold:</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="labelThreshMin">
           <property name="text">
-           <string>Altura Mínima:</string>
+           <string>Minimum Height:</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelThreshSoft">
           <property name="text">
-           <string>Suavizado:</string>
+           <string>Soft:</string>
           </property>
          </widget>
         </item>
@@ -874,7 +874,7 @@ QDockWidget::title{
         <item row="6" column="0">
          <widget class="QLabel" name="labelContrast">
           <property name="text">
-           <string>Contraste:</string>
+           <string>Contrast:</string>
           </property>
          </widget>
         </item>
@@ -897,21 +897,21 @@ QDockWidget::title{
         <item row="8" column="1">
          <widget class="QCheckBox" name="checkBoxParallaxInvert">
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelThreshFocus">
           <property name="text">
-           <string>Enfoque:</string>
+           <string>Focus:</string>
           </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="labelBrightness">
           <property name="text">
-           <string>Brillo:</string>
+           <string>Brightness:</string>
           </property>
          </widget>
         </item>
@@ -986,7 +986,7 @@ QDockWidget::title{
         <item row="7" column="0">
          <widget class="QLabel" name="labelErodeDilate">
           <property name="text">
-           <string>Erosión / Dilatación:</string>
+           <string>Erode / Dilate:</string>
           </property>
          </widget>
         </item>
@@ -1011,7 +1011,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="specularDockWidget">
    <property name="windowTitle">
-    <string>Especular</string>
+    <string>Specular</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1021,7 +1021,7 @@ QDockWidget::title{
      <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox_6">
        <property name="title">
-        <string>Controles:</string>
+        <string>Controls:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_19">
         <item row="0" column="1">
@@ -1040,14 +1040,14 @@ QDockWidget::title{
         <item row="0" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Umbral:</string>
+           <string>Threshold:</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_18">
           <property name="text">
-           <string>Contraste:</string>
+           <string>Contrast:</string>
           </property>
          </widget>
         </item>
@@ -1096,21 +1096,21 @@ QDockWidget::title{
         <item row="1" column="0">
          <widget class="QLabel" name="label_17">
           <property name="text">
-           <string>Brillo:</string>
+           <string>Brightness:</string>
           </property>
          </widget>
         </item>
         <item row="4" column="1">
          <widget class="QCheckBox" name="checkBoxSpecInvert">
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_19">
           <property name="text">
-           <string>Suavizado:</string>
+           <string>Soft:</string>
           </property>
          </widget>
         </item>
@@ -1138,7 +1138,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="occlusionDockWidget">
    <property name="windowTitle">
-    <string>Oclusión</string>
+    <string>Occlussion</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1148,20 +1148,20 @@ QDockWidget::title{
      <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox_10">
        <property name="title">
-        <string>Controles:</string>
+        <string>Controls:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_20">
         <item row="5" column="1">
          <widget class="QCheckBox" name="checkBoxOcclusionInvert">
           <property name="text">
-           <string>Invertir</string>
+           <string>Invert</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_23">
           <property name="text">
-           <string>Suavizado:</string>
+           <string>Soft:</string>
           </property>
          </widget>
         </item>
@@ -1210,7 +1210,7 @@ QDockWidget::title{
         <item row="2" column="0">
          <widget class="QLabel" name="label_21">
           <property name="text">
-           <string>Contraste:</string>
+           <string>Contrast:</string>
           </property>
          </widget>
         </item>
@@ -1249,21 +1249,21 @@ QDockWidget::title{
         <item row="1" column="0">
          <widget class="QLabel" name="label_22">
           <property name="text">
-           <string>Brillo:</string>
+           <string>Brightness:</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_20">
           <property name="text">
-           <string>Umbral:</string>
+           <string>Threshold:</string>
           </property>
          </widget>
         </item>
         <item row="4" column="0">
          <widget class="QCheckBox" name="checkBoxOcclusionDistance">
           <property name="text">
-           <string>Distancia:</string>
+           <string>Distance:</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1291,7 +1291,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="TileDockWidget">
    <property name="windowTitle">
-    <string>Mosaico</string>
+    <string>Tile</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1307,7 +1307,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="title">
-        <string>Controles:</string>
+        <string>Controls:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_13">
         <item row="0" column="0">
@@ -1325,7 +1325,7 @@ QDockWidget::title{
            </size>
           </property>
           <property name="text">
-           <string>Vecinos</string>
+           <string>Neighbours</string>
           </property>
          </widget>
         </item>
@@ -1335,7 +1335,7 @@ QDockWidget::title{
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="text">
-           <string>Mosaico</string>
+           <string>Tile</string>
           </property>
          </widget>
         </item>
@@ -1347,7 +1347,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="dockWidgetExport">
    <property name="windowTitle">
-    <string>Exportar</string>
+    <string>Export</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -1365,7 +1365,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>283</height>
+          <height>309</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1382,7 +1382,7 @@ QDockWidget::title{
          <item row="1" column="0">
           <widget class="QCheckBox" name="checkBoxExportSpecular">
            <property name="text">
-            <string>Especular</string>
+            <string>Specular</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1392,7 +1392,7 @@ QDockWidget::title{
          <item row="2" column="0">
           <widget class="QCheckBox" name="checkBoxExportOcclusion">
            <property name="text">
-            <string>Oclusión</string>
+            <string>Occlussion</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1402,7 +1402,7 @@ QDockWidget::title{
          <item row="3" column="0">
           <widget class="QCheckBox" name="checkBoxExportParallax">
            <property name="text">
-            <string>Paralaje</string>
+            <string>Parallax</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -1426,7 +1426,7 @@ QDockWidget::title{
      <item row="1" column="0">
       <widget class="QPushButton" name="pushButtonExportTo">
        <property name="text">
-        <string>Exportar a...</string>
+        <string>Export to...</string>
        </property>
       </widget>
      </item>
@@ -1445,7 +1445,7 @@ QDockWidget::title{
         </size>
        </property>
        <property name="text">
-        <string>Exportar</string>
+        <string>Export</string>
        </property>
       </widget>
      </item>
@@ -1458,7 +1458,10 @@ QDockWidget::title{
      <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
    </property>
    <property name="text">
-    <string>Abrir</string>
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open</string>
    </property>
   </action>
   <action name="actionFitZoom">
@@ -1467,7 +1470,10 @@ QDockWidget::title{
      <normaloff>:/icons/zoomfit.png</normaloff>:/icons/zoomfit.png</iconset>
    </property>
    <property name="text">
-    <string>Ajustar Zoom</string>
+    <string>Fit Zoom</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit Zoom</string>
    </property>
   </action>
   <action name="actionZoom_100">
@@ -1503,17 +1509,10 @@ QDockWidget::title{
      <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
    </property>
    <property name="text">
-    <string>Exportar</string>
+    <string>Export</string>
    </property>
-  </action>
-  <action name="actionLicencia">
-   <property name="text">
-    <string>Licencia</string>
-   </property>
-  </action>
-  <action name="actionReconocimientos">
-   <property name="text">
-    <string>Reconocimientos</string>
+   <property name="toolTip">
+    <string>Export</string>
    </property>
   </action>
   <action name="actionPresets">
@@ -1531,10 +1530,10 @@ QDockWidget::title{
      <normaloff>:/icons/export-preview.png</normaloff>:/icons/export-preview.png</iconset>
    </property>
    <property name="text">
-    <string>Exportar Vista Previa</string>
+    <string>Export Preview</string>
    </property>
    <property name="toolTip">
-    <string>Exportar Vista Previa</string>
+    <string>Export Preview</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -1546,7 +1545,7 @@ QDockWidget::title{
     <string>About</string>
    </property>
    <property name="toolTip">
-    <string>Acerca de</string>
+    <string>About</string>
    </property>
   </action>
   <action name="actionAdd_Light">
@@ -1561,7 +1560,7 @@ QDockWidget::title{
     <string>Add Light</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Click izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Click derecho para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>
