@@ -11,7 +11,7 @@
     <message>
         <location filename="gui/aboutdialog.ui" line="27"/>
         <source>Follow and Support me on:</source>
-        <translation>Suivez moi et soutenez moi sur:</translation>
+        <translation>Suivez moi et soutenez moi sur&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="181"/>
@@ -31,7 +31,7 @@
     <message>
         <location filename="gui/aboutdialog.ui" line="207"/>
         <source>Patreon:</source>
-        <translation>Patreon:</translation>
+        <translation>Patreon&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="215"/>
@@ -41,12 +41,12 @@
     <message>
         <location filename="gui/aboutdialog.ui" line="222"/>
         <source>Gnumaru - Experimental CLI Interface</source>
-        <translation></translation>
+        <translation>Gnumaru - Interface en ligne de commandes expérimentale</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="227"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
-        <translation></translation>
+        <translation>Brandon Blanker Lim-it - Rechargement automatique de l&apos;image lors d&apos;une modification externe</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="236"/>
@@ -56,12 +56,12 @@
     <message>
         <location filename="gui/aboutdialog.ui" line="243"/>
         <source>Hugo Locurcio (Calinou) - French</source>
-        <translation></translation>
+        <translation>Hugo Locurcio (Calinou) - Français</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="248"/>
         <source>Azagaya - English and Spanish</source>
-        <translation></translation>
+        <translation>Azagaya - Anglais et espagnol</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="257"/>
@@ -918,19 +918,19 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.ui" line="99"/>
         <location filename="mainwindow.ui" line="1375"/>
         <source>Normal</source>
-        <translation></translation>
+        <translation>Normale</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="115"/>
         <source>Enhance:</source>
-        <translation>Netteté:</translation>
+        <translation>Netteté&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="123"/>
         <location filename="mainwindow.ui" line="220"/>
         <location filename="mainwindow.ui" line="549"/>
         <source>Height:</source>
-        <translation>Hauteur:</translation>
+        <translation>Hauteur&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="146"/>
@@ -939,33 +939,33 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.ui" line="1113"/>
         <location filename="mainwindow.ui" line="1164"/>
         <source>Soft:</source>
-        <translation>Lissage:</translation>
+        <translation>Lissage&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="183"/>
         <source>Axis:</source>
-        <translation>Axes:</translation>
+        <translation>Axes&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="189"/>
         <source>Invert x</source>
-        <translation>Inverser x</translation>
+        <translation>Inverser X</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="196"/>
         <source>Invert y</source>
-        <translation>Inverser y</translation>
+        <translation>Inverser Y</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="212"/>
         <source>Bump:</source>
-        <translation>Bosselage:</translation>
+        <translation>Bosselage&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="240"/>
         <location filename="mainwindow.ui" line="1266"/>
         <source>Distance:</source>
-        <translation>Distance:</translation>
+        <translation>Distance&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="286"/>
@@ -997,7 +997,7 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.ui" line="423"/>
         <location filename="mainwindow.ui" line="473"/>
         <source>Intensity:</source>
-        <translation>Intensité:</translation>
+        <translation>Intensité&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="399"/>
@@ -1009,28 +1009,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="430"/>
         <source>Scatter:</source>
-        <translation>Dispersion:</translation>
+        <translation>Dispersion&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="467"/>
         <source>Ambient</source>
-        <translation></translation>
+        <translation>Ambient</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="493"/>
         <location filename="mainwindow.ui" line="572"/>
         <source>Color:</source>
-        <translation>Couleur:</translation>
+        <translation>Couleur&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="519"/>
         <source>Background:</source>
-        <translation>Arrière-plan:</translation>
+        <translation>Arrière-plan&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="598"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si activé, chaque texture aura son propre éclairage avec ses paramètres respectifs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -1046,12 +1045,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="647"/>
         <source>Mode:</source>
-        <translation></translation>
+        <translation>Mode&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="655"/>
         <source>Texture</source>
-        <translation></translation>
+        <translation>Texture</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="660"/>
@@ -1111,12 +1110,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="768"/>
         <source>Textures</source>
-        <translation></translation>
+        <translation>Textures</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="796"/>
         <source>Type</source>
-        <translation></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="804"/>
@@ -1134,31 +1133,31 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.ui" line="1151"/>
         <location filename="mainwindow.ui" line="1310"/>
         <source>Controls:</source>
-        <translation>Contrôles:</translation>
+        <translation>Contrôles&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="836"/>
         <source>Quantization:</source>
-        <translation>Quantification:</translation>
+        <translation>Quantification&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="843"/>
         <location filename="mainwindow.ui" line="1043"/>
         <location filename="mainwindow.ui" line="1259"/>
         <source>Threshold:</source>
-        <translation>Seuil:</translation>
+        <translation>Seuil&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="850"/>
         <source>Minimum Height:</source>
-        <translation>Hauteur minimale:</translation>
+        <translation>Hauteur minimale&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="877"/>
         <location filename="mainwindow.ui" line="1050"/>
         <location filename="mainwindow.ui" line="1213"/>
         <source>Contrast:</source>
-        <translation>Contraste:</translation>
+        <translation>Contraste&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="900"/>
@@ -1170,7 +1169,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="907"/>
         <source>Focus:</source>
-        <translation>Focus:</translation>
+        <translation>Focus&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="914"/>
@@ -1182,7 +1181,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="989"/>
         <source>Erode / Dilate:</source>
-        <translation>Éroder / Dilater:</translation>
+        <translation>Éroder / Dilater&#xa0;:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="1141"/>
@@ -1223,17 +1222,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="mainwindow.ui" line="1485"/>
         <source>Zoom 100%</source>
-        <translation></translation>
+        <translation>Zoom 100%</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="1494"/>
         <source>Zoom +</source>
-        <translation></translation>
+        <translation>Zoomer</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="1503"/>
         <source>Zoom -</source>
-        <translation></translation>
+        <translation>Dézoomer</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="1524"/>
@@ -1410,37 +1409,38 @@ p, li { white-space: pre-wrap; }
         <location filename="mainwindow.cpp" line="753"/>
         <source>All previews were exported.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les aperçus ont été exportés.
+</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="991"/>
         <source>Image modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Image modifiée</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="991"/>
         <source>An image was modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Une image a été modifiée</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="995"/>
         <source>Specular map modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Carte spéculaire modifiée</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="995"/>
         <source>A custom specular map was modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Une carte spéculaire personnalisée a été modifiée</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="999"/>
         <source>Height map modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Carte de hauteur modifiée</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="999"/>
         <source>A custom height map was modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Une carte de hauteur personnalisée a été modifiée</translation>
     </message>
 </context>
 <context>
@@ -1448,7 +1448,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/nbselector.ui" line="26"/>
         <source>Neighbours selector</source>
-        <oldsource>Selector de vecinos</oldsource>
         <translation>Sélectionneur de voisins</translation>
     </message>
     <message>
@@ -1472,7 +1471,6 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/nbselector.cpp" line="175"/>
         <location filename="gui/nbselector.cpp" line="190"/>
         <source>Open Image</source>
-        <oldsource>Abrir Imagen</oldsource>
         <translation>Ouvrir une image</translation>
     </message>
     <message>
@@ -1486,7 +1484,6 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/nbselector.cpp" line="176"/>
         <location filename="gui/nbselector.cpp" line="191"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
-        <oldsource>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</oldsource>
         <translation>Images (*.png *.jpg *.bmp *.tga)</translation>
     </message>
 </context>
@@ -1495,48 +1492,41 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="33"/>
         <source>Apply preset:</source>
-        <oldsource>Aplicar Preset:</oldsource>
-        <translation>Appliquer le préréglage:</translation>
+        <translation>Appliquer le préréglage&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="45"/>
         <source>Preset:</source>
-        <translation>Préréglage:</translation>
+        <translation>Préréglage&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="74"/>
         <source>Export</source>
-        <oldsource>Exportar</oldsource>
         <translation>Exporter</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="100"/>
         <source>Import</source>
-        <oldsource>Importar</oldsource>
         <translation>Importer</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="159"/>
         <source>Apply</source>
-        <oldsource>Aplicar</oldsource>
         <translation>Appliquer</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="175"/>
         <source>Save current preset:</source>
-        <oldsource>Guardar Preset Actual:</oldsource>
-        <translation>Enregistrer le préréglage actuel :</translation>
+        <translation>Enregistrer le préréglage actuel&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="187"/>
         <source>Name:</source>
-        <oldsource>Nombre:</oldsource>
-        <translation>Nom :</translation>
+        <translation>Nom&#xa0;:</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="198"/>
         <source>Controls</source>
-        <oldsource>Controles</oldsource>
         <translation>Contrôles</translation>
     </message>
     <message>
@@ -1563,7 +1553,6 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/presetsmanager.ui" line="278"/>
         <location filename="gui/presetsmanager.ui" line="644"/>
         <source>Distance</source>
-        <oldsource>Distancia</oldsource>
         <translation>Distance</translation>
     </message>
     <message>
@@ -1587,7 +1576,6 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/presetsmanager.ui" line="564"/>
         <location filename="gui/presetsmanager.ui" line="611"/>
         <source>Invert</source>
-        <oldsource>Invertir</oldsource>
         <translation>Inverser</translation>
     </message>
     <message>
@@ -1608,13 +1596,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="363"/>
         <source>Parallax</source>
-        <oldsource>Paralaje</oldsource>
         <translation>Parallaxe</translation>
     </message>
     <message>
         <location filename="gui/presetsmanager.ui" line="373"/>
         <source>Type</source>
-        <oldsource>Tipo</oldsource>
         <translation>Type</translation>
     </message>
     <message>
@@ -1625,7 +1611,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="384"/>
         <source>Binary</source>
-        <oldsource>Binario</oldsource>
         <translation>Binaire</translation>
     </message>
     <message>
@@ -1646,7 +1631,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="430"/>
         <source>Erode / Dilate</source>
-        <oldsource>Erosión / Dilatación</oldsource>
         <translation>Érosion / Dilatation</translation>
     </message>
     <message>
@@ -1758,7 +1742,6 @@ p, li { white-space: pre-wrap; }
         <location filename="gui/presetsmanager.ui" line="536"/>
         <location filename="gui/presetsmanager.ui" line="633"/>
         <source>Contrast</source>
-        <oldsource>Contraste</oldsource>
         <translation>Contraste</translation>
     </message>
     <message>
@@ -1774,7 +1757,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="498"/>
         <source>Specular</source>
-        <oldsource>Especular</oldsource>
         <translation>Spéculaire</translation>
     </message>
     <message>
@@ -1805,7 +1787,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="579"/>
         <source>Occlussion</source>
-        <oldsource>Oclusión</oldsource>
         <translation>Occlusion</translation>
     </message>
     <message>
@@ -1841,7 +1822,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui/presetsmanager.ui" line="655"/>
         <source>Distance Mode</source>
-        <oldsource>Modo distancia</oldsource>
         <translation>Mode distance</translation>
     </message>
     <message>
