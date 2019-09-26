@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
   sample_processor = new ImageProcessor();
   processor = sample_processor;
   ui->openGLPreviewWidget->sampleLightList =
-      sample_processor->get_light_list_ptr();
+    sample_processor->get_light_list_ptr();
 
   QColor c;
   c.setRgbF(0.0, 1.0, 0.7);
@@ -152,7 +152,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     }
   } else if (action->text() == tr("Load heightmap")) {
     QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
     if (fileName != nullptr) {
       bool success;
@@ -172,7 +172,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     processor->loadHeightMap(processor->get_name(), height);
   } else if (action->text() == tr("Load specular map")) {
     QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
     if (fileName != nullptr) {
       bool success;
@@ -202,7 +202,7 @@ void MainWindow::update_scene() {
 
 void MainWindow::on_actionOpen_triggered() {
   QStringList fileNames = QFileDialog::getOpenFileNames(
-      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+    this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
   open_files(fileNames);
 }
 
@@ -212,7 +212,7 @@ void MainWindow::add_processor(ImageProcessor *p) {
   processor = p;
   on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
   ui->listWidget->addItem(new QListWidgetItem(
-      QIcon(QPixmap::fromImage(*p->get_texture())), p->get_name()));
+    QIcon(QPixmap::fromImage(*p->get_texture())), p->get_name()));
   ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
 }
 
@@ -231,7 +231,7 @@ void MainWindow::open_files(QStringList fileNames) {
         continue;
       }
       auximage =
-          auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
       int i;
       for (i = 0; i < ui->listWidget->count(); i++) {
         if (ui->listWidget->item(i)->text() == fileName) {
@@ -274,7 +274,7 @@ void MainWindow::on_actionZoomOut_triggered() {
 
 void MainWindow::on_actionExport_triggered() {
   QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
+    this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
   if (fileName == "")
     return;
   QString aux;
@@ -341,7 +341,7 @@ void MainWindow::openGL_initialized() {
 
   processor_selected(processor, true);
   processor->set_light_list(
-      *(ui->openGLPreviewWidget->get_current_light_list_ptr()));
+    *(ui->openGLPreviewWidget->get_current_light_list_ptr()));
 
   on_comboBoxView_currentIndexChanged(Texture);
 }
@@ -658,9 +658,13 @@ void MainWindow::on_pushButton_2_clicked() {
 void MainWindow::on_comboBox_currentIndexChanged(int index) {
 
   ParallaxType ptype = static_cast<ParallaxType>(index);
-  foreach (ImageProcessor *processor, processorList) {
-    if (processor->get_selected() && processor->get_connected())
-      processor->set_parallax_type(ptype);
+  if (ui->listWidget->count() > 0){
+    foreach (ImageProcessor *processor, processorList) {
+      if (processor->get_selected() && processor->get_connected())
+        processor->set_parallax_type(ptype);
+    }
+  } else {
+    sample_processor->set_parallax_type(ptype);
   }
 
   switch (ptype) {
@@ -872,7 +876,7 @@ void MainWindow::on_actionExportPreview_triggered() {
   ui->comboBoxView->setCurrentIndex(ViewMode::Preview);
   QImage preview = ui->openGLPreviewWidget->get_preview();
   QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
+    this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
   if (fileName == "")
     return;
 
@@ -937,42 +941,41 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected) {
     ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
     ui->normalDepthSlider->setValue(processor->get_normal_depth());
     ui->normalBiselBlurSlider->setValue(
-        processor->get_normal_bisel_blur_radius());
+      processor->get_normal_bisel_blur_radius());
     ui->normalBiselDistanceSlider->setValue(
-        processor->get_normal_bisel_distance());
+      processor->get_normal_bisel_distance());
     ui->checkBoxTileable->setChecked(processor->get_tileable());
 
     ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
     ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
     ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
     ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
-    ui->comboBox->setCurrentIndex(
-        static_cast<int>(processor->get_parallax_type()));
+    ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
     ui->parallaxMinHeight->setValue(processor->get_parallax_min());
     ui->parallaxQuantizationSlider->setValue(
-        processor->get_parallax_quantization());
+      processor->get_parallax_quantization());
     ui->sliderParallaxBright->setValue(processor->get_parallax_brightness());
     ui->sliderParallaxContrast->setValue(
-        static_cast<int>(processor->get_parallax_contrast() * 1000));
+      static_cast<int>(processor->get_parallax_contrast() * 1000));
     ui->sliderParallaxErodeDilate->setValue(
-        processor->get_parallax_erode_dilate());
+      processor->get_parallax_erode_dilate());
 
     ui->sliderSpecSoft->setValue(processor->get_specular_blur());
     ui->sliderSpecBright->setValue(processor->get_specular_bright());
     ui->sliderSpecThresh->setValue(processor->get_specular_trhesh());
     ui->sliderSpecContrast->setValue(
-        static_cast<int>(processor->get_specular_contrast() * 1000));
+      static_cast<int>(processor->get_specular_contrast() * 1000));
     ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
 
     ui->sliderOcclusionSoft->setValue(processor->get_occlusion_blur());
     ui->sliderOcclusionBright->setValue(processor->get_occlusion_bright());
     ui->sliderOcclusionThresh->setValue(processor->get_occlusion_trhesh());
     ui->sliderOcclusionContrast->setValue(
-        static_cast<int>(processor->get_occlusion_contrast() * 1000));
+      static_cast<int>(processor->get_occlusion_contrast() * 1000));
     ui->sliderOcclusionDistance->setValue(processor->get_occlusion_distance());
     ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
     ui->checkBoxOcclusionDistance->setChecked(
-        processor->get_occlusion_distance_mode());
+      processor->get_occlusion_distance_mode());
     this->processor = processor;
 
     ui->checkBoxMosaicoX->setChecked(processor->get_tile_x());

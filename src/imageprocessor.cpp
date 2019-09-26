@@ -184,13 +184,11 @@ void ImageProcessor::calculate_parallax() {
     return;
   parallax_counter++;
   parallax_mutex.lock();
-  Mat p = modify_parallax();
+  current_parallax = modify_parallax();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && p.rows == m_img.rows * 3) {
-    p(rect).copyTo(current_parallax);
-  } else {
-    p.copyTo(current_parallax);
+  if (tileable && current_parallax.rows == m_img.rows * 3) {
+    current_parallax(rect).copyTo(current_parallax);
   }
 
   switch (current_parallax.channels()) {
@@ -202,10 +200,9 @@ void ImageProcessor::calculate_parallax() {
     break;
   }
 
-  QImage pa = QImage(static_cast<unsigned char *>(current_parallax.data),
+  parallax = QImage(static_cast<unsigned char *>(current_parallax.data),
                      current_parallax.cols, current_parallax.rows,
                      current_parallax.step, QImage::Format_Grayscale8);
-  parallax = pa;
   processed();
   parallax_counter--;
   parallax_mutex.unlock();
@@ -216,13 +213,11 @@ void ImageProcessor::calculate_specular() {
     return;
   specular_counter++;
   specular_mutex.lock();
-  Mat p = modify_specular();
+  current_specular = modify_specular();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && p.rows == m_img.rows * 3) {
-    p(rect).copyTo(current_specular);
-  } else {
-    p.copyTo(current_specular);
+  if (tileable && current_specular.rows == m_img.rows * 3) {
+    current_specular(rect).copyTo(current_specular);
   }
 
   switch (current_specular.channels()) {
@@ -234,10 +229,10 @@ void ImageProcessor::calculate_specular() {
     break;
   }
 
-  QImage pa = QImage(static_cast<unsigned char *>(current_specular.data),
+  specular = QImage(static_cast<unsigned char *>(current_specular.data),
                      current_specular.cols, current_specular.rows,
                      current_specular.step, QImage::Format_Grayscale8);
-  specular = pa;
+
   processed();
   specular_counter--;
   specular_mutex.unlock();
@@ -248,13 +243,11 @@ void ImageProcessor::calculate_occlusion() {
     return;
   occlussion_counter++;
   occlusion_mutex.lock();
-  Mat p = modify_occlusion();
+  current_occlusion = modify_occlusion();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && p.rows == m_img.rows * 3) {
-    p(rect).copyTo(current_occlusion);
-  } else {
-    p.copyTo(current_occlusion);
+  if (tileable && current_occlusion.rows == m_img.rows * 3) {
+    current_occlusion(rect).copyTo(current_occlusion);
   }
 
   switch (current_occlusion.channels()) {
@@ -266,10 +259,10 @@ void ImageProcessor::calculate_occlusion() {
     break;
   }
 
-  QImage pa = QImage(static_cast<unsigned char *>(current_occlusion.data),
+  occlussion = QImage(static_cast<unsigned char *>(current_occlusion.data),
                      current_occlusion.cols, current_occlusion.rows,
                      current_occlusion.step, QImage::Format_Grayscale8);
-  occlussion = pa;
+
   processed();
 
   occlussion_counter--;
@@ -280,8 +273,6 @@ void ImageProcessor::calculate_heightmap() {
   cvtColor(current_heightmap, m_gray, COLOR_RGBA2GRAY);
   if (m_gray.type() != CV_32FC1)
     m_gray.convertTo(m_gray, CV_32FC1);
-
-  m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
 }
 
 int ImageProcessor::fill_neighbours(Mat src, Mat dst) {
@@ -511,9 +502,6 @@ void ImageProcessor::calculate_distance() {
 
   m_distance.copyTo(new_distance);
   new_distance = modify_distance();
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert) {
@@ -534,7 +522,7 @@ void ImageProcessor::set_normal_depth(int depth) {
 }
 void ImageProcessor::set_normal_bisel_soft(bool soft) {
   normal_bisel_soft = soft;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true);
 }
 void ImageProcessor::set_normal_blur_radius(int radius) {
   normal_blur_radius = radius;
@@ -735,17 +723,15 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius) {
 
-  Mat aux, heightMap;
-  Mat mdx, mdy, mg;
+  Mat aux;
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
   float dx, dy;
   GaussianBlur(mat, aux, Size(blur_radius * 2 + 1, blur_radius * 2 + 1), 0);
 
-  current_heightmap.copyTo(heightMap);
   Mat normals(aux.size(), CV_32FC3);
   for (int x = 0; x < aux.cols; ++x) {
     for (int y = 0; y < aux.rows; ++y) {
-      if (heightMap.at<Vec4b>(y, x)[3] == 0.0) {
+      if (current_heightmap.at<Vec4b>(y, x)[3] == 0.0) {
         normals.at<Vec3f>(y, x) = Vec3f(0, 0, 1);
         continue;
       }
@@ -851,7 +837,7 @@ ParallaxType ImageProcessor::get_parallax_type() { return parallax_type; }
 
 void ImageProcessor::set_parallax_type(ParallaxType ptype) {
   parallax_type = ptype;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_quantization() {
@@ -860,12 +846,12 @@ int ImageProcessor::get_parallax_quantization() {
 
 void ImageProcessor::set_parallax_quantization(int q) {
   parallax_quantization = q;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 void ImageProcessor::set_parallax_erode_dilate(int value) {
   parallax_erode_dilate = value;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_erode_dilate() {
@@ -874,14 +860,14 @@ int ImageProcessor::get_parallax_erode_dilate() {
 
 void ImageProcessor::set_parallax_contrast(int contrast) {
   parallax_contrast = contrast / 1000.0;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 double ImageProcessor::get_parallax_contrast() { return parallax_contrast; }
 
 void ImageProcessor::set_parallax_brightness(int brightness) {
   parallax_brightness = brightness;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_brightness() { return parallax_brightness; }
