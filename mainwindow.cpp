@@ -66,10 +66,6 @@ MainWindow::MainWindow(QWidget *parent)
   ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
   connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
           SLOT(showContextMenuForListWidget(const QPoint &)));
-  //    connect(ui->checkBoxMosaicoX,
-  //    SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileX(bool)));
-  //    connect(ui->checkBoxMosaicoY,
-  //    SIGNAL(toggled(bool)),ui->openGLPreviewWidget,SLOT(setTileY(bool)));
   connect(ui->sliderParallax, SIGNAL(valueChanged(int)),
           ui->openGLPreviewWidget, SLOT(setParallaxHeight(int)));
   connect(ui->checkBoxPixelated, SIGNAL(toggled(bool)), ui->openGLPreviewWidget,
@@ -104,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
   setAcceptDrops(true);
 
   ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
 
   connect(ui->openGLPreviewWidget,
           SIGNAL(processor_selected(ImageProcessor *, bool)), this,
@@ -113,6 +110,7 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(openGL_initialized()));
   connect(&fs_watcher, SIGNAL(fileChanged(QString)), this,
           SLOT(onFileChanged(QString)));
+
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
@@ -138,6 +136,7 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
 void MainWindow::list_menu_action_triggered(QAction *action) {
   if (action->text() == tr("Remove")) {
     QListWidgetItem *item = ui->listWidget->selectedItems().at(0);
+    fs_watcher.removePath(item->text());
     for (int i = 0; i < processorList.count(); i++) {
       if (processorList.at(i)->get_name() == item->text()) {
         processorList.at(i)->deleteLater();
@@ -167,6 +166,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     }
   } else if (action->text() == tr("Reset heightmap")) {
     bool succes;
+    fs_watcher.removePath(processor->get_heightmap_path());
     QImage height = il.loadImage(processor->get_name(), &succes);
     height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     processor->loadHeightMap(processor->get_name(), height);
@@ -187,6 +187,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
 
   } else if (action->text() == tr("Reset specular map")) {
     bool succes;
+    fs_watcher.removePath(processor->get_specular_path());
     QImage specular = il.loadImage(processor->get_name(), &succes);
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     processor->loadSpecularMap(processor->get_name(), specular);

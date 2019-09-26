@@ -478,7 +478,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
       set_all_processors_selected(false);
     bool selected = false;
 
-    /* TODO: If no texture was selected, loop for lights */
+    /* We first check if we selected a light, and if not, we scan if we selected a texture */
     if (sample_light_list_used) {
       foreach (LightSource *light, *sampleLightList) {
         lightPosition = light->get_light_position();
@@ -510,14 +510,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(mouseX, mouseY, 0) -
                               *processor->get_position());
-        float w =
-            processor->get_tile_x()
-                ? 2
-                : processor->get_zoom() * processor->texture.width() / width();
-        float h = processor->get_tile_y()
-                      ? 2
-                      : processor->get_zoom() * processor->texture.height() /
-                            height();
+        float w =  processor->get_tile_x() ? 2 : processor->get_zoom() * processor->texture.width() / width();
+        float h = processor->get_tile_y() ? 2 : processor->get_zoom() * processor->texture.height() / height();
         if (qAbs(mouseX - processor->get_position()->x()) < w &&
             qAbs(mouseY - processor->get_position()->y()) < h && not selected) {
           set_processor_selected(processor, true);
