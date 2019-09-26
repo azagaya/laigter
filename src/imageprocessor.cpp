@@ -21,6 +21,8 @@
 #include <QApplication>
 #include <QDebug>
 #include <cmath>
+#include <QtConcurrent/QtConcurrent>
+
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
   position = offset = QVector2D(0, 0);
   zoom = 1.0;
@@ -109,6 +111,9 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
 
   customSpecularMap = false;
   customHeightMap = false;
+
+  normal_counter = parallax_counter = specular_counter = occlussion_counter = 0;
+
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image) {
@@ -166,21 +171,19 @@ void ImageProcessor::set_current_heightmap() {
 void ImageProcessor::calculate() {
 
   set_current_heightmap();
-
   calculate_distance();
-
   calculate_heightmap();
-
   generate_normal_map();
-
   calculate_parallax();
-
   calculate_specular();
-
   calculate_occlusion();
 }
 
 void ImageProcessor::calculate_parallax() {
+  if (parallax_counter > 2)
+    return;
+  parallax_counter++;
+  parallax_mutex.lock();
   Mat p = modify_parallax();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
@@ -204,9 +207,15 @@ void ImageProcessor::calculate_parallax() {
                      current_parallax.step, QImage::Format_Grayscale8);
   parallax = pa;
   processed();
+  parallax_counter--;
+  parallax_mutex.unlock();
 }
 
 void ImageProcessor::calculate_specular() {
+  if (specular_counter > 2)
+    return;
+  specular_counter++;
+  specular_mutex.lock();
   Mat p = modify_specular();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
@@ -230,9 +239,15 @@ void ImageProcessor::calculate_specular() {
                      current_specular.step, QImage::Format_Grayscale8);
   specular = pa;
   processed();
+  specular_counter--;
+  specular_mutex.unlock();
 }
 
 void ImageProcessor::calculate_occlusion() {
+  if (occlussion_counter > 2)
+    return;
+  occlussion_counter++;
+  occlusion_mutex.lock();
   Mat p = modify_occlusion();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
@@ -256,6 +271,9 @@ void ImageProcessor::calculate_occlusion() {
                      current_occlusion.step, QImage::Format_Grayscale8);
   occlussion = pa;
   processed();
+
+  occlussion_counter--;
+  occlusion_mutex.unlock();
 }
 
 void ImageProcessor::calculate_heightmap() {
@@ -500,71 +518,37 @@ void ImageProcessor::calculate_distance() {
 
 void ImageProcessor::set_normal_invert_x(bool invert) {
   normalInvertX = -invert * 2 + 1;
-  m_emboss_normal =
-      (calculate_normal(m_gray, normal_depth, normal_blur_radius));
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
 }
 void ImageProcessor::set_normal_invert_y(bool invert) {
   normalInvertY = -invert * 2 + 1;
-  m_emboss_normal =
-      (calculate_normal(m_gray, normal_depth, normal_blur_radius));
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
 }
 void ImageProcessor::set_normal_invert_z(bool invert) {
   normalInvertZ = -invert * 2 + 1;
-  m_emboss_normal =
-      (calculate_normal(m_gray, normal_depth, normal_blur_radius));
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
 }
 void ImageProcessor::set_normal_depth(int depth) {
   normal_depth = depth;
-  Mat gray;
-  m_gray.copyTo(gray);
-  m_emboss_normal = calculate_normal(gray, normal_depth, normal_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false);
 }
 void ImageProcessor::set_normal_bisel_soft(bool soft) {
   normal_bisel_soft = soft;
-  new_distance = modify_distance();
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
 }
 void ImageProcessor::set_normal_blur_radius(int radius) {
   normal_blur_radius = radius;
-  Mat gray;
-  m_gray.copyTo(gray);
-  // calculate_heightmap();
-  m_emboss_normal = calculate_normal(gray, normal_depth, normal_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false);
 }
 
 void ImageProcessor::set_normal_bisel_depth(int depth) {
   normal_bisel_depth = depth;
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
 }
 
 void ImageProcessor::set_normal_bisel_distance(int distance) {
   normal_bisel_distance = distance;
-  new_distance = modify_distance();
-
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true);
 }
 
 void ImageProcessor::set_tileable(bool t) {
@@ -632,8 +616,7 @@ Mat ImageProcessor::modify_occlusion() {
   m.convertTo(m, -1, 1, -occlusion_thresh / 255.0);
   m.convertTo(m, -1, occlusion_contrast, occlusion_thresh / 255.0);
   m.convertTo(m, CV_8U, 255, occlusion_bright);
-  GaussianBlur(m, m, Size(occlusion_blur * 2 + 1, occlusion_blur * 2 + 1), 0,
-               0);
+  GaussianBlur(m, m, Size(occlusion_blur * 2 + 1, occlusion_blur * 2 + 1), 0, 0);
 
   m.convertTo(m, CV_GRAY2RGB, 1);
   return m;
@@ -718,17 +701,18 @@ Mat ImageProcessor::modify_specular() {
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
   normal_bisel_blur_radius = radius;
-  new_distance = modify_distance();
-  m_distance_normal =
-      calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance,
-                       normal_bisel_blur_radius);
-  generate_normal_map();
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
 }
 
-void ImageProcessor::generate_normal_map() {
-  if (!current_heightmap.ptr<int>(0) || busy)
+void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance) {
+  if (normal_counter > 2)
     return;
-  busy = true;
+  normal_counter++;
+  normal_mutex.lock();
+  if (updateEnhance) m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
+  if (updateDistance) new_distance = modify_distance();
+  if (updateBump) m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
+                                         , normal_bisel_blur_radius);
   Mat normals;
   normals = (m_emboss_normal + m_distance_normal);
   for (int x = 0; x < normals.cols; ++x) {
@@ -745,8 +729,8 @@ void ImageProcessor::generate_normal_map() {
   normal = p;
   processed();
 
-  busy = false;
-  on_idle();
+  normal_counter--;
+  normal_mutex.unlock();
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius) {
@@ -756,11 +740,6 @@ Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius) {
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
   float dx, dy;
   GaussianBlur(mat, aux, Size(blur_radius * 2 + 1, blur_radius * 2 + 1), 0);
-  //    if(tileable && aux.rows == m_img.rows*3){
-  //        current_heightmap(rect).copyTo(heightMap);
-  //    }else{
-  //        m_heightmap.copyTo(heightMap);
-  //    }
 
   current_heightmap.copyTo(heightMap);
   Mat normals(aux.size(), CV_32FC3);
@@ -837,19 +816,19 @@ bool ImageProcessor::get_parallax_invert() { return parallax_invert; }
 
 void ImageProcessor::set_parallax_invert(bool invert) {
   parallax_invert = invert;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 void ImageProcessor::set_parallax_focus(int focus) {
   parallax_focus = focus;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_focus() { return parallax_focus; }
 
 void ImageProcessor::set_parallax_soft(int soft) {
   parallax_soft = soft;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_soft() { return parallax_soft; }
@@ -858,14 +837,14 @@ int ImageProcessor::get_parallax_thresh() { return parallax_max; }
 
 void ImageProcessor::set_parallax_thresh(int thresh) {
   parallax_max = thresh;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 int ImageProcessor::get_parallax_min() { return parallax_min; }
 
 void ImageProcessor::set_parallax_min(int min) {
   parallax_min = min;
-  calculate_parallax();
+  QtConcurrent::run(this,&ImageProcessor::calculate_parallax);
 }
 
 ParallaxType ImageProcessor::get_parallax_type() { return parallax_type; }
@@ -909,79 +888,79 @@ int ImageProcessor::get_parallax_brightness() { return parallax_brightness; }
 
 void ImageProcessor::set_specular_blur(int blur) {
   specular_blur = blur;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 int ImageProcessor::get_specular_blur() { return specular_blur; }
 
 void ImageProcessor::set_specular_bright(int bright) {
   specular_bright = bright;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 int ImageProcessor::get_specular_bright() { return specular_bright; }
 
 void ImageProcessor::set_specular_invert(bool invert) {
   specular_invert = invert;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 bool ImageProcessor::get_specular_invert() { return specular_invert; }
 
 void ImageProcessor::set_specular_thresh(int thresh) {
   specular_thresh = thresh;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 int ImageProcessor::get_specular_trhesh() { return specular_thresh; }
 
 void ImageProcessor::set_specular_contrast(int contrast) {
   specular_contrast = contrast / 1000.0;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 double ImageProcessor::get_specular_contrast() { return specular_contrast; }
 
 void ImageProcessor::set_specular_base_color(Vec4b color) {
   specular_base_color = color;
-  calculate_specular();
+  QtConcurrent::run(this,&ImageProcessor::calculate_specular);
 }
 
 Vec4b ImageProcessor::get_specular_base_color() { return specular_base_color; }
 
 void ImageProcessor::set_occlusion_blur(int blur) {
   occlusion_blur = blur;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 int ImageProcessor::get_occlusion_blur() { return occlusion_blur; }
 
 void ImageProcessor::set_occlusion_bright(int bright) {
   occlusion_bright = bright;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 int ImageProcessor::get_occlusion_bright() { return occlusion_bright; }
 
 void ImageProcessor::set_occlusion_invert(bool invert) {
   occlusion_invert = invert;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 bool ImageProcessor::get_occlusion_invert() { return occlusion_invert; }
 
 void ImageProcessor::set_occlusion_thresh(int thresh) {
   occlusion_thresh = thresh;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 int ImageProcessor::get_occlusion_trhesh() { return occlusion_thresh; }
 
 void ImageProcessor::set_occlusion_contrast(int contrast) {
   occlusion_contrast = contrast / 1000.0;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 double ImageProcessor::get_occlusion_contrast() { return occlusion_contrast; }
 
 void ImageProcessor::set_occlusion_distance_mode(bool distance_mode) {
   occlusion_distance_mode = distance_mode;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 bool ImageProcessor::get_occlusion_distance_mode() {
@@ -990,7 +969,7 @@ bool ImageProcessor::get_occlusion_distance_mode() {
 
 void ImageProcessor::set_occlusion_distance(int distance) {
   occlusion_distance = distance;
-  calculate_occlusion();
+  QtConcurrent::run(this,&ImageProcessor::calculate_occlusion);
 }
 
 int ImageProcessor::get_occlusion_distance() { return occlusion_distance; }
