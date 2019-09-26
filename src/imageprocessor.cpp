@@ -23,6 +23,8 @@
 #include <cmath>
 #include <QtConcurrent/QtConcurrent>
 
+using namespace cv;
+
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
   position = offset = QVector2D(0, 0);
   zoom = 1.0;
