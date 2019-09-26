@@ -76,7 +76,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent) {
 
   viewmode = 0;
 
-  sample_light_list_used = false;
+  sample_light_list_used = true;
 }
 
 void OpenGlWidget::initializeGL() {

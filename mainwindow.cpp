@@ -836,6 +836,13 @@ void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value) {
 void MainWindow::on_comboBoxView_currentIndexChanged(int index) {
 
   ui->openGLPreviewWidget->setLight(false);
+  if (index == ViewMode::Preview){
+    ui->actionAdd_Light->setEnabled(true);
+  } else {
+    ui->actionAdd_Light->setEnabled(false);
+    ui->openGLPreviewWidget->set_add_light(false);
+    ui->actionAdd_Light->setChecked(false);
+  }
   switch (index) {
   case ViewMode::Texture:
     ui->openGLPreviewWidget->set_view_mode(Texture);
