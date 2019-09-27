@@ -26,7 +26,7 @@ If possible, add a description for reproducing this.
 
 ## Contributing pull requests
 
-If you want to add new feature, please talk to me first on [discord](https://discord.gg/3BTTVS),
+If you want to add new feature, please talk to me first on [discord](https://discord.gg/88kJqry),
 twitter, by mail, or open an issue to propose the feature first.
 And please provide a use case.
 

@@ -23,17 +23,20 @@
 #include <QImage>
 #include <QList>
 #include <QObject>
+
+#include <QPixmap>
+#include <QMutex>
+
+#include "src/imageloader.h"
+#include "src/lightsource.h"
+
 #include <opencv2/opencv.hpp>
 #if defined(Q_OS_WIN)
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #endif
-#include "src/imageloader.h"
-#include "src/lightsource.h"
-#include <QPixmap>
-#include <QMutex>
 
-using namespace cv;
+
 
 enum class ProcessedImage { Raw, Normal, Parallax, Specular, Occlusion };
 
@@ -86,14 +89,14 @@ public:
   int loadHeightMap(QString fileName, QImage height);
   int loadSpecularMap(QString fileName, QImage specular);
   void generate_normal_map(bool updateEnhance = true, bool updateBump = true, bool updateDistance = true);
-  Mat calculate_normal(Mat mat, int depth, int blur_radius);
+  cv::Mat calculate_normal(cv::Mat mat, int depth, int blur_radius);
   void calculate_gradient();
   void calculate_distance();
   void calculate_heightmap();
-  Mat modify_distance();
-  Mat modify_parallax();
-  Mat modify_specular();
-  Mat modify_occlusion();
+ cv::Mat modify_distance();
+ cv::Mat modify_parallax();
+ cv::Mat modify_specular();
+ cv::Mat modify_occlusion();
   void set_name(QString name);
   QString get_name();
   QString get_specular_path();
@@ -175,8 +178,8 @@ public slots:
   int get_specular_bright();
   void set_specular_blur(int blur);
   int get_specular_blur();
-  void set_specular_base_color(Vec4b color);
-  Vec4b get_specular_base_color();
+  void set_specular_base_color(cv::Vec4b color);
+  cv::Vec4b get_specular_base_color();
 
   void set_occlusion_invert(bool invert);
   bool get_occlusion_invert();
@@ -197,8 +200,8 @@ public slots:
 
   ParallaxType get_parallax_type();
 
-  int fill_neighbours(Mat src, Mat dst);
-  int set_neighbour(Mat src, Mat dst, int x, int y);
+  int fill_neighbours(cv::Mat src, cv::Mat dst);
+  int set_neighbour(cv::Mat src, cv::Mat dst, int x, int y);
   int set_neighbour_image(QString fileName, QImage image, int x, int y);
   int empty_neighbour(int x, int y);
   void reset_neighbours();
@@ -234,32 +237,32 @@ private:
 
   ImageLoader il;
   QString m_name, m_heightmapPath, m_specularPath;
-  Mat m_img;
-  Mat m_gray;
-  Mat m_gradient;
-  Mat m_distance;
-  Mat aux_distance;
-  Mat m_normal;
-  Mat m_emboss_normal;
-  Mat m_distance_normal;
-  Mat new_distance;
-  Mat m_heightmap;
-  Mat m_parallax;
-  Mat m_specular;
-  Mat m_occlusion;
-  Mat current_heightmap;
-  Mat neighbours;
-  Mat m_aux;
+  cv::Mat m_img;
+  cv::Mat m_gray;
+  cv::Mat m_gradient;
+  cv::Mat m_distance;
+  cv::Mat aux_distance;
+  cv::Mat m_normal;
+  cv::Mat m_emboss_normal;
+  cv::Mat m_distance_normal;
+  cv::Mat new_distance;
+  cv::Mat m_heightmap;
+  cv::Mat m_parallax;
+  cv::Mat m_specular;
+  cv::Mat m_occlusion;
+  cv::Mat current_heightmap;
+  cv::Mat neighbours;
+  cv::Mat m_aux;
 
-  Mat current_specular;
+  cv::Mat current_specular;
   int specular_thresh;
   int specular_bright;
   double specular_contrast;
   int specular_blur;
   bool specular_invert;
-  Vec4b specular_base_color;
+  cv::Vec4b specular_base_color;
 
-  Mat current_parallax;
+  cv::Mat current_parallax;
   int parallax_min;
   int parallax_max;
   int parallax_focus;
@@ -279,7 +282,7 @@ private:
   int normalInvertX, normalInvertY, normalInvertZ;
   char gradient_end;
 
-  Mat current_occlusion;
+  cv::Mat current_occlusion;
   int occlusion_thresh;
   double occlusion_contrast;
   int occlusion_bright;
