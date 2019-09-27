@@ -712,9 +712,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   normals.convertTo(normals, CV_8UC3, 255);
   normals.copyTo(m_normal);
-  QImage p = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
+  normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                     m_normal.rows, m_normal.step, QImage::Format_RGB888);
-  normal = p;
   processed();
 
   normal_counter--;
