@@ -38,7 +38,7 @@ QCoreApplication *createApplication(int &argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setApplicationName("laigter");
-  QCoreApplication::setApplicationVersion("1.6-beta");
+  QCoreApplication::setApplicationVersion("1.7-beta");
 
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
