@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>428</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Selector de vecinos</string>
+   <string>Neighbours selector</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -452,14 +452,14 @@ QPushButton:hover:!pressed
    <item row="3" column="2">
     <widget class="QPushButton" name="pushButtonResetNeighbours">
      <property name="text">
-      <string>Restaurar Vecinos</string>
+      <string>Reset Neighbours</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Vaciar Vecinos</string>
+      <string>Empty Neighbours</string>
      </property>
     </widget>
    </item>

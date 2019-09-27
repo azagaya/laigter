@@ -1,4 +1,6 @@
+*.qm
 *.pro.user*
 *.autosave
 deploy/
 .ignore/
+compile_commands.json

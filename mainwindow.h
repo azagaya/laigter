@@ -20,125 +20,121 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QFileSystemWatcher>
-#include <QMainWindow>
-#include <QGraphicsScene>
-#include <QOpenGLWidget>
-#include <QListWidgetItem>
-#include <QVector3D>
-#include <QThread>
-#include <QColor>
-#include <QList>
-#include "src/imageprocessor.h"
 #include "src/imageloader.h"
+#include "src/imageprocessor.h"
 #include "src/lightsource.h"
+#include <QColor>
+#include <QFileSystemWatcher>
+#include <QGraphicsScene>
+#include <QList>
+#include <QListWidgetItem>
+#include <QMainWindow>
+#include <QOpenGLWidget>
+#include <QThread>
+#include <QVector3D>
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-    void dropEvent(QDropEvent *event);
-    void dragEnterEvent(QDragEnterEvent *e);
+  explicit MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
+  void dropEvent(QDropEvent *event);
+  void dragEnterEvent(QDragEnterEvent *e);
 
 public slots:
-    void update_scene();
-    void add_processor(ImageProcessor *p);
-    void selectedLightChanged(LightSource *light);
-    void stopAddingLight();
-    void set_light_color(const QColor &color);
-    void set_ambient_color(const QColor &color);
-    void set_background_color(const QColor &color);
-    void selectedProcessorsChanged(QList<ImageProcessor*> list);
-    void processor_selected(ImageProcessor *processor, bool selected);
-    void set_enabled_map_controls(bool e);
+  void update_scene();
+  void add_processor(ImageProcessor *p);
+  void selectedLightChanged(LightSource *light);
+  void stopAddingLight();
+  void set_light_color(const QColor &color);
+  void set_ambient_color(const QColor &color);
+  void set_background_color(const QColor &color);
+  void selectedProcessorsChanged(QList<ImageProcessor *> list);
+  void processor_selected(ImageProcessor *processor, bool selected);
+  void set_enabled_map_controls(bool e);
 
 signals:
-    void normal_depth_changed(int value);
+  void normal_depth_changed(int value);
 private slots:
 
-    void connect_processor(ImageProcessor *p);
-    void disconnect_processor(ImageProcessor *p);
-    void showContextMenuForListWidget(const QPoint &pos);
-    void list_menu_action_triggered(QAction* action);
-    void openGL_initialized();
-    void on_actionOpen_triggered();
+  void connect_processor(ImageProcessor *p);
+  void disconnect_processor(ImageProcessor *p);
+  void showContextMenuForListWidget(const QPoint &pos);
+  void list_menu_action_triggered(QAction *action);
+  void openGL_initialized();
+  void on_actionOpen_triggered();
 
-    void on_actionFitZoom_triggered();
+  void on_actionFitZoom_triggered();
 
-    void on_actionZoom_100_triggered();
+  void on_actionZoom_100_triggered();
 
-    void on_actionZoomIn_triggered();
+  void on_actionZoomIn_triggered();
 
-    void on_actionZoomOut_triggered();
+  void on_actionZoomOut_triggered();
 
-    void on_actionExport_triggered();
+  void on_actionExport_triggered();
 
-    void on_pushButtonColor_clicked();
+  void on_pushButtonColor_clicked();
 
-    void on_horizontalSliderDiffHeight_valueChanged(int value);
+  void on_horizontalSliderDiffHeight_valueChanged(int value);
 
-    void on_horizontalSliderDiffLight_valueChanged(int value);
+  void on_horizontalSliderDiffLight_valueChanged(int value);
 
-    void on_horizontalSliderAmbientLight_valueChanged(int value);
+  void on_horizontalSliderAmbientLight_valueChanged(int value);
 
-    void on_pushButtonAmbientColor_clicked();
+  void on_pushButtonAmbientColor_clicked();
 
-    void on_actionLicencia_triggered();
+  void on_listWidget_itemSelectionChanged();
 
-    void on_actionReconocimientos_triggered();
+  void on_pushButton_clicked();
 
-    void on_listWidget_itemSelectionChanged();
+  void on_pushButtonBackgroundColor_clicked();
 
-    void on_pushButton_clicked();
+  void on_pushButton_2_clicked();
 
-    void on_pushButtonBackgroundColor_clicked();
+  void on_comboBox_currentIndexChanged(int index);
 
-    void on_pushButton_2_clicked();
+  void on_pushButtonExportTo_clicked();
 
-    void on_comboBox_currentIndexChanged(int index);
+  void open_files(QStringList fileNames);
 
-    void on_pushButtonExportTo_clicked();
+  void on_actionPresets_triggered();
 
-    void open_files(QStringList fileNames);
+  void on_horizontalSliderSpec_valueChanged(int value);
 
-    void on_actionPresets_triggered();
+  void on_horizontalSliderSpecScatter_valueChanged(int value);
 
-    void on_horizontalSliderSpec_valueChanged(int value);
+  void on_comboBoxView_currentIndexChanged(int index);
 
-    void on_horizontalSliderSpecScatter_valueChanged(int value);
+  void on_actionExportPreview_triggered();
 
-    void on_comboBoxView_currentIndexChanged(int index);
+  void on_actionAbout_triggered();
 
-    void on_actionExportPreview_triggered();
+  void on_actionAdd_Light_triggered(bool checked);
 
-    void on_actionAbout_triggered();
+  void on_checkBoxLightsPerTexture_toggled(bool checked);
 
-    void on_actionAdd_Light_triggered(bool checked);
-
-    void on_checkBoxLightsPerTexture_toggled(bool checked);
-
-    void onFileChanged(const QString &file_path);
+  void onFileChanged(const QString &file_path);
 
 private:
-    Ui::MainWindow *ui;
-    QOpenGLWidget *gl;
-    QGraphicsScene *m_normal_scene;
-    QGraphicsScene *m_raw_scene;
-    ImageProcessor *processor;
-    ImageProcessor *sample_processor;
-    QColor currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
-    QThread *processingThread;
-    QList <ImageProcessor *> processorList;
-    QList <ImageProcessor *> selectedProcessors;
-    ImageLoader il;
-    QFileSystemWatcher fs_watcher;
+  Ui::MainWindow *ui;
+  QOpenGLWidget *gl;
+  QGraphicsScene *m_normal_scene;
+  QGraphicsScene *m_raw_scene;
+  ImageProcessor *processor;
+  ImageProcessor *sample_processor;
+  QColor currentColor, currentAmbientcolor, currentBackgroundColor,
+      currentSpecColor, currentSpecBaseColor;
+  QThread *processingThread;
+  QList<ImageProcessor *> processorList;
+  QList<ImageProcessor *> selectedProcessors;
+  ImageLoader il;
+  QFileSystemWatcher fs_watcher;
 };
 
 #endif // MAINWINDOW_H

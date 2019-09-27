@@ -6,25 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>450</height>
+    <width>462</width>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Acerca de</string>
+   <string>About</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
+   <item row="2" column="0">
+    <widget class="QLabel" name="version_label">
      <property name="text">
-      <string>Laigter, por Azagaya</string>
+      <string/>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Sígueme o Apóyame en:</string>
+      <string>Follow and Support me on:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="3">
@@ -175,21 +175,28 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Laigter, by Azagaya</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Contribuciones</string>
+       <string>Contributions</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="1" column="0">
         <widget class="QListWidget" name="listWidget">
          <item>
           <property name="text">
-           <string>Patrick &quot;Ffyhlkain&quot; Henschel</string>
+           <string>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</string>
           </property>
          </item>
         </widget>
@@ -205,7 +212,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>Programadores</string>
+       <string>Programmers</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
@@ -215,13 +222,39 @@
            <string>Gnumaru - Experimental CLI Interface</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Brandon Blanker Lim-it - Image auto reload when file changes</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Translations</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
+        <widget class="QListWidget" name="listWidget_3">
+         <item>
+          <property name="text">
+           <string>Hugo Locurcio (Calinou) - French</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Azagaya - English and Spanish</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>Reconociemientos</string>
+       <string>Acknowledgements</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
@@ -1066,13 +1099,6 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="version_label">
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </item>
   </layout>
