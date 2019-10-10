@@ -32,17 +32,19 @@ If you wan't to contribute by coding, please contact me and we will see how can 
 
 ## Compiling on Linux
 
-Compiling on linux is pretty straightforward. Just use your package manager to install prerequisites:
+Compiling on Linux is pretty straightforward. Just use your package manager to install prerequisites:
 
-* Qt and Qt creator: from package manager or online installer.
-* OpenCV: libopencv-dev from package manager
-* OpenGL libray: libgl1-mesa-dev from package manager.
+* Qt 5 (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator: from package manager or online installer.
+* OpenCV: libopencv-dev from package manager (Debian/Ubuntu).
+* OpenGL library: libgl1-mesa-dev from package manager (Debian/Ubuntu).
 
-Thats it, you can open the .pro file with qtcreator and build or debug laigter.
+That's it, you can open the .pro file with Qt Creator and build or debug Laigter.
+
+You can also build from the terminal with `qmake && make`.
 
 ## Compiling on Windows
 
-For windows, unfortunately, there are more steps to be done.
+For Windows, unfortunately, there are more steps to be done.
 
 * Install Qt: I strongly discourage the offline installer, use the online installer instead. In the components selection window you will need to select  qt creator under "qt >> developer and designers tools" and the mingw 7.3 32bit or 64bit toolchain under "qt >> developer and designers tools >> mingw 7.3.0" and "qt >> qt 5.13.0 >> mingw 7.3.0". Do not choose the msvc toolchain. If you choose both the 32 and 64 bit versions, make sure that only one version is in the system path, otherwise you will have problems compiling. Tested with Qt 5.11, 5.12 and 5.13.
 
