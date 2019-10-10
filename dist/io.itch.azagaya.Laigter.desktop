@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Laigter
+GenericName=2D normal map generator
+Comment=Tool to generate normal, specular and parallax maps for 2D textures
+Exec=laigter
+Icon=io.itch.azagaya.Laigter
+Type=Application
+Categories=Graphics;2DGraphics;
