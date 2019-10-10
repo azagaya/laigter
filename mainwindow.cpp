@@ -23,6 +23,7 @@
 #include "gui/presetsmanager.h"
 #include "src/openglwidget.h"
 #include "ui_mainwindow.h"
+#include "src/brushinterface.h"
 
 #include <QColorDialog>
 #include <QDebug>
@@ -35,6 +36,8 @@
 #include <QMimeData>
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
+#include <QPluginLoader>
+#include <QDockWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -344,6 +347,8 @@ void MainWindow::openGL_initialized() {
     *(ui->openGLPreviewWidget->get_current_light_list_ptr()));
 
   on_comboBoxView_currentIndexChanged(Texture);
+
+
 }
 
 void MainWindow::on_pushButtonColor_clicked() {
@@ -1046,4 +1051,48 @@ void MainWindow::onFileChanged(const QString &file_path) {
     }
   }
   ui->openGLPreviewWidget->need_to_update = true;
+}
+
+void MainWindow::on_actionLoadPlugins_triggered()
+{
+  QString appData =
+    QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  QDir dir(appData);
+  dir.cd("plugins");
+  const auto entryList = dir.entryList(QDir::Files);
+  foreach (QDockWidget *dock, plugin_docks_list){
+    plugin_docks_list.removeOne(dock);
+    delete dock;
+  }
+  foreach (QAction *action, ui->pluginToolBar->actions()){
+    if (action->text() == tr("LoadPlugins")) continue;
+    ui->pluginToolBar->removeAction(action);
+  }
+  for (const QString &fileName : entryList) {
+    QPluginLoader pl(dir.absoluteFilePath(fileName));
+    BrushInterface *b = qobject_cast<BrushInterface *>( pl.instance());
+    qDebug() << pl.errorString();
+    if(b != nullptr){
+      ui->openGLPreviewWidget->currentBrush = b;
+      b->setProcessor(processor);
+      QAction *action = new QAction(b->getIcon(),b->getName());
+      action->setCheckable(true);
+      QDockWidget *pluginDock = new QDockWidget(b->getName(),this);
+      QWidget *pluginGui = b->loadGUI();
+
+      addDockWidget(Qt::LeftDockWidgetArea,pluginDock);
+      pluginDock->setFloating(true);
+      pluginDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+      pluginDock->setWidget(pluginGui);
+
+      pluginDock->setVisible(false);
+      connect(action,SIGNAL(toggled(bool)),pluginDock,SLOT(setVisible(bool)));
+
+      ui->pluginToolBar->addAction(action);
+
+      plugin_docks_list.append(pluginDock);
+
+    }
+  }
 }

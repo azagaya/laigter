@@ -121,7 +121,9 @@ private slots:
 
   void onFileChanged(const QString &file_path);
 
-private:
+  void on_actionLoadPlugins_triggered();
+
+  private:
   Ui::MainWindow *ui;
   QOpenGLWidget *gl;
   QGraphicsScene *m_normal_scene;
@@ -135,6 +137,7 @@ private:
   QList<ImageProcessor *> selectedProcessors;
   ImageLoader il;
   QFileSystemWatcher fs_watcher;
+  QList <QDockWidget*> plugin_docks_list;
 };
 
 #endif // MAINWINDOW_H

@@ -77,6 +77,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent) {
   viewmode = 0;
 
   sample_light_list_used = true;
+
+  oldPos = QPoint(0,0);
 }
 
 void OpenGlWidget::initializeGL() {
@@ -84,9 +86,9 @@ void OpenGlWidget::initializeGL() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
   glClearColor(
-      backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
-      backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
-      backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
+    backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
+    backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
+    backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
 
   setUpdateBehavior(QOpenGLWidget::PartialUpdate);
 
@@ -107,10 +109,10 @@ void OpenGlWidget::initializeGL() {
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------
   float vertices[] = {
-      -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
-      1.0f,  -1.0f, 0.0f, 1.0f, 1.0f, // bot right
-      1.0f,  1.0f,  0.0f, 1.0f, 0.0f, // top right
-      -1.0f, 1.0f,  0.0f, 0.0f, 0.0f  // top left
+    -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+    1.0f,  -1.0f, 0.0f, 1.0f, 1.0f, // bot right
+    1.0f,  1.0f,  0.0f, 1.0f, 0.0f, // top right
+    -1.0f, 1.0f,  0.0f, 0.0f, 0.0f  // top left
   };
 
   // bind the Vertex Array Object first, then bind and set vertex buffer(s), and
@@ -180,6 +182,7 @@ void OpenGlWidget::paintGL() {
     export_render = false;
     renderedPreview = calculate_preview(m_fullPreview);
   }
+
 }
 
 void OpenGlWidget::update() {
@@ -195,9 +198,9 @@ void OpenGlWidget::force_update() {
 
 void OpenGlWidget::update_scene() {
   glClearColor(
-      backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
-      backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
-      backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
+    backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
+    backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
+    backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
   glClear(GL_COLOR_BUFFER_BIT);
 
   QVector3D color;
@@ -282,7 +285,7 @@ void OpenGlWidget::update_scene() {
     zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
     zoomY = processor->get_tile_y() ? processor->get_zoom() : 1;
     m_program.setUniformValue(
-        "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
+      "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -301,7 +304,7 @@ void OpenGlWidget::update_scene() {
 
     m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax() &&
-                                              viewmode == Preview);
+                                            viewmode == Preview);
     m_program.setUniformValue("height_scale", parallax_height);
 
     apply_light_params();
@@ -439,8 +442,8 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event) {
     if (!degree.isNull() && degree.y() != 0) {
       QPoint step = degree / qAbs(degree.y());
       processor->set_zoom(step.y() > 0
-                              ? processor->get_zoom() * 1.1 * step.y()
-                              : -processor->get_zoom() * 0.9 * step.y());
+                            ? processor->get_zoom() * 1.1 * step.y()
+                            : -processor->get_zoom() * 0.9 * step.y());
     }
   }
   need_to_update = true;
@@ -463,6 +466,13 @@ void OpenGlWidget::fitZoom() {
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
+  currentBrush->setProcessor(processor);
+
+  QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+                 (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+                  -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+  oldPos = tpos;
+  currentBrush->mousePress(tpos);
   float lightWidth = (float)laigter.width() / width() *
                      0.3; // en paintgl la imagen la escalamos por 0.3
   float lightHeight = (float)laigter.height() / height() * 0.3;
@@ -566,7 +576,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
 }
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
-
   float mouseX = (float)event->localPos().x() / width() * 2 - 1;
   float mouseY = -(float)event->localPos().y() / height() * 2 + 1;
   QVector3D newLightPos(mouseX, mouseY, currentLight->get_height());
@@ -577,6 +586,11 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
     return;
   }
   if (event->buttons() & Qt::LeftButton) {
+    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+    currentBrush->mouseMove(oldPos,tpos);    
+    oldPos = tpos;
     foreach (ImageProcessor *processor, processorList) {
       if (lightSelected) {
         update_light_position(newLightPos);
@@ -713,7 +727,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       VAO.bind();
 
       int i1 =
-          m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+        m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
       int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
@@ -767,9 +781,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       m_program.setUniformValue("height_scale", parallax_height);
 
       QVector3D pos(
-          (lightPosition.x() - processor->get_position()->x()) / scaleX / zoomX,
-          (lightPosition.y() - processor->get_position()->y()) / scaleY / zoomY,
-          lightPosition.z());
+        (lightPosition.x() - processor->get_position()->x()) / scaleX / zoomX,
+        (lightPosition.y() - processor->get_position()->y()) / scaleY / zoomY,
+        lightPosition.z());
 
       apply_light_params();
       m_texture->bind(0);
@@ -887,7 +901,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
       zoomY = processor->get_tile_y() ? processor->get_zoom() : 1;
       m_program.setUniformValue(
-          "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
+        "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -906,7 +920,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
 
       m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
       m_program.setUniformValue("parallax", processor->get_is_parallax() &&
-                                                viewmode == Preview);
+                                              viewmode == Preview);
       m_program.setUniformValue("height_scale", parallax_height);
 
       apply_light_params();

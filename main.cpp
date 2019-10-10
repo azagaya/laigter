@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setApplicationVersion("1.7-beta");
 
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   QString locale = QLocale::system().name().split("_").at(0);
   QTranslator translator;

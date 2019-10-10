@@ -33,7 +33,8 @@
 #include <QWheelEvent>
 
 #include "lightsource.h"
-#include "src/imageprocessor.h"
+#include "imageprocessor.h"
+#include "brushinterface.h"
 
 enum ViewMode {
   Texture,
@@ -51,6 +52,8 @@ public:
   bool need_to_update;
   ImageProcessor *processor;
   QList<LightSource *> *sampleLightList;
+
+  BrushInterface *currentBrush;
 
 public slots:
   void update();
@@ -167,6 +170,8 @@ private:
   bool sample_light_list_used;
   bool m_fullPreview, m_autosave;
   QString exportBasePath;
+
+  QPoint oldPos;
 };
 
 #endif // OPENGLWIDGET_H

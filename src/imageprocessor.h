@@ -26,8 +26,9 @@
 
 #include <QPixmap>
 #include <QMutex>
+#include <QPainter>
+#include <QBrush>
 
-#include "src/imageloader.h"
 #include "src/lightsource.h"
 
 #include <opencv2/opencv.hpp>
@@ -117,6 +118,20 @@ public:
   QImage parallax;
   QImage specular;
   QImage occlussion;
+
+  /* Images for Plugins */
+
+  QImage textureOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage normalOverlay= QImage(100,100,QImage::Format_RGBA8888);
+  QImage parallaxOverlay= QImage(0,0,QImage::Format_RGBA8888);
+  QImage specularOverlay= QImage(0,0,QImage::Format_RGBA8888);
+  QImage occlussionOverlay= QImage(0,0,QImage::Format_RGBA8888);
+
+  QImage *get_texture_overlay();
+  QImage *get_normal_overlay();
+  QImage *get_parallax_overlay();
+  QImage *get_specular_overlay();
+  QImage *get_occlusion_overlay();
 
   void calculate();
   void calculate_parallax();
@@ -232,10 +247,10 @@ public slots:
   bool get_connected();
   void set_connected(bool c);
 
+
 private:
   ProcessorSettings settings;
 
-  ImageLoader il;
   QString m_name, m_heightmapPath, m_specularPath;
   cv::Mat m_img;
   cv::Mat m_gray;
@@ -303,6 +318,9 @@ private:
 
   QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex;
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
+
+  QPainter normal_painter;
+  QBrush normal_brush;
 };
 
 #endif // IMAGEPROCESSOR_H

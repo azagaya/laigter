@@ -17,5 +17,7 @@
         <file>icons/info.png</file>
         <file>icons/github.png</file>
         <file>icons/add-light.png</file>
+        <file>icons/refresh.png</file>
+        <file>icons/undock.png</file>
     </qresource>
 </RCC>

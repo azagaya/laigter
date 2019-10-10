@@ -21,15 +21,16 @@
 	color: rgb(235, 235, 235);
     border: 1px solid black;
     titlebar-close-icon: url(close.png);
-    titlebar-normal-icon: url(undock.png);
+    titlebar-normal-icon: url(:/icons/undock.png);
 	margin: 0px
 }
 QDockWidget::title{
 	background: rgb(40%, 40%, 50%);
 	border-radius:4px;
 	margin:2px;
-	padding: 3px
+	padding: 5px
 }
+
 </string>
   </property>
   <property name="dockNestingEnabled">
@@ -224,7 +225,7 @@ QDockWidget::title{
           <item row="0" column="1">
            <widget class="QSlider" name="normalBevelSlider">
             <property name="maximum">
-             <number>4000</number>
+             <number>40000</number>
             </property>
             <property name="value">
              <number>1000</number>
@@ -1290,6 +1291,9 @@ QDockWidget::title{
    </widget>
   </widget>
   <widget class="QDockWidget" name="TileDockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Tile</string>
    </property>
@@ -1365,7 +1369,7 @@ QDockWidget::title{
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>309</height>
+          <height>305</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1451,6 +1455,18 @@ QDockWidget::title{
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="pluginToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLoadPlugins"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -1561,6 +1577,18 @@ QDockWidget::title{
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionLoadPlugins">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>LoadPlugins</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload Plugins</string>
    </property>
   </action>
  </widget>

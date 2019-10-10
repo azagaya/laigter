@@ -122,6 +122,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   m_fileName = fileName;
   m_name = fileName;
   texture = image;
+
+  normalOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
+  normalOverlay.fill(QColor(0,0,0,0));
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
   switch (aux) {
@@ -705,9 +708,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
                                          , normal_bisel_blur_radius);
   Mat normals;
   normals = (m_emboss_normal + m_distance_normal);
+
   for (int x = 0; x < normals.cols; ++x) {
     for (int y = 0; y < normals.rows; ++y) {
-      Vec3f n = normalize(normals.at<Vec3f>(y, x));
+      QColor oColor = normalOverlay.pixelColor(x,y);
+      Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
+      Vec3f n = normalize(normals.at<Vec3f>(y, x)*(1-oColor.alphaF())+overlay*oColor.alphaF());
       normals.at<Vec3f>(y, x) = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
     }
   }
@@ -798,6 +804,16 @@ QImage *ImageProcessor::get_parallax() { return &parallax; }
 QImage *ImageProcessor::get_specular() { return &specular; }
 
 QImage *ImageProcessor::get_occlusion() { return &occlussion; }
+
+QImage *ImageProcessor::get_texture_overlay() { return &textureOverlay; }
+
+QImage *ImageProcessor::get_normal_overlay() { return &normalOverlay; }
+
+QImage *ImageProcessor::get_parallax_overlay() { return &parallaxOverlay; }
+
+QImage *ImageProcessor::get_specular_overlay() { return &specularOverlay; }
+
+QImage *ImageProcessor::get_occlusion_overlay() { return &occlussionOverlay; }
 
 bool ImageProcessor::get_parallax_invert() { return parallax_invert; }
 

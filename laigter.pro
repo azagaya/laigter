@@ -56,6 +56,7 @@ HEADERS += \
     gui/aboutdialog.h \
     gui/presetsmanager.h \
         mainwindow.h \
+  src/brushinterface.h \
     src/imageloader.h \
     src/imageprocessor.h \
     src/lightsource.h \
