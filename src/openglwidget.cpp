@@ -993,8 +993,7 @@ void OpenGlWidget::apply_light_params() {
 }
 
 void OpenGlWidget::set_add_light(bool add) {
-  addLight = add;
-  if (addLight) {
+  if (add) {
     LightSource *l = new LightSource();
     l->copy_settings(currentLight);
     select_light(l);
@@ -1003,9 +1002,10 @@ void OpenGlWidget::set_add_light(bool add) {
     else
       currentLightList->append(l);
     need_to_update = true;
-  } else {
+  } else if (addLight){
     remove_light(currentLight);
   }
+  addLight = add;
 }
 
 void OpenGlWidget::remove_light(LightSource *light) {

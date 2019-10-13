@@ -348,7 +348,7 @@ void MainWindow::openGL_initialized() {
 
   on_comboBoxView_currentIndexChanged(Texture);
 
-
+  on_actionLoadPlugins_triggered();
 }
 
 void MainWindow::on_pushButtonColor_clicked() {
