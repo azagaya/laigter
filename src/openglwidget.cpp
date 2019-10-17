@@ -469,6 +469,7 @@ float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
   if (currentBrush){
+
     QPoint tpos;
     if (!processor->get_tile_x())
       tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
@@ -478,6 +479,13 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
       tpos.setY((event->localPos().y()-((-processor->get_position()->y()+1)*height()-processor->get_texture()->size().height()*processor->get_zoom())*0.5)/processor->get_zoom());
     else
       tpos.setY((event->localPos().y())/processor->get_zoom());
+
+//    currentBrush->setProcessor(processor);
+
+//    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
@@ -597,6 +605,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   if (event->buttons() & Qt::LeftButton) {
 
     if (currentBrush){
+
       QPoint tpos;
       if (!processor->get_tile_x()){
         tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
@@ -608,6 +617,11 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
       }else{
         tpos.setY((event->localPos().y())/processor->get_zoom());
       }
+
+//      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
       currentBrush->mouseMove(oldPos,tpos);
       oldPos = tpos;
     }
