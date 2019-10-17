@@ -478,6 +478,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
       tpos.setY((event->localPos().y()-((-processor->get_position()->y()+1)*height()-processor->get_texture()->size().height()*processor->get_zoom())*0.5)/processor->get_zoom());
     else
       tpos.setY((event->localPos().y())/processor->get_zoom());
+
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
@@ -608,6 +609,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
       }else{
         tpos.setY((event->localPos().y())/processor->get_zoom());
       }
+
       currentBrush->mouseMove(oldPos,tpos);
       oldPos = tpos;
     }
