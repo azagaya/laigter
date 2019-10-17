@@ -598,6 +598,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   if (event->buttons() & Qt::LeftButton) {
 
     if (currentBrush){
+
       QPoint tpos;
       if (!processor->get_tile_x()){
         tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
