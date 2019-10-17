@@ -466,13 +466,16 @@ void OpenGlWidget::fitZoom() {
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
-  currentBrush->setProcessor(processor);
+  if (currentBrush){
+    currentBrush->setProcessor(processor);
 
-  QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-                 (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-                  -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-  oldPos = tpos;
-  currentBrush->mousePress(tpos);
+    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+    oldPos = tpos;
+    currentBrush->mousePress(tpos);
+  }
+
   float lightWidth = (float)laigter.width() / width() *
                      0.3; // en paintgl la imagen la escalamos por 0.3
   float lightHeight = (float)laigter.height() / height() * 0.3;
@@ -586,11 +589,15 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
     return;
   }
   if (event->buttons() & Qt::LeftButton) {
-    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-    currentBrush->mouseMove(oldPos,tpos);    
-    oldPos = tpos;
+
+    if (currentBrush){
+      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+      currentBrush->mouseMove(oldPos,tpos);
+      oldPos = tpos;
+    }
+
     foreach (ImageProcessor *processor, processorList) {
       if (lightSelected) {
         update_light_position(newLightPos);
