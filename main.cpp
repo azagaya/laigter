@@ -42,12 +42,13 @@ int main(int argc, char *argv[]) {
 
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-  QString locale = QLocale::system().name().split("_").at(0);
   QTranslator translator;
-  bool loaded = translator.load(":/laigter_" + locale);
-  //    bool loaded = translator.load(":/laigter_en");
-  if (!loaded)
+  bool loaded = translator.load(QLocale::system(), ":/laigter", "_");
+  if (!loaded) {
+    // Fallback to English
     translator.load(":/laigter_en");
+  }
+
 
 #ifndef PORTABLE
   QString appData =
