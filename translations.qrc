@@ -6,5 +6,7 @@
         <file>laigter_es.ts</file>
         <file>laigter_fr.qm</file>
         <file>laigter_fr.ts</file>
+        <file>laigter_pt_BR.qm</file>
+        <file>laigter_pt_BR.ts</file>
     </qresource>
 </RCC>
