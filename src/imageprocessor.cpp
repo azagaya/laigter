@@ -791,31 +791,57 @@ int ImageProcessor::get_normal_bisel_blur_radius() {
   return normal_bisel_blur_radius;
 }
 
-int ImageProcessor::get_normal_invert_x() { return normalInvertX; }
+int ImageProcessor::get_normal_invert_x() {
+  return normalInvertX;
+}
 
-int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
+int ImageProcessor::get_normal_invert_y() {
+  return normalInvertY;
+}
 
-QImage *ImageProcessor::get_texture() { return &texture; }
+QImage *ImageProcessor::get_texture() {
+  return &texture;
+}
 
-QImage *ImageProcessor::get_normal() { return &normal; }
+QImage *ImageProcessor::get_normal() {
+  return &normal;
+}
 
-QImage *ImageProcessor::get_parallax() { return &parallax; }
+QImage *ImageProcessor::get_parallax() {
+  return &parallax;
+}
 
-QImage *ImageProcessor::get_specular() { return &specular; }
+QImage *ImageProcessor::get_specular() {
+  return &specular;
+}
 
-QImage *ImageProcessor::get_occlusion() { return &occlussion; }
+QImage *ImageProcessor::get_occlusion() {
+  return &occlussion;
+}
 
-QImage *ImageProcessor::get_texture_overlay() { return &textureOverlay; }
+QImage *ImageProcessor::get_texture_overlay() {
+  return &textureOverlay;
+}
 
-QImage *ImageProcessor::get_normal_overlay() { return &normalOverlay; }
+QImage *ImageProcessor::get_normal_overlay() {
+  return &normalOverlay;
+}
 
-QImage *ImageProcessor::get_parallax_overlay() { return &parallaxOverlay; }
+QImage *ImageProcessor::get_parallax_overlay() {
+  return &parallaxOverlay;
+}
 
-QImage *ImageProcessor::get_specular_overlay() { return &specularOverlay; }
+QImage *ImageProcessor::get_specular_overlay() {
+  return &specularOverlay;
+}
 
-QImage *ImageProcessor::get_occlusion_overlay() { return &occlussionOverlay; }
+QImage *ImageProcessor::get_occlusion_overlay() {
+  return &occlussionOverlay;
+}
 
-bool ImageProcessor::get_parallax_invert() { return parallax_invert; }
+bool ImageProcessor::get_parallax_invert() {
+  return parallax_invert;
+}
 
 void ImageProcessor::set_parallax_invert(bool invert) {
   parallax_invert = invert;
