@@ -95,12 +95,14 @@ DISTFILES += \
 TRANSLATIONS = laigter_es.ts \
                laigter_en.ts \
                laigter_fr.ts \
-               laigter_pt_BR.ts
+               laigter_pt_BR.ts \
+               laigter_ca_ES.ts
 
 LANGUAGES = en \
             es \
             fr \
-            pt_BR
+            pt_BR \
+            ca_ES
 
 # parameters: var, prepend, append
 defineReplace(prependAll) {

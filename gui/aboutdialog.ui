@@ -185,7 +185,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -256,6 +256,11 @@
          <item>
           <property name="text">
            <string>George Marques (vnen) - Brazilian Portuguese</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Xavier Gómez (hiulit) - Catalán</string>
           </property>
          </item>
          <item>

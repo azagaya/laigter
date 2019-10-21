@@ -8,5 +8,7 @@
         <file>laigter_fr.ts</file>
         <file>laigter_pt_BR.qm</file>
         <file>laigter_pt_BR.ts</file>
+        <file>laigter_ca_ES.ts</file>
+        <file>laigter_ca_ES.qm</file>
     </qresource>
 </RCC>
