@@ -1074,7 +1074,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
     qDebug() << pl.errorString();
     if(b != nullptr){
       ui->openGLPreviewWidget->currentBrush = b;
-      b->setProcessor(processor);
+      b->setProcessor(&processor);
       QAction *action = new QAction(b->getIcon(),b->getName());
       action->setCheckable(true);
       QDockWidget *pluginDock = new QDockWidget(b->getName(),this);
