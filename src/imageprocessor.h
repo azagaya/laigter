@@ -89,7 +89,7 @@ public:
   int loadImage(QString fileName, QImage image);
   int loadHeightMap(QString fileName, QImage height);
   int loadSpecularMap(QString fileName, QImage specular);
-  void generate_normal_map(bool updateEnhance = true, bool updateBump = true, bool updateDistance = true);
+  void generate_normal_map(bool updateEnhance = true, bool updateBump = true, bool updateDistance = true, QRect rect = QRect(0,0,0,0));
   cv::Mat calculate_normal(cv::Mat mat, int depth, int blur_radius);
   void calculate_gradient();
   void calculate_distance();
