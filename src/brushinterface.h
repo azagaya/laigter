@@ -23,7 +23,7 @@ class BrushInterface
   virtual void mouseMove(const QPoint &oldPos, const QPoint &newPos) = 0;
   virtual void mouseRelease(const QPoint &pos) = 0;
   virtual QWidget *loadGUI(QWidget *parent = nullptr) = 0;
-  virtual void setProcessor(ImageProcessor *processor) = 0;
+  virtual void setProcessor(ImageProcessor **processor) = 0;
   virtual QIcon getIcon() = 0;
   virtual QString getName() = 0;
 };
