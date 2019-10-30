@@ -837,6 +837,8 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
+  while (normal_counter > 0)
+    QThread::msleep(10);
   return &normal;
 }
 
