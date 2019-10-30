@@ -830,7 +830,11 @@ int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
 
 QImage *ImageProcessor::get_texture() { return &texture; }
 
-QImage *ImageProcessor::get_normal() { return &normal; }
+QImage *ImageProcessor::get_normal() {
+  while (normal_counter > 0)
+    QThread::msleep(10);
+  return &normal;
+}
 
 QImage *ImageProcessor::get_parallax() { return &parallax; }
 
