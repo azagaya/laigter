@@ -597,8 +597,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   }
   if (event->buttons() & Qt::LeftButton) {
 
-    if (currentBrush){
 
+    if (currentBrush && !lightSelected){
       QPoint tpos;
       if (!processor->get_tile_x()){
         tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
@@ -613,19 +613,20 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
 
       currentBrush->mouseMove(oldPos,tpos);
       oldPos = tpos;
-    }
+    } else {
 
-    foreach (ImageProcessor *processor, processorList) {
-      if (lightSelected) {
-        update_light_position(newLightPos);
-      } else {
-        if (processor->get_selected()) {
-          if (!processor->get_tile_x())
-            processor->get_position()->setX(mouseX -
-                                            processor->get_offset()->x());
-          if (!processor->get_tile_y())
-            processor->get_position()->setY(mouseY -
-                                            processor->get_offset()->y());
+      foreach (ImageProcessor *processor, processorList) {
+        if (lightSelected) {
+          update_light_position(newLightPos);
+        } else {
+          if (processor->get_selected()) {
+            if (!processor->get_tile_x())
+              processor->get_position()->setX(mouseX -
+                                              processor->get_offset()->x());
+            if (!processor->get_tile_y())
+              processor->get_position()->setY(mouseY -
+                                              processor->get_offset()->y());
+          }
         }
       }
     }
