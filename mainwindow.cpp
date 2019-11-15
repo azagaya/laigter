@@ -139,9 +139,9 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
 void MainWindow::list_menu_action_triggered(QAction *action) {
   if (action->text() == tr("Remove")) {
     QListWidgetItem *item = ui->listWidget->selectedItems().at(0);
-    fs_watcher.removePath(item->text());
+    fs_watcher.removePath(item->data(Qt::UserRole).toString());
     for (int i = 0; i < processorList.count(); i++) {
-      if (processorList.at(i)->get_name() == item->text()) {
+      if (processorList.at(i)->get_name() == item->data(Qt::UserRole).toString()) {
         processorList.at(i)->deleteLater();
         processorList.removeAt(i);
         break;
@@ -214,8 +214,12 @@ void MainWindow::add_processor(ImageProcessor *p) {
   processorList.append(p);
   processor = p;
   on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-  ui->listWidget->addItem(new QListWidgetItem(
-    QIcon(QPixmap::fromImage(*p->get_texture())), p->get_name()));
+  QStringList parts = p->get_name().split("/");
+  QString filename = parts.at(parts.size()-1);
+  QListWidgetItem *i = new QListWidgetItem(filename);
+  i->setData(Qt::UserRole,p->get_name());
+  i->setIcon(QIcon(QPixmap::fromImage(*p->get_texture())));
+  ui->listWidget->addItem(i);
   ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
 }
 
@@ -237,7 +241,7 @@ void MainWindow::open_files(QStringList fileNames) {
         auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
       int i;
       for (i = 0; i < ui->listWidget->count(); i++) {
-        if (ui->listWidget->item(i)->text() == fileName) {
+        if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
           QMessageBox msgBox;
           msgBox.setText(tr("The image is already opened in Laigter."));
           msgBox.exec();
@@ -564,7 +568,7 @@ void MainWindow::on_listWidget_itemSelectionChanged() {
     ui->openGLPreviewWidget->clear_processor_list();
     foreach (QListWidgetItem *item, ui->listWidget->selectedItems()) {
       for (int i = 0; i < processorList.count(); i++) {
-        if (processorList.at(i)->get_name() == item->text()) {
+        if (processorList.at(i)->get_name() == item->data(Qt::UserRole).toString()) {
           p = processorList.at(i);
           ui->openGLPreviewWidget->add_processor(p);
           processor_selected(p, true);
@@ -988,7 +992,7 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected) {
   }
   if (ui->listWidget->selectedItems().count() == 1) {
     foreach (ImageProcessor *p, processorList) {
-      if (p->get_name() == ui->listWidget->selectedItems().at(0)->text()) {
+      if (p->get_name() == ui->listWidget->selectedItems().at(0)->data(Qt::UserRole).toString()) {
         p->set_selected(true);
       }
     }
