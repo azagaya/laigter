@@ -28,7 +28,7 @@ class BrushInterface
   virtual QIcon getIcon() = 0;
   virtual QString getName() = 0;
   signals:
-      virtual void selected(BrushInterface *brush);
+      void selected(BrushInterface *brush);
 };
 
 #define BrushInterface_iid "org.azagaya.laigter.plugins.BrushInterface/1.0"

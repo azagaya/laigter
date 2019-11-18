@@ -468,7 +468,7 @@ void OpenGlWidget::fitZoom() {
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
-  if (currentBrush){
+  if (currentBrush && currentBrush->get_selected()){
 
     QPoint tpos;
     if (!processor->get_tile_x())
@@ -606,7 +606,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   }
   if (event->buttons() & Qt::LeftButton) {
 
-    if (currentBrush && !lightSelected){
+    if (currentBrush && currentBrush->get_selected() && !lightSelected){
 
       QPoint tpos;
       if (!processor->get_tile_x()){
