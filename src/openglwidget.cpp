@@ -362,6 +362,9 @@ void OpenGlWidget::update_scene() {
     }
     lightProgram.release();
   }
+  // Render cursor
+  if (currentBrush && currentBrush->get_selected()){
+  }
 }
 
 void OpenGlWidget::resizeGL(int w, int h) {
