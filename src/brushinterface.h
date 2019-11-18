@@ -27,6 +27,7 @@ class BrushInterface
   virtual void setProcessor(ImageProcessor **processor) = 0;
   virtual QIcon getIcon() = 0;
   virtual QString getName() = 0;
+  virtual QImage getBrushSprite() = 0;
   signals:
       void selected(BrushInterface *brush);
 };
