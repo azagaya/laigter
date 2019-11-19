@@ -528,7 +528,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
 //                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
 
 
->>>>>>> afa1c48b012f9588b616bb9d7c64a14a8ce1b698
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
