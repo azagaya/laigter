@@ -173,6 +173,7 @@ void OpenGlWidget::loadTextures() {
   m_normalTexture = new QOpenGLTexture(*normalMap);
   m_occlusionTexture = new QOpenGLTexture(*occlusionMap);
   laigterTexture = new QOpenGLTexture(laigter);
+  brushTexture = new QOpenGLTexture(laigter);
 }
 
 void OpenGlWidget::paintGL() {
@@ -362,8 +363,43 @@ void OpenGlWidget::update_scene() {
     }
     lightProgram.release();
   }
-  // Render cursor
+  /* Render brush cursor */
   if (currentBrush && currentBrush->get_selected()){
+    setCursor(Qt::BlankCursor);
+    brushTexture->destroy();
+    brushTexture->create();
+    brushTexture->setData(currentBrush->getBrushSprite());
+
+    float x = static_cast<float>(brushTexture->width()) / width() * processor->get_zoom();
+    float y = static_cast<float>(brushTexture->height()) / height() * processor->get_zoom();
+    QPoint cursor = mapFromGlobal(QCursor::pos());
+
+    transform.setToIdentity();
+    transform.translate(2.0*cursor.x()/width()-1,-2.0*cursor.y()/height()+1);
+    transform.scale(x,y,1);
+
+    lightProgram.bind();
+    lightVAO.bind();
+    lightProgram.setUniformValue("transform", transform);
+
+    brushTexture->bind(0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE0);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    lightProgram.setUniformValue("texture", 0);
+    lightProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
+    color = QVector3D(1, 1,1);
+    lightProgram.setUniformValue("lightColor", color);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    lightProgram.release();
+  } else {
+    setCursor(Qt::ArrowCursor);
   }
 }
 
