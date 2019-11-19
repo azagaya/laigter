@@ -507,7 +507,10 @@ void OpenGlWidget::fitZoom() {
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
-  if (currentBrush){
+
+  if (currentBrush && currentBrush->get_selected()){
+
+
     QPoint tpos;
     if (!processor->get_tile_x())
       tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
@@ -518,6 +521,14 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
     else
       tpos.setY((event->localPos().y())/processor->get_zoom());
 
+//    currentBrush->setProcessor(processor);
+
+//    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
+
+>>>>>>> afa1c48b012f9588b616bb9d7c64a14a8ce1b698
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
@@ -636,8 +647,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   }
   if (event->buttons() & Qt::LeftButton) {
 
+    if (currentBrush && currentBrush->get_selected() && !lightSelected){
 
-    if (currentBrush && !lightSelected){
       QPoint tpos;
       if (!processor->get_tile_x()){
         tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
@@ -649,6 +660,12 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
       }else{
         tpos.setY((event->localPos().y())/processor->get_zoom());
       }
+
+
+//      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
 
       currentBrush->mouseMove(oldPos,tpos);
       oldPos = tpos;
@@ -666,6 +683,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
               processor->get_position()->setY(mouseY -
                                               processor->get_offset()->y());
           }
+
+
         }
       }
     }
