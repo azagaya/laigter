@@ -393,7 +393,7 @@ void OpenGlWidget::update_scene() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     lightProgram.setUniformValue("texture", 0);
     lightProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
-    color = QVector3D(1, 1,1);
+    color = QVector3D(0.2, 0.2, 0.2);
     lightProgram.setUniformValue("lightColor", color);
     glDrawArrays(GL_QUADS, 0, 4);
 
@@ -686,6 +686,10 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
     }
     need_to_update = true;
   } else if (event->buttons() & Qt::RightButton) {
+  }
+
+  if (currentBrush && currentBrush->get_selected()){
+    need_to_update = true;
   }
 }
 
