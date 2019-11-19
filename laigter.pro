@@ -92,13 +92,15 @@ DISTFILES += \
     ACKNOWLEDGEMETS \
     LICENSE
 
-TRANSLATIONS = laigter_es.ts \
+TRANSLATIONS = laigter_da.ts \
+               laigter_es.ts \
                laigter_en.ts \
                laigter_fr.ts \
                laigter_pt_BR.ts \
                laigter_ca_ES.ts
 
-LANGUAGES = en \
+LANGUAGES = da\
+            en \
             es \
             fr \
             pt_BR \
