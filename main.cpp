@@ -45,6 +45,7 @@ int main(int argc, char *argv[]) {
 
   QTranslator translator;
   bool loaded = translator.load(QLocale::system(), ":/laigter", "_");
+//  bool loaded = translator.load(":/laigter_da");
   if (!loaded) {
     // Fallback to English
     translator.load(":/laigter_en");

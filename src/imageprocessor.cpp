@@ -165,6 +165,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     fill_neighbours(m_heightmap, neighbours);
   }
 
+//  m_normal = Mat(m_img.rows,m_img.cols,CV_8UC3);
   return 0;
 }
 
@@ -206,8 +207,8 @@ void ImageProcessor::calculate_parallax() {
   }
 
   parallax = QImage(static_cast<unsigned char *>(current_parallax.data),
-                     current_parallax.cols, current_parallax.rows,
-                     current_parallax.step, QImage::Format_Grayscale8);
+                    current_parallax.cols, current_parallax.rows,
+                    current_parallax.step, QImage::Format_Grayscale8);
   processed();
   parallax_counter--;
   parallax_mutex.unlock();
@@ -235,8 +236,8 @@ void ImageProcessor::calculate_specular() {
   }
 
   specular = QImage(static_cast<unsigned char *>(current_specular.data),
-                     current_specular.cols, current_specular.rows,
-                     current_specular.step, QImage::Format_Grayscale8);
+                    current_specular.cols, current_specular.rows,
+                    current_specular.step, QImage::Format_Grayscale8);
 
   processed();
   specular_counter--;
@@ -265,8 +266,8 @@ void ImageProcessor::calculate_occlusion() {
   }
 
   occlussion = QImage(static_cast<unsigned char *>(current_occlusion.data),
-                     current_occlusion.cols, current_occlusion.rows,
-                     current_occlusion.step, QImage::Format_Grayscale8);
+                      current_occlusion.cols, current_occlusion.rows,
+                      current_occlusion.step, QImage::Format_Grayscale8);
 
   processed();
 
@@ -361,8 +362,8 @@ QImage ImageProcessor::get_neighbour(int x, int y) {
   neighbours(rect).copyTo(m_aux);
   // cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
   QImage p =
-      QImage(static_cast<unsigned char *>(m_aux.data), m_aux.cols, m_aux.rows,
-             m_aux.step, QImage::Format_RGBA8888_Premultiplied);
+    QImage(static_cast<unsigned char *>(m_aux.data), m_aux.cols, m_aux.rows,
+           m_aux.step, QImage::Format_RGBA8888_Premultiplied);
   return p;
 }
 
@@ -379,7 +380,7 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular) {
   }
   customSpecularMap = true;
   m_specular =
-      Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
+    Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
 
   int aux = m_specular.depth();
   switch (aux) {
@@ -426,7 +427,7 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height) {
   }
   customHeightMap = true;
   m_heightmap =
-      Mat(height.height(), height.width(), CV_8UC4, height.scanLine(0));
+    Mat(height.height(), height.width(), CV_8UC4, height.scanLine(0));
 
   int aux = m_heightmap.depth();
   switch (aux) {
@@ -511,37 +512,37 @@ void ImageProcessor::calculate_distance() {
 
 void ImageProcessor::set_normal_invert_x(bool invert) {
   normalInvertX = -invert * 2 + 1;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false,QRect(0,0,0,0));
 }
 void ImageProcessor::set_normal_invert_y(bool invert) {
   normalInvertY = -invert * 2 + 1;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false,QRect(0,0,0,0));
 }
 void ImageProcessor::set_normal_invert_z(bool invert) {
   normalInvertZ = -invert * 2 + 1;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,false,QRect(0,0,0,0));
 }
 void ImageProcessor::set_normal_depth(int depth) {
   normal_depth = depth;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false,QRect(0,0,0,0));
 }
 void ImageProcessor::set_normal_bisel_soft(bool soft) {
   normal_bisel_soft = soft;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true,QRect(0,0,0,0));
 }
 void ImageProcessor::set_normal_blur_radius(int radius) {
   normal_blur_radius = radius;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,false,false,QRect(0,0,0,0));
 }
 
 void ImageProcessor::set_normal_bisel_depth(int depth) {
   normal_bisel_depth = depth;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false,QRect(0,0,0,0));
 }
 
 void ImageProcessor::set_normal_bisel_distance(int distance) {
   normal_bisel_distance = distance;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,true,QRect(0,0,0,0));
 }
 
 void ImageProcessor::set_tileable(bool t) {
@@ -694,10 +695,10 @@ Mat ImageProcessor::modify_specular() {
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
   normal_bisel_blur_radius = radius;
-  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false);
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,false,true,false,QRect(0,0,0,0));
 }
 
-void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance) {
+void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
   if (normal_counter > 2)
     return;
   normal_counter++;
@@ -709,19 +710,51 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   Mat normals;
   normals = (m_emboss_normal + m_distance_normal);
 
-  for (int x = 0; x < normals.cols; ++x) {
-    for (int y = 0; y < normals.rows; ++y) {
-      QColor oColor = normalOverlay.pixelColor(x,y);
+  int xmin = 0, xmax = normals.cols;
+  int ymin = 0, ymax = normals.rows;
+
+  if (rect != QRect(0,0,0,0)){
+    rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+  }
+
+  Rect roi(xmin,ymin,xmax-xmin,ymax-ymin);
+  if (m_normal.rows == 0 || m_normal.cols == 0){
+    m_emboss_normal.copyTo(m_normal);
+    m_normal.convertTo(m_normal, CV_8UC3, 255);
+  }
+
+  for (int x = xmin; x < xmax; ++x) {
+    int xaux = x;
+    if (tileX) {
+      xaux %= texture.width();
+      if (xaux < 0) continue;
+    } else if (x >= texture.width() || x < 0) {
+      continue;
+    }
+    for (int y = ymin; y < ymax; ++y) {
+      int yaux = y;
+      if (tileX) {
+        yaux %= texture.height();
+        if (yaux < 0 ) continue;
+      } else if (y >= texture.height() || y < 0) {
+        continue;
+      }
+      QColor oColor = normalOverlay.pixelColor(xaux,yaux);
       Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-      Vec3f n = normalize(normals.at<Vec3f>(y, x)*(1-oColor.alphaF())+overlay*oColor.alphaF());
-      normals.at<Vec3f>(y, x) = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
+      Vec3f n = normalize(normals.at<Vec3f>(yaux, xaux)*(1-oColor.alphaF())+overlay*oColor.alphaF());
+      n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
+      m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
+      m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
+      m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
     }
   }
 
-  normals.convertTo(normals, CV_8UC3, 255);
-  normals.copyTo(m_normal);
+//  normals.convertTo(normals, CV_8UC3, 255);
+
+//  normals(roi).copyTo(m_normal(roi));
+
   normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
-                    m_normal.rows, m_normal.step, QImage::Format_RGB888);
+                  m_normal.rows, m_normal.step, QImage::Format_RGB888);
   processed();
 
   normal_counter--;
@@ -804,6 +837,8 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
+  while (normal_counter > 0)
+    QThread::msleep(10);
   return &normal;
 }
 

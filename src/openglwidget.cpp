@@ -79,6 +79,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent) {
   sample_light_list_used = true;
 
   oldPos = QPoint(0,0);
+
+  currentBrush = nullptr;
 }
 
 void OpenGlWidget::initializeGL() {
@@ -171,6 +173,7 @@ void OpenGlWidget::loadTextures() {
   m_normalTexture = new QOpenGLTexture(*normalMap);
   m_occlusionTexture = new QOpenGLTexture(*occlusionMap);
   laigterTexture = new QOpenGLTexture(laigter);
+  brushTexture = new QOpenGLTexture(laigter);
 }
 
 void OpenGlWidget::paintGL() {
@@ -360,6 +363,44 @@ void OpenGlWidget::update_scene() {
     }
     lightProgram.release();
   }
+  /* Render brush cursor */
+  if (currentBrush && currentBrush->get_selected()){
+    setCursor(Qt::BlankCursor);
+    brushTexture->destroy();
+    brushTexture->create();
+    brushTexture->setData(currentBrush->getBrushSprite());
+
+    float x = static_cast<float>(brushTexture->width()) / width() * processor->get_zoom();
+    float y = static_cast<float>(brushTexture->height()) / height() * processor->get_zoom();
+    QPoint cursor = mapFromGlobal(QCursor::pos());
+
+    transform.setToIdentity();
+    transform.translate(2.0*cursor.x()/width()-1,-2.0*cursor.y()/height()+1);
+    transform.scale(x,y,1);
+
+    lightProgram.bind();
+    lightVAO.bind();
+    lightProgram.setUniformValue("transform", transform);
+
+    brushTexture->bind(0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE0);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    lightProgram.setUniformValue("texture", 0);
+    lightProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
+    color = QVector3D(0.2, 0.2, 0.2);
+    lightProgram.setUniformValue("lightColor", color);
+    glDrawArrays(GL_QUADS, 0, 4);
+
+    lightProgram.release();
+  } else {
+    setCursor(Qt::ArrowCursor);
+  }
 }
 
 void OpenGlWidget::resizeGL(int w, int h) {
@@ -466,13 +507,31 @@ void OpenGlWidget::fitZoom() {
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
-  currentBrush->setProcessor(processor);
 
-  QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-                 (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-                  -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-  oldPos = tpos;
-  currentBrush->mousePress(tpos);
+  if (currentBrush && currentBrush->get_selected()){
+
+
+    QPoint tpos;
+    if (!processor->get_tile_x())
+      tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
+    else
+      tpos.setX((event->localPos().x())/processor->get_zoom());
+    if (!processor->get_tile_y())
+      tpos.setY((event->localPos().y()-((-processor->get_position()->y()+1)*height()-processor->get_texture()->size().height()*processor->get_zoom())*0.5)/processor->get_zoom());
+    else
+      tpos.setY((event->localPos().y())/processor->get_zoom());
+
+//    currentBrush->setProcessor(processor);
+
+//    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
+
+    oldPos = tpos;
+    currentBrush->mousePress(tpos);
+  }
+
   float lightWidth = (float)laigter.width() / width() *
                      0.3; // en paintgl la imagen la escalamos por 0.3
   float lightHeight = (float)laigter.height() / height() * 0.3;
@@ -586,27 +645,54 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
     return;
   }
   if (event->buttons() & Qt::LeftButton) {
-    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-    currentBrush->mouseMove(oldPos,tpos);    
-    oldPos = tpos;
-    foreach (ImageProcessor *processor, processorList) {
-      if (lightSelected) {
-        update_light_position(newLightPos);
-      } else {
-        if (processor->get_selected()) {
-          if (!processor->get_tile_x())
-            processor->get_position()->setX(mouseX -
-                                            processor->get_offset()->x());
-          if (!processor->get_tile_y())
-            processor->get_position()->setY(mouseY -
-                                            processor->get_offset()->y());
+
+    if (currentBrush && currentBrush->get_selected() && !lightSelected){
+
+      QPoint tpos;
+      if (!processor->get_tile_x()){
+        tpos.setX((event->localPos().x()-((processor->get_position()->x()+1)*width()-processor->get_texture()->size().width()*processor->get_zoom())*0.5)/processor->get_zoom());
+      }else{
+        tpos.setX((event->localPos().x())/processor->get_zoom());
+      }
+      if (!processor->get_tile_y()){
+        tpos.setY((event->localPos().y()-((-processor->get_position()->y()+1)*height()-processor->get_texture()->size().height()*processor->get_zoom())*0.5)/processor->get_zoom());
+      }else{
+        tpos.setY((event->localPos().y())/processor->get_zoom());
+      }
+
+
+//      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+//                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+//                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+
+
+      currentBrush->mouseMove(oldPos,tpos);
+      oldPos = tpos;
+    } else {
+
+      foreach (ImageProcessor *processor, processorList) {
+        if (lightSelected) {
+          update_light_position(newLightPos);
+        } else {
+          if (processor->get_selected()) {
+            if (!processor->get_tile_x())
+              processor->get_position()->setX(mouseX -
+                                              processor->get_offset()->x());
+            if (!processor->get_tile_y())
+              processor->get_position()->setY(mouseY -
+                                              processor->get_offset()->y());
+          }
+
+
         }
       }
     }
     need_to_update = true;
   } else if (event->buttons() & Qt::RightButton) {
+  }
+
+  if (currentBrush && currentBrush->get_selected()){
+    need_to_update = true;
   }
 }
 

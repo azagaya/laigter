@@ -26,7 +26,7 @@
     <message>
         <location filename="gui/aboutdialog.ui" line="199"/>
         <source>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</source>
-        <translation></translation>
+        <translation>Patrick &apos;Ffyhlkain&apos; Henschel (Producer!)</translation>
     </message>
     <message>
         <location filename="gui/aboutdialog.ui" line="207"/>

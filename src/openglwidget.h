@@ -136,7 +136,7 @@ private:
   void select_current_light_list();
 
   GLuint shaderProgram, vertexShader, fragmentShader;
-  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture,
+  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture,
       *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
   QOpenGLVertexArrayObject VAO;
   QOpenGLVertexArrayObject lightVAO;
