@@ -265,6 +265,11 @@
          </item>
          <item>
           <property name="text">
+           <string>Lars Pontoppidan (Larpon) - Danish</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Azagaya - English and Spanish</string>
           </property>
          </item>
