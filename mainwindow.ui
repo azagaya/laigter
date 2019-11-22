@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>1311</height>
+    <height>1331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -546,6 +546,12 @@ QDockWidget::title{
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_8">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Height:</string>
           </property>
@@ -569,6 +575,12 @@ QDockWidget::title{
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="label_7">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Color:</string>
           </property>
@@ -823,9 +835,12 @@ QDockWidget::title{
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>120</width>
+            <width>20</width>
             <height>20</height>
            </size>
           </property>
@@ -833,6 +848,12 @@ QDockWidget::title{
         </item>
         <item row="4" column="0">
          <widget class="QLabel" name="labelQuantization">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Quantization:</string>
           </property>
@@ -840,6 +861,12 @@ QDockWidget::title{
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="labelThreshParallax">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Threshold:</string>
           </property>
@@ -847,13 +874,25 @@ QDockWidget::title{
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="labelThreshMin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
-           <string>Minimum Height:</string>
+           <string>Min Height:</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelThreshSoft">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Soft:</string>
           </property>
@@ -874,6 +913,12 @@ QDockWidget::title{
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="labelContrast">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Contrast:</string>
           </property>
@@ -904,6 +949,12 @@ QDockWidget::title{
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelThreshFocus">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Focus:</string>
           </property>
@@ -911,6 +962,12 @@ QDockWidget::title{
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="labelBrightness">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Brightness:</string>
           </property>
@@ -986,6 +1043,12 @@ QDockWidget::title{
         </item>
         <item row="7" column="0">
          <widget class="QLabel" name="labelErodeDilate">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Erode / Dilate:</string>
           </property>
@@ -1368,8 +1431,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>254</width>
-          <height>305</height>
+          <width>247</width>
+          <height>313</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
