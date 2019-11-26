@@ -24,14 +24,56 @@
     titlebar-normal-icon: url(:/icons/undock.png);
 	margin: 0px
 }
+
+
 QDockWidget::title{
 	background: rgb(40%, 40%, 50%);
 	border-radius:4px;
 	margin:2px;
-	padding: 5px
+	padding: 1px
 }
 
-</string>
+QDockWidget::close-button, QDockWidget::float-button {
+background: transparent;
+border-radius: 6px;
+}
+
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+background: rgb(60%, 60%, 100%);
+}
+
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+background: #b0b0b0;
+border: 1px inset #808080;
+}
+
+/*
+QSlider::groove:horizontal {
+    height: 4px; 
+background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 4px 2.5px;
+}
+
+QSlider::handle:horizontal {
+    background: rgb(60%, 60%, 100%);
+    border: 3px solid rgb(40%, 40%, 50%);
+    width: 6px;
+    margin: -4px 0; 
+    border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal {
+    background: rgb(40%, 40%, 50%);
+	border-radius: 5px;
+}
+
+QSlider::add-page:horizontal {
+    background:  rgb(30%, 30%, 40%);
+	border-radius: 2px;
+
+    margin: 4px 0; 
+}
+*/</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -94,7 +136,7 @@ QDockWidget::title{
     </sizepolicy>
    </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Normal</string>
@@ -125,22 +167,6 @@ QDockWidget::title{
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QSlider" name="normalDepthSlider">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>1000</number>
-            </property>
-            <property name="value">
-             <number>100</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
@@ -161,6 +187,22 @@ QDockWidget::title{
             </property>
             <property name="value">
              <number>5</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="normalDepthSlider">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="value">
+             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -795,6 +837,9 @@ QDockWidget::title{
    </widget>
   </widget>
   <widget class="QDockWidget" name="parallaxDockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Parallax</string>
    </property>
@@ -1074,6 +1119,9 @@ QDockWidget::title{
    </widget>
   </widget>
   <widget class="QDockWidget" name="specularDockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Specular</string>
    </property>
@@ -1201,6 +1249,9 @@ QDockWidget::title{
    </widget>
   </widget>
   <widget class="QDockWidget" name="occlusionDockWidget">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Occlussion</string>
    </property>
@@ -1355,7 +1406,7 @@ QDockWidget::title{
   </widget>
   <widget class="QDockWidget" name="TileDockWidget">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
     <string>Tile</string>
@@ -1413,6 +1464,9 @@ QDockWidget::title{
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidgetExport">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Export</string>
    </property>
@@ -1431,8 +1485,8 @@ QDockWidget::title{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>247</width>
-          <height>313</height>
+          <width>254</width>
+          <height>325</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1541,6 +1595,11 @@ QDockWidget::title{
    </property>
    <property name="toolTip">
     <string>Open</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Noto Sans</family>
+    </font>
    </property>
   </action>
   <action name="actionFitZoom">

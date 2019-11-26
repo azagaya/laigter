@@ -114,8 +114,17 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
   customSpecularMap = false;
   customHeightMap = false;
 
+  active = true;
+
   normal_counter = parallax_counter = specular_counter = occlussion_counter = 0;
 
+}
+
+ImageProcessor::~ImageProcessor(){
+  active = false;
+  while(normal_counter > 0){
+    QThread::msleep(10);
+  }
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image) {
@@ -178,6 +187,7 @@ void ImageProcessor::calculate() {
 
   set_current_heightmap();
   calculate_distance();
+
   calculate_heightmap();
   generate_normal_map();
   calculate_parallax();
@@ -507,7 +517,7 @@ void ImageProcessor::calculate_distance() {
   m_distance.convertTo(m_distance, CV_32FC1, 1.0 / 255);
 
   m_distance.copyTo(new_distance);
-  new_distance = modify_distance();
+//  new_distance = modify_distance();
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert) {
@@ -547,7 +557,8 @@ void ImageProcessor::set_normal_bisel_distance(int distance) {
 
 void ImageProcessor::set_tileable(bool t) {
   tileable = t;
-  calculate();
+  update_tileable = true;
+  QtConcurrent::run(this,&ImageProcessor::generate_normal_map,true,true,true,QRect(0,0,0,0));
 }
 
 bool ImageProcessor::get_tileable() { return tileable; }
@@ -699,14 +710,36 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
 }
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
-  if (normal_counter > 2)
+
+  if (normal_counter > 2 || !active){
     return;
+  }
   normal_counter++;
-  normal_mutex.lock();
-  if (updateEnhance) m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
-  if (updateDistance) new_distance = modify_distance();
-  if (updateBump) m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
+  if (updateEnhance) enhance_requested++;
+  if (updateBump) bump_requested++;
+  if (updateDistance) distance_requested++;
+  QMutexLocker locker(&normal_mutex);
+
+  if (update_tileable){
+    update_tileable = false;
+    distance_requested = true;
+    set_current_heightmap();
+    calculate_distance();
+  }
+  if (enhance_requested){
+    enhance_requested--;
+    m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
+  }
+  if (bump_requested){
+    bump_requested--;
+    new_distance = modify_distance();
+  }
+  if (distance_requested){
+    distance_requested--;
+    m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
                                          , normal_bisel_blur_radius);
+  }
+
   Mat normals;
   normals = (m_emboss_normal + m_distance_normal);
 
@@ -746,19 +779,24 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
       m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
       m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
+
+      if (!active) {
+        normal_counter--;
+        return;
+      }
     }
   }
 
 //  normals.convertTo(normals, CV_8UC3, 255);
 
 //  normals(roi).copyTo(m_normal(roi));
-
+  normal_ready.lock();
   normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                   m_normal.rows, m_normal.step, QImage::Format_RGB888);
+  normal_ready.unlock();
   processed();
 
   normal_counter--;
-  normal_mutex.unlock();
 }
 
 Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius) {
@@ -837,9 +875,12 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
-  while (normal_counter > 0)
-    QThread::msleep(10);
-  return &normal;
+  if (normal_ready.tryLock(0)){
+    last_normal = normal;
+    normal_ready.unlock();
+  }
+
+  return &last_normal;
 }
 
 QImage *ImageProcessor::get_parallax() {

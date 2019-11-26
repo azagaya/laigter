@@ -28,6 +28,7 @@
 #include <QMutex>
 #include <QPainter>
 #include <QBrush>
+#include <QFuture>
 
 #include "src/lightsource.h"
 
@@ -86,6 +87,7 @@ class ImageProcessor : public QObject {
   Q_OBJECT
 public:
   explicit ImageProcessor(QObject *parent = nullptr);
+  ~ImageProcessor();
   int loadImage(QString fileName, QImage image);
   int loadHeightMap(QString fileName, QImage height);
   int loadSpecularMap(QString fileName, QImage specular);
@@ -102,7 +104,7 @@ public:
   QString get_name();
   QString get_specular_path();
   QString get_heightmap_path();
-  bool busy;
+  bool busy, active;
   QString m_fileName;
 
   QImage *get_texture();
@@ -114,7 +116,7 @@ public:
   QImage *get_occlusion();
 
   QImage texture;
-  QImage normal;
+  QImage normal, last_normal;
   QImage parallax;
   QImage specular;
   QImage occlussion;
@@ -293,7 +295,8 @@ private:
   int normal_bisel_distance;
   int normal_blur_radius;
   int normal_bisel_blur_radius;
-  bool normal_bisel_soft, tileable, parallax_invert;
+  bool normal_bisel_soft, tileable, update_tileable = false, parallax_invert;
+  int enhance_requested=0, bump_requested=0, distance_requested=0;
   int normalInvertX, normalInvertY, normalInvertZ;
   char gradient_end;
 
@@ -316,11 +319,13 @@ private:
 
   bool customHeightMap, customSpecularMap;
 
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex;
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready;
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
   QPainter normal_painter;
   QBrush normal_brush;
+
+  QFuture <void> normal_future;
 };
 
 #endif // IMAGEPROCESSOR_H
