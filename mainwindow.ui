@@ -1730,6 +1730,18 @@ QSlider::add-page:horizontal {
     <bool>true</bool>
    </property>
   </action>
+  <action name="actionDelete_Plugin">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete Plugin</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete Plugin</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

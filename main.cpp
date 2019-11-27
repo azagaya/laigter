@@ -62,6 +62,10 @@ int main(int argc, char *argv[]) {
   if (!dir.exists())
     dir.mkpath(".");
 
+  dir = QDir(appData + "/plugins");
+  if (!dir.exists())
+    dir.mkpath(".");
+
 #else
   QDir dir("./presets");
   if (!dir.exists())

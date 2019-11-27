@@ -16,7 +16,6 @@ QT_END_NAMESPACE
 class BrushInterface
 {
   public:
-  virtual ~BrushInterface() = 0;
   virtual void mousePress(const QPoint &pos) = 0;
   virtual void mouseMove(const QPoint &oldPos, const QPoint &newPos) = 0;
   virtual void mouseRelease(const QPoint &pos) = 0;

@@ -1119,10 +1119,17 @@ void MainWindow::on_actionInstall_Plugin_triggered()
 
   if (fileName != nullptr){
     QFile f(fileName);
+    QFileInfo i(f);
+
     QString appData =
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir dir(appData);
-    f.copy(dir.absoluteFilePath(fileName));
+    QDir dir(appData+"/plugins/");
+    f.copy(dir.absoluteFilePath(i.fileName()));
     on_actionLoadPlugins_triggered();
   }
+}
+
+void MainWindow::on_actionDelete_Plugin_triggered()
+{
+
 }
