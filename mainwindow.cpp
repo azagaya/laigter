@@ -1107,12 +1107,10 @@ void MainWindow::on_actionInstall_Plugin_triggered()
 #ifdef Q_OS_LINUX
   QString fileName = QFileDialog::getOpenFileName(
     this, tr("Open Plugin"), "", tr("Shared Library (*.so)"));
-#endif
-#ifdef Q_OS_WINDOWS
+#elif defined(Q_OS_WIN)
   QString fileName = QFileDialog::getOpenFileName(
     this, tr("Open Plugin"), "", tr("Shared Library (*.dll)"));
-#endif
-#ifdef Q_OS_MAC
+#elif defined(Q_OS_MAC)
   QString fileName = QFileDialog::getOpenFileName(
     this, tr("Open Plugin"), "", tr("Shared Library (*.dylib)"));
 #endif
