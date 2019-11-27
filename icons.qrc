@@ -19,5 +19,6 @@
         <file>icons/add-light.png</file>
         <file>icons/refresh.png</file>
         <file>icons/undock.png</file>
+        <file>icons/install.png</file>
     </qresource>
 </RCC>

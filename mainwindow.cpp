@@ -1069,7 +1069,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
     delete dock;
   }
   foreach (QAction *action, ui->pluginToolBar->actions()){
-    if (action->text() == tr("LoadPlugins")) continue;
+    if (action->text() == tr("Load Plugins") || (action->text() == tr("Install Plugin"))) continue;
     ui->pluginToolBar->removeAction(action);
   }
   for (const QString &fileName : entryList) {
@@ -1098,5 +1098,27 @@ void MainWindow::on_actionLoadPlugins_triggered()
       plugin_docks_list.append(pluginDock);
 
     }
+  }
+}
+
+void MainWindow::on_actionInstall_Plugin_triggered()
+{
+  QString os = "";
+#ifdef Q_OS_LINUX
+  QString fileName = QFileDialog::getOpenFileName(
+    this, tr("Open Plugin"), "", tr("Shared Library (*.so)"));
+#elif Q_OS_WINDOWS
+  os = "*.dll";
+#elif Q_OS_MAC
+  os = "*.dylib";
+#endif
+
+  if (fileName != nullptr){
+    QFile f(fileName);
+    QString appData =
+      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir dir(appData);
+    f.copy(dir.absoluteFilePath(fileName));
+    on_actionLoadPlugins_triggered();
   }
 }

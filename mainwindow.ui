@@ -1583,6 +1583,7 @@ QSlider::add-page:horizontal {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionInstall_Plugin"/>
    <addaction name="actionLoadPlugins"/>
   </widget>
   <action name="actionOpen">
@@ -1597,9 +1598,7 @@ QSlider::add-page:horizontal {
     <string>Open</string>
    </property>
    <property name="font">
-    <font>
-     <family>Noto Sans</family>
-    </font>
+    <font/>
    </property>
   </action>
   <action name="actionFitZoom">
@@ -1707,10 +1706,28 @@ QSlider::add-page:horizontal {
      <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
    </property>
    <property name="text">
-    <string>LoadPlugins</string>
+    <string>Load Plugins</string>
    </property>
    <property name="toolTip">
     <string>Reload Plugins</string>
+   </property>
+  </action>
+  <action name="actionInstall_Plugin">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/install.png</normaloff>:/icons/install.png</iconset>
+   </property>
+   <property name="text">
+    <string>Install Plugin</string>
+   </property>
+   <property name="toolTip">
+    <string>Install Plugin</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
  </widget>

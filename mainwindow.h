@@ -123,6 +123,8 @@ private slots:
 
   void on_actionLoadPlugins_triggered();
 
+  void on_actionInstall_Plugin_triggered();
+
   private:
   Ui::MainWindow *ui;
   QOpenGLWidget *gl;
