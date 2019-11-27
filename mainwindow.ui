@@ -136,7 +136,7 @@ QSlider::add-page:horizontal {
     </sizepolicy>
    </property>
    <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
+    <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
     <string>Normal</string>
