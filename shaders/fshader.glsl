@@ -48,6 +48,7 @@ uniform float specScatter;
 uniform float ambientIntensity;
 uniform vec3 ambientColor;
 uniform vec2 ratio;
+uniform float textureScale;
 uniform bool parallax;
 uniform bool pixelated;
 uniform bool selected;
@@ -105,10 +106,10 @@ void main() {
   l_color =
       tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
 
-  if (selected && (texCoord.x <= 1.0 / float(pixelsX) ||
-                   texCoord.x >= (float(pixelsX) - 1.0) / float(pixelsX) ||
-                   texCoord.y <= 1.0 / float(pixelsY) ||
-                   texCoord.y >= (float(pixelsY) - 1.0) / float(pixelsY))) {
+  if (selected && (texCoord.x <= 1.0 / float(pixelsX) / textureScale ||
+                   texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale  ||
+                   texCoord.y <= 1.0 / float(pixelsY) / textureScale  ||
+                   texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale )) {
     gl_FragColor.xyz = 1.0 - outlineColor;
     gl_FragColor.a = 0.5;
   } else if (light) {

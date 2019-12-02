@@ -282,6 +282,7 @@ void OpenGlWidget::update_scene() {
     color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
     m_program.setUniformValue("outlineColor", color);
     m_program.setUniformValue("selected", processor->get_selected());
+    m_program.setUniformValue("textureScale", processor->get_zoom());
 
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
