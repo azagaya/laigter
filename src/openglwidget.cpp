@@ -900,6 +900,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
     }
   } else {
+
     QOpenGLFramebufferObject frameBuffer(width(), height());
     frameBuffer.bind();
     glClearColor(0, 0, 0, 0);

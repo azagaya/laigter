@@ -45,6 +45,7 @@ public:
   ~MainWindow();
   void dropEvent(QDropEvent *event);
   void dragEnterEvent(QDragEnterEvent *e);
+  void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
 
 public slots:
   void update_scene();

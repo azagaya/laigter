@@ -826,8 +826,28 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e) {
 void MainWindow::dropEvent(QDropEvent *event) {
   QStringList fileNames;
   QList<QUrl> urlList = event->mimeData()->urls();
-  foreach (QUrl url, urlList) { fileNames.append(url.toLocalFile()); }
+  openDroppedFiles(urlList, &fileNames);
   open_files(fileNames);
+}
+
+void MainWindow::openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames){
+  foreach (QUrl url, urlList) {
+    QFileInfo info(url.toLocalFile());
+    if (info.isFile()){
+      fileNames->append(url.toLocalFile());
+    }
+    else if (info.isDir()){
+      QList<QUrl> uList;
+      QDir dir(url.toLocalFile());
+      foreach(QFileInfo entry, dir.entryInfoList()){
+        uList.append(QUrl::fromLocalFile(entry.absoluteFilePath()));
+      }
+      /* Always remove 0 and 1 cause they are current dir and parent dir */
+      uList.removeAt(0);
+      uList.removeAt(0);
+      openDroppedFiles(uList, fileNames);
+    }
+  }
 }
 
 void MainWindow::on_actionPresets_triggered() {
