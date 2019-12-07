@@ -44,6 +44,7 @@ CONFIG += core ui c++11
 SOURCES += \
     gui/aboutdialog.cpp \
     gui/presetsmanager.cpp \
+  gui/removeplugindialog.cpp \
         main.cpp \
         mainwindow.cpp \
     src/imageloader.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
 HEADERS += \
     gui/aboutdialog.h \
     gui/presetsmanager.h \
+  gui/removeplugindialog.h \
         mainwindow.h \
   src/brushinterface.h \
     src/imageloader.h \
@@ -66,6 +68,7 @@ HEADERS += \
 FORMS += \
     gui/aboutdialog.ui \
     gui/presetsmanager.ui \
+  gui/removeplugindialog.ui \
         mainwindow.ui \
     gui/nbselector.ui
 

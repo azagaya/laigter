@@ -21,6 +21,7 @@
 #include "gui/aboutdialog.h"
 #include "gui/nbselector.h"
 #include "gui/presetsmanager.h"
+#include "gui/removeplugindialog.h"
 #include "src/openglwidget.h"
 #include "ui_mainwindow.h"
 #include "src/brushinterface.h"
@@ -1083,13 +1084,14 @@ void MainWindow::on_actionLoadPlugins_triggered()
     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   QDir dir(appData);
   dir.cd("plugins");
-  const auto entryList = dir.entryList(QDir::Files);
+  const QStringList entryList = dir.entryList(QDir::Files);
   foreach (QDockWidget *dock, plugin_docks_list){
     plugin_docks_list.removeOne(dock);
     delete dock;
   }
   foreach (QAction *action, ui->pluginToolBar->actions()){
-    if (action->text() == tr("Load Plugins") || (action->text() == tr("Install Plugin"))) continue;
+    if (action->text() == tr("Load Plugins") || (action->text() == tr("Install Plugin"))
+        || (action->text() == tr("Delete Plugin"))) continue;
     ui->pluginToolBar->removeAction(action);
   }
   for (const QString &fileName : entryList) {
@@ -1123,7 +1125,6 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
 void MainWindow::on_actionInstall_Plugin_triggered()
 {
-  QString os = "";
 #ifdef Q_OS_LINUX
   QString fileName = QFileDialog::getOpenFileName(
     this, tr("Open Plugin"), "", tr("Shared Library (*.so)"));
@@ -1142,12 +1143,42 @@ void MainWindow::on_actionInstall_Plugin_triggered()
     QString appData =
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir dir(appData+"/plugins/");
-    f.copy(dir.absoluteFilePath(i.fileName()));
+    QString new_plugin_path = dir.absoluteFilePath(i.fileName());
+    if (QFile::exists(new_plugin_path)){
+      QFile::remove(new_plugin_path);
+    }
+    f.copy(new_plugin_path);
     on_actionLoadPlugins_triggered();
   }
 }
 
 void MainWindow::on_actionDelete_Plugin_triggered()
 {
+  QString extension = "";
+#ifdef Q_OS_LINUX
+  extension = ".so";
+#elif defined(Q_OS_WIN)
+  extension = ".dll";
+#elif defined(Q_OS_MAC)
+  extension = ".dylib";
+#endif
 
+  if (ui->openGLPreviewWidget->currentBrush){
+    ui->openGLPreviewWidget->currentBrush->set_selected(false);
+    ui->openGLPreviewWidget->currentBrush = nullptr;
+  }
+  QString appData =
+    QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  QDir dir(appData);
+  dir.cd("plugins");
+  QStringList entryList = dir.entryList(QDir::Files);
+  for (const QString &fileName : entryList) {
+    if (!fileName.endsWith(extension)){
+      entryList.removeOne(fileName);
+    }
+  }
+  RemovePluginDialog rd;
+  rd.setPluginList(entryList);
+  rd.exec();
+  on_actionLoadPlugins_triggered();
 }

@@ -25,7 +25,6 @@
 	margin: 0px
 }
 
-
 QDockWidget::title{
 	background: rgb(40%, 40%, 50%);
 	border-radius:4px;
@@ -167,6 +166,22 @@ QSlider::add-page:horizontal {
             </property>
            </widget>
           </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="normalDepthSlider">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+            <property name="value">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
@@ -187,22 +202,6 @@ QSlider::add-page:horizontal {
             </property>
             <property name="value">
              <number>5</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSlider" name="normalDepthSlider">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>1000</number>
-            </property>
-            <property name="value">
-             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -1584,7 +1583,9 @@ QSlider::add-page:horizontal {
     <bool>false</bool>
    </attribute>
    <addaction name="actionInstall_Plugin"/>
+   <addaction name="actionDelete_Plugin"/>
    <addaction name="actionLoadPlugins"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
