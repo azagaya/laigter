@@ -32,6 +32,7 @@
 #include <QOpenGLWidget>
 #include <QThread>
 #include <QVector3D>
+#include <QPluginLoader>
 
 namespace Ui {
 class MainWindow;
@@ -143,6 +144,7 @@ private slots:
   ImageLoader il;
   QFileSystemWatcher fs_watcher;
   QList <QDockWidget*> plugin_docks_list;
+  QList <QPluginLoader *> plugin_list;
 };
 
 #endif // MAINWINDOW_H

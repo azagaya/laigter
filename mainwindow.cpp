@@ -1083,6 +1083,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
   QString appData =
     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   QDir dir(appData);
+  QDir tmp(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
   dir.cd("plugins");
   const QStringList entryList = dir.entryList(QDir::Files);
   foreach (QDockWidget *dock, plugin_docks_list){
@@ -1095,9 +1096,9 @@ void MainWindow::on_actionLoadPlugins_triggered()
     ui->pluginToolBar->removeAction(action);
   }
   for (const QString &fileName : entryList) {
-    QPluginLoader pl(dir.absoluteFilePath(fileName));
-    BrushInterface *b = qobject_cast<BrushInterface *>( pl.instance());
-    qDebug() << pl.errorString();
+    QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
+    QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
+    BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
     if(b != nullptr){
       ui->openGLPreviewWidget->currentBrush = b;
       b->setProcessor(&processor);
@@ -1118,7 +1119,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
       ui->pluginToolBar->addAction(action);
 
       plugin_docks_list.append(pluginDock);
-
+      plugin_list.append(pl);
     }
   }
 }
@@ -1166,6 +1167,10 @@ void MainWindow::on_actionDelete_Plugin_triggered()
   if (ui->openGLPreviewWidget->currentBrush){
     ui->openGLPreviewWidget->currentBrush->set_selected(false);
     ui->openGLPreviewWidget->currentBrush = nullptr;
+  }
+  foreach(QPluginLoader *pl, plugin_list){
+      plugin_list.removeOne(pl);
+      pl->unload();
   }
   QString appData =
     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
