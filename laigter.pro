@@ -45,6 +45,7 @@ SOURCES += \
     gui/aboutdialog.cpp \
     gui/presetsmanager.cpp \
   gui/removeplugindialog.cpp \
+  gui/widgets/slider.cpp \
         main.cpp \
         mainwindow.cpp \
     src/imageloader.cpp \
@@ -54,9 +55,11 @@ SOURCES += \
     gui/nbselector.cpp
 
 HEADERS += \
+  gui/Widgets/slider.h \
     gui/aboutdialog.h \
     gui/presetsmanager.h \
   gui/removeplugindialog.h \
+  gui/widgets/slider.h \
         mainwindow.h \
   src/brushinterface.h \
     src/imageloader.h \
@@ -135,6 +138,7 @@ for(tsfile, TRANSLATIONS) {
 RESOURCES += \
     shaders.qrc \
     images.qrc \
+    styles.qrc \
     translations.qrc \
     icons.qrc
 
