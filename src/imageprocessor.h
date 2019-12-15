@@ -29,6 +29,7 @@
 #include <QPainter>
 #include <QBrush>
 #include <QFuture>
+#include <QVector2D>
 
 #include "src/lightsource.h"
 
