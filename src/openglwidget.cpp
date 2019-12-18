@@ -522,11 +522,11 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
     else
       tpos.setY((event->localPos().y())/processor->get_zoom());
 
-//    currentBrush->setProcessor(processor);
+    //    currentBrush->setProcessor(processor);
 
-//    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-//                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-//                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+    //    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+    //                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+    //                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
 
 
     oldPos = tpos;
@@ -662,9 +662,9 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
       }
 
 
-//      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-//                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-//                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
+      //      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
+      //                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
+      //                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
 
 
       currentBrush->mouseMove(oldPos,tpos);
@@ -915,9 +915,33 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
     int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
+    int xmin = width(), xmax = 0, ymin = height(), ymax = 0;
+
     QMatrix4x4 transform;
 
     foreach (ImageProcessor *processor, processorList) {
+
+      /* Calculate positions for cropping after rendering */
+      int xi = 0.5*(processor->get_position()->x()+1)*width() - processor->get_texture()->width()/2.0*processor->get_zoom();
+      int xf = 0.5*(processor->get_position()->x()+1)*width() + processor->get_texture()->width()/2.0*processor->get_zoom();
+      int yi = 0.5*(-processor->get_position()->y()+1)*height() - processor->get_texture()->height()/2.0*processor->get_zoom();
+      int yf = 0.5*(-processor->get_position()->y()+1)*height() + processor->get_texture()->height()/2.0*processor->get_zoom();
+      if (processor->get_tile_x()){
+        xmin = 0;
+        xmax = width()-1;
+      } else{
+        if (xi < xmin) xmin = xi;
+        if (xf > xmax) xmax = xf;
+
+      }
+      if (processor->get_tile_y()){
+        ymin = 0;
+        ymax = height()-1;
+      } else {
+        if (yi < ymin) ymin = yi;
+        if (yf > ymax) ymax = yf;
+      }
+
       setImage(&processor->texture);
       setNormalMap(processor->get_normal());
       setSpecularMap(processor->get_specular());
@@ -1018,6 +1042,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       m_program.release();
     }
     renderedPreview = frameBuffer.toImage();
+    QRect rect(QPoint(xmin,ymin),QPoint(xmax,ymax));
+    renderedPreview = renderedPreview.copy(rect);
   }
 
   return renderedPreview;
