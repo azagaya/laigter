@@ -134,6 +134,10 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
   normalOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
   normalOverlay.fill(QColor(0,0,0,0));
+
+  specularOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
+  specularOverlay.fill(QColor(0,0,0,0));
+
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
   switch (aux) {
@@ -231,10 +235,23 @@ void ImageProcessor::calculate_specular() {
   specular_mutex.lock();
   current_specular = modify_specular();
 
+  Mat ov = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
+  Mat channels[4];
+  split(ov, channels);
+
+  Mat alpha = channels[3];
+  ov = channels[0];
+  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+  ov.convertTo(ov, CV_32FC1, 1.0/255);
+
+ // multiply(alpha,ov,ov);
+
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
   if (tileable && current_specular.rows == m_img.rows * 3) {
     current_specular(rect).copyTo(current_specular);
   }
+
+
 
   switch (current_specular.channels()) {
   case 3:
@@ -245,9 +262,16 @@ void ImageProcessor::calculate_specular() {
     break;
   }
 
+  current_specular.convertTo(current_specular, CV_32FC1, 1.0/255);
+  multiply(Scalar::all(1.0)-alpha,current_specular,current_specular);
+  add(ov, current_specular, current_specular);
+  current_specular.convertTo(current_specular, CV_8UC1, 255);
+
+  specular_ready.lock();
   specular = QImage(static_cast<unsigned char *>(current_specular.data),
                     current_specular.cols, current_specular.rows,
                     current_specular.step, QImage::Format_Grayscale8);
+  specular_ready.unlock();
 
   processed();
   specular_counter--;
@@ -730,11 +754,11 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     enhance_requested--;
     m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
   }
-  if (bump_requested){
+  if (distance_requested){
     bump_requested--;
     new_distance = modify_distance();
   }
-  if (distance_requested){
+  if (bump_requested){
     distance_requested--;
     m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
                                          , normal_bisel_blur_radius);
@@ -888,7 +912,11 @@ QImage *ImageProcessor::get_parallax() {
 }
 
 QImage *ImageProcessor::get_specular() {
-  return &specular;
+  if (specular_ready.tryLock(0)){
+    last_specular = specular;
+    specular_ready.unlock();
+  }
+  return &last_specular;
 }
 
 QImage *ImageProcessor::get_occlusion() {

@@ -119,7 +119,7 @@ public:
   QImage texture;
   QImage normal, last_normal;
   QImage parallax;
-  QImage specular;
+  QImage specular, last_specular;
   QImage occlussion;
 
   /* Images for Plugins */
@@ -320,7 +320,7 @@ private:
 
   bool customHeightMap, customSpecularMap;
 
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready;
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready;
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
   QPainter normal_painter;
