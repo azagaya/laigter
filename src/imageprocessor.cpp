@@ -754,15 +754,18 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     enhance_requested--;
     m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
   }
+
   if (distance_requested){
-    bump_requested--;
+    distance_requested--;
     new_distance = modify_distance();
   }
+
   if (bump_requested){
-    distance_requested--;
+    bump_requested--;
     m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
                                          , normal_bisel_blur_radius);
   }
+
 
   Mat normals;
   normals = (m_emboss_normal + m_distance_normal);
