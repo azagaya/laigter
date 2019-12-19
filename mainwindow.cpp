@@ -1096,6 +1096,8 @@ void MainWindow::on_actionLoadPlugins_triggered()
     ui->pluginToolBar->removeAction(action);
   }
   for (const QString &fileName : entryList) {
+    if (QFile(tmp.absoluteFilePath(fileName)).exists())
+      qDebug() << QFile(tmp.absoluteFilePath(fileName)).remove();
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
     BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
@@ -1115,7 +1117,6 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
       pluginDock->setVisible(false);
       connect(action,SIGNAL(toggled(bool)),pluginDock,SLOT(setVisible(bool)));
-
       ui->pluginToolBar->addAction(action);
 
       plugin_docks_list.append(pluginDock);

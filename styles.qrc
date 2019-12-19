@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>styles/spinboxslider.qss</file>
+        <file>styles/spinboxslider2.qss</file>
     </qresource>
 </RCC>

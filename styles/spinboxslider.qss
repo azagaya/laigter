@@ -7,7 +7,7 @@ background: transparent;
 }
 
 QSlider::handle:horizontal {
-    background: rgb(0%,0%, 40%);
+    background: rgb(30%,30%, 40%);
    border: 2px solid rgb(60%, 60%, 100%);
         border-left: 30px solid transparent;
     width: 10px;
@@ -32,8 +32,10 @@ QSlider::add-page:horizontal {
 }
 
 QSpinBox {
-        color:  rgb(80%, 80%, 100%);
+        color:  rgb(80%, 90%, 100%);
         background: transparent;
+        margin: 0px;
+        padding: 0px;
 }
 
 QSpinBox::up-button {

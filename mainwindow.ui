@@ -46,33 +46,8 @@ background: #b0b0b0;
 border: 1px inset #808080;
 }
 
-/*
-QSlider::groove:horizontal {
-    height: 4px; 
-background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
-    margin: 4px 2.5px;
-}
 
-QSlider::handle:horizontal {
-    background: rgb(60%, 60%, 100%);
-    border: 3px solid rgb(40%, 40%, 50%);
-    width: 6px;
-    margin: -4px 0; 
-    border-radius: 5px;
-}
-
-QSlider::sub-page:horizontal {
-    background: rgb(40%, 40%, 50%);
-	border-radius: 5px;
-}
-
-QSlider::add-page:horizontal {
-    background:  rgb(30%, 30%, 40%);
-	border-radius: 2px;
-
-    margin: 4px 0; 
-}
-*/</string>
+</string>
   </property>
   <property name="dockNestingEnabled">
    <bool>true</bool>
@@ -167,7 +142,7 @@ QSlider::add-page:horizontal {
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSlider" name="normalDepthSlider">
+           <widget class="Slider" name="normalDepthSlider">
             <property name="minimum">
              <number>0</number>
             </property>
@@ -190,7 +165,7 @@ QSlider::add-page:horizontal {
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSlider" name="normalBlurSlider">
+           <widget class="Slider" name="normalBlurSlider">
             <property name="minimum">
              <number>0</number>
             </property>
@@ -264,7 +239,7 @@ QSlider::add-page:horizontal {
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSlider" name="normalBevelSlider">
+           <widget class="Slider" name="normalBevelSlider">
             <property name="maximum">
              <number>40000</number>
             </property>
@@ -284,7 +259,7 @@ QSlider::add-page:horizontal {
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSlider" name="normalBiselDistanceSlider">
+           <widget class="Slider" name="normalBiselDistanceSlider">
             <property name="maximum">
              <number>255</number>
             </property>
@@ -304,7 +279,7 @@ QSlider::add-page:horizontal {
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSlider" name="normalBiselBlurSlider">
+           <widget class="Slider" name="normalBiselBlurSlider">
             <property name="minimum">
              <number>0</number>
             </property>
@@ -1750,6 +1725,11 @@ QSlider::add-page:horizontal {
    <class>OpenGlWidget</class>
    <extends>QOpenGLWidget</extends>
    <header>src/openglwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>gui/widgets/slider.h</header>
   </customwidget>
  </customwidgets>
  <resources>

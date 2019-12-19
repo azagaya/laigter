@@ -46,6 +46,7 @@ SOURCES += \
     gui/presetsmanager.cpp \
   gui/removeplugindialog.cpp \
   gui/widgets/slider.cpp \
+  gui/widgets/slider2.cpp \
         main.cpp \
         mainwindow.cpp \
     src/imageloader.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     gui/presetsmanager.h \
   gui/removeplugindialog.h \
   gui/widgets/slider.h \
+  gui/widgets/slider2.h \
         mainwindow.h \
   src/brushinterface.h \
     src/imageloader.h \
