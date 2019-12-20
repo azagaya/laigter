@@ -125,10 +125,11 @@ public:
   /* Images for Plugins */
 
   QImage textureOverlay = QImage(0,0,QImage::Format_RGBA8888);
-  QImage normalOverlay= QImage(100,100,QImage::Format_RGBA8888);
-  QImage parallaxOverlay= QImage(0,0,QImage::Format_RGBA8888);
-  QImage specularOverlay= QImage(0,0,QImage::Format_RGBA8888);
-  QImage occlussionOverlay= QImage(0,0,QImage::Format_RGBA8888);
+  QImage normalOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage parallaxOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage specularOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage occlussionOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage heightOverlay = QImage(0,0,QImage::Format_RGBA8888);
 
   QImage *get_texture_overlay();
   QImage *get_normal_overlay();

@@ -138,6 +138,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   specularOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
   specularOverlay.fill(QColor(0,0,0,0));
 
+  heightOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
+  specularOverlay.fill(QColor(0,0,0,0));
+
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
   switch (aux) {
@@ -739,6 +742,11 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     return;
   }
   normal_counter++;
+
+  Mat heightmapOverlay = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
+  cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
+  heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1);
+  heightmapOverlay = calculate_normal(heightmapOverlay,70,1);
   if (updateEnhance) enhance_requested++;
   if (updateBump) bump_requested++;
   if (updateDistance) distance_requested++;
@@ -753,6 +761,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (enhance_requested){
     enhance_requested--;
     m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
+
   }
 
   if (distance_requested){
@@ -766,9 +775,10 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
                                          , normal_bisel_blur_radius);
   }
 
+  qDebug() << m_emboss_normal.type() << m_distance_normal.type() << heightmapOverlay.type();
 
   Mat normals;
-  normals = (m_emboss_normal + m_distance_normal);
+  normals = (m_emboss_normal + m_distance_normal + heightmapOverlay);
 
   int xmin = 0, xmax = normals.cols;
   int ymin = 0, ymax = normals.rows;
@@ -801,7 +811,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       }
       QColor oColor = normalOverlay.pixelColor(xaux,yaux);
       Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-      Vec3f n = normalize(normals.at<Vec3f>(yaux, xaux)*(1-oColor.alphaF())+overlay*oColor.alphaF());
+      Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
       n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
       m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
       m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;

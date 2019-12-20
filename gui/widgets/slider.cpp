@@ -46,7 +46,8 @@ void Slider::resizeEvent(QResizeEvent *ev) {
   QString num = QString::number(spin_box.value());
   QFontMetrics fm(spin_box.font());
   spin_box.resize(fm.horizontalAdvance(num)+15,20);
-  spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
+ // spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
+//  spin_box.move(0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
 }
 
 void Slider::sliderChange(QAbstractSlider::SliderChange change)
@@ -58,13 +59,13 @@ void Slider::sliderChange(QAbstractSlider::SliderChange change)
     QString num = QString::number(spin_box.value());
     QFontMetrics fm(spin_box.font());
     spin_box.resize(fm.horizontalAdvance(num)+15,20);
-    spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
+    //spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
   }
 }
 
 void Slider::paintEvent(QPaintEvent *ev) {
   QSlider::paintEvent(ev);
-  QRect rect(1.0*(width()-12.0)*value()/maximum()+37.0*(maximum()-value())/(maximum()),8,4,4);
+  QRect rect(1.0*(width()-12.0)*(value()-minimum())/(maximum()-minimum())+37.0*(maximum()-value())/(maximum()-minimum()),8,4,4);
   QPainter painter(this);
   painter.fillRect(rect, QBrush(QColor(153,153,255)));
 }

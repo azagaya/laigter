@@ -382,7 +382,7 @@ border: 1px inset #808080;
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -397,7 +397,7 @@ border: 1px inset #808080;
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSlider" name="horizontalSliderDiffLight">
+             <widget class="Slider" name="horizontalSliderDiffLight">
               <property name="maximum">
                <number>400</number>
               </property>
@@ -449,7 +449,7 @@ border: 1px inset #808080;
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSlider" name="horizontalSliderSpec">
+             <widget class="Slider" name="horizontalSliderSpec">
               <property name="maximum">
                <number>400</number>
               </property>
@@ -462,7 +462,7 @@ border: 1px inset #808080;
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QSlider" name="horizontalSliderSpecScatter">
+             <widget class="Slider" name="horizontalSliderSpecScatter">
               <property name="minimum">
                <number>1</number>
               </property>
@@ -574,7 +574,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="1" column="1" colspan="2">
-         <widget class="QSlider" name="horizontalSliderDiffHeight">
+         <widget class="Slider" name="horizontalSliderDiffHeight">
           <property name="minimum">
            <number>-100</number>
           </property>
@@ -771,7 +771,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSlider" name="sliderParallax">
+         <widget class="Slider" name="sliderParallax">
           <property name="maximum">
            <number>300</number>
           </property>
@@ -918,7 +918,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QSlider" name="sliderParallaxBright">
+         <widget class="Slider" name="sliderParallaxBright">
           <property name="minimum">
            <number>-255</number>
           </property>
@@ -944,7 +944,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSlider" name="parallaxFocusSlider">
+         <widget class="Slider" name="parallaxFocusSlider">
           <property name="maximum">
            <number>50</number>
           </property>
@@ -993,7 +993,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSlider" name="parallaxMinHeight">
+         <widget class="Slider" name="parallaxMinHeight">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -1003,7 +1003,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QSlider" name="parallaxSoftSlider">
+         <widget class="Slider" name="parallaxSoftSlider">
           <property name="maximum">
            <number>50</number>
           </property>
@@ -1016,7 +1016,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QSlider" name="parallaxThreshSlider">
+         <widget class="Slider" name="parallaxThreshSlider">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -1032,7 +1032,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QSlider" name="parallaxQuantizationSlider">
+         <widget class="Slider" name="parallaxQuantizationSlider">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -1045,7 +1045,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="6" column="1">
-         <widget class="QSlider" name="sliderParallaxContrast">
+         <widget class="Slider" name="sliderParallaxContrast">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -1074,7 +1074,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="7" column="1">
-         <widget class="QSlider" name="sliderParallaxErodeDilate">
+         <widget class="Slider" name="sliderParallaxErodeDilate">
           <property name="minimum">
            <number>-99</number>
           </property>
@@ -1111,7 +1111,7 @@ border: 1px inset #808080;
        </property>
        <layout class="QGridLayout" name="gridLayout_19">
         <item row="0" column="1">
-         <widget class="QSlider" name="sliderSpecThresh">
+         <widget class="Slider" name="sliderSpecThresh">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -1138,7 +1138,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSlider" name="sliderSpecBright">
+         <widget class="Slider" name="sliderSpecBright">
           <property name="minimum">
            <number>-255</number>
           </property>
@@ -1151,7 +1151,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSlider" name="sliderSpecSoft">
+         <widget class="Slider" name="sliderSpecSoft">
           <property name="maximum">
            <number>50</number>
           </property>
@@ -1201,7 +1201,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QSlider" name="sliderSpecContrast">
+         <widget class="Slider" name="sliderSpecContrast">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -1255,7 +1255,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSlider" name="sliderOcclusionBright">
+         <widget class="Slider" name="sliderOcclusionBright">
           <property name="minimum">
            <number>-255</number>
           </property>
@@ -1271,7 +1271,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSlider" name="sliderOcclusionSoft">
+         <widget class="Slider" name="sliderOcclusionSoft">
           <property name="maximum">
            <number>50</number>
           </property>
@@ -1284,7 +1284,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QSlider" name="sliderOcclusionThresh">
+         <widget class="Slider" name="sliderOcclusionThresh">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -1320,7 +1320,7 @@ border: 1px inset #808080;
          </spacer>
         </item>
         <item row="2" column="1">
-         <widget class="QSlider" name="sliderOcclusionContrast">
+         <widget class="Slider" name="sliderOcclusionContrast">
           <property name="minimum">
            <number>1</number>
           </property>
@@ -1360,7 +1360,7 @@ border: 1px inset #808080;
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QSlider" name="sliderOcclusionDistance">
+         <widget class="Slider" name="sliderOcclusionDistance">
           <property name="maximum">
            <number>1024</number>
           </property>
