@@ -93,7 +93,7 @@ public:
   int loadHeightMap(QString fileName, QImage height);
   int loadSpecularMap(QString fileName, QImage specular);
   void generate_normal_map(bool updateEnhance = true, bool updateBump = true, bool updateDistance = true, QRect rect = QRect(0,0,0,0));
-  cv::Mat calculate_normal(cv::Mat mat, int depth, int blur_radius);
+  void calculate_normal(cv::Mat mat, cv::Mat src, int depth, int blur_radius, QRect r = QRect(0,0,0,0));
   void calculate_gradient();
   void calculate_distance();
   void calculate_heightmap();
@@ -272,6 +272,7 @@ private:
   cv::Mat current_heightmap;
   cv::Mat neighbours;
   cv::Mat m_aux;
+  cv::Mat m_height_ov;
 
   cv::Mat current_specular;
   int specular_thresh;

@@ -178,10 +178,14 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     m_img.copyTo(m_heightmap);
     m_img.copyTo(m_occlusion);
 
+    m_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC3);
+    m_emboss_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
+    m_distance_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
+
     fill_neighbours(m_heightmap, neighbours);
   }
 
-//  m_normal = Mat(m_img.rows,m_img.cols,CV_8UC3);
+  //  m_normal = Mat(m_img.rows,m_img.cols,CV_8UC3);
   return 0;
 }
 
@@ -247,7 +251,7 @@ void ImageProcessor::calculate_specular() {
   alpha.convertTo(alpha, CV_32FC1, 1.0/255);
   ov.convertTo(ov, CV_32FC1, 1.0/255);
 
- // multiply(alpha,ov,ov);
+  // multiply(alpha,ov,ov);
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
   if (tileable && current_specular.rows == m_img.rows * 3) {
@@ -544,7 +548,7 @@ void ImageProcessor::calculate_distance() {
   m_distance.convertTo(m_distance, CV_32FC1, 1.0 / 255);
 
   m_distance.copyTo(new_distance);
-//  new_distance = modify_distance();
+  //  new_distance = modify_distance();
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert) {
@@ -738,30 +742,36 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
 
+  static QRect r;
+
+  r = r.united(rect);
+
   if (normal_counter > 2 || !active){
     return;
   }
   normal_counter++;
 
+  QMutexLocker locker(&normal_mutex);
+  rect = r;
+  r = QRect(0,0,0,0);
   Mat heightmapOverlay = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
-  heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1);
-  heightmapOverlay = calculate_normal(heightmapOverlay,70,1);
+  heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
+  calculate_normal(heightmapOverlay, m_height_ov,1,1,rect);
   if (updateEnhance) enhance_requested++;
   if (updateBump) bump_requested++;
   if (updateDistance) distance_requested++;
-  QMutexLocker locker(&normal_mutex);
 
   if (update_tileable){
     update_tileable = false;
     distance_requested = true;
     set_current_heightmap();
+    calculate_heightmap();
     calculate_distance();
   }
   if (enhance_requested){
     enhance_requested--;
-    m_emboss_normal = calculate_normal(m_gray, normal_depth, normal_blur_radius);
-
+    calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
   }
 
   if (distance_requested){
@@ -771,14 +781,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   if (bump_requested){
     bump_requested--;
-    m_distance_normal = calculate_normal(new_distance, normal_bisel_depth*normal_bisel_distance
+    calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
                                          , normal_bisel_blur_radius);
   }
 
-  qDebug() << m_emboss_normal.type() << m_distance_normal.type() << heightmapOverlay.type();
-
   Mat normals;
-  normals = (m_emboss_normal + m_distance_normal + heightmapOverlay);
+  normals = (m_emboss_normal + m_distance_normal + m_height_ov );
 
   int xmin = 0, xmax = normals.cols;
   int ymin = 0, ymax = normals.rows;
@@ -812,6 +820,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       QColor oColor = normalOverlay.pixelColor(xaux,yaux);
       Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
       Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
+      n = normalize(normals.at<Vec3f>(y, x));
       n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
       m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
       m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
@@ -824,9 +833,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     }
   }
 
-//  normals.convertTo(normals, CV_8UC3, 255);
+//    normals.convertTo(normals, CV_8UC3, 255);
 
-//  normals(roi).copyTo(m_normal(roi));
+//    normals(roi).copyTo(m_normal(roi));
   normal_ready.lock();
   normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                   m_normal.rows, m_normal.step, QImage::Format_RGB888);
@@ -836,47 +845,83 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   normal_counter--;
 }
 
-Mat ImageProcessor::calculate_normal(Mat mat, int depth, int blur_radius) {
+void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radius, QRect r) {
 
   Mat aux;
+
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
+
   float dx, dy;
+
   GaussianBlur(mat, aux, Size(blur_radius * 2 + 1, blur_radius * 2 + 1), 0);
+  int xs, xe, ys, ye;
+  if (r == QRect(0,0,0,0)){
+    xs = 0;
+    xe = aux.rows;
+    ys = 0;
+    ye = aux.cols;
+  } else {
+    xs = r.top();
+    xe = r.bottom();
+    ys = r.left();
+    ye = r.right();
+  }
 
   Mat normals(aux.size(), CV_32FC3);
-  for (int x = 0; x < aux.cols; ++x) {
-    for (int y = 0; y < aux.rows; ++y) {
-      if (current_heightmap.at<Vec4b>(y, x)[3] == 0.0) {
-        normals.at<Vec3f>(y, x) = Vec3f(0, 0, 1);
+  for (int x = xs; x < xe; ++x) {
+    /* Calculate coordinates for seamless */
+//    int xaux = x;
+//    if (tileX) {
+//      xaux %= texture.height();
+//      if (xaux < 0) continue;
+//    } else if (x >= texture.height() || x < 0) {
+//      continue;
+//    }
+    for (int y = ys; y < ye; ++y) {
+      /* Calculate coordinates for seamless */
+//      int yaux = y;
+//      if (tileX) {
+//        yaux %= texture.width();
+//        if (yaux < 0 ) continue;
+//      } else if (y >= texture.width() || y < 0) {
+//        continue;
+//      }
+
+      if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0) {
+          normals.at<Vec3f>(x,y) = Vec3f(0,0,1);
+
         continue;
       }
       if (x == 0) {
-        dx = -3 * aux.at<float>(y, x) + 4 * aux.at<float>(y, x + 1) -
-             aux.at<float>(y, x + 1);
-      } else if (x == aux.cols - 1) {
-        dx = 3 * aux.at<float>(y, x) + 4 * aux.at<float>(y, x - 1) -
-             aux.at<float>(y, x - 2);
+        dx = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x + 1, y) -
+             aux.at<float>(x + 2, y);
+      } else if (x == aux.rows - 1) {
+        dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
+             aux.at<float>(x - 2, y);
       } else {
-        dx = -aux.at<float>(y, (x - 1)) + aux.at<float>(y, (x + 1));
+        dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
       }
       if (y == 0) {
-        dy = -3 * aux.at<float>(y, x) + 4 * aux.at<float>(y + 1, x) -
-             aux.at<float>(y + 2, x);
-      } else if (y == aux.rows - 1) {
-        dy = 3 * aux.at<float>(y, x) + 4 * aux.at<float>(y - 1, x) -
-             aux.at<float>(y - 2, x);
+        dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y+1) -
+             aux.at<float>(x, y+2);
+      } else if (y == aux.cols - 1) {
+        dy = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x, y-1) +
+             aux.at<float>(x, y-2);
       } else {
-        dy = -aux.at<float>(y - 1, x) + aux.at<float>(y + 1, x);
+        dy = -aux.at<float>(x, y - 1) + aux.at<float>(x, y + 1);
       }
 
-      Vec3f n = Vec3f(-dx * (depth / 1000.0) * normalInvertX,
-                      dy * (depth / 1000.0) * normalInvertY, 1 * normalInvertZ);
-      normals.at<Vec3f>(y, x) = n;
+      Vec3f n = Vec3f(-dy * (depth / 1000.0) * normalInvertX,
+                      dx * (depth / 1000.0) * normalInvertY, 1 * normalInvertZ);
+
+      normals.at<Vec3f>(x, y) = n;
+
     }
+
   }
   if (tileable && normals.rows == m_img.rows * 3)
     normals(rect).copyTo(normals);
-  return normals;
+  normals.copyTo(src);
 }
 
 void ImageProcessor::copy_settings(ProcessorSettings s) { settings = s; }
