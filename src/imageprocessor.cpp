@@ -869,23 +869,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
 
   Mat normals(aux.size(), CV_32FC3);
   for (int x = xs; x < xe; ++x) {
-    /* Calculate coordinates for seamless */
-//    int xaux = x;
-//    if (tileX) {
-//      xaux %= texture.height();
-//      if (xaux < 0) continue;
-//    } else if (x >= texture.height() || x < 0) {
-//      continue;
-//    }
     for (int y = ys; y < ye; ++y) {
-      /* Calculate coordinates for seamless */
-//      int yaux = y;
-//      if (tileX) {
-//        yaux %= texture.width();
-//        if (yaux < 0 ) continue;
-//      } else if (y >= texture.width() || y < 0) {
-//        continue;
-//      }
 
       if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0) {
           normals.at<Vec3f>(x,y) = Vec3f(0,0,1);
