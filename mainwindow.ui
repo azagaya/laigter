@@ -492,7 +492,7 @@ border: 1px inset #808080;
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QSlider" name="horizontalSliderAmbientLight">
+             <widget class="Slider" name="horizontalSliderAmbientLight">
               <property name="maximum">
                <number>100</number>
               </property>

@@ -752,12 +752,49 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   normal_counter++;
 
   QMutexLocker locker(&normal_mutex);
+
   rect = r;
+
+  /* Calculate rects to update */
+
+  QList <QRect> rlist;
+
+  rlist.append(rect.intersected(texture.rect()));
+
+  bool diagonal = true;
+  int left = 0, top = 0;
+  if (rect.right() >= texture.rect().right()){
+    left = max(0, rect.left()-texture.width()*(rect.left()/texture.width()));
+    rlist.append(QRect(left,rect.top(),(rect.right() % texture.width())+1 - left,rect.height()).intersected(texture.rect()));
+  } else {
+    diagonal = false;
+  }
+  if (rect.bottom() >= texture.rect().bottom()){
+    top = max(0, rect.top()-texture.height()*(rect.top()/texture.height()));
+    rlist.append(QRect(rect.left(),top,rect.width(),(rect.bottom() % texture.height())+1-top).intersected(texture.rect()));
+  } else {
+    diagonal = false;
+  }
+
+  if (diagonal){
+    rlist.append(QRect(left,top,rect.right()-texture.rect().right()-left,rect.bottom()-texture.rect().bottom()-top).intersected(texture.rect()));
+  }
+
+  rlist.removeAll(QRect(0,0,0,0));
+
+  qDebug() << rlist;
   r = QRect(0,0,0,0);
+  if (rlist.count() == 0){
+    rlist.append(r);
+  }
+
   Mat heightmapOverlay = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
-  calculate_normal(heightmapOverlay, m_height_ov,1,1,rect);
+  for (int i=0; i < rlist.count(); i++){
+    calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
+  }
+
   if (updateEnhance) enhance_requested++;
   if (updateBump) bump_requested++;
   if (updateDistance) distance_requested++;
@@ -782,7 +819,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (bump_requested){
     bump_requested--;
     calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
-                                         , normal_bisel_blur_radius);
+                     , normal_bisel_blur_radius);
   }
 
   Mat normals;
@@ -820,7 +857,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       QColor oColor = normalOverlay.pixelColor(xaux,yaux);
       Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
       Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
-      n = normalize(normals.at<Vec3f>(y, x));
+      n = normalize(normals.at<Vec3f>(yaux, xaux));
       n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
       m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
       m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
@@ -833,9 +870,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     }
   }
 
-//    normals.convertTo(normals, CV_8UC3, 255);
+  //    normals.convertTo(normals, CV_8UC3, 255);
 
-//    normals(roi).copyTo(m_normal(roi));
+  //    normals(roi).copyTo(m_normal(roi));
   normal_ready.lock();
   normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                   m_normal.rows, m_normal.step, QImage::Format_RGB888);
@@ -857,9 +894,9 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
   int xs, xe, ys, ye;
   if (r == QRect(0,0,0,0)){
     xs = 0;
-    xe = aux.rows;
+    xe = aux.rows-1;
     ys = 0;
-    ye = aux.cols;
+    ye = aux.cols-1;
   } else {
     xs = r.top();
     xe = r.bottom();
@@ -868,11 +905,11 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
   }
 
   Mat normals(aux.size(), CV_32FC3);
-  for (int x = xs; x < xe; ++x) {
-    for (int y = ys; y < ye; ++y) {
+  for (int x = xs; x <= xe; ++x) {
+    for (int y = ys; y <= ye; ++y) {
 
       if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0) {
-          normals.at<Vec3f>(x,y) = Vec3f(0,0,1);
+        normals.at<Vec3f>(x,y) = Vec3f(0,0,1);
 
         continue;
       }
