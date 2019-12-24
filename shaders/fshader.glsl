@@ -53,11 +53,13 @@ uniform bool parallax;
 uniform bool pixelated;
 uniform bool selected;
 uniform float height_scale;
+uniform float rotation_angle;
 uniform int pixelsX, pixelsY;
 
 uniform vec3 outlineColor;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
+mat4 rotationZ(float angle);
 
 void main() {
   vec2 dis;
@@ -82,7 +84,7 @@ void main() {
 
   texCoords *= ratio;
 
-  vec3 normal = normalize(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0);
+  vec3 normal = normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0,0.0)*rotationZ(rotation_angle)).xyz;
   vec3 specMap = texture2D(specularMap, texCoords).xyz;
   vec4 l_color = vec4(0.0);
   vec4 tex = texture2D(TEX, texCoords);
@@ -117,6 +119,13 @@ void main() {
   } else {
     gl_FragColor = tex;
   }
+}
+
+mat4 rotationZ( in float angle ) {
+        return mat4(	cos(angle),		-sin(angle),	0,	0,
+                                        sin(angle),		cos(angle),		0,	0,
+                                                        0,				0,		1,	0,
+                                                        0,				0,		0,	1);
 }
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {

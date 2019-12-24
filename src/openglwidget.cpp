@@ -200,6 +200,7 @@ void OpenGlWidget::force_update() {
 }
 
 void OpenGlWidget::update_scene() {
+  static float rotation = 0;
   glClearColor(
     backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
     backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
@@ -236,6 +237,7 @@ void OpenGlWidget::update_scene() {
     float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
     transform.scale(zoomX, zoomY, 1);
 
+    transform.rotate(180.0*rotation/3.1415,QVector3D(0,0,1));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -283,6 +285,7 @@ void OpenGlWidget::update_scene() {
     m_program.setUniformValue("outlineColor", color);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
+    m_program.setUniformValue("rotation_angle",rotation);
 
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
