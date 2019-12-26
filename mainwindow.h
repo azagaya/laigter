@@ -23,6 +23,7 @@
 #include "src/imageloader.h"
 #include "src/imageprocessor.h"
 #include "src/lightsource.h"
+#include "src/brushinterface.h"
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -59,6 +60,7 @@ public slots:
   void selectedProcessorsChanged(QList<ImageProcessor *> list);
   void processor_selected(ImageProcessor *processor, bool selected);
   void set_enabled_map_controls(bool e);
+  void select_plugin(BrushInterface *b);
 
 signals:
   void normal_depth_changed(int value);

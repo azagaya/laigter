@@ -1097,10 +1097,11 @@ void MainWindow::on_actionLoadPlugins_triggered()
   }
   for (const QString &fileName : entryList) {
     if (QFile(tmp.absoluteFilePath(fileName)).exists())
-      qDebug() << QFile(tmp.absoluteFilePath(fileName)).remove();
+      QFile(tmp.absoluteFilePath(fileName)).remove();
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
     BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
+    qDebug() << pl->errorString();
     if(b != nullptr){
       ui->openGLPreviewWidget->currentBrush = b;
       b->setProcessor(&processor);
@@ -1117,12 +1118,17 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
       pluginDock->setVisible(false);
       connect(action,SIGNAL(toggled(bool)),pluginDock,SLOT(setVisible(bool)));
+      connect(b->getObject(),SIGNAL(selected_changed(BrushInterface*)),this,SLOT(select_plugin(BrushInterface*)));
       ui->pluginToolBar->addAction(action);
 
       plugin_docks_list.append(pluginDock);
       plugin_list.append(pl);
     }
   }
+}
+
+void MainWindow::select_plugin(BrushInterface *b){
+  qDebug() << b->getName();
 }
 
 void MainWindow::on_actionInstall_Plugin_triggered()

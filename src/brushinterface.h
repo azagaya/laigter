@@ -2,6 +2,7 @@
 #define BRUSHINTERFACE_H
 
 #include <QtPlugin>
+#include <QObject>
 
 QT_BEGIN_NAMESPACE
 class QImage;
@@ -26,8 +27,9 @@ class BrushInterface
   virtual QIcon getIcon() = 0;
   virtual QString getName() = 0;
   virtual QImage getBrushSprite() = 0;
+  virtual QObject *getObject() = 0;
   signals:
-      void selected(BrushInterface *brush);
+  void selected_changed(BrushInterface *brush);
 };
 
 #define BrushInterface_iid "org.azagaya.laigter.plugins.BrushInterface/1.0"
