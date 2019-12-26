@@ -881,12 +881,12 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
 
   float dx, dy;
   int br = blur_radius * 2 + 1;
-  if (!tileable){
+  if (mat.cols == m_img.cols *3){
+    GaussianBlur(mat, aux, Size(br, br), 0);
+  } else {
     copyMakeBorder(mat,aux,br,br,br,br,BORDER_WRAP);
     GaussianBlur(aux, aux, Size(br, br), 0);
     aux = aux(Rect(br,br,m_img.cols,m_img.rows));
-  } else {
-    GaussianBlur(mat, aux, Size(br, br), 0);
   }
   int xs, xe, ys, ye;
   if (r == QRect(0,0,0,0)){
