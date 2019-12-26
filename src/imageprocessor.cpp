@@ -808,7 +808,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (enhance_requested){
     enhance_requested--;
     for (int i=0; i < rlist.count(); i++)
-    calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
+      calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
   }
 
   if (distance_requested){
@@ -819,8 +819,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (bump_requested){
     bump_requested--;
     for (int i=0; i < rlist.count(); i++)
-    calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
-                     , normal_bisel_blur_radius);
+      calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
+                       , normal_bisel_blur_radius);
   }
 
   Mat normals;
@@ -880,8 +880,14 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
 
   float dx, dy;
-
-  GaussianBlur(mat, aux, Size(blur_radius * 2 + 1, blur_radius * 2 + 1), 0);
+  int br = blur_radius * 2 + 1;
+  if (!tileable){
+    copyMakeBorder(mat,aux,br,br,br,br,BORDER_WRAP);
+    GaussianBlur(aux, aux, Size(br, br), 0);
+    aux = aux(Rect(br,br,m_img.cols,m_img.rows));
+  } else {
+    GaussianBlur(mat, aux, Size(br, br), 0);
+  }
   int xs, xe, ys, ye;
   if (r == QRect(0,0,0,0)){
     xs = 0;
@@ -907,22 +913,25 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
       if (x == 0) {
         dx = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x + 1, y) -
              aux.at<float>(x + 2, y);
+        //        dx = -aux.at<float>(aux.rows-1, y) + aux.at<float>(1, y);
       } else if (x == aux.rows - 1) {
-        dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
-             aux.at<float>(x - 2, y);
+                dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
+                     aux.at<float>(x - 2, y);
+//        dx = -aux.at<float>(aux.rows-2, y) + aux.at<float>(0, y);
       } else {
-      dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
+        dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
       }
       if (y == 0) {
-        dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y+1) -
-             aux.at<float>(x, y+2);
+                dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y+1) -
+                     aux.at<float>(x, y+2);
+//        dx = -aux.at<float>(x, aux.cols-1) + aux.at<float>(x, 1);
       } else if (y == aux.cols - 1) {
-        dy = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x, y-1) +
-             aux.at<float>(x, y-2);
+                dy = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x, y-1) +
+                     aux.at<float>(x, y-2);
+//        dx = -aux.at<float>(x, aux.cols-2) + aux.at<float>(x, 0);
       } else {
         dy = -aux.at<float>(x, y - 1) + aux.at<float>(x, y + 1);
       }
-
       Vec3f n = Vec3f(-dy * (depth / 1000.0) * normalInvertX,
                       dx * (depth / 1000.0) * normalInvertY, 1 * normalInvertZ);
 
