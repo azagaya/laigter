@@ -755,42 +755,41 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   rect = r;
 
+  r = QRect(0,0,0,0);
+
   /* Calculate rects to update */
 
   QList <QRect> rlist;
 
-  rlist.append(rect.intersected(texture.rect()));
-
   bool diagonal = true;
-  int left = 0, top = 0;
-  if (rect.right() >= texture.rect().right()){
-    left = max(0, rect.left()-texture.width()*(rect.left()/texture.width()));
-    rlist.append(QRect(left,rect.top(),(rect.right() % texture.width())+1 - left,rect.height()).intersected(texture.rect()));
+
+  rect.moveTo(rect.left() % texture.width(), rect.top() % texture.height());
+
+  rlist.append(rect.intersected(texture.rect()));
+  if (rect.right() > texture.rect().right()){
+    rlist.prepend(QRect(0, rect.top(), rect.right() % texture.width(), rect.height()).intersected(texture.rect()));
   } else {
     diagonal = false;
   }
-  if (rect.bottom() >= texture.rect().bottom()){
-    top = max(0, rect.top()-texture.height()*(rect.top()/texture.height()));
-    rlist.append(QRect(rect.left(),top,rect.width(),(rect.bottom() % texture.height())+1-top).intersected(texture.rect()));
+  if (rect.bottom() > texture.rect().bottom()){
+    rlist.append(QRect(rect.left(), 0, rect.width(),rect.bottom() % texture.height()).intersected(texture.rect()));
   } else {
     diagonal = false;
   }
 
   if (diagonal){
-    rlist.append(QRect(left,top,rect.right()-texture.rect().right()-left,rect.bottom()-texture.rect().bottom()-top).intersected(texture.rect()));
+    rlist.append(QRect(0,0,rect.right() % texture.width(),rect.bottom() % texture.height()).intersected(texture.rect()));
   }
 
   rlist.removeAll(QRect(0,0,0,0));
 
-  qDebug() << rlist;
-  r = QRect(0,0,0,0);
   if (rlist.count() == 0){
-    rlist.append(r);
+    rlist.append(QRect(0,0,0,0));
   }
-
   Mat heightmapOverlay = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
+
   for (int i=0; i < rlist.count(); i++){
     calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
   }
@@ -808,6 +807,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
   if (enhance_requested){
     enhance_requested--;
+    for (int i=0; i < rlist.count(); i++)
     calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
   }
 
@@ -818,61 +818,52 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   if (bump_requested){
     bump_requested--;
+    for (int i=0; i < rlist.count(); i++)
     calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
                      , normal_bisel_blur_radius);
   }
 
   Mat normals;
-  normals = (m_emboss_normal + m_distance_normal + m_height_ov );
-
-  int xmin = 0, xmax = normals.cols;
-  int ymin = 0, ymax = normals.rows;
-
-  if (rect != QRect(0,0,0,0)){
-    rect.getCoords(&xmin, &ymin, &xmax, &ymax);
-  }
-
-  Rect roi(xmin,ymin,xmax-xmin,ymax-ymin);
   if (m_normal.rows == 0 || m_normal.cols == 0){
     m_emboss_normal.copyTo(m_normal);
     m_normal.convertTo(m_normal, CV_8UC3, 255);
   }
 
-  for (int x = xmin; x < xmax; ++x) {
-    int xaux = x;
-    if (tileX) {
-      xaux %= texture.width();
-      if (xaux < 0) continue;
-    } else if (x >= texture.width() || x < 0) {
-      continue;
-    }
-    for (int y = ymin; y < ymax; ++y) {
-      int yaux = y;
-      if (tileX) {
-        yaux %= texture.height();
-        if (yaux < 0 ) continue;
-      } else if (y >= texture.height() || y < 0) {
-        continue;
-      }
-      QColor oColor = normalOverlay.pixelColor(xaux,yaux);
-      Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-      Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
-      n = normalize(normals.at<Vec3f>(yaux, xaux));
-      n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
-      m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
-      m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
-      m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
 
-      if (!active) {
-        normal_counter--;
-        return;
+  normals = (m_emboss_normal + m_distance_normal + m_height_ov );
+
+  foreach (QRect rect, rlist){
+
+    int xmin = 0, xmax = normals.cols-1;
+    int ymin = 0, ymax = normals.rows-1;
+
+    if (rect != QRect(0,0,0,0)){
+      rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+    }
+
+    for (int x = xmin; x <= xmax; ++x) {
+      int xaux = x;
+
+      for (int y = ymin; y <= ymax; ++y) {
+        int yaux = y;
+
+        QColor oColor = normalOverlay.pixelColor(xaux,yaux);
+        Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
+        Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
+
+        n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
+        m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
+        m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
+        m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
+
+        if (!active) {
+          normal_counter--;
+          return;
+        }
       }
     }
   }
 
-  //    normals.convertTo(normals, CV_8UC3, 255);
-
-  //    normals(roi).copyTo(m_normal(roi));
   normal_ready.lock();
   normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                   m_normal.rows, m_normal.step, QImage::Format_RGB888);
@@ -920,7 +911,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
         dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
              aux.at<float>(x - 2, y);
       } else {
-        dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
+      dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
       }
       if (y == 0) {
         dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y+1) -
