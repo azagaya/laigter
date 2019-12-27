@@ -139,7 +139,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   specularOverlay.fill(QColor(0,0,0,0));
 
   heightOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  specularOverlay.fill(QColor(0,0,0,0));
+  heightOverlay.fill(QColor(0,0,0,0));
 
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
@@ -763,7 +763,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   bool diagonal = true;
 
-  rect.moveTo(rect.left() % texture.width(), rect.top() % texture.height());
+  rect.moveTo((rect.left() % texture.width()), (rect.top() % texture.height()));
 
   rlist.append(rect.intersected(texture.rect()));
   if (rect.right() > texture.rect().right()){
@@ -786,7 +786,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (rlist.count() == 0){
     rlist.append(QRect(0,0,0,0));
   }
-  Mat heightmapOverlay = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
+  Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(), CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
 
@@ -830,7 +830,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
 
 
-  normals = (m_emboss_normal + m_distance_normal + m_height_ov );
+  normals = (m_emboss_normal*3/2.0 + m_distance_normal*3/2.0 + m_height_ov );
 
   foreach (QRect rect, rlist){
 
@@ -1016,6 +1016,10 @@ QImage *ImageProcessor::get_parallax_overlay() {
 
 QImage *ImageProcessor::get_specular_overlay() {
   return &specularOverlay;
+}
+
+QImage *ImageProcessor::get_heightmap_overlay(){
+  return &heightOverlay;
 }
 
 QImage *ImageProcessor::get_occlusion_overlay() {

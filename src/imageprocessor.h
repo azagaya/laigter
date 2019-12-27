@@ -136,6 +136,7 @@ public:
   QImage *get_parallax_overlay();
   QImage *get_specular_overlay();
   QImage *get_occlusion_overlay();
+  QImage *get_heightmap_overlay();
 
   void calculate();
   void calculate_parallax();
