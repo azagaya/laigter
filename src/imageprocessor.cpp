@@ -139,7 +139,10 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   specularOverlay.fill(QColor(0,0,0,0));
 
   heightOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  heightOverlay.fill(QColor(0,0,0,0));
+  heightOverlay.fill(QColor(128,128,128,0));
+
+  parallaxOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
+  parallaxOverlay.fill(QColor(0,0,0,0));
 
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
@@ -210,7 +213,19 @@ void ImageProcessor::calculate_parallax() {
   if (parallax_counter > 2)
     return;
   parallax_counter++;
-  parallax_mutex.lock();
+  QMutexLocker locker(&parallax_mutex);
+
+  QImage ovi = get_parallax_overlay();
+  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
+
+  Mat channels[4];
+  split(ov, channels);
+
+  Mat alpha = channels[3];
+  ov = channels[0];
+  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+  ov.convertTo(ov, CV_32FC1, 1.0/255);
+
   current_parallax = modify_parallax();
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
@@ -227,12 +242,19 @@ void ImageProcessor::calculate_parallax() {
     break;
   }
 
+  current_parallax.convertTo(current_parallax, CV_32FC1, 1.0/255);
+  multiply(Scalar::all(1.0)-alpha,current_parallax,current_parallax);
+  add(ov, current_parallax, current_parallax);
+  current_parallax.convertTo(current_parallax, CV_8UC1, 255);
+
+
+  parallax_ready.lock();
   parallax = QImage(static_cast<unsigned char *>(current_parallax.data),
                     current_parallax.cols, current_parallax.rows,
                     current_parallax.step, QImage::Format_Grayscale8);
+  parallax_ready.unlock();
   processed();
   parallax_counter--;
-  parallax_mutex.unlock();
 }
 
 void ImageProcessor::calculate_specular() {
@@ -987,7 +1009,11 @@ QImage *ImageProcessor::get_normal() {
 }
 
 QImage *ImageProcessor::get_parallax() {
-  return &parallax;
+  if (parallax_ready.tryLock(0)){
+    last_parallax = parallax;
+    parallax_ready.unlock();
+  }
+  return &last_parallax;
 }
 
 QImage *ImageProcessor::get_specular() {
@@ -1010,16 +1036,28 @@ QImage *ImageProcessor::get_normal_overlay() {
   return &normalOverlay;
 }
 
-QImage *ImageProcessor::get_parallax_overlay() {
-  return &parallaxOverlay;
+QImage ImageProcessor::get_parallax_overlay() {
+  QMutexLocker locker(&parallax_overlay_mutex);
+  return parallaxOverlay;
+}
+
+void ImageProcessor::set_parallax_overlay(QImage po){
+  QMutexLocker locker(&parallax_overlay_mutex);
+  parallaxOverlay = po;
 }
 
 QImage *ImageProcessor::get_specular_overlay() {
   return &specularOverlay;
 }
 
-QImage *ImageProcessor::get_heightmap_overlay(){
-  return &heightOverlay;
+QImage ImageProcessor::get_heightmap_overlay(){
+  QMutexLocker locker(&heightmap_overlay_mutex);
+  return heightOverlay;
+}
+
+void ImageProcessor::set_heightmap_overlay(QImage ho){
+  QMutexLocker locker(&heightmap_overlay_mutex);
+  heightOverlay = ho;
 }
 
 QImage *ImageProcessor::get_occlusion_overlay() {

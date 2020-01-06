@@ -118,7 +118,7 @@ public:
 
   QImage texture;
   QImage normal, last_normal;
-  QImage parallax;
+  QImage parallax, last_parallax;
   QImage specular, last_specular;
   QImage occlussion;
 
@@ -133,10 +133,16 @@ public:
 
   QImage *get_texture_overlay();
   QImage *get_normal_overlay();
-  QImage *get_parallax_overlay();
+
+  QMutex parallax_overlay_mutex;
+  QImage get_parallax_overlay();
+  void set_parallax_overlay(QImage po);
   QImage *get_specular_overlay();
   QImage *get_occlusion_overlay();
-  QImage *get_heightmap_overlay();
+
+  QMutex heightmap_overlay_mutex;
+  QImage get_heightmap_overlay();
+  void set_heightmap_overlay(QImage ho);
 
   void calculate();
   void calculate_parallax();
@@ -323,7 +329,7 @@ private:
 
   bool customHeightMap, customSpecularMap;
 
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready;
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready, parallax_ready;
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
   QPainter normal_painter;
