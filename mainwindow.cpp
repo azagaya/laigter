@@ -1123,12 +1123,20 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
       plugin_docks_list.append(pluginDock);
       plugin_list.append(pl);
+      brush_list.append(b);
     }
   }
 }
 
 void MainWindow::select_plugin(BrushInterface *b){
-  qDebug() << b->getName();
+  ui->openGLPreviewWidget->currentBrush = b;
+  foreach (BrushInterface *pl, brush_list){
+    if (pl->getName() == b->getName()){
+      continue;
+    } else {
+      pl->set_selected(false);
+    }
+  }
 }
 
 void MainWindow::on_actionInstall_Plugin_triggered()
@@ -1178,6 +1186,11 @@ void MainWindow::on_actionDelete_Plugin_triggered()
   foreach(QPluginLoader *pl, plugin_list){
       plugin_list.removeOne(pl);
       pl->unload();
+      delete pl;
+  }
+
+  foreach(BrushInterface *pl, brush_list){
+    brush_list.removeOne(pl);
   }
   QString appData =
     QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);

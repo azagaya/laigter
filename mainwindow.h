@@ -147,6 +147,7 @@ private slots:
   QFileSystemWatcher fs_watcher;
   QList <QDockWidget*> plugin_docks_list;
   QList <QPluginLoader *> plugin_list;
+  QList <BrushInterface *> brush_list;
 };
 
 #endif // MAINWINDOW_H
