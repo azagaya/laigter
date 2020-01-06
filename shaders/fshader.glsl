@@ -96,11 +96,17 @@ void main() {
 
     vec3 reflectDir = reflect(-lightDir, normal);
 
+    float nl = dot(viewDir, reflectDir);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
+//    spec = smoothstep(0.005, 0.01, spec); // for cel shading
     vec3 specular =
         Light[i].specIntensity * spec * Light[i].specColor * specMap;
 
-    float diff = max(dot(normal, lightDir), 0.0);
+    nl = dot(lightDir, normal);
+    float diff = max(nl, 0.0);
+    // diff = nl > 0 ? 1 : 0; // for cel shading
+ //   diff = smoothstep(0.0, 0.01, diff);
+
     vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
 
     l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
@@ -131,8 +137,8 @@ mat4 rotationZ( in float angle ) {
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
   // number of depth layers
 
-  const float minLayers = 100.0;
-  const float maxLayers = 1000.0;
+  const float minLayers = 10.0;
+  const float maxLayers = 100.0;
   float numLayers =
       mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
   // calculate the size of each layer
