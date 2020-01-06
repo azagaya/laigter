@@ -7,7 +7,7 @@ background: transparent;
 }
 
 QSlider::handle:horizontal {
-    background: rgb(30%,30%, 40%);
+    background: rgb(20%, 20%, 30%);
    border: 2px solid rgb(60%, 60%, 100%);
         border-left: 30px solid transparent;
     width: 10px;
@@ -18,14 +18,14 @@ QSlider::handle:horizontal {
 }
 
 QSlider::sub-page:horizontal {
-    background: rgb(30%, 30%, 40%);
+    background: rgb(20%, 20%, 30%);
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         border: 2px solid rgb(60%, 60%, 100%);
 }
 
 QSlider::add-page:horizontal {
-    background:  rgb(30%, 30%, 40%);
+    background:  rgb(20%, 20%, 30%);
         border-radius: 5px;
         border: 1px solid rgb(60%, 60%, 100%);
     margin: 4px 0;

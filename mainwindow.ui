@@ -47,6 +47,69 @@ border: 1px inset #808080;
 }
 
 
+/* Checkbox */
+QCheckBox {
+    spacing: 5px;
+    padding: 2px;
+}
+
+QCheckBox::indicator:unchecked {
+    width: 10px;
+    height: 10px;
+	background:  rgb(20%, 20%, 30%);
+	border: 1px solid  rgb(20%, 20%, 30%);
+}
+
+QCheckBox::indicator:checked {
+    width: 6px;
+    height: 6px;
+	background:  rgb(60%, 60%, 100%);
+	border: 3px solid  rgb(20%, 20%, 30%);
+}
+
+QCheckBox::hover {
+	border: 1px solid  rgb(60%, 60%, 100%);
+    border-radius: 3px;
+    background: rgba(60%, 60%, 100%, 20%);
+    padding: 1px;
+}
+
+QSlider::hover {
+	border: 1px solid  rgb(60%, 60%, 100%);
+    border-radius: 3px;
+    background: rgba(60%, 60%, 100%, 20%);
+
+}
+
+/* Radio */
+QRadioButton {
+    spacing: 5px;
+    padding: 2px;
+}
+
+QRadioButton::indicator:unchecked {
+    width: 6px;
+    height: 6px;
+	background:  rgb(20%, 20%, 30%);
+	border: 3px solid   rgb(20%, 20%, 30%);
+border-radius: 6px;
+}
+
+QRadioButton::indicator:checked {
+    width: 6px;
+    height: 6px;
+	background:  rgb(60%, 60%, 100%);
+	border: 3px solid  rgb(20%, 20%, 30%);
+border-radius: 6px;
+}
+
+QRadioButton::hover {
+	border: 1px solid  rgb(60%, 60%, 100%);
+    border-radius: 3px;
+    background: rgba(60%, 60%, 100%, 20%);
+    padding: 1px;
+}
+
 </string>
   </property>
   <property name="dockNestingEnabled">
@@ -1460,7 +1523,7 @@ border: 1px inset #808080;
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>325</height>
+          <height>309</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
