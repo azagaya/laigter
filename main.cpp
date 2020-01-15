@@ -38,14 +38,14 @@ QCoreApplication *createApplication(int &argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setApplicationName("laigter");
-  QCoreApplication::setApplicationVersion("1.7-beta");
+  QCoreApplication::setApplicationVersion("1.9");
 
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   QTranslator translator;
   bool loaded = translator.load(QLocale::system(), ":/laigter", "_");
-//  bool loaded = translator.load(":/laigter_da");
+  //bool loaded = translator.load(":/laigter_el");
   if (!loaded) {
     // Fallback to English
     translator.load(":/laigter_en");
