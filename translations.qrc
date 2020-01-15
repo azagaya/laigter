@@ -12,5 +12,7 @@
         <file>laigter_ca_ES.qm</file>
         <file>laigter_da.ts</file>
         <file>laigter_da.qm</file>
+        <file>laigter_el.ts</file>
+        <file>laigter_el.qm</file>
     </qresource>
 </RCC>
