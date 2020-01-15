@@ -250,6 +250,11 @@
         <widget class="QListWidget" name="listWidget_3">
          <item>
           <property name="text">
+           <string>Manolis Papadeas (Overloaded) - Greek</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Hugo Locurcio (Calinou) - French</string>
           </property>
          </item>
