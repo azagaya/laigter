@@ -788,12 +788,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   rect.moveTo((rect.left() % texture.width()), (rect.top() % texture.height()));
 
   rlist.append(rect.intersected(texture.rect()));
-  if (rect.right() > texture.rect().right()){
+  if (rect.right() > texture.rect().right() && tileX){
     rlist.prepend(QRect(0, rect.top(), rect.right() % texture.width(), rect.height()).intersected(texture.rect()));
   } else {
     diagonal = false;
   }
-  if (rect.bottom() > texture.rect().bottom()){
+  if (rect.bottom() > texture.rect().bottom() && tileY){
     rlist.append(QRect(rect.left(), 0, rect.width(),rect.bottom() % texture.height()).intersected(texture.rect()));
   } else {
     diagonal = false;
@@ -808,6 +808,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (rlist.count() == 0){
     rlist.append(QRect(0,0,0,0));
   }
+  QImage heightOverlay = get_heightmap_overlay();
   Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(), CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
@@ -924,6 +925,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
   }
 
   Mat normals(aux.size(), CV_32FC3);
+  src.copyTo(normals);
   for (int x = xs; x <= xe; ++x) {
     for (int y = ys; y <= ye; ++y) {
 
@@ -962,8 +964,10 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
     }
 
   }
-  if (tileable && normals.rows == m_img.rows * 3)
+  if (tileable && normals.rows == m_img.rows * 3){
     normals(rect).copyTo(normals);
+
+  }
   normals.copyTo(src);
 }
 
@@ -1029,11 +1033,23 @@ QImage *ImageProcessor::get_occlusion() {
 }
 
 QImage *ImageProcessor::get_texture_overlay() {
+  QMutexLocker locker(&texture_overlay_mutex);
   return &textureOverlay;
 }
 
+void ImageProcessor::set_texture_overlay(QImage to){
+  QMutexLocker locker(&texture_overlay_mutex);
+  parallaxOverlay = to;
+}
+
 QImage *ImageProcessor::get_normal_overlay() {
+  QMutexLocker locker(&normal_overlay_mutex);
   return &normalOverlay;
+}
+
+void ImageProcessor::set_normal_overlay(QImage no){
+  QMutexLocker locker(&normal_overlay_mutex);
+  parallaxOverlay = no;
 }
 
 QImage ImageProcessor::get_parallax_overlay() {
@@ -1047,7 +1063,13 @@ void ImageProcessor::set_parallax_overlay(QImage po){
 }
 
 QImage *ImageProcessor::get_specular_overlay() {
+  QMutexLocker locker(&specular_overlay_mutex);
   return &specularOverlay;
+}
+
+void ImageProcessor::set_specular_overlay(QImage so){
+  QMutexLocker locker(&specular_overlay_mutex);
+  parallaxOverlay = so;
 }
 
 QImage ImageProcessor::get_heightmap_overlay(){
@@ -1061,7 +1083,13 @@ void ImageProcessor::set_heightmap_overlay(QImage ho){
 }
 
 QImage *ImageProcessor::get_occlusion_overlay() {
+  QMutexLocker locker(&occlussion_overlay_mutex);
   return &occlussionOverlay;
+}
+
+void ImageProcessor::set_occlussion_overlay(QImage oo){
+  QMutexLocker locker(&occlussion_overlay_mutex);
+  parallaxOverlay = oo;
 }
 
 bool ImageProcessor::get_parallax_invert() {

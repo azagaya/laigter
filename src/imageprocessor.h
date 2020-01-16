@@ -131,14 +131,25 @@ public:
   QImage occlussionOverlay = QImage(0,0,QImage::Format_RGBA8888);
   QImage heightOverlay = QImage(0,0,QImage::Format_RGBA8888);
 
+  QMutex texture_overlay_mutex;
   QImage *get_texture_overlay();
+  void set_texture_overlay(QImage to);
+
+  QMutex normal_overlay_mutex;
   QImage *get_normal_overlay();
+  void set_normal_overlay(QImage no);
 
   QMutex parallax_overlay_mutex;
   QImage get_parallax_overlay();
   void set_parallax_overlay(QImage po);
+
+  QMutex specular_overlay_mutex;
   QImage *get_specular_overlay();
+  void set_specular_overlay(QImage so);
+
+  QMutex occlussion_overlay_mutex;
   QImage *get_occlusion_overlay();
+  void set_occlussion_overlay(QImage oo);
 
   QMutex heightmap_overlay_mutex;
   QImage get_heightmap_overlay();
