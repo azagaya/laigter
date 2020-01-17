@@ -5,7 +5,7 @@ You can get binaries from itch.io: https://azagaya.itch.io/laigter
 
 Laigter is available in spanish, english, french, brazilian-portuguese, catalan and danish! It should automatically detect your PC language.
 
-[![Discord Server](https://discordapp.com/api/guilds/645793202393186339/embed.png)](https://discord.gg/88kJqry)
+[![Discord Server](https://discordapp.com/api/guilds/582648422167871514/embed.png)](https://discord.gg/88kJqry)
 
 ## Prerequisites
 
