@@ -764,6 +764,10 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
 
+  static QRect r;
+
+  //r = r.united(rect);
+
   if (normal_counter > 2 || !active){
     return;
   }
@@ -771,15 +775,21 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   QMutexLocker locker(&normal_mutex);
 
+  //rect = r;
+  r = rect;
+  r = QRect(0,0,0,0);
+
   /* Calculate rects to update */
 
   QList <QRect> rlist;
 
   bool diagonal = true;
 
-  rect.moveTo((rect.left() % texture.width()), (rect.top() % texture.height()));
   // Adjust for 1px blur
-  rect.adjust(-1,-1,1,1);
+  rect.adjust(0,0,1,1);
+
+  rect.moveTo((rect.left() % texture.width())-1, (rect.top() % texture.height())-1);
+
   rlist.append(rect.intersected(texture.rect()));
   if (rect.right() > texture.rect().right() && tileX){
     rlist.prepend(QRect(0, rect.top(), rect.right() % texture.width(), rect.height()).intersected(texture.rect()));
