@@ -9,7 +9,7 @@ addons:
             - qt5-default
             - libqt5x11extras5-dev
             - qttools5-dev-tools
-            
+            - libopencv-dev
 script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
