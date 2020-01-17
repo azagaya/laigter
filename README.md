@@ -3,7 +3,9 @@
 Laigter is a tool that automatically generates maps for dynamic lighting effects in games. It allows normal, parallax, specular and occlusion map generation. Also, it allows the user to preview how the effect will look ingame.
 You can get binaries from itch.io: https://azagaya.itch.io/laigter
 
-Laigter is available in english and spanish. It should automatically detect your PC language.
+Laigter is available in spanish, english, french, brazilian-portuguese, catalan and danish! It should automatically detect your PC language.
+
+[![Discord Server](https://discordapp.com/api/guilds/645793202393186339/embed.png)](https://discord.gg/88kJqry)
 
 ## Prerequisites
 
