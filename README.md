@@ -23,7 +23,7 @@ or support it by paypal: [![Donate](https://img.shields.io/badge/Donate-PayPal-g
 
 Now you can also [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O110W22)
 
-If you wan't to contribute by coding, please contact me and we will see how can we work together! Many things are needed.
+If you wan't to contribute by coding, please contact me and we will see how can we work together! Many things are needed. And also, please read ![Contributing guidelines](CONTRIBUTING.md)
 
 ## Screenshots
 
