@@ -764,20 +764,12 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
 
-  static QRect r;
-
-  r = r.united(rect);
-
   if (normal_counter > 2 || !active){
     return;
   }
   normal_counter++;
 
   QMutexLocker locker(&normal_mutex);
-
-  rect = r;
-
-  r = QRect(0,0,0,0);
 
   /* Calculate rects to update */
 
@@ -786,7 +778,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   bool diagonal = true;
 
   rect.moveTo((rect.left() % texture.width()), (rect.top() % texture.height()));
-
+  // Adjust for 1px blur
+  rect.adjust(-1,-1,1,1);
   rlist.append(rect.intersected(texture.rect()));
   if (rect.right() > texture.rect().right() && tileX){
     rlist.prepend(QRect(0, rect.top(), rect.right() % texture.width(), rect.height()).intersected(texture.rect()));
@@ -811,10 +804,10 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   QImage heightOverlay = get_heightmap_overlay();
   Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(), CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
-  heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,100);
+  heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,255);
 
   for (int i=0; i < rlist.count(); i++){
-    calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
+    calculate_normal(heightmapOverlay, m_height_ov,1,0,rlist.at(i));
   }
 
   if (updateEnhance) enhance_requested++;
@@ -904,6 +897,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
 
   float dx, dy;
   int br = blur_radius * 2 + 1;
+
   if (mat.cols == m_img.cols *3){
     GaussianBlur(mat, aux, Size(br, br), 0);
   } else {
