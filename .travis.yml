@@ -3,13 +3,14 @@ compiler: gcc
 sudo: require
 dist: xenial
 
-addons:
-    apt:
-        packages:
-            - qt5-default
-            - libqt5x11extras5-dev
-            - qttools5-dev-tools
-            - libopencv-dev
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt-5.12.6-xenial -y
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get -y install qt512base qt512x11extras qt512tools lrelease-qt5 libgl1-mesa-dev libopencv-dev 
+  - source /opt/qt*/bin/qt*-env.sh
+
 script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
