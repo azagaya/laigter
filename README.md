@@ -1,4 +1,4 @@
-# Laigter
+# Laigter [![Build Status](https://travis-ci.com/azagaya/laigter.svg?branch=master)](https://travis-ci.com/azagaya/laigter)
 
 Laigter is a tool that automatically generates maps for dynamic lighting effects in games. It allows normal, parallax, specular and occlusion map generation. Also, it allows the user to preview how the effect will look ingame.
 You can get binaries from itch.io: https://azagaya.itch.io/laigter
