@@ -106,7 +106,12 @@ void OpenGlWidget::initializeGL() {
                                        ":/shaders/lvshader.glsl");
   lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
                                        ":/shaders/lfshader.glsl");
-  m_program.link();
+
+  cursorProgram.create();
+  cursorProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,
+                                       ":/shaders/lvshader.glsl");
+  cursorProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
+                                       ":/shaders/cursor_fragment_shader.glsl");
 
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------
@@ -382,9 +387,9 @@ void OpenGlWidget::update_scene() {
     transform.translate(2.0*cursor.x()/width()-1,-2.0*cursor.y()/height()+1);
     transform.scale(x,y,1);
 
-    lightProgram.bind();
+    cursorProgram.bind();
     lightVAO.bind();
-    lightProgram.setUniformValue("transform", transform);
+    cursorProgram.setUniformValue("transform", transform);
 
     brushTexture->bind(0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
@@ -395,13 +400,13 @@ void OpenGlWidget::update_scene() {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    lightProgram.setUniformValue("texture", 0);
-    lightProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
+    cursorProgram.setUniformValue("texture", 0);
+    cursorProgram.setUniformValue("scale", processor->get_zoom());
+    cursorProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
     color = QVector3D(0.2, 0.2, 0.2);
-    lightProgram.setUniformValue("lightColor", color);
     glDrawArrays(GL_QUADS, 0, 4);
 
-    lightProgram.release();
+    cursorProgram.release();
   } else {
     setCursor(Qt::ArrowCursor);
   }

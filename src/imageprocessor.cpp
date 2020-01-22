@@ -144,6 +144,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   parallaxOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
   parallaxOverlay.fill(QColor(0,0,0,0));
 
+  occlussionOverlay = QImage(image.width(), image.height(), QImage::Format_RGBA8888_Premultiplied);
+  occlussionOverlay.fill(QColor(0,0,0,0));
+
   m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
   int aux = m_img.depth();
   switch (aux) {
@@ -182,6 +185,8 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     m_img.copyTo(m_occlusion);
 
     m_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC3);
+    aux_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC1);
+    aux_height_ov = Scalar::all(0.0);
     m_emboss_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
     m_distance_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
 
@@ -264,7 +269,8 @@ void ImageProcessor::calculate_specular() {
   specular_mutex.lock();
   current_specular = modify_specular();
 
-  Mat ov = Mat(specularOverlay.height(), specularOverlay.width(), CV_8UC4, specularOverlay.scanLine(0));
+  QImage ovi = get_specular_overlay();
+  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
   Mat channels[4];
   split(ov, channels);
 
@@ -311,8 +317,18 @@ void ImageProcessor::calculate_occlusion() {
   if (occlussion_counter > 2)
     return;
   occlussion_counter++;
-  occlusion_mutex.lock();
+  QMutexLocker locker(&occlusion_mutex);
   current_occlusion = modify_occlusion();
+
+  QImage ovi = get_occlusion_overlay();
+  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
+  Mat channels[4];
+  split(ov, channels);
+
+  Mat alpha = channels[3];
+  ov = channels[0];
+  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+  ov.convertTo(ov, CV_32FC1, 1.0/255);
 
   Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
   if (tileable && current_occlusion.rows == m_img.rows * 3) {
@@ -328,14 +344,19 @@ void ImageProcessor::calculate_occlusion() {
     break;
   }
 
+  current_occlusion.convertTo(current_occlusion, CV_32FC1, 1.0/255);
+  multiply(Scalar::all(1.0)-alpha,current_occlusion,current_occlusion);
+  add(ov, current_occlusion, current_occlusion);
+  current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
+
+  occlussion_ready.lock();
   occlussion = QImage(static_cast<unsigned char *>(current_occlusion.data),
                       current_occlusion.cols, current_occlusion.rows,
                       current_occlusion.step, QImage::Format_Grayscale8);
-
+  occlussion_ready.unlock();
   processed();
 
   occlussion_counter--;
-  occlusion_mutex.unlock();
 }
 
 void ImageProcessor::calculate_heightmap() {
@@ -764,20 +785,12 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius) {
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect) {
 
-  static QRect r;
-
-  //r = r.united(rect);
-
   if (normal_counter > 2 || !active){
     return;
   }
   normal_counter++;
 
   QMutexLocker locker(&normal_mutex);
-
-  //rect = r;
-  r = rect;
-  r = QRect(0,0,0,0);
 
   /* Calculate rects to update */
 
@@ -815,9 +828,10 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(), CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,255);
+  //add(heightmapOverlay,aux_height_ov,aux_height_ov);
 
   for (int i=0; i < rlist.count(); i++){
-    calculate_normal(heightmapOverlay, m_height_ov,1,0,rlist.at(i));
+    calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
   }
 
   if (updateEnhance) enhance_requested++;
@@ -945,22 +959,18 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
       if (x == 0) {
         dx = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x + 1, y) -
              aux.at<float>(x + 2, y);
-        //        dx = -aux.at<float>(aux.rows-1, y) + aux.at<float>(1, y);
       } else if (x == aux.rows - 1) {
         dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
              aux.at<float>(x - 2, y);
-        //        dx = -aux.at<float>(aux.rows-2, y) + aux.at<float>(0, y);
       } else {
         dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
       }
       if (y == 0) {
         dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y+1) -
              aux.at<float>(x, y+2);
-        //        dx = -aux.at<float>(x, aux.cols-1) + aux.at<float>(x, 1);
       } else if (y == aux.cols - 1) {
         dy = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x, y-1) +
              aux.at<float>(x, y-2);
-        //        dx = -aux.at<float>(x, aux.cols-2) + aux.at<float>(x, 0);
       } else {
         dy = -aux.at<float>(x, y - 1) + aux.at<float>(x, y + 1);
       }
@@ -1037,7 +1047,11 @@ QImage *ImageProcessor::get_specular() {
 }
 
 QImage *ImageProcessor::get_occlusion() {
-  return &occlussion;
+  if (occlussion_ready.tryLock(0)){
+    last_occlussion = occlussion;
+    occlussion_ready.unlock();
+  }
+  return &last_occlussion;
 }
 
 QImage *ImageProcessor::get_texture_overlay() {
@@ -1070,14 +1084,14 @@ void ImageProcessor::set_parallax_overlay(QImage po){
   parallaxOverlay = po;
 }
 
-QImage *ImageProcessor::get_specular_overlay() {
+QImage ImageProcessor::get_specular_overlay() {
   QMutexLocker locker(&specular_overlay_mutex);
-  return &specularOverlay;
+  return specularOverlay;
 }
 
 void ImageProcessor::set_specular_overlay(QImage so){
   QMutexLocker locker(&specular_overlay_mutex);
-  parallaxOverlay = so;
+  specularOverlay = so;
 }
 
 QImage ImageProcessor::get_heightmap_overlay(){
@@ -1090,14 +1104,14 @@ void ImageProcessor::set_heightmap_overlay(QImage ho){
   heightOverlay = ho;
 }
 
-QImage *ImageProcessor::get_occlusion_overlay() {
+QImage ImageProcessor::get_occlusion_overlay() {
   QMutexLocker locker(&occlussion_overlay_mutex);
-  return &occlussionOverlay;
+  return occlussionOverlay;
 }
 
 void ImageProcessor::set_occlussion_overlay(QImage oo){
   QMutexLocker locker(&occlussion_overlay_mutex);
-  parallaxOverlay = oo;
+  occlussionOverlay = oo;
 }
 
 bool ImageProcessor::get_parallax_invert() {

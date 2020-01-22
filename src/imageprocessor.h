@@ -120,7 +120,7 @@ public:
   QImage normal, last_normal;
   QImage parallax, last_parallax;
   QImage specular, last_specular;
-  QImage occlussion;
+  QImage occlussion, last_occlussion;
 
   /* Images for Plugins */
 
@@ -144,11 +144,11 @@ public:
   void set_parallax_overlay(QImage po);
 
   QMutex specular_overlay_mutex;
-  QImage *get_specular_overlay();
+  QImage get_specular_overlay();
   void set_specular_overlay(QImage so);
 
   QMutex occlussion_overlay_mutex;
-  QImage *get_occlusion_overlay();
+  QImage get_occlusion_overlay();
   void set_occlussion_overlay(QImage oo);
 
   QMutex heightmap_overlay_mutex;
@@ -290,7 +290,7 @@ private:
   cv::Mat current_heightmap;
   cv::Mat neighbours;
   cv::Mat m_aux;
-  cv::Mat m_height_ov;
+  cv::Mat m_height_ov, aux_height_ov;
 
   cv::Mat current_specular;
   int specular_thresh;
@@ -340,7 +340,7 @@ private:
 
   bool customHeightMap, customSpecularMap;
 
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready, parallax_ready;
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready, parallax_ready, occlussion_ready;
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
   QPainter normal_painter;
