@@ -546,7 +546,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
   float lightHeight = (float)laigter.height() / height() * 0.3;
   float mouseX = (float)event->localPos().x() / width() * 2 - 1;
   float mouseY = -(float)event->localPos().y() / height() * 2 + 1;
-  if (event->buttons() & Qt::LeftButton) {
+  if (event->buttons() & (Qt::LeftButton | Qt::MidButton)) {
     if (addLight) {
       set_add_light(true);
       return;
@@ -653,9 +653,9 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
     need_to_update = true;
     return;
   }
-  if (event->buttons() & Qt::LeftButton) {
+  if (event->buttons() & (Qt::LeftButton | Qt::MidButton)) {
 
-    if (currentBrush && currentBrush->get_selected() && !lightSelected){
+    if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton){
 
       QPoint tpos;
       if (!processor->get_tile_x()){
