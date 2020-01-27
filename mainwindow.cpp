@@ -224,6 +224,15 @@ void MainWindow::add_processor(ImageProcessor *p) {
   ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
 }
 
+ImageProcessor *MainWindow::find_processor(QString name){
+  foreach (ImageProcessor *p, processorList){
+    if (p->get_name() == name){
+      return p;
+    }
+  }
+  return nullptr;
+}
+
 void MainWindow::open_files(QStringList fileNames) {
   QImage auximage;
   foreach (QString fileName, fileNames) {
@@ -567,12 +576,15 @@ void MainWindow::on_listWidget_itemSelectionChanged() {
   } else if (ui->listWidget->selectedItems().count() > 0) {
     processor_selected(sample_processor, false);
     ui->openGLPreviewWidget->clear_processor_list();
-    foreach (QListWidgetItem *item, ui->listWidget->selectedItems()) {
-      for (int i = 0; i < processorList.count(); i++) {
-        if (processorList.at(i)->get_name() == item->data(Qt::UserRole).toString()) {
-          p = processorList.at(i);
-          ui->openGLPreviewWidget->add_processor(p);
-          processor_selected(p, true);
+    for (int i = 0; i < ui->listWidget->count(); i++) {
+      foreach (QListWidgetItem *item, ui->listWidget->selectedItems()) {
+        if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == item->data(Qt::UserRole).toString()) {
+          p = find_processor(item->data(Qt::UserRole).toString());
+          if (p){
+            ui->openGLPreviewWidget->add_processor(p);
+            processor_selected(p, true);
+            break;
+          }
         }
       }
     }
@@ -1184,9 +1196,9 @@ void MainWindow::on_actionDelete_Plugin_triggered()
     ui->openGLPreviewWidget->currentBrush = nullptr;
   }
   foreach(QPluginLoader *pl, plugin_list){
-      plugin_list.removeOne(pl);
-      pl->unload();
-      delete pl;
+    plugin_list.removeOne(pl);
+    pl->unload();
+    delete pl;
   }
 
   foreach(BrushInterface *pl, brush_list){
@@ -1207,3 +1219,4 @@ void MainWindow::on_actionDelete_Plugin_triggered()
   rd.exec();
   on_actionLoadPlugins_triggered();
 }
+

@@ -61,6 +61,7 @@ public slots:
   void processor_selected(ImageProcessor *processor, bool selected);
   void set_enabled_map_controls(bool e);
   void select_plugin(BrushInterface *b);
+  ImageProcessor *find_processor(QString name);
 
 signals:
   void normal_depth_changed(int value);
@@ -130,6 +131,7 @@ private slots:
   void on_actionInstall_Plugin_triggered();
 
   void on_actionDelete_Plugin_triggered();
+
 
   private:
   Ui::MainWindow *ui;
