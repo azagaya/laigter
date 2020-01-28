@@ -1061,7 +1061,7 @@ QImage *ImageProcessor::get_texture_overlay() {
 
 void ImageProcessor::set_texture_overlay(QImage to){
   QMutexLocker locker(&texture_overlay_mutex);
-  parallaxOverlay = to;
+  textureOverlay = to;
 }
 
 QImage *ImageProcessor::get_normal_overlay() {
@@ -1071,7 +1071,7 @@ QImage *ImageProcessor::get_normal_overlay() {
 
 void ImageProcessor::set_normal_overlay(QImage no){
   QMutexLocker locker(&normal_overlay_mutex);
-  parallaxOverlay = no;
+  normalOverlay = no;
 }
 
 QImage ImageProcessor::get_parallax_overlay() {
