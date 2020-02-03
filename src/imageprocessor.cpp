@@ -266,7 +266,7 @@ void ImageProcessor::calculate_specular() {
   if (specular_counter > 2)
     return;
   specular_counter++;
-  specular_mutex.lock();
+  QMutexLocker locker(&specular_mutex);
   current_specular = modify_specular();
 
   QImage ovi = get_specular_overlay();
@@ -308,9 +308,9 @@ void ImageProcessor::calculate_specular() {
                     current_specular.step, QImage::Format_Grayscale8);
   specular_ready.unlock();
 
-  processed();
   specular_counter--;
-  specular_mutex.unlock();
+
+  processed();
 }
 
 void ImageProcessor::calculate_occlusion() {
