@@ -40,6 +40,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent) {
   //    processor->set_tile_x(false);
   //    processor->set_tile_y(false);
   m_pixelated = false;
+  m_toon = false;
   lightSelected = false;
 
   currentLight = new LightSource();
@@ -291,6 +292,7 @@ void OpenGlWidget::update_scene() {
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
     m_program.setUniformValue("rotation_angle",rotation);
+    m_program.setUniformValue("toon", m_toon);
 
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
@@ -787,6 +789,11 @@ void OpenGlWidget::setPixelated(bool pixelated) {
   need_to_update = true;
 }
 
+void OpenGlWidget::setToon(bool toon){
+  m_toon = toon;
+  need_to_update = true;
+}
+
 void OpenGlWidget::setPixelSize(int size) { pixelSize = size; }
 
 QImage OpenGlWidget::renderBuffer() { return grabFramebuffer(); }
@@ -845,6 +852,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       m_program.setUniformValue("pixelsY", pixelsY);
       m_program.setUniformValue("pixelSize", pixelSize);
       m_program.setUniformValue("pixelated", m_pixelated);
+      m_program.setUniformValue("toon",m_toon);
       m_program.setUniformValue("selected", false);
 
       m_program.setUniformValue("ratio", QVector2D(1, 1));
@@ -1011,6 +1019,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       m_program.setUniformValue("pixelsY", pixelsY);
       m_program.setUniformValue("pixelSize", pixelSize);
       m_program.setUniformValue("pixelated", m_pixelated);
+      m_program.setUniformValue("toon",m_toon);
       backgroundColor.getRgbF(&r, &g, &b, nullptr);
       color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
       m_program.setUniformValue("outlineColor", color);

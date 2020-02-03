@@ -51,6 +51,7 @@ uniform vec2 ratio;
 uniform float textureScale;
 uniform bool parallax;
 uniform bool pixelated;
+uniform bool toon;
 uniform bool selected;
 uniform float height_scale;
 uniform float rotation_angle;
@@ -98,15 +99,18 @@ void main() {
 
     float nl = dot(viewDir, reflectDir);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
-//    spec = smoothstep(0.005, 0.01, spec); // for cel shading
+    if (toon){
+      spec = smoothstep(0.005, 0.01, spec); // for cel shading
+    }
     vec3 specular =
         Light[i].specIntensity * spec * Light[i].specColor * specMap;
 
     nl = dot(lightDir, normal);
     float diff = max(nl, 0.0);
     // diff = nl > 0 ? 1 : 0; // for cel shading
- //   diff = smoothstep(0.0, 0.01, diff);
-
+    if (toon){
+      diff = smoothstep(0.0, 0.05, diff);
+    }
     vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
 
     l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
@@ -128,10 +132,10 @@ void main() {
 }
 
 mat4 rotationZ( in float angle ) {
-        return mat4(	cos(angle),		-sin(angle),	0,	0,
-                                        sin(angle),		cos(angle),		0,	0,
-                                                        0,				0,		1,	0,
-                                                        0,				0,		0,	1);
+  return mat4(	cos(angle),		-sin(angle),	0,	0,
+                sin(angle),		cos(angle),		0,	0,
+                0,				0,		1,	0,
+                0,				0,		0,	1);
 }
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
@@ -171,7 +175,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
   // get depth after and before collision for linear interpolation
   float afterDepth = currentDepthMapValue - currentLayerDepth;
   float beforeDepth = texture2D(parallaxMap, prevTexCoords * ratio).r -
-                      currentLayerDepth + layerDepth;
+      currentLayerDepth + layerDepth;
 
   // interpolation of texture coordinates
   float weight = afterDepth / (afterDepth - beforeDepth);

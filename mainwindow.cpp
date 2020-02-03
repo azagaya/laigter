@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent)
           ui->openGLPreviewWidget, SLOT(setParallaxHeight(int)));
   connect(ui->checkBoxPixelated, SIGNAL(toggled(bool)), ui->openGLPreviewWidget,
           SLOT(setPixelated(bool)));
+  connect(ui->checkBoxToon, SIGNAL(toggled(bool)), ui->openGLPreviewWidget,
+          SLOT(setToon(bool)));
 
   connect(ui->openGLPreviewWidget, SIGNAL(selectedLightChanged(LightSource *)),
           this, SLOT(selectedLightChanged(LightSource *)));

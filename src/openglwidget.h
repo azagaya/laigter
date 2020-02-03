@@ -81,6 +81,7 @@ public slots:
   void setTileY(bool y);
 
   void setPixelated(bool pixelated);
+  void setToon(bool toon);
   void setPixelSize(int size);
 
   void setParallaxHeight(int height);
@@ -146,7 +147,7 @@ private:
       *occlusionMap, renderedPreview;
   QVector3D lightPosition, texturePosition, textureOffset;
   QTimer refreshTimer;
-  bool m_light, tileX, tileY, m_parallax, m_pixelated;
+  bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
   float sx, sy, parallax_height;
   float m_zoom;
   float diffIntensity, ambientIntensity, specIntensity, specScatter;
