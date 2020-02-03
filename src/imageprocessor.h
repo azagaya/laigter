@@ -34,6 +34,9 @@
 #include "src/lightsource.h"
 
 #include <opencv2/opencv.hpp>
+#if CV_MAJOR_VERSION >= 4
+#include <opencv2/imgproc/types_c.h>
+#endif
 #if defined(Q_OS_WIN)
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
