@@ -109,7 +109,7 @@ void main() {
     float diff = max(nl, 0.0);
     // diff = nl > 0 ? 1 : 0; // for cel shading
     if (toon){
-      diff = smoothstep(0.0, 0.05, diff);
+      diff = smoothstep(0.495, 0.505, diff);
     }
     vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
 
