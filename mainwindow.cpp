@@ -1064,28 +1064,33 @@ void MainWindow::onFileChanged(const QString &file_path) {
     return;
   }
 
-  if (!fs_watcher.files().contains(file_path)) {
-    fs_watcher.addPath(file_path);
-  }
+  // Not needed anymore ???
+//  if (!fs_watcher.files().contains(file_path)) {
+//    fs_watcher.addPath(file_path);
+//  }
 
+  // no file system watcher reports "change" when creating file (bug?)
+  if (QFile(file_path).size() == 0) return;
+
+  qDebug() << QFile(file_path).size();
   Q_FOREACH (ImageProcessor *ip, processorList) {
     QImage auximage;
     ImageLoader il;
     bool success;
     auximage = il.loadImage(file_path, &success);
     if (file_path == ip->get_name()) {
-      QMessageBox::information(this, tr("Image modified"),
-                               tr("An image was modified"));
+//      QMessageBox::information(this, tr("Image modified"),
+//                               tr("An image was modified"));
       ip->loadImage(file_path, auximage);
     }
     if (file_path == ip->get_specular_path()) {
-      QMessageBox::information(this, tr("Specular map modified"),
-                               tr("A custom specular map was modified"));
+//      QMessageBox::information(this, tr("Specular map modified"),
+//                               tr("A custom specular map was modified"));
       ip->loadSpecularMap(file_path, auximage);
     }
     if (file_path == ip->get_heightmap_path()) {
-      QMessageBox::information(this, tr("Height map modified"),
-                               tr("A custom height map was modified"));
+//      QMessageBox::information(this, tr("Height map modified"),
+//                               tr("A custom height map was modified"));
       ip->loadHeightMap(file_path, auximage);
     }
   }
