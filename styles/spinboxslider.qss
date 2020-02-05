@@ -17,11 +17,29 @@ QSlider::handle:horizontal {
 
 }
 
+QSlider::handle:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+   border: 2px solid rgb(80%, 80%, 80%);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
 QSlider::sub-page:horizontal {
     background: rgb(20%, 20%, 30%);
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         border: 2px solid rgb(60%, 60%, 100%);
+}
+
+QSlider::sub-page:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(80%, 80%, 80%);
 }
 
 QSlider::add-page:horizontal {
@@ -31,8 +49,23 @@ QSlider::add-page:horizontal {
     margin: 4px 0;
 }
 
+QSlider::add-page:horizontal:disabled {
+    background:  rgb(60%, 60%, 60%);
+        border-radius: 5px;
+        border: 1px solid rgb(80%, 80%, 80%);
+    margin: 4px 0;
+}
+
+
 QSpinBox {
         color:  rgb(80%, 90%, 100%);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox:disabled {
+        color:  rgb(80%, 80%, 80%);
         background: transparent;
         margin: 0px;
         padding: 0px;
