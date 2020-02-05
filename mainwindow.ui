@@ -419,7 +419,7 @@ QRadioButton::hover {
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0" colspan="3">
-         <widget class="QTabWidget" name="tabWidget">
+         <widget class="QTabWidget" name="tabWidgetLight">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1526,8 +1526,8 @@ QRadioButton::hover {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>247</width>
-          <height>322</height>
+          <width>254</width>
+          <height>315</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">

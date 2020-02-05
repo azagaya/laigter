@@ -586,6 +586,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
       }
     }
     if (!lightSelected) {
+      set_enabled_light_controls(false);
       for (int i = processorList.count() - 1; i >= 0; i--) {
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(mouseX, mouseY, 0) -
@@ -598,6 +599,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
           selected = true;
         }
       }
+    } else {
+      set_enabled_light_controls(true);
     }
   } else if (event->buttons() & Qt::RightButton) {
     int count;

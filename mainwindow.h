@@ -60,6 +60,7 @@ public slots:
   void selectedProcessorsChanged(QList<ImageProcessor *> list);
   void processor_selected(ImageProcessor *processor, bool selected);
   void set_enabled_map_controls(bool e);
+  void set_enabled_light_controls(bool e);
   void select_plugin(BrushInterface *b);
   ImageProcessor *find_processor(QString name);
 

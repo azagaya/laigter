@@ -83,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(stopAddingLight()));
   connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_map_controls(bool)), this,
           SLOT(set_enabled_map_controls(bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_light_controls(bool)), this,
+          SLOT(set_enabled_light_controls(bool)));
 
   tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
   tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -116,6 +118,8 @@ MainWindow::MainWindow(QWidget *parent)
           SLOT(openGL_initialized()));
   connect(&fs_watcher, SIGNAL(fileChanged(QString)), this,
           SLOT(onFileChanged(QString)));
+
+  set_enabled_light_controls(false);
 
 }
 
@@ -1056,6 +1060,12 @@ void MainWindow::set_enabled_map_controls(bool e) {
   ui->checkBoxMosaicoX->setEnabled(e);
   ui->checkBoxMosaicoY->setEnabled(e);
   ui->checkBoxParallax->setEnabled(e);
+}
+
+void MainWindow::set_enabled_light_controls(bool e){
+  ui->tabWidgetLight->setEnabled(e);
+  ui->pushButtonColor->setEnabled(e);
+  ui->horizontalSliderDiffHeight->setEnabled(e);
 }
 
 void MainWindow::onFileChanged(const QString &file_path) {
