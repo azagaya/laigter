@@ -200,6 +200,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 void ImageProcessor::set_current_heightmap() {
   current_heightmap = tileable ? neighbours : m_heightmap;
   cvtColor(current_heightmap, m_parallax, CV_RGBA2GRAY);
+  cvtColor(current_heightmap, m_occlusion, COLOR_RGBA2GRAY, 1);
 }
 
 void ImageProcessor::calculate() {
@@ -663,7 +664,6 @@ Mat ImageProcessor::modify_distance() {
 Mat ImageProcessor::modify_occlusion() {
   Mat m;
 
-  cvtColor(current_heightmap, m_occlusion, COLOR_RGBA2GRAY, 1);
   m_occlusion.copyTo(m);
   if (occlusion_invert) {
     subtract(Scalar::all(255), m, m);
