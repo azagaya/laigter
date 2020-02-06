@@ -26,7 +26,7 @@
 }
 
 QDockWidget::title{
-	background: rgb(40%, 40%, 50%);
+	background:  rgb(20%, 20%, 30%);
 	border-radius:4px;
 	margin:2px;
 	padding: 1px
@@ -109,6 +109,97 @@ QRadioButton::hover {
     background: rgba(60%, 60%, 100%, 20%);
     padding: 1px;
 }
+
+Slider::groove:horizontal {
+    height: 10px;
+background: transparent;
+
+    margin: 4px 0px 4px 36px;
+        padding: 0px
+}
+
+Slider::handle:horizontal {
+    background: rgb(20%, 20%, 30%);
+   border: 2px solid rgb(60%, 60%, 100%);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::handle:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+   border: 2px solid rgb(80%, 80%, 80%);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::sub-page:horizontal {
+    background: rgb(20%, 20%, 30%);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(60%, 60%, 100%);
+}
+
+Slider::sub-page:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(80%, 80%, 80%);
+}
+
+Slider::add-page:horizontal {
+    background:  rgb(20%, 20%, 30%);
+        border-radius: 5px;
+        border: 1px solid rgb(60%, 60%, 100%);
+    margin: 4px 0;
+}
+
+Slider::add-page:horizontal:disabled {
+    background:  rgb(60%, 60%, 60%);
+        border-radius: 5px;
+        border: 1px solid rgb(80%, 80%, 80%);
+    margin: 4px 0;
+}
+
+
+QSpinBox {
+        color:  rgb(80%, 90%, 100%);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox:disabled {
+        color:  rgb(80%, 80%, 80%);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 0px;
+    border-width: 0px;
+}
+
+QSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+
+    width: 0px;
+    border-width: 0px;
+    border-top-width: 0;
+}
+
+
 
 </string>
   </property>

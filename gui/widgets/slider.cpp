@@ -17,9 +17,9 @@ Slider::Slider(QWidget * parent)
   connect(this,SIGNAL(valueChanged(int)),&spin_box,SLOT(setValue(int)));
   connect(&spin_box,SIGNAL(valueChanged(int)),this,SLOT(setValue(int)));
   connect(this,SIGNAL(rangeChanged(int,int)),this,SLOT(setSpinBoxRange(int,int)));
-  QFile style(":/styles/spinboxslider.qss");
-  style.open(QIODevice::ReadOnly);
-  setStyleSheet(style.readAll());
+//  QFile style(":/styles/spinboxslider.qss");
+//  style.open(QIODevice::ReadOnly);
+//  setStyleSheet(style.readAll());
 }
 
 Slider::Slider(Qt::Orientation orientation, QWidget * parent)
@@ -71,4 +71,5 @@ void Slider::paintEvent(QPaintEvent *ev) {
     painter.fillRect(rect, QBrush(QColor(153,153,255)));
   else
     painter.fillRect(rect, QBrush(QColor(200,200,200)));
+
 }
