@@ -1135,6 +1135,10 @@ void MainWindow::on_actionLoadPlugins_triggered()
       QFile(tmp.absoluteFilePath(fileName)).remove();
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
+    if (pl->metaData().value("MetaData").toObject().value("version").toInt() < 1){
+      qDebug() << "incorrect plugin version.";
+      return;
+    }
     BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
     qDebug() << pl->errorString();
     if(b != nullptr){
