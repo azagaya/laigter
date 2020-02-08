@@ -13,6 +13,7 @@ Slider::Slider(QWidget * parent)
   spin_box.setParent(this);
   spin_box.setMaximum(maximum());
   spin_box.setMinimum(minimum());
+  spin_box.setObjectName("flatSpinBox");
 
   connect(this,SIGNAL(valueChanged(int)),&spin_box,SLOT(setValue(int)));
   connect(&spin_box,SIGNAL(valueChanged(int)),this,SLOT(setValue(int)));
@@ -68,8 +69,10 @@ void Slider::paintEvent(QPaintEvent *ev) {
   QRect rect(1.0*(width()-12.0)*(value()-minimum())/(maximum()-minimum())+37.0*(maximum()-value())/(maximum()-minimum()),8,4,4);
   QPainter painter(this);
   if (isEnabled())
-    painter.fillRect(rect, QBrush(QColor(153,153,255)));
+    painter.fillRect(rect, palette().highlight());
   else
     painter.fillRect(rect, QBrush(QColor(200,200,200)));
+
+
 
 }

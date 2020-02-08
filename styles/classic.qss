@@ -1,0 +1,241 @@
+QDockWidget{
+	color: rgb(235, 235, 235);
+    border: 1px solid black;
+    titlebar-close-icon: url(close.png);
+    titlebar-normal-icon: url(:/icons/undock.png);
+	margin: 0px
+}
+
+QDockWidget::title{
+	background:  rgb(30%, 30%, 40%);
+	border-radius:4px;
+	margin:2px;
+	padding: 1px
+}
+
+QDockWidget::close-button, QDockWidget::float-button {
+background: transparent;
+border-radius: 6px;
+}
+
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+background: rgb(60%, 60%, 100%);
+}
+
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+background: #b0b0b0;
+border: 1px inset #808080;
+}
+
+Slider::groove:horizontal {
+    height: 10px;
+background: transparent;
+
+    margin: 4px 0px 4px 36px;
+        padding: 0px
+}
+
+Slider::handle:horizontal {
+    background: rgb(218, 218, 218);
+   border: 2px solid rgb(171, 171, 171);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::handle:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+   border: 2px solid rgb(80%, 80%, 80%);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::sub-page:horizontal {
+    background: rgb(218, 218, 218);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(171, 171, 171);
+}
+
+Slider::sub-page:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(80%, 80%, 80%);
+}
+
+Slider::add-page:horizontal {
+    background:  rgb(82, 177, 238);
+        border-radius: 2px;
+        border: 1px solid rgb(171, 171, 171);
+    margin: 6px 0;
+}
+
+Slider::add-page:horizontal:disabled {
+    background:  rgb(60%, 60%, 60%);
+        border-radius: 5px;
+        border: 1px solid rgb(80%, 80%, 80%);
+    margin: 6px 0;
+}
+
+
+QSpinBox#flatSpinBox {
+        color:  rgb(21, 21, 21);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox:disabled#flatSpinBox {
+        color:  rgb(80%, 80%, 80%);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox::up-button#flatSpinBox {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 0px;
+    border-width: 0px;
+}
+
+QSpinBox:down-button#flatSpinBox {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+
+    width: 0px;
+    border-width: 0px;
+    border-top-width: 0;
+}
+
+
+
+QDockWidget{
+	color: rgb(235, 235, 235);
+    border: 1px solid black;
+    titlebar-close-icon: url(close.png);
+    titlebar-normal-icon: url(:/icons/undock.png);
+	margin: 0px
+}
+
+QDockWidget::title{
+	background:  rgb(30%, 30%, 40%);
+	border-radius:4px;
+	margin:2px;
+	padding: 1px
+}
+
+QDockWidget::close-button, QDockWidget::float-button {
+background: transparent;
+border-radius: 6px;
+}
+
+QDockWidget::close-button:hover, QDockWidget::float-button:hover {
+background: rgb(60%, 60%, 100%);
+}
+
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
+background: #b0b0b0;
+border: 1px inset #808080;
+}
+
+Slider::groove:horizontal {
+    height: 10px;
+background: transparent;
+
+    margin: 4px 0px 4px 36px;
+        padding: 0px
+}
+
+Slider::handle:horizontal {
+    background: rgb(218, 218, 218);
+   border: 2px solid rgb(171, 171, 171);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::handle:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+   border: 2px solid rgb(80%, 80%, 80%);
+        border-left: 30px solid transparent;
+    width: 10px;
+    margin: -4px 0px -4px -30px;
+    border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+}
+
+Slider::sub-page:horizontal {
+    background: rgb(218, 218, 218);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(171, 171, 171);
+}
+
+Slider::sub-page:horizontal:disabled {
+    background: rgb(60%, 60%, 60%);
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border: 2px solid rgb(80%, 80%, 80%);
+}
+
+Slider::add-page:horizontal {
+    background:  rgb(82, 177, 238);
+        border-radius: 2px;
+        border: 1px solid rgb(171, 171, 171);
+    margin: 6px 0;
+}
+
+Slider::add-page:horizontal:disabled {
+    background:  rgb(60%, 60%, 60%);
+        border-radius: 5px;
+        border: 1px solid rgb(80%, 80%, 80%);
+    margin: 6px 0;
+}
+
+
+QSpinBox#flatSpinBox {
+        color:  rgb(21, 21, 21);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox:disabled#flatSpinBox {
+        color:  rgb(80%, 80%, 80%);
+        background: transparent;
+        margin: 0px;
+        padding: 0px;
+}
+
+QSpinBox::up-button#flatSpinBox {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 0px;
+    border-width: 0px;
+}
+
+QSpinBox:down-button#flatSpinBox {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+
+    width: 0px;
+    border-width: 0px;
+    border-top-width: 0;
+}
+
+
+
+

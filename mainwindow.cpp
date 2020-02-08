@@ -121,6 +121,12 @@ MainWindow::MainWindow(QWidget *parent)
 
   set_enabled_light_controls(false);
 
+  // Setting style
+  QFile stylesheet_file(":/styles/classic.qss");
+  stylesheet_file.open(QFile::ReadOnly);
+  QString stylesheet = QLatin1String(stylesheet_file.readAll());
+  qApp->setStyleSheet(stylesheet);
+
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos) {

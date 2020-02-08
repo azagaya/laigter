@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>styles/spinboxslider.qss</file>
         <file>styles/spinboxslider2.qss</file>
+        <file>styles/classic.qss</file>
+        <file>styles/dark-blue.qss</file>
     </qresource>
 </RCC>
