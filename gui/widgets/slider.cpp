@@ -44,9 +44,9 @@ void Slider::setSpinBoxRange(int min, int max){
 void Slider::resizeEvent(QResizeEvent *ev) {
   QSlider::resizeEvent(ev);
   setMinimumSize(QSize(50,20));
-  QString num = QString::number(spin_box.value());
+  QString num = QString::number(value());
   QFontMetrics fm(spin_box.font());
-  spin_box.resize(fm.horizontalAdvance(num)+15,20);
+  spin_box.resize(fm.size(Qt::TextSingleLine, num+" ").width(),20);
   // spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
   //  spin_box.move(0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
 }
@@ -57,9 +57,9 @@ void Slider::sliderChange(QAbstractSlider::SliderChange change)
 
   if (change == QAbstractSlider::SliderValueChange )
   {
-    QString num = QString::number(spin_box.value());
+    QString num = QString::number(value());
     QFontMetrics fm(spin_box.font());
-    spin_box.resize(fm.horizontalAdvance(num)+15,20);
+    spin_box.resize(fm.size(Qt::TextSingleLine, num+" ").width(),20);
     //spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(), height()/2-spin_box.height()/2);
   }
 }

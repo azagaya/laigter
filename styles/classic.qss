@@ -209,6 +209,8 @@ Slider::add-page:horizontal:disabled {
 QSpinBox#flatSpinBox {
         color:  rgb(21, 21, 21);
         background: transparent;
+        border: 0px;
+        font-style: mono;
         margin: 0px;
         padding: 0px;
 }
