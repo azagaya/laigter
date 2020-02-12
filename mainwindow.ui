@@ -1381,6 +1381,9 @@
        <layout class="QGridLayout" name="gridLayout_13">
         <item row="0" column="0">
          <widget class="QPushButton" name="pushButton_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -1437,7 +1440,7 @@
           <x>0</x>
           <y>0</y>
           <width>254</width>
-          <height>319</height>
+          <height>326</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1712,5 +1715,22 @@
  <resources>
   <include location="icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBoxTileable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>1272</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>61</x>
+     <y>1272</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
