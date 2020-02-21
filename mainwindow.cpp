@@ -1163,7 +1163,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
       connect(action,SIGNAL(toggled(bool)),pluginDock,SLOT(setVisible(bool)));
       connect(b->getObject(),SIGNAL(selected_changed(BrushInterface*)),this,SLOT(select_plugin(BrushInterface*)));
       ui->pluginToolBar->addAction(action);
-
+      b->set_selected(false);
       plugin_docks_list.append(pluginDock);
       plugin_list.append(pl);
       brush_list.append(b);
