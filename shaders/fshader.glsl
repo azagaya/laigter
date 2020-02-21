@@ -117,7 +117,7 @@ void main() {
   }
   l_color =
       tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
-
+  l_color.a = tex.a;
   if (selected && (texCoord.x <= 1.0 / float(pixelsX) / textureScale ||
                    texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale  ||
                    texCoord.y <= 1.0 / float(pixelsY) / textureScale  ||
