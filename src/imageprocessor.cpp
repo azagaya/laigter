@@ -703,6 +703,7 @@ Mat ImageProcessor::modify_occlusion() {
 
 Mat ImageProcessor::modify_parallax() {
   Mat m;
+  Mat d;
 
   int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
   Mat shape = getStructuringElement(MORPH_RECT,
@@ -726,8 +727,10 @@ Mat ImageProcessor::modify_parallax() {
     break;
   case ParallaxType::HeightMap:
     current_heightmap.copyTo(m);
+    new_distance.copyTo(d);
     cvtColor(m, m, CV_RGBA2GRAY);
-    m.convertTo(m, CV_32F, 1 / 255.0, -0.5);
+    m.convertTo(m, CV_32FC1, 1 / 255.0, -0.5);
+    m = 0.5*((d-0.5)+m);
     m.convertTo(m, -1, parallax_contrast, 0.5);
     m.convertTo(m, CV_8U, 255, parallax_brightness);
     GaussianBlur(m, m, Size(parallax_soft * 2 + 1, parallax_soft * 2 + 1), 0,
