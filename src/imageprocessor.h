@@ -163,6 +163,8 @@ public:
   void calculate_specular();
   void calculate_occlusion();
 
+  bool updated = false;
+
 signals:
   void processed();
   void on_idle();

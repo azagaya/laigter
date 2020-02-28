@@ -223,6 +223,17 @@ void OpenGlWidget::update_scene() {
 
   QMatrix4x4 transform;
 
+  m_program.bind();
+  m_program.setUniformValue("view_mode", viewmode);
+  m_program.setUniformValue("pixelated", m_pixelated);
+  backgroundColor.getRgbF(&r, &g, &b, nullptr);
+  color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
+  m_program.setUniformValue("outlineColor", color);
+  m_program.setUniformValue("toon", m_toon);
+  m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
+  m_program.setUniformValue("height_scale", parallax_height);
+
+  apply_light_params();
   foreach (ImageProcessor *processor, processorList) {
 
     setImage(&processor->texture);
@@ -251,8 +262,6 @@ void OpenGlWidget::update_scene() {
 
     /* Start first pass */
 
-    m_program.bind();
-
     VAO.bind();
 
     if (processor->get_tile_x() || processor->get_tile_y()) {
@@ -265,19 +274,14 @@ void OpenGlWidget::update_scene() {
 
     glActiveTexture(GL_TEXTURE0);
 
-    m_program.setUniformValue("view_mode", viewmode);
+
     m_program.setUniformValue("transform", transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
-    m_program.setUniformValue("pixelated", m_pixelated);
-    backgroundColor.getRgbF(&r, &g, &b, nullptr);
-    color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
-    m_program.setUniformValue("outlineColor", color);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
     m_program.setUniformValue("rotation_angle",rotation);
-    m_program.setUniformValue("toon", m_toon);
 
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
@@ -304,19 +308,17 @@ void OpenGlWidget::update_scene() {
     m_occlusionTexture->bind(4);
     m_program.setUniformValue("occlussionMap", 4);
 
-    m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax() &&
                                             viewmode == Preview);
-    m_program.setUniformValue("height_scale", parallax_height);
 
-    apply_light_params();
     //        m_texture->bind(0);
     glDrawArrays(GL_QUADS, 0, 4);
 
-    m_program.release();
 
     /* Render light texture */
   }
+
+  m_program.release();
   QList<LightSource *> currentLightList;
   if (sample_light_list_used) {
     currentLightList = *sampleLightList;
