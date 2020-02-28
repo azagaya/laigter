@@ -255,6 +255,8 @@ public slots:
 
   void set_position(QVector3D new_pos);
   QVector3D *get_position();
+  void set_rotation(float r);
+  float get_rotation();
   void set_offset(QVector3D new_off);
   QVector3D *get_offset();
   void set_selected(bool s);
@@ -339,6 +341,7 @@ private:
 
   QVector3D position;
   QVector3D offset;
+  float rotation = 0;
   float zoom;
   float sx, sy;
   bool selected, tileX, tileY, is_parallax, connected;

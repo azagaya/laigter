@@ -1408,3 +1408,12 @@ bool ImageProcessor::get_is_parallax() { return is_parallax; }
 void ImageProcessor::set_connected(bool c) { connected = c; }
 
 bool ImageProcessor::get_connected() { return connected; }
+
+void ImageProcessor::set_rotation(float r){
+  rotation = r;
+  processed();
+}
+
+float ImageProcessor::get_rotation(){
+  return rotation;
+}

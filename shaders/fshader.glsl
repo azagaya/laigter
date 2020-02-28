@@ -136,14 +136,13 @@ void main() {
       float nl = dot(viewDir, reflectDir);
       float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
       if (toon){
-        spec = smoothstep(0.005, 0.01, spec); // for cel shading
+        spec = smoothstep(0.005, 0.01, spec);
       }
       vec3 specular =
           Light[i].specIntensity * spec * Light[i].specColor * specMap;
 
       nl = dot(lightDir, normal);
       float diff = max(nl, 0.0);
-      // diff = nl > 0 ? 1 : 0; // for cel shading
       if (toon){
         diff = smoothstep(0.495, 0.505, diff);
       }
@@ -161,10 +160,10 @@ void main() {
 }
 
 mat4 rotationZ( in float angle ) {
-  return mat4(	cos(angle),		-sin(angle),	0,	0,
-                sin(angle),		cos(angle),		0,	0,
-                0,				0,		1,	0,
-                0,				0,		0,	1);
+  return mat4(	cos(angle), -sin(angle),	0,	0,
+                sin(angle), cos(angle),		0,	0,
+                0,          0,                  1,	0,
+                0,          0,                  0,	1);
 }
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
