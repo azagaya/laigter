@@ -132,32 +132,24 @@ void OpenGlWidget::initializeGL() {
 
   VBO.allocate(vertices, sizeof(vertices));
 
-  int vertexLocation = m_program.attributeLocation("aPos");
-  glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT,
-                        GL_FALSE, 5 * sizeof(float), nullptr);
-  glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
+  m_program.setAttributeBuffer("aPos",GL_FLOAT,0,3,5 * sizeof(float));
+  m_program.enableAttributeArray("aPos");
 
-  int texCoordLocation = m_program.attributeLocation("aTexCoord");
-  glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT,
-                        GL_FALSE, 5 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
+  m_program.setAttributeBuffer("aTexCoord",GL_FLOAT,(3 * sizeof(float)),2,5 * sizeof(float));
+  m_program.enableAttributeArray("aTexCoord");
 
   VAO.release();
   VBO.release();
 
-  lightVAO.bind();
   VBO.bind();
-  vertexLocation = m_program.attributeLocation("aPos");
-  glVertexAttribPointer(static_cast<GLuint>(vertexLocation), 3, GL_FLOAT,
-                        GL_FALSE, 5 * sizeof(float), nullptr);
-  glEnableVertexAttribArray(static_cast<GLuint>(vertexLocation));
 
-  texCoordLocation = m_program.attributeLocation("aTexCoord");
-  glVertexAttribPointer(static_cast<GLuint>(texCoordLocation), 2, GL_FLOAT,
-                        GL_FALSE, 5 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
-  glEnableVertexAttribArray(static_cast<GLuint>(texCoordLocation));
+  lightProgram.setAttributeBuffer("aPos",GL_FLOAT,0,3,5 * sizeof(float));
+  lightProgram.enableAttributeArray("aPos");
+
+  lightProgram.setAttributeBuffer("aTexCoord",GL_FLOAT,3 * sizeof(float),2,5 * sizeof(float));
+  lightProgram.enableAttributeArray("aTexCoord");
+
+
   lightVAO.release();
   VBO.release();
 
@@ -365,6 +357,7 @@ void OpenGlWidget::update_scene() {
     lightProgram.release();
   }
   /* Render brush cursor */
+
   if (currentBrush && currentBrush->get_selected()){
     setCursor(Qt::BlankCursor);
     brushTexture->destroy();
@@ -522,13 +515,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event) {
     else
       tpos.setY((event->localPos().y())/processor->get_zoom());
 
-    //    currentBrush->setProcessor(processor);
-
-    //    QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-    //                   (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-    //                    -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-
-
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
@@ -664,12 +650,6 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
         tpos.setY((event->localPos().y())/processor->get_zoom());
       }
 
-
-      //      QPoint tpos = (QPoint(event->localPos().x(),event->localPos().y())-
-      //                     (QPoint((processor->get_position()->x()+1)*width(),(-processor->get_position()->y()+1)*height())
-      //                      -QPoint(processor->get_texture()->size().width(),processor->get_texture()->size().height())*processor->get_zoom())*0.5)/processor->get_zoom();
-
-
       currentBrush->mouseMove(oldPos,tpos);
       oldPos = tpos;
     } else {
@@ -695,7 +675,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
   } else if (event->buttons() & Qt::RightButton) {
   }
 
-  if (currentBrush && currentBrush->get_selected()){
+  if ((currentBrush && currentBrush->get_selected()) || cursor() != QCursor(Qt::ArrowCursor)){
     need_to_update = true;
   }
 }

@@ -1144,7 +1144,6 @@ void MainWindow::on_actionLoadPlugins_triggered()
       return;
     }
     BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
-    qDebug() << pl->errorString();
     if(b != nullptr){
       ui->openGLPreviewWidget->currentBrush = b;
       b->setProcessor(&processor);
@@ -1180,6 +1179,7 @@ void MainWindow::select_plugin(BrushInterface *b){
       pl->set_selected(false);
     }
   }
+  ui->openGLPreviewWidget->need_to_update = true;
 }
 
 void MainWindow::on_actionInstall_Plugin_triggered()
