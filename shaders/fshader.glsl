@@ -17,6 +17,8 @@
  * Contact: azagaya.games@gmail.com
  */
 
+#define DIFFUSE 0
+
 struct lightSource {
   vec3 lightPos;
   vec3 lightColor;
@@ -32,11 +34,11 @@ uniform int lightNum;
 varying vec2 texCoord;
 varying vec3 FragPos;
 
-uniform sampler2D TEX;
+uniform sampler2D diffuse;
 uniform sampler2D normalMap;
 uniform sampler2D parallaxMap;
 uniform sampler2D specularMap;
-uniform sampler2D occlusionMap;
+uniform sampler2D occlussionMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform bool light;
@@ -56,6 +58,9 @@ uniform bool selected;
 uniform float height_scale;
 uniform float rotation_angle;
 uniform int pixelsX, pixelsY;
+uniform int view_mode;
+
+
 
 uniform vec3 outlineColor;
 
@@ -63,6 +68,18 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 mat4 rotationZ(float angle);
 
 void main() {
+
+
+  if (selected && (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x ||
+                   texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x ||
+                   texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y ||
+                   texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y )) {
+    gl_FragColor.xyz = 1.0 - outlineColor;
+    gl_FragColor.a = 0.5;
+    return;
+  }
+
+
   vec2 dis;
   vec3 viewDir = normalize(viewPos - FragPos);
 
@@ -85,49 +102,61 @@ void main() {
 
   texCoords *= ratio;
 
-  vec3 normal = normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0,0.0)*rotationZ(rotation_angle)).xyz;
-  vec3 specMap = texture2D(specularMap, texCoords).xyz;
-  vec4 l_color = vec4(0.0);
-  vec4 tex = texture2D(TEX, texCoords);
+  switch (view_mode){
+  case 0:
+    gl_FragColor = texture2D(diffuse, texCoords);
+    break;
+  case 1:
+    gl_FragColor = texture2D(normalMap, texCoords);
+    break;
+  case 2:
+    gl_FragColor = texture2D(specularMap, texCoords);
+    break;
+  case 3:
+    gl_FragColor = texture2D(parallaxMap, texCoords);
+    break;
+  case 4:
+    gl_FragColor = texture2D(occlussionMap, texCoords);
+    break;
+  case 5:
 
-  float occlusion = texture2D(occlusionMap, texCoords).x;
 
-  for (int i = 0; i < lightNum; i++) {
-    vec3 lightDir = normalize(Light[i].lightPos - vec3(FragPos.xy, 0.0));
+    vec3 normal = normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0,0.0)*rotationZ(rotation_angle)).xyz;
+    vec3 specMap = texture2D(specularMap, texCoords).xyz;
+    vec4 l_color = vec4(0.0);
+    vec4 tex = texture2D(diffuse, texCoords);
 
-    vec3 reflectDir = reflect(-lightDir, normal);
+    float occlusion = texture2D(occlussionMap, texCoords).x;
 
-    float nl = dot(viewDir, reflectDir);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
-    if (toon){
-      spec = smoothstep(0.005, 0.01, spec); // for cel shading
+    for (int i = 0; i < lightNum; i++) {
+      vec3 lightDir = normalize(Light[i].lightPos - vec3(FragPos.xy, 0.0));
+
+      vec3 reflectDir = reflect(-lightDir, normal);
+
+      float nl = dot(viewDir, reflectDir);
+      float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
+      if (toon){
+        spec = smoothstep(0.005, 0.01, spec); // for cel shading
+      }
+      vec3 specular =
+          Light[i].specIntensity * spec * Light[i].specColor * specMap;
+
+      nl = dot(lightDir, normal);
+      float diff = max(nl, 0.0);
+      // diff = nl > 0 ? 1 : 0; // for cel shading
+      if (toon){
+        diff = smoothstep(0.495, 0.505, diff);
+      }
+      vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
+
+      l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
     }
-    vec3 specular =
-        Light[i].specIntensity * spec * Light[i].specColor * specMap;
-
-    nl = dot(lightDir, normal);
-    float diff = max(nl, 0.0);
-    // diff = nl > 0 ? 1 : 0; // for cel shading
-    if (toon){
-      diff = smoothstep(0.495, 0.505, diff);
-    }
-    vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
-
-    l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
-  }
-  l_color =
-      tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
-  l_color.a = tex.a;
-  if (selected && (texCoord.x <= 1.0 / float(pixelsX) / textureScale ||
-                   texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale  ||
-                   texCoord.y <= 1.0 / float(pixelsY) / textureScale  ||
-                   texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale )) {
-    gl_FragColor.xyz = 1.0 - outlineColor;
-    gl_FragColor.a = 0.5;
-  } else if (light) {
+    l_color =
+        tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
+    l_color.a = tex.a;
     gl_FragColor = l_color;
-  } else {
-    gl_FragColor = tex;
+    break;
+
   }
 }
 

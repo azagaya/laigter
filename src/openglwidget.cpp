@@ -195,7 +195,7 @@ void OpenGlWidget::paintGL() {
 }
 
 void OpenGlWidget::update() {
-  // need_to_update = true;
+ // need_to_update = true;
   QOpenGLWidget::update();
 }
 
@@ -224,11 +224,13 @@ void OpenGlWidget::update_scene() {
   QMatrix4x4 transform;
 
   foreach (ImageProcessor *processor, processorList) {
+
     setImage(&processor->texture);
     setNormalMap(processor->get_normal());
     setSpecularMap(processor->get_specular());
     setParallaxMap(processor->get_parallax());
     setOcclusionMap(processor->get_occlusion());
+
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
     if (processor->get_tile_x())
@@ -262,25 +264,8 @@ void OpenGlWidget::update_scene() {
     }
 
     glActiveTexture(GL_TEXTURE0);
-    m_program.setUniformValue("light", m_light);
-    switch (viewmode) {
-    case Preview:
-    case Texture:
-      m_texture->bind(0);
-      break;
-    case NormalMap:
-      m_normalTexture->bind(0);
-      break;
-    case ParallaxMap:
-      m_parallaxTexture->bind(0);
-      break;
-    case SpecularMap:
-      m_specularTexture->bind(0);
-      break;
-    case OcclusionMap:
-      m_occlusionTexture->bind(0);
-    }
-    m_program.setUniformValue("texture", 0);
+
+    m_program.setUniformValue("view_mode", viewmode);
     m_program.setUniformValue("transform", transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
@@ -304,6 +289,9 @@ void OpenGlWidget::update_scene() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
+    m_texture->bind(0);
+    m_program.setUniformValue("diffuse", 0);
+
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap", 1);
 
@@ -314,7 +302,7 @@ void OpenGlWidget::update_scene() {
     m_program.setUniformValue("specularMap", 3);
 
     m_occlusionTexture->bind(4);
-    m_program.setUniformValue("occlusionMap", 4);
+    m_program.setUniformValue("occlussionMap", 4);
 
     m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax() &&
@@ -847,9 +835,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
 
       glActiveTexture(GL_TEXTURE0);
-      m_program.setUniformValue("light", true);
-      m_texture->bind(0);
-      m_program.setUniformValue("texture", 0);
+      m_program.setUniformValue("view_mode", Preview);
       m_program.setUniformValue("transform", transform);
       m_program.setUniformValue("pixelsX", pixelsX);
       m_program.setUniformValue("pixelsY", pixelsY);
@@ -862,6 +848,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+
+      m_texture->bind(0);
+      m_program.setUniformValue("texture", 0);
 
       m_normalTexture->bind(1);
       m_program.setUniformValue("normalMap", 1);
@@ -998,25 +987,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
 
       glActiveTexture(GL_TEXTURE0);
-      m_program.setUniformValue("light", m_light);
-      switch (viewmode) {
-      case Preview:
-      case Texture:
-        m_texture->bind(0);
-        break;
-      case NormalMap:
-        m_normalTexture->bind(0);
-        break;
-      case ParallaxMap:
-        m_parallaxTexture->bind(0);
-        break;
-      case SpecularMap:
-        m_specularTexture->bind(0);
-        break;
-      case OcclusionMap:
-        m_occlusionTexture->bind(0);
-      }
-      m_program.setUniformValue("texture", 0);
+      m_program.setUniformValue("view_mode", Preview);
       m_program.setUniformValue("transform", transform);
       m_program.setUniformValue("pixelsX", pixelsX);
       m_program.setUniformValue("pixelsY", pixelsY);
@@ -1037,6 +1008,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
+
+      m_texture->bind(0);
+      m_program.setUniformValue("diffuse", 0);
 
       m_normalTexture->bind(1);
       m_program.setUniformValue("normalMap", 1);
