@@ -140,9 +140,9 @@ private:
   GLuint shaderProgram, vertexShader, fragmentShader;
   QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture,
       *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
-  QOpenGLVertexArrayObject VAO;
+  QOpenGLVertexArrayObject VAO, VAO3D;
   QOpenGLVertexArrayObject lightVAO;
-  QOpenGLBuffer VBO;
+  QOpenGLBuffer VBO, VBO3D;
   QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
   QImage *m_image, *normalMap, *parallaxMap, laigter, *specularMap,
       *occlusionMap, renderedPreview;

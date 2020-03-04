@@ -660,11 +660,11 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
         } else {
           if (processor->get_selected()) {
             if (!processor->get_tile_x())
-              processor->get_position()->setX(mouseX -
-                                              processor->get_offset()->x());
+              processor->get_position()->setX((mouseX -
+                                               processor->get_offset()->x()));
             if (!processor->get_tile_y())
-              processor->get_position()->setY(mouseY -
-                                              processor->get_offset()->y());
+              processor->get_position()->setY((mouseY -
+                                              processor->get_offset()->y()));
           }
 
 

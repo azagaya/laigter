@@ -102,23 +102,17 @@ void main() {
 
   texCoords *= ratio;
 
-  switch (view_mode){
-  case 0:
+  if (view_mode == 0){
     gl_FragColor = texture2D(diffuse, texCoords);
-    break;
-  case 1:
+  } else if (view_mode == 1){
     gl_FragColor = texture2D(normalMap, texCoords);
-    break;
-  case 2:
+  } else if (view_mode == 2) {
     gl_FragColor = texture2D(specularMap, texCoords);
-    break;
-  case 3:
+  } else if (view_mode == 3){
     gl_FragColor = texture2D(parallaxMap, texCoords);
-    break;
-  case 4:
+  } else if (view_mode == 4) {
     gl_FragColor = texture2D(occlussionMap, texCoords);
-    break;
-  case 5:
+  } else if (view_mode == 5) {
 
 
     vec3 normal = normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0,0.0)*rotationZ(rotation_angle)).xyz;
@@ -154,7 +148,6 @@ void main() {
         tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
     l_color.a = tex.a;
     gl_FragColor = l_color;
-    break;
 
   }
 }
