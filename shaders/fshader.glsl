@@ -84,7 +84,7 @@ void main() {
   vec3 viewDir = normalize(viewPos - FragPos);
 
   vec2 texCoords = texCoord;
-  vec2 texCoordsL = texCoord;
+
   if (pixelated) {
 
     vec2 d = vec2(float(pixelsX), float(pixelsY)) * ratio;

@@ -388,6 +388,7 @@ void OpenGlWidget::update_scene() {
     cursorProgram.setUniformValue("texture", 0);
     cursorProgram.setUniformValue("scale", processor->get_zoom());
     cursorProgram.setUniformValue("pixelSize", 1.0/brushTexture->width(), 1.0/brushTexture->height());
+    cursorProgram.setUniformValue("pixelated",m_pixelated);
     color = QVector3D(0.2, 0.2, 0.2);
     glDrawArrays(GL_QUADS, 0, 4);
 

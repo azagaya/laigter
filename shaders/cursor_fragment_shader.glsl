@@ -23,10 +23,21 @@ uniform sampler2D tex;
 uniform vec2 pixelSize;
 uniform bool selected;
 uniform float scale;
+uniform bool pixelated;
+
 
 void main() {
-  vec2 pixSize = 2.0 * pixelSize;
-  vec4 color = texture2D(tex, texCoord);
+
+  vec2 texCoords = texCoord;
+  if (pixelated) {
+
+    vec2 d = vec2(float(1.0/pixelSize.x), float(1.0/pixelSize.y));
+    vec2 coords = texCoords * d;
+
+    texCoords = (round(coords) + 0.5 / d) / d;
+  }
+
+  vec4 color = texture2D(tex, texCoords);
   float alpha = color.a;
 
   float l = length(texCoord-0.5);
