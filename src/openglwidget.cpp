@@ -159,15 +159,13 @@ void OpenGlWidget::initializeGL() {
 void OpenGlWidget::loadTextures() {
   processor = processorList.at(0);
   m_image = processor->get_texture();
-  parallaxMap = processor->get_parallax();
-  occlusionMap = processor->get_occlusion();
   m_texture = new QOpenGLTexture(*m_image);
   pixelsX = m_image->width();
   pixelsY = m_image->height();
-  m_parallaxTexture = new QOpenGLTexture(*parallaxMap);
+  m_parallaxTexture = new QOpenGLTexture(parallaxMap);
   m_specularTexture = new QOpenGLTexture(specularMap);
   m_normalTexture = new QOpenGLTexture(normalMap);
-  m_occlusionTexture = new QOpenGLTexture(*occlusionMap);
+  m_occlusionTexture = new QOpenGLTexture(occlusionMap);
   laigterTexture = new QOpenGLTexture(laigter);
   brushTexture = new QOpenGLTexture(laigter);
 }
@@ -231,13 +229,10 @@ void OpenGlWidget::update_scene() {
       setNormalMap(&normalMap);
     if (processor->frames[0].get_image("specular", &specularMap))
       setSpecularMap(&specularMap);
-    //    if (processor->frames[0].get_image("normal", &normalMap))
-    //      setNormalMap(&normalMap);
-    //    if (processor->frames[0].get_image("normal", &normalMap))
-    //      setNormalMap(&normalMap);
-    setSpecularMap(processor->get_specular());
-    setParallaxMap(processor->get_parallax());
-    setOcclusionMap(processor->get_occlusion());
+    if (processor->frames[0].get_image("parallax", &parallaxMap))
+      setParallaxMap(&parallaxMap);
+    if (processor->frames[0].get_image("occlussion", &occlusionMap))
+      setOcclusionMap(&occlusionMap);
 
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
@@ -430,17 +425,15 @@ void OpenGlWidget::setNormalMap(QImage *image) {
 }
 
 void OpenGlWidget::setOcclusionMap(QImage *image) {
-  occlusionMap = image;
   m_occlusionTexture->destroy();
   m_occlusionTexture->create();
-  m_occlusionTexture->setData(*occlusionMap);
+  m_occlusionTexture->setData(*image);
 }
 
 void OpenGlWidget::setParallaxMap(QImage *image) {
-  parallaxMap = image;
   m_parallaxTexture->destroy();
   m_parallaxTexture->create();
-  m_parallaxTexture->setData(*parallaxMap);
+  m_parallaxTexture->setData(*image);
 }
 
 void OpenGlWidget::setSpecularMap(QImage *image) {
