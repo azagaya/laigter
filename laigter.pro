@@ -53,7 +53,9 @@ SOURCES += \
     src/imageprocessor.cpp \
     src/lightsource.cpp \
     src/openglwidget.cpp \
-    gui/nbselector.cpp
+    gui/nbselector.cpp \
+  src/sprite.cpp \
+  src/texture.cpp
 
 HEADERS += \
   gui/Widgets/slider.h \
@@ -68,7 +70,9 @@ HEADERS += \
     src/imageprocessor.h \
     src/lightsource.h \
     src/openglwidget.h \
-    gui/nbselector.h
+    gui/nbselector.h \
+  src/sprite.h \
+  src/texture.h
 
 FORMS += \
     gui/aboutdialog.ui \
@@ -86,11 +90,6 @@ unix{
     CONFIG += link_pkgconfig
     packagesExist(opencv4){
         PKGCONFIG += opencv4
-        DEFINES += CV_RGBA2GRAY=COLOR_RGBA2GRAY
-        DEFINES += CV_RGB2GRAY=COLOR_RGB2GRAY
-        DEFINES += CV_GRAY2RGB=COLOR_GRAY2RGB
-        DEFINES += CV_GRAY2RGBA=COLOR_GRAY2RGBA
-        DEFINES += CV_DIST_L2=DIST_L2
     } else {
         PKGCONFIG += opencv
     }
