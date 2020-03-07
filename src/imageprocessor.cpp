@@ -132,6 +132,10 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   m_name = fileName;
   texture = image;
 
+  Sprite s;
+  s.set_image("diffuse", image);
+  frames.append(s);
+
   normalOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
   normalOverlay.fill(QColor(0,0,0,0));
 
@@ -255,9 +259,11 @@ void ImageProcessor::calculate_parallax() {
 
 
   parallax_ready.lock();
-  parallax = QImage(static_cast<unsigned char *>(current_parallax.data),
-                    current_parallax.cols, current_parallax.rows,
-                    current_parallax.step, QImage::Format_Grayscale8);
+  frames[0].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
+                                         current_parallax.cols, current_parallax.rows,
+                                         current_parallax.step, QImage::Format_Grayscale8));
+
+  frames[0].get_image("parallax", &parallax);
   parallax_ready.unlock();
   processed();
   parallax_counter--;
@@ -304,9 +310,11 @@ void ImageProcessor::calculate_specular() {
   current_specular.convertTo(current_specular, CV_8UC1, 255);
 
   specular_ready.lock();
-  specular = QImage(static_cast<unsigned char *>(current_specular.data),
-                    current_specular.cols, current_specular.rows,
-                    current_specular.step, QImage::Format_Grayscale8);
+  frames[0].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
+                                           current_specular.cols, current_specular.rows,
+                                           current_specular.step, QImage::Format_Grayscale8));
+
+  frames[0].get_image("specular", &specular);
   specular_ready.unlock();
 
   specular_counter--;
@@ -351,9 +359,10 @@ void ImageProcessor::calculate_occlusion() {
   current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
 
   occlussion_ready.lock();
-  occlussion = QImage(static_cast<unsigned char *>(current_occlusion.data),
-                      current_occlusion.cols, current_occlusion.rows,
-                      current_occlusion.step, QImage::Format_Grayscale8);
+  frames[0].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
+                                           current_occlusion.cols, current_occlusion.rows,
+                                           current_occlusion.step, QImage::Format_Grayscale8));
+  frames[0].get_image("occlussion", &occlussion);
   occlussion_ready.unlock();
   processed();
 
@@ -908,8 +917,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
 
   normal_ready.lock();
-  normal = QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
-                  m_normal.rows, m_normal.step, QImage::Format_RGB888);
+  frames[0].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
+                                         m_normal.rows, m_normal.step, QImage::Format_RGB888));
+  frames[0].get_image("normal", &normal);
   normal_ready.unlock();
   processed();
 

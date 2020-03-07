@@ -110,9 +110,9 @@ void OpenGlWidget::initializeGL() {
 
   cursorProgram.create();
   cursorProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,
-                                       ":/shaders/lvshader.glsl");
+                                        ":/shaders/lvshader.glsl");
   cursorProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
-                                       ":/shaders/cursor_fragment_shader.glsl");
+                                        ":/shaders/cursor_fragment_shader.glsl");
 
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------
@@ -160,15 +160,13 @@ void OpenGlWidget::loadTextures() {
   processor = processorList.at(0);
   m_image = processor->get_texture();
   parallaxMap = processor->get_parallax();
-  specularMap = processor->get_specular();
-  normalMap = processor->get_normal();
   occlusionMap = processor->get_occlusion();
   m_texture = new QOpenGLTexture(*m_image);
   pixelsX = m_image->width();
   pixelsY = m_image->height();
   m_parallaxTexture = new QOpenGLTexture(*parallaxMap);
-  m_specularTexture = new QOpenGLTexture(*specularMap);
-  m_normalTexture = new QOpenGLTexture(*normalMap);
+  m_specularTexture = new QOpenGLTexture(specularMap);
+  m_normalTexture = new QOpenGLTexture(normalMap);
   m_occlusionTexture = new QOpenGLTexture(*occlusionMap);
   laigterTexture = new QOpenGLTexture(laigter);
   brushTexture = new QOpenGLTexture(laigter);
@@ -187,7 +185,7 @@ void OpenGlWidget::paintGL() {
 }
 
 void OpenGlWidget::update() {
- // need_to_update = true;
+  need_to_update = true;
   QOpenGLWidget::update();
 }
 
@@ -229,7 +227,14 @@ void OpenGlWidget::update_scene() {
   foreach (ImageProcessor *processor, processorList) {
 
     setImage(&processor->texture);
-    setNormalMap(processor->get_normal());
+    if (processor->frames[0].get_image("normal", &normalMap))
+      setNormalMap(&normalMap);
+    if (processor->frames[0].get_image("specular", &specularMap))
+      setSpecularMap(&specularMap);
+    //    if (processor->frames[0].get_image("normal", &normalMap))
+    //      setNormalMap(&normalMap);
+    //    if (processor->frames[0].get_image("normal", &normalMap))
+    //      setNormalMap(&normalMap);
     setSpecularMap(processor->get_specular());
     setParallaxMap(processor->get_parallax());
     setOcclusionMap(processor->get_occlusion());
@@ -419,10 +424,9 @@ void OpenGlWidget::setImage(QImage *image) {
 }
 
 void OpenGlWidget::setNormalMap(QImage *image) {
-  normalMap = image;
   m_normalTexture->destroy();
-  m_normalTexture->create();
-  m_normalTexture->setData(*normalMap);
+  if (m_normalTexture->create())
+    m_normalTexture->setData(*image);
 }
 
 void OpenGlWidget::setOcclusionMap(QImage *image) {
@@ -440,10 +444,9 @@ void OpenGlWidget::setParallaxMap(QImage *image) {
 }
 
 void OpenGlWidget::setSpecularMap(QImage *image) {
-  specularMap = image;
   m_specularTexture->destroy();
-  m_specularTexture->create();
-  m_specularTexture->setData(*specularMap);
+  if (m_specularTexture->create())
+    m_specularTexture->setData(*image);
 }
 
 void OpenGlWidget::setZoom(float zoom) {
@@ -665,7 +668,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event) {
                                                processor->get_offset()->x()));
             if (!processor->get_tile_y())
               processor->get_position()->setY((mouseY -
-                                              processor->get_offset()->y()));
+                                               processor->get_offset()->y()));
           }
 
 
@@ -781,7 +784,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
     QFileInfo info;
     foreach (ImageProcessor *processor, processorList) {
       setImage(&processor->texture);
-      setNormalMap(processor->get_normal());
+      if (processor->frames[0].get_image("normal", &normalMap))
+        setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
       setOcclusionMap(processor->get_occlusion());
@@ -934,7 +938,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
 
       setImage(&processor->texture);
-      setNormalMap(processor->get_normal());
+      if (processor->frames[0].get_image("normal", &normalMap))
+        setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
       setOcclusionMap(processor->get_occlusion());

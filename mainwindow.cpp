@@ -1143,7 +1143,8 @@ void MainWindow::on_actionLoadPlugins_triggered()
       plugin.remove();
       return;
     }
-    BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
+    BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());    
+    qDebug() << pl->errorString();
     if(b != nullptr){
       ui->openGLPreviewWidget->currentBrush = b;
       b->setProcessor(&processor);

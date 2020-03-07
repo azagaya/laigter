@@ -32,6 +32,7 @@
 #include <QVector2D>
 
 #include "src/lightsource.h"
+#include "src/sprite.h"
 
 #include <opencv2/opencv.hpp>
 #if CV_MAJOR_VERSION >= 4
@@ -165,6 +166,9 @@ public:
 
   bool updated = false;
 
+
+  QVector <Sprite> frames;
+
 signals:
   void processed();
   void on_idle();
@@ -279,7 +283,6 @@ public slots:
 
 private:
   ProcessorSettings settings;
-
   QString m_name, m_heightmapPath, m_specularPath;
   cv::Mat m_img;
   cv::Mat m_gray;
