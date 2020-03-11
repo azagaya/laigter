@@ -136,6 +136,8 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   s.set_image("diffuse", image);
   frames.append(s);
 
+  set_current_frame_id(frames.count() -1);
+
   normalOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
   normalOverlay.fill(QColor(0,0,0,0));
 
@@ -151,7 +153,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   occlussionOverlay = QImage(image.width(), image.height(), QImage::Format_RGBA8888_Premultiplied);
   occlussionOverlay.fill(QColor(0,0,0,0));
 
-  m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
+
   int aux = m_img.depth();
   switch (aux) {
   case CV_8S:
@@ -197,7 +199,6 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     fill_neighbours(m_heightmap, neighbours);
   }
 
-  //  m_normal = Mat(m_img.rows,m_img.cols,CV_8UC3);
   return 0;
 }
 
@@ -259,11 +260,11 @@ void ImageProcessor::calculate_parallax() {
 
 
   parallax_ready.lock();
-  frames[0].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
+  frames[current_frame_id].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
                                          current_parallax.cols, current_parallax.rows,
                                          current_parallax.step, QImage::Format_Grayscale8));
 
-  frames[0].get_image("parallax", &parallax);
+  frames[current_frame_id].get_image("parallax", &parallax);
   parallax_ready.unlock();
   processed();
   parallax_counter--;
@@ -310,11 +311,11 @@ void ImageProcessor::calculate_specular() {
   current_specular.convertTo(current_specular, CV_8UC1, 255);
 
   specular_ready.lock();
-  frames[0].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
+  frames[current_frame_id].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
                                            current_specular.cols, current_specular.rows,
                                            current_specular.step, QImage::Format_Grayscale8));
 
-  frames[0].get_image("specular", &specular);
+  frames[current_frame_id].get_image("specular", &specular);
   specular_ready.unlock();
 
   specular_counter--;
@@ -359,10 +360,10 @@ void ImageProcessor::calculate_occlusion() {
   current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
 
   occlussion_ready.lock();
-  frames[0].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
+  frames[current_frame_id].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
                                            current_occlusion.cols, current_occlusion.rows,
                                            current_occlusion.step, QImage::Format_Grayscale8));
-  frames[0].get_image("occlussion", &occlussion);
+  frames[current_frame_id].get_image("occlussion", &occlussion);
   occlussion_ready.unlock();
   processed();
 
@@ -917,9 +918,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
 
   normal_ready.lock();
-  frames[0].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
+  frames[current_frame_id].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                                          m_normal.rows, m_normal.step, QImage::Format_RGB888));
-  frames[0].get_image("normal", &normal);
+  frames[current_frame_id].get_image("normal", &normal);
   normal_ready.unlock();
   processed();
 
@@ -1035,35 +1036,22 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
-  if (normal_ready.tryLock(0)){
-    last_normal = normal;
-    normal_ready.unlock();
-  }
-
+  frames[current_frame_id].get_image("normal", &last_normal);
   return &last_normal;
 }
 
 QImage *ImageProcessor::get_parallax() {
-  if (parallax_ready.tryLock(0)){
-    last_parallax = parallax;
-    parallax_ready.unlock();
-  }
+  frames[current_frame_id].get_image("parallax", &last_parallax);
   return &last_parallax;
 }
 
 QImage *ImageProcessor::get_specular() {
-  if (specular_ready.tryLock(0)){
-    last_specular = specular;
-    specular_ready.unlock();
-  }
+  frames[current_frame_id].get_image("specular", &last_specular);
   return &last_specular;
 }
 
 QImage *ImageProcessor::get_occlusion() {
-  if (occlussion_ready.tryLock(0)){
-    last_occlussion = occlussion;
-    occlussion_ready.unlock();
-  }
+  frames[current_frame_id].get_image("occlussion", &last_occlussion);
   return &last_occlussion;
 }
 
@@ -1426,4 +1414,25 @@ void ImageProcessor::set_rotation(float r){
 
 float ImageProcessor::get_rotation(){
   return rotation;
+}
+
+int ImageProcessor::get_current_frame_id(){
+  return current_frame_id;
+}
+
+void ImageProcessor::set_current_frame_id(int id){
+  if (id >= frames.count()){
+    id = frames.count() - 1;
+  } else if (id < 0) {
+    id = 0;
+  }
+  current_frame = &frames[id];
+  current_frame_id = id;
+  QImage image;
+  current_frame->get_image("diffuse", &image);
+  m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
+}
+
+Sprite *ImageProcessor::get_current_frame(){
+  return current_frame;
 }

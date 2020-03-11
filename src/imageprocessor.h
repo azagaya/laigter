@@ -50,7 +50,7 @@ enum class ProcessedImage { Raw, Normal, Parallax, Specular, Occlusion };
 enum class ParallaxType { Binary, HeightMap, Quantization, Intervals };
 
 class ProcessorSettings {
-public:
+  public:
   ProcessorSettings &operator=(ProcessorSettings other);
   int *parallax_min;
   int *parallax_max;
@@ -90,7 +90,7 @@ public:
 
 class ImageProcessor : public QObject {
   Q_OBJECT
-public:
+  public:
   explicit ImageProcessor(QObject *parent = nullptr);
   ~ImageProcessor();
   int loadImage(QString fileName, QImage image);
@@ -101,10 +101,10 @@ public:
   void calculate_gradient();
   void calculate_distance();
   void calculate_heightmap();
- cv::Mat modify_distance();
- cv::Mat modify_parallax();
- cv::Mat modify_specular();
- cv::Mat modify_occlusion();
+  cv::Mat modify_distance();
+  cv::Mat modify_parallax();
+  cv::Mat modify_specular();
+  cv::Mat modify_occlusion();
   void set_name(QString name);
   QString get_name();
   QString get_specular_path();
@@ -169,10 +169,14 @@ public:
 
   QVector <Sprite> frames;
 
-signals:
+  signals:
   void processed();
   void on_idle();
-public slots:
+  public slots:
+
+  void set_current_frame_id(int id);
+  int get_current_frame_id();
+
   void copy_settings(ProcessorSettings s);
   void set_normal_depth(int depth);
   int get_normal_depth();
@@ -279,9 +283,10 @@ public slots:
   bool get_is_parallax();
   bool get_connected();
   void set_connected(bool c);
+  Sprite *get_current_frame();
 
 
-private:
+  private:
   ProcessorSettings settings;
   QString m_name, m_heightmapPath, m_specularPath;
   cv::Mat m_img;
@@ -358,6 +363,10 @@ private:
   QBrush normal_brush;
 
   QFuture <void> normal_future;
+
+
+  int current_frame_id = 0;
+  Sprite *current_frame;
 };
 
 #endif // IMAGEPROCESSOR_H

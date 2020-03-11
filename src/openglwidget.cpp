@@ -158,10 +158,7 @@ void OpenGlWidget::initializeGL() {
 
 void OpenGlWidget::loadTextures() {
   processor = processorList.at(0);
-  m_image = processor->get_texture();
-  m_texture = new QOpenGLTexture(*m_image);
-  pixelsX = m_image->width();
-  pixelsY = m_image->height();
+  m_texture = new QOpenGLTexture(m_image);
   m_parallaxTexture = new QOpenGLTexture(parallaxMap);
   m_specularTexture = new QOpenGLTexture(specularMap);
   m_normalTexture = new QOpenGLTexture(normalMap);
@@ -224,14 +221,15 @@ void OpenGlWidget::update_scene() {
   apply_light_params();
   foreach (ImageProcessor *processor, processorList) {
 
-    setImage(&processor->texture);
-    if (processor->frames[0].get_image("normal", &normalMap))
+    if (processor->get_current_frame()->get_image("diffuse", &m_image))
+      setImage(&m_image);
+    if (processor->get_current_frame()->get_image("normal", &normalMap))
       setNormalMap(&normalMap);
-    if (processor->frames[0].get_image("specular", &specularMap))
+    if (processor->get_current_frame()->get_image("specular", &specularMap))
       setSpecularMap(&specularMap);
-    if (processor->frames[0].get_image("parallax", &parallaxMap))
+    if (processor->get_current_frame()->get_image("parallax", &parallaxMap))
       setParallaxMap(&parallaxMap);
-    if (processor->frames[0].get_image("occlussion", &occlusionMap))
+    if (processor->get_current_frame()->get_image("occlussion", &occlusionMap))
       setOcclusionMap(&occlusionMap);
 
     transform.setToIdentity();
@@ -399,21 +397,19 @@ void OpenGlWidget::update_scene() {
 }
 
 void OpenGlWidget::resizeGL(int w, int h) {
-  sx = (float)m_image->width() / w;
-  sy = (float)m_image->height() / h;
+  sx = (float)m_image.width() / w;
+  sy = (float)m_image.height() / h;
   need_to_update = true;
 }
 
 void OpenGlWidget::setImage(QImage *image) {
-  m_image = image;
-  if (m_texture->isCreated()) {
-
+  if (m_texture->isCreated()) {    
     m_texture->destroy();
   }
   m_texture->create();
-  m_texture->setData(*m_image);
-  sx = (float)m_image->width() / width();
-  sy = (float)m_image->height() / height();
+  m_texture->setData(*image);
+  sx = (float)image->width() / width();
+  sy = (float)image->height() / height();
   pixelsX = image->width();
   pixelsY = image->height();
 }
@@ -488,8 +484,8 @@ void OpenGlWidget::resetZoom() {
 
 void OpenGlWidget::fitZoom() {
   float x, y, s;
-  x = (float)m_image->width() / width();
-  y = (float)m_image->height() / height();
+  x = (float)m_image.width() / width();
+  y = (float)m_image.height() / height();
   s = qMax(x, y);
   setZoom(1 / s);
   processor->set_position(QVector3D(0, 0, 0));
@@ -777,13 +773,13 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
     QFileInfo info;
     foreach (ImageProcessor *processor, processorList) {
       setImage(&processor->texture);
-      if (processor->frames[0].get_image("normal", &normalMap))
+      if (processor->get_current_frame()->get_image("normal", &normalMap))
         setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
       setOcclusionMap(processor->get_occlusion());
 
-      QOpenGLFramebufferObject frameBuffer(m_image->width(), m_image->height());
+      QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height());
 
       QMatrix4x4 transform;
       transform.setToIdentity();
@@ -794,7 +790,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
 
       glClearColor(0, 0, 0, 0);
       glClear(GL_COLOR_BUFFER_BIT);
-      glViewport(0, 0, m_image->width(), m_image->height());
+      glViewport(0, 0, m_image.width(), m_image.height());
       m_program.bind();
 
       VAO.bind();
@@ -931,7 +927,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
 
       setImage(&processor->texture);
-      if (processor->frames[0].get_image("normal", &normalMap))
+      if (processor->get_current_frame()->get_image("normal", &normalMap))
         setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());

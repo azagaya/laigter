@@ -144,7 +144,7 @@ private:
   QOpenGLVertexArrayObject lightVAO;
   QOpenGLBuffer VBO, VBO3D;
   QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
-  QImage *m_image, normalMap, parallaxMap, laigter, specularMap,
+  QImage m_image, normalMap, parallaxMap, laigter, specularMap,
       occlusionMap, renderedPreview;
   QVector3D lightPosition, texturePosition, textureOffset;
   QTimer refreshTimer;

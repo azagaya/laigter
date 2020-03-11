@@ -23,6 +23,9 @@ class Sprite
   Texture specular;
   Texture parallax;
   Texture occlussion;
+  Texture heightmap;
+  Texture distance;
+  Texture neighbours;
 };
 
 #endif // SPRITE_H

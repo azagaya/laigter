@@ -7,6 +7,9 @@ Sprite::Sprite()
   specular.set_type("specular");
   parallax.set_type("parallax");
   occlussion.set_type("occlussion");
+  heightmap.set_type("heightmap");
+  distance.set_type("distance");
+  neighbours.set_type("neighbours");
 }
 
 Sprite::Sprite(const Sprite &S){
@@ -35,6 +38,9 @@ Sprite::Sprite(const Sprite &S){
   specular.set_type("specular");
   parallax.set_type("parallax");
   occlussion.set_type("occlussion");
+  heightmap.set_type("heightmap");
+  distance.set_type("distance");
+  neighbours.set_type("neighbours");
 }
 
 Sprite& Sprite::operator=(const Sprite &S){
@@ -63,6 +69,9 @@ Sprite& Sprite::operator=(const Sprite &S){
   specular.set_type("specular");
   parallax.set_type("parallax");
   occlussion.set_type("occlussion");
+  heightmap.set_type("heightmap");
+  distance.set_type("distance");
+  neighbours.set_type("neighbours");
 
   return *this;
 }
@@ -78,6 +87,12 @@ void Sprite::set_image(QString type, QImage i){
     parallax.set_image(i);
   } else if (type == "occlussion"){
     occlussion.set_image(i);
+  } else if (type == "heightmap"){
+    heightmap.set_image(i);
+  } else if (type == "distance"){
+    distance.set_image(i);
+  } else if (type == "neighbours"){
+    neighbours.set_image(i);
   }
 }
 
@@ -92,6 +107,12 @@ bool Sprite::get_image(QString type, QImage *dst){
     return parallax.get_image(dst);
   } else if (type == "occlussion"){
     return occlussion.get_image(dst);
+  }else if (type == "heightmap"){
+    return heightmap.get_image(dst);
+  }else if (type == "distance"){
+    return distance.get_image(dst);
+  }else if (type == "neighbours"){
+    return neighbours.get_image(dst);
   }
   return false;
 }
@@ -117,6 +138,18 @@ void Sprite::set_texture(QString type, Texture t){
     occlussion.lock();
     occlussion = t;
     occlussion.unlock();
+  } else if (type == "heightmap"){
+    heightmap.lock();
+    heightmap = t;
+    heightmap.unlock();
+  } else if (type == "distance"){
+    distance.lock();
+    distance = t;
+    distance.unlock();
+  } else if (type == "neighbours"){
+    neighbours.lock();
+    neighbours = t;
+    neighbours.unlock();
   }
 }
 
