@@ -140,6 +140,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   Sprite s;
   s.set_image("diffuse", image);
   s.set_image("heightmap", image);
+  s.fileName = fileName;
   frames.append(s);
 
   set_current_frame_id(frames.count() -1);
@@ -866,14 +867,10 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   for (int i = 0; i < frames.count(); i++){
     set_current_frame_id(i);
+    set_current_heightmap();
+    calculate_heightmap();
+    calculate_distance();
 
-    if (update_tileable){
-      update_tileable = false;
-      distance_requested = true;
-      set_current_heightmap();
-      calculate_heightmap();
-      calculate_distance();
-    }
     if (true){
       for (int i=0; i < rlist.count(); i++)
         calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
@@ -1446,7 +1443,6 @@ int ImageProcessor::get_current_frame_id(){
 }
 
 void ImageProcessor::set_current_frame_id(int id){
-  qDebug() << "id: " << id;
   if (id >= frames.count()){
     id = frames.count() - 1;
   } else if (id < 0) {
@@ -1457,8 +1453,6 @@ void ImageProcessor::set_current_frame_id(int id){
   current_frame->get_image("diffuse", &texture);
   m_img = Mat(texture.height(), texture.width(), CV_8UC4, texture.scanLine(0));
 
-  set_current_heightmap();
-  calculate_heightmap();
 }
 
 Sprite *ImageProcessor::get_current_frame(){

@@ -211,18 +211,19 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     processor->loadSpecularMap(processor->get_name(), specular);
   } else if (action->text() == tr("Add new frame")){
-    QString fileName = QFileDialog::getOpenFileName(
+    QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+    foreach (QString fileName, fileNames){
+      if (fileName != nullptr) {
+        bool success;
+        QImage image = il.loadImage(fileName, &success);
+        if (!success)
+          return;
+        fs_watcher.addPath(fileName);
+        image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-    if (fileName != nullptr) {
-      bool success;
-      QImage image = il.loadImage(fileName, &success);
-      if (!success)
-        return;
-      fs_watcher.addPath(fileName);
-      image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-
-      processor->loadImage(fileName, image);
+        processor->loadImage(fileName, image);
+      }
     }
   }
 }
@@ -1098,9 +1099,9 @@ void MainWindow::onFileChanged(const QString &file_path) {
   }
 
   // Not needed anymore ???
-//  if (!fs_watcher.files().contains(file_path)) {
-//    fs_watcher.addPath(file_path);
-//  }
+  //  if (!fs_watcher.files().contains(file_path)) {
+  //    fs_watcher.addPath(file_path);
+  //  }
 
   // no file system watcher reports "change" when creating file (bug?)
   if (QFile(file_path).size() == 0) return;
@@ -1112,18 +1113,18 @@ void MainWindow::onFileChanged(const QString &file_path) {
     bool success;
     auximage = il.loadImage(file_path, &success);
     if (file_path == ip->get_name()) {
-//      QMessageBox::information(this, tr("Image modified"),
-//                               tr("An image was modified"));
+      //      QMessageBox::information(this, tr("Image modified"),
+      //                               tr("An image was modified"));
       ip->loadImage(file_path, auximage);
     }
     if (file_path == ip->get_specular_path()) {
-//      QMessageBox::information(this, tr("Specular map modified"),
-//                               tr("A custom specular map was modified"));
+      //      QMessageBox::information(this, tr("Specular map modified"),
+      //                               tr("A custom specular map was modified"));
       ip->loadSpecularMap(file_path, auximage);
     }
     if (file_path == ip->get_heightmap_path()) {
-//      QMessageBox::information(this, tr("Height map modified"),
-//                               tr("A custom height map was modified"));
+      //      QMessageBox::information(this, tr("Height map modified"),
+      //                               tr("A custom height map was modified"));
       ip->loadHeightMap(file_path, auximage);
     }
   }

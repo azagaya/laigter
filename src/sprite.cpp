@@ -176,4 +176,3 @@ void Sprite::set_texture(QString type, Texture t){
     neighbours.unlock();
   }
 }
-
