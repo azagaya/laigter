@@ -90,7 +90,7 @@ void main() {
     vec2 d = vec2(float(pixelsX), float(pixelsY)) * ratio;
     vec2 coords = texCoords * d;
 
-    texCoords = (floor(coords) + 0.5 / d) / d;
+    texCoords = (floor(coords)/d + 0.5/d);
   }
   if (parallax) {
     texCoords = ParallaxMapping(texCoords, viewDir);
