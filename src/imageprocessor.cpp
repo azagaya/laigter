@@ -118,6 +118,11 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
 
   normal_counter = parallax_counter = specular_counter = occlussion_counter = 0;
 
+  connect(&animation, SIGNAL(timeout()),this,SLOT(next_frame()));
+
+  animation.setInterval(80);
+  animation.setSingleShot(false);
+  animation.start();
 }
 
 ImageProcessor::~ImageProcessor(){
@@ -134,6 +139,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
   Sprite s;
   s.set_image("diffuse", image);
+  s.set_image("heightmap", image);
   frames.append(s);
 
   set_current_frame_id(frames.count() -1);
@@ -152,7 +158,6 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
   occlussionOverlay = QImage(image.width(), image.height(), QImage::Format_RGBA8888_Premultiplied);
   occlussionOverlay.fill(QColor(0,0,0,0));
-
 
   int aux = m_img.depth();
   switch (aux) {
@@ -203,7 +208,13 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 }
 
 void ImageProcessor::set_current_heightmap() {
-  current_heightmap = tileable ? neighbours : m_heightmap;
+  if (tileable){
+    current_frame->get_image("neighbours",&heightmap);
+  } else {
+    current_frame->get_image("heightmap",&heightmap);
+  }
+  current_heightmap =
+    Mat(heightmap.height(), heightmap.width(), CV_8UC4, heightmap.scanLine(0));
   cvtColor(current_heightmap, m_parallax, CV_RGBA2GRAY);
   cvtColor(current_heightmap, m_occlusion, COLOR_RGBA2GRAY, 1);
 }
@@ -261,8 +272,8 @@ void ImageProcessor::calculate_parallax() {
 
   parallax_ready.lock();
   frames[current_frame_id].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
-                                         current_parallax.cols, current_parallax.rows,
-                                         current_parallax.step, QImage::Format_Grayscale8));
+                                                        current_parallax.cols, current_parallax.rows,
+                                                        current_parallax.step, QImage::Format_Grayscale8));
 
   frames[current_frame_id].get_image("parallax", &parallax);
   parallax_ready.unlock();
@@ -312,8 +323,8 @@ void ImageProcessor::calculate_specular() {
 
   specular_ready.lock();
   frames[current_frame_id].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
-                                           current_specular.cols, current_specular.rows,
-                                           current_specular.step, QImage::Format_Grayscale8));
+                                                        current_specular.cols, current_specular.rows,
+                                                        current_specular.step, QImage::Format_Grayscale8));
 
   frames[current_frame_id].get_image("specular", &specular);
   specular_ready.unlock();
@@ -361,8 +372,8 @@ void ImageProcessor::calculate_occlusion() {
 
   occlussion_ready.lock();
   frames[current_frame_id].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
-                                           current_occlusion.cols, current_occlusion.rows,
-                                           current_occlusion.step, QImage::Format_Grayscale8));
+                                                          current_occlusion.cols, current_occlusion.rows,
+                                                          current_occlusion.step, QImage::Format_Grayscale8));
   frames[current_frame_id].get_image("occlussion", &occlussion);
   occlussion_ready.unlock();
   processed();
@@ -919,7 +930,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   normal_ready.lock();
   frames[current_frame_id].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
-                                         m_normal.rows, m_normal.step, QImage::Format_RGB888));
+                                                      m_normal.rows, m_normal.step, QImage::Format_RGB888));
   frames[current_frame_id].get_image("normal", &normal);
   normal_ready.unlock();
   processed();
@@ -1421,6 +1432,7 @@ int ImageProcessor::get_current_frame_id(){
 }
 
 void ImageProcessor::set_current_frame_id(int id){
+  qDebug() << "id: " << id;
   if (id >= frames.count()){
     id = frames.count() - 1;
   } else if (id < 0) {
@@ -1428,11 +1440,15 @@ void ImageProcessor::set_current_frame_id(int id){
   }
   current_frame = &frames[id];
   current_frame_id = id;
-  QImage image;
-  current_frame->get_image("diffuse", &image);
-  m_img = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
+  current_frame->get_image("diffuse", &texture);
+  m_img = Mat(texture.height(), texture.width(), CV_8UC4, texture.scanLine(0));
 }
 
 Sprite *ImageProcessor::get_current_frame(){
   return current_frame;
+}
+
+void ImageProcessor::next_frame(){
+  set_current_frame_id((current_frame_id+1) % frames.count());
+  processed();
 }

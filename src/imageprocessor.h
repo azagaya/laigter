@@ -30,6 +30,7 @@
 #include <QBrush>
 #include <QFuture>
 #include <QVector2D>
+#include <QTimer>
 
 #include "src/lightsource.h"
 #include "src/sprite.h"
@@ -126,6 +127,11 @@ class ImageProcessor : public QObject {
   QImage specular, last_specular;
   QImage occlussion, last_occlussion;
 
+  QImage heightmap;
+
+  QTimer animation;
+
+
   /* Images for Plugins */
 
   QImage textureOverlay = QImage(0,0,QImage::Format_RGBA8888);
@@ -173,6 +179,9 @@ class ImageProcessor : public QObject {
   void processed();
   void on_idle();
   public slots:
+
+
+  void next_frame();
 
   void set_current_frame_id(int id);
   int get_current_frame_id();

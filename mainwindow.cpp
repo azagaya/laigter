@@ -140,6 +140,9 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
   contextMenu.addSeparator();
   contextMenu.addAction(new QAction(tr("Load specular map")));
   contextMenu.addAction(new QAction(tr("Reset specular map")));
+  contextMenu.addSeparator();
+  contextMenu.addAction(new QAction(tr("Add new frame")));
+  contextMenu.addAction(new QAction(tr("Remove current frame")));
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
           SLOT(list_menu_action_triggered(QAction *)));
@@ -207,6 +210,20 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     QImage specular = il.loadImage(processor->get_name(), &succes);
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     processor->loadSpecularMap(processor->get_name(), specular);
+  } else if (action->text() == tr("Add new frame")){
+    QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+
+    if (fileName != nullptr) {
+      bool success;
+      QImage image = il.loadImage(fileName, &success);
+      if (!success)
+        return;
+      fs_watcher.addPath(fileName);
+      image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+
+      processor->loadImage(fileName, image);
+    }
   }
 }
 

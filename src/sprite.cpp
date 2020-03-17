@@ -33,6 +33,18 @@ Sprite::Sprite(const Sprite &S){
   occlussion = S.occlussion;
   occlussion.unlock();
 
+  heightmap.lock();
+  heightmap = S.heightmap;
+  heightmap.unlock();
+
+  distance.lock();
+  distance = S.distance;
+  distance.unlock();
+
+  neighbours.lock();
+  neighbours = S.neighbours;
+  neighbours.unlock();
+
   diffuse.set_type("diffuse");
   normal.set_type("normal");
   specular.set_type("specular");
@@ -63,6 +75,18 @@ Sprite& Sprite::operator=(const Sprite &S){
   occlussion.lock();
   occlussion = S.occlussion;
   occlussion.unlock();
+
+  heightmap.lock();
+  heightmap = S.heightmap;
+  heightmap.unlock();
+
+  distance.lock();
+  distance = S.distance;
+  distance.unlock();
+
+  neighbours.lock();
+  neighbours = S.neighbours;
+  neighbours.unlock();
 
   diffuse.set_type("diffuse");
   normal.set_type("normal");
