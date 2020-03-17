@@ -862,77 +862,91 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (updateBump) bump_requested++;
   if (updateDistance) distance_requested++;
 
-  if (update_tileable){
-    update_tileable = false;
-    distance_requested = true;
-    set_current_heightmap();
-    calculate_heightmap();
-    calculate_distance();
-  }
-  if (enhance_requested){
-    enhance_requested--;
-    for (int i=0; i < rlist.count(); i++)
-      calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
-  }
+  int frame = current_frame_id;
 
-  if (distance_requested){
-    distance_requested--;
-    new_distance = modify_distance();
-  }
+  for (int i = 0; i < frames.count(); i++){
+    set_current_frame_id(i);
 
-  if (bump_requested){
-    bump_requested--;
-    for (int i=0; i < rlist.count(); i++)
-      calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
-                       , normal_bisel_blur_radius);
-  }
-
-  Mat normals;
-  if (m_normal.rows == 0 || m_normal.cols == 0){
-    m_emboss_normal.copyTo(m_normal);
-    m_normal.convertTo(m_normal, CV_8UC3, 255);
-  }
-
-
-  normals = (m_emboss_normal*3/2.0 + m_distance_normal*3/2.0 + m_height_ov );
-
-  foreach (QRect rect, rlist){
-
-    int xmin = 0, xmax = normals.cols-1;
-    int ymin = 0, ymax = normals.rows-1;
-
-    if (rect != QRect(0,0,0,0)){
-      rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+    if (update_tileable){
+      update_tileable = false;
+      distance_requested = true;
+      set_current_heightmap();
+      calculate_heightmap();
+      calculate_distance();
+    }
+    if (true){
+      for (int i=0; i < rlist.count(); i++)
+        calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
     }
 
-    for (int x = xmin; x <= xmax; ++x) {
-      int xaux = x;
+    if (true){
+      new_distance = modify_distance();
+    }
 
-      for (int y = ymin; y <= ymax; ++y) {
-        int yaux = y;
+    if (true){
+      for (int i=0; i < rlist.count(); i++)
+        calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
+                         , normal_bisel_blur_radius);
+    }
 
-        QColor oColor = normalOverlay.pixelColor(xaux,yaux);
-        Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-        Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
+    Mat normals;
+    if (m_normal.rows == 0 || m_normal.cols == 0){
+      m_emboss_normal.copyTo(m_normal);
+      m_normal.convertTo(m_normal, CV_8UC3, 255);
+    }
 
-        n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
-        m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
-        m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
-        m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
 
-        if (!active) {
-          normal_counter--;
-          return;
+    normals = (m_emboss_normal*3/2.0 + m_distance_normal*3/2.0 + m_height_ov );
+
+    foreach (QRect rect, rlist){
+
+      int xmin = 0, xmax = normals.cols-1;
+      int ymin = 0, ymax = normals.rows-1;
+
+      if (rect != QRect(0,0,0,0)){
+        rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+      }
+
+      for (int x = xmin; x <= xmax; ++x) {
+        int xaux = x;
+
+        for (int y = ymin; y <= ymax; ++y) {
+          int yaux = y;
+
+          QColor oColor = normalOverlay.pixelColor(xaux,yaux);
+          Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
+          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
+
+          n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
+          m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
+          m_normal.at<Vec3b>(yaux,xaux)[1] = n[1]*255;
+          m_normal.at<Vec3b>(yaux,xaux)[2] = n[2]*255;
+
+          if (!active) {
+            normal_counter--;
+            return;
+          }
         }
       }
     }
-  }
 
-  normal_ready.lock();
-  frames[current_frame_id].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
-                                                      m_normal.rows, m_normal.step, QImage::Format_RGB888));
-  frames[current_frame_id].get_image("normal", &normal);
-  normal_ready.unlock();
+    normal_ready.lock();
+    frames[i].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
+                                         m_normal.rows, m_normal.step, QImage::Format_RGB888));
+    frames[i].get_image("normal", &normal);
+    normal_ready.unlock();
+
+  }
+  if (enhance_requested){
+    enhance_requested--;
+  }
+  if (distance_requested){
+    distance_requested--;
+  }
+  if (bump_requested){
+    bump_requested--;
+  }
+  set_current_frame_id(frame);
   processed();
 
   normal_counter--;
@@ -1442,6 +1456,9 @@ void ImageProcessor::set_current_frame_id(int id){
   current_frame_id = id;
   current_frame->get_image("diffuse", &texture);
   m_img = Mat(texture.height(), texture.width(), CV_8UC4, texture.scanLine(0));
+
+  set_current_heightmap();
+  calculate_heightmap();
 }
 
 Sprite *ImageProcessor::get_current_frame(){
@@ -1449,6 +1466,18 @@ Sprite *ImageProcessor::get_current_frame(){
 }
 
 void ImageProcessor::next_frame(){
-  set_current_frame_id((current_frame_id+1) % frames.count());
-  processed();
+  if (normal_mutex.tryLock()){
+    if (specular_mutex.tryLock()){
+      if (parallax_mutex.tryLock()){
+        if (occlusion_mutex.tryLock()){
+          set_current_frame_id((current_frame_id+1) % frames.count());
+          processed();
+          occlusion_mutex.unlock();
+        }
+        parallax_mutex.unlock();
+      }
+      specular_mutex.unlock();
+    }
+    normal_mutex.unlock();
+  }
 }

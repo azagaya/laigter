@@ -264,7 +264,7 @@ void OpenGlWidget::update_scene() {
 
     glActiveTexture(GL_TEXTURE0);
 
-
+    qDebug() << pixelsX << pixelsY;
     m_program.setUniformValue("transform", transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
