@@ -141,7 +141,7 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
   contextMenu.addAction(new QAction(tr("Load specular map")));
   contextMenu.addAction(new QAction(tr("Reset specular map")));
   contextMenu.addSeparator();
-  contextMenu.addAction(new QAction(tr("Add new frame")));
+  contextMenu.addAction(new QAction(tr("Add new frames")));
   contextMenu.addAction(new QAction(tr("Remove current frame")));
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
@@ -210,7 +210,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     QImage specular = il.loadImage(processor->get_name(), &succes);
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     processor->loadSpecularMap(processor->get_name(), specular);
-  } else if (action->text() == tr("Add new frame")){
+  } else if (action->text() == tr("Add new frames")){
     QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
     foreach (QString fileName, fileNames){
@@ -266,39 +266,70 @@ ImageProcessor *MainWindow::find_processor(QString name){
 void MainWindow::open_files(QStringList fileNames) {
   QImage auximage;
   foreach (QString fileName, fileNames) {
-    if (fileName != nullptr) {
-      ImageLoader il;
-      bool succes;
-      auximage = il.loadImage(fileName, &succes);
-      if (!succes || auximage.isNull()) {
-        QMessageBox msgBox;
-        msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
-                       tr("Unsupported or incorrect format."));
-        msgBox.exec();
-        continue;
-      }
-      auximage =
-        auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-      int i;
-      for (i = 0; i < ui->listWidget->count(); i++) {
-        if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
-          QMessageBox msgBox;
-          msgBox.setText(tr("The image is already opened in Laigter."));
-          msgBox.exec();
-          break;
+
+    /* Check for auto loading of frames */
+    QRegularExpression rx("(\\d+)(?!.*\\d)");
+
+    QFileInfo info(fileName);
+
+    QRegularExpressionMatch match = rx.match(info.fileName());
+    QString prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
+    QDir dir = info.absoluteDir();
+
+    QStringList similarList;
+    if (prefix != ""){
+      foreach(QString file, dir.entryList()){
+        if (file.startsWith(prefix) && file.endsWith("."+info.suffix())){
+          similarList.append(dir.path()+"/"+file);
         }
       }
+    }
 
-      if (i != ui->listWidget->count())
-        continue;
-      ImageProcessor *p = new ImageProcessor();
-      p->copy_settings(processor->get_settings());
+    qDebug() << similarList;
+    if (similarList.count() == 0){
+      similarList.append(fileName);
+    }
+    ImageProcessor *p = new ImageProcessor();
+    p->copy_settings(processor->get_settings());
+    bool loaded = false;
+    foreach(fileName, similarList){
+      if (fileName != nullptr) {
+        ImageLoader il;
+        bool succes;
+        auximage = il.loadImage(fileName, &succes);
+        loaded = loaded || succes;
+        if (!succes || auximage.isNull()) {
+          QMessageBox msgBox;
+          msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                         tr("Unsupported or incorrect format."));
+          msgBox.exec();
+          continue;
+        }
+        auximage =
+          auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        int i;
+        for (i = 0; i < ui->listWidget->count(); i++) {
+          if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
+            QMessageBox msgBox;
+            msgBox.setText(tr("The image is already opened in Laigter."));
+            msgBox.exec();
+            break;
+          }
+        }
 
-      p->loadImage(fileName, auximage);
+        if (i != ui->listWidget->count())
+          continue;
 
-      fs_watcher.addPath(fileName);
+        p->loadImage(fileName, auximage);
 
-      add_processor(p);
+        fs_watcher.addPath(fileName);
+
+      }
+    }
+    if (loaded){
+    add_processor(p);
+    } else {
+      delete p;
     }
   }
 }

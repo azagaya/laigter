@@ -854,7 +854,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,255);
   //add(heightmapOverlay,aux_height_ov,aux_height_ov);
-
   for (int i=0; i < rlist.count(); i++){
     calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
   }
