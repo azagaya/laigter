@@ -1,0 +1,8 @@
+English	GB.png	en
+Español ES.png	es
+Português brasileiro	BR.png	pt_BR
+Français	FR.png	fr
+ελληνικά	GR.png	el
+Català	ES_CA.png	es_CA
+
+

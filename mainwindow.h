@@ -24,6 +24,7 @@
 #include "src/imageprocessor.h"
 #include "src/lightsource.h"
 #include "src/brushinterface.h"
+#include "gui/languageselector.h"
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -63,6 +64,7 @@ public slots:
   void set_enabled_light_controls(bool e);
   void select_plugin(BrushInterface *b);
   ImageProcessor *find_processor(QString name);
+  void retranslate();
 
 signals:
   void normal_depth_changed(int value);
@@ -134,6 +136,8 @@ private slots:
   void on_actionDelete_Plugin_triggered();
 
 
+  void on_actionLanguages_triggered();
+
   private:
   Ui::MainWindow *ui;
   QOpenGLWidget *gl;
@@ -151,6 +155,10 @@ private slots:
   QList <QDockWidget*> plugin_docks_list;
   QList <QPluginLoader *> plugin_list;
   QList <BrushInterface *> brush_list;
+  LanguageSelector *el;
+
+  protected slots:
+  virtual void changeEvent(QEvent * event);
 };
 
 #endif // MAINWINDOW_H

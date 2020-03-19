@@ -14,5 +14,13 @@
         <file>translations/laigter_es.qm</file>
         <file>translations/laigter_en.qm</file>
         <file>translations/laigter_da.qm</file>
+        <file>translations/languages.txt</file>
+        <file>translations/flags/ES.png</file>
+        <file>translations/flags/BR.png</file>
+        <file>translations/flags/FR.png</file>
+        <file>translations/flags/GB.png</file>
+        <file>translations/flags/GR.png</file>
+        <file>translations/flags/DK.png</file>
+        <file>translations/flags/ES_CA.png</file>
     </qresource>
 </RCC>

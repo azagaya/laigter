@@ -25,6 +25,7 @@
 #include "src/openglwidget.h"
 #include "ui_mainwindow.h"
 #include "src/brushinterface.h"
+#include "gui/languageselector.h"
 
 #include <QColorDialog>
 #include <QDebug>
@@ -127,6 +128,46 @@ MainWindow::MainWindow(QWidget *parent)
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
 
+  /* Language settings */
+  el = new LanguageSelector(this);
+
+  QString current_language =
+    QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+    "/lang";
+  QFile l(current_language);
+  QTranslator *translator = new QTranslator;
+  el->translator = translator;
+  if (l.open(QIODevice::ReadOnly)){
+    QTextStream in(&l);
+    QStringList locale = in.readLine().split("\t");
+    translator->load(":/translations/laigter_"+locale[2]);
+    el->icon = QPixmap::fromImage(QImage(":/translations/flags/"+locale[1]));
+  } else {
+    bool loaded = translator->load(QLocale::system(), ":/translations/laigter", "_");
+    if (!loaded) {
+      translator->load(":/translations/laigter_en");
+      el->icon = QPixmap::fromImage(QImage(":/translations/flags/EN.png"));
+    } else {
+      /* Get icon of locale language */
+      QFile f(":/translations/languages.txt");
+      f.open(QIODevice::ReadOnly);
+      QTextStream stream(&f);
+      QString locale = QLocale::system().bcp47Name();
+      while (!stream.atEnd())
+      {
+        QStringList line = stream.readLine().split("\t");
+        if (line.count() >= 3){
+          QString icon_path = line[1];
+          QString lang = line[2];
+          if (lang == locale || lang == locale.split("-")[0]){
+            el->icon = QPixmap::fromImage(QImage(":/translations/flags/"+icon_path));
+          }
+        }
+      }
+    }
+  }
+
+  qApp->installTranslator(translator);
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
@@ -1301,3 +1342,28 @@ void MainWindow::on_actionDelete_Plugin_triggered()
   on_actionLoadPlugins_triggered();
 }
 
+
+void MainWindow::on_actionLanguages_triggered()
+{
+
+  el->show();
+}
+
+
+void MainWindow::changeEvent(QEvent *event)
+{
+  //QDialog::changeEvent(event);
+  if( QEvent::LanguageChange == event->type() )
+  {
+    retranslate();
+  }
+}
+
+void MainWindow::retranslate(){
+  ui->retranslateUi(this);
+  foreach (QAction *a, ui->mainToolBar->actions()){
+    if (a->text() == tr("Languages")){
+      a->setIcon(el->icon);
+    }
+  }
+}

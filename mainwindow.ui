@@ -71,6 +71,7 @@
    <addaction name="actionAdd_Light"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>
+   <addaction name="actionLanguages"/>
    <addaction name="separator"/>
    <addaction name="actionAbout"/>
   </widget>
@@ -1696,6 +1697,11 @@
    </property>
    <property name="toolTip">
     <string>Delete Plugin</string>
+   </property>
+  </action>
+  <action name="actionLanguages">
+   <property name="text">
+    <string>Languages</string>
    </property>
   </action>
  </widget>

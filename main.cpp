@@ -44,14 +44,6 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
-  QTranslator translator;
-  bool loaded = translator.load(QLocale::system(), ":/translations/laigter", "_");
-  if (!loaded) {
-    // Fallback to English
-    translator.load(":/translations/laigter_en");
-  }
-
-
 #ifndef PORTABLE
   QString appData =
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -171,14 +163,9 @@ int main(int argc, char *argv[]) {
   }
 
   QApplication *a = qobject_cast<QApplication *>(app.data());
-  QPixmap pixmap(":/images/sample.png");
-  QSplashScreen splash(pixmap, Qt::WindowStaysOnTopHint);
 
-  splash.show();
-  a->processEvents();
   int returnCode;
   if (a) {
-    a->installTranslator(&translator);
     bool softOpenGlValue = argsParser.isSet(softOpenGl);
     if (softOpenGlValue) {
       a->setAttribute(Qt::AA_UseSoftwareOpenGL);

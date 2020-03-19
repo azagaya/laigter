@@ -43,9 +43,9 @@ CONFIG += core ui c++11
 
 SOURCES += \
     gui/aboutdialog.cpp \
+  gui/languageselector.cpp \
     gui/presetsmanager.cpp \
   gui/removeplugindialog.cpp \
-  gui/widgets/languageselector.cpp \
   gui/widgets/slider.cpp \
   gui/widgets/slider2.cpp \
         main.cpp \
@@ -61,9 +61,9 @@ SOURCES += \
 HEADERS += \
   gui/Widgets/slider.h \
     gui/aboutdialog.h \
+  gui/languageselector.h \
     gui/presetsmanager.h \
   gui/removeplugindialog.h \
-  gui/widgets/languageselector.h \
   gui/widgets/slider.h \
   gui/widgets/slider2.h \
         mainwindow.h \
@@ -78,9 +78,9 @@ HEADERS += \
 
 FORMS += \
     gui/aboutdialog.ui \
+  gui/languageselector.ui \
     gui/presetsmanager.ui \
   gui/removeplugindialog.ui \
-  gui/widgets/languageselector.ui \
         mainwindow.ui \
     gui/nbselector.ui
 
@@ -102,13 +102,13 @@ DISTFILES += \
     ACKNOWLEDGEMETS \
     LICENSE
 
-TRANSLATIONS = laigter_da.ts \
-               laigter_es.ts \
-               laigter_en.ts \
-               laigter_fr.ts \
-               laigter_pt_BR.ts \
-               laigter_ca_ES.ts \
-               laigter_el.ts
+TRANSLATIONS = translations/laigter_da.ts \
+               translations/laigter_es.ts \
+               translations/laigter_en.ts \
+               translations/laigter_fr.ts \
+               translations/laigter_pt_BR.ts \
+               translations/laigter_ca_ES.ts \
+               translations/laigter_el.ts
 
 LANGUAGES = da\
             en \
