@@ -45,6 +45,7 @@ SOURCES += \
     gui/aboutdialog.cpp \
     gui/presetsmanager.cpp \
   gui/removeplugindialog.cpp \
+  gui/widgets/languageselector.cpp \
   gui/widgets/slider.cpp \
   gui/widgets/slider2.cpp \
         main.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     gui/aboutdialog.h \
     gui/presetsmanager.h \
   gui/removeplugindialog.h \
+  gui/widgets/languageselector.h \
   gui/widgets/slider.h \
   gui/widgets/slider2.h \
         mainwindow.h \
@@ -78,6 +80,7 @@ FORMS += \
     gui/aboutdialog.ui \
     gui/presetsmanager.ui \
   gui/removeplugindialog.ui \
+  gui/widgets/languageselector.ui \
         mainwindow.ui \
     gui/nbselector.ui
 
@@ -121,7 +124,7 @@ defineReplace(prependAll) {
  return($$result)
 }
 
-TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/laigter_, .ts)
+TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 
 TRANSLATIONS_FILES =
 

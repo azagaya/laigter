@@ -28,6 +28,7 @@
 #include <QOpenGLContext>
 #include <QStandardPaths>
 #include <QTranslator>
+#include <QSplashScreen>
 
 QCoreApplication *createApplication(int &argc, char *argv[]) {
   for (int i = 1; i < argc; ++i)
@@ -44,11 +45,10 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
   QTranslator translator;
-  bool loaded = translator.load(QLocale::system(), ":/laigter", "_");
-  //bool loaded = translator.load(":/laigter_el");
+  bool loaded = translator.load(QLocale::system(), ":/translations/laigter", "_");
   if (!loaded) {
     // Fallback to English
-    translator.load(":/laigter_en");
+    translator.load(":/translations/laigter_en");
   }
 
 
@@ -125,6 +125,7 @@ int main(int argc, char *argv[]) {
   QSurfaceFormat::setDefaultFormat(fmt);
 
   QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
+
   argsParser.process(*app.data());
   QImage auximage;
 
@@ -170,6 +171,11 @@ int main(int argc, char *argv[]) {
   }
 
   QApplication *a = qobject_cast<QApplication *>(app.data());
+  QPixmap pixmap(":/images/sample.png");
+  QSplashScreen splash(pixmap, Qt::WindowStaysOnTopHint);
+
+  splash.show();
+  a->processEvents();
   int returnCode;
   if (a) {
     a->installTranslator(&translator);

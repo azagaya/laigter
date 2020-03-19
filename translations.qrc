@@ -1,18 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>laigter_en.qm</file>
-        <file>laigter_en.ts</file>
-        <file>laigter_es.qm</file>
-        <file>laigter_es.ts</file>
-        <file>laigter_fr.qm</file>
-        <file>laigter_fr.ts</file>
-        <file>laigter_pt_BR.qm</file>
-        <file>laigter_pt_BR.ts</file>
-        <file>laigter_ca_ES.ts</file>
-        <file>laigter_ca_ES.qm</file>
-        <file>laigter_da.ts</file>
-        <file>laigter_da.qm</file>
-        <file>laigter_el.ts</file>
-        <file>laigter_el.qm</file>
+        <file>translations/laigter_da.ts</file>
+        <file>translations/laigter_en.ts</file>
+        <file>translations/laigter_pt_BR.ts</file>
+        <file>translations/laigter_fr.ts</file>
+        <file>translations/laigter_ca_ES.ts</file>
+        <file>translations/laigter_es.ts</file>
+        <file>translations/laigter_el.ts</file>
+        <file>translations/laigter_el.qm</file>
+        <file>translations/laigter_ca_ES.qm</file>
+        <file>translations/laigter_pt_BR.qm</file>
+        <file>translations/laigter_fr.qm</file>
+        <file>translations/laigter_es.qm</file>
+        <file>translations/laigter_en.qm</file>
+        <file>translations/laigter_da.qm</file>
     </qresource>
 </RCC>
