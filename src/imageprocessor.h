@@ -128,6 +128,7 @@ class ImageProcessor : public QObject {
   QImage occlussion, last_occlussion;
 
   QImage heightmap;
+  QImage specular_base;
 
   QTimer animation;
 

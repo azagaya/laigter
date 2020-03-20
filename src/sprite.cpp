@@ -10,6 +10,8 @@ Sprite::Sprite()
   heightmap.set_type("heightmap");
   distance.set_type("distance");
   neighbours.set_type("neighbours");
+  specular_base.set_type("specular_base");
+  occlussion_base.set_type("occlussion_base");
 }
 
 Sprite::Sprite(const Sprite &S){
@@ -45,6 +47,14 @@ Sprite::Sprite(const Sprite &S){
   neighbours = S.neighbours;
   neighbours.unlock();
 
+  specular_base.lock();
+  specular_base = S.specular_base;
+  specular_base.unlock();
+
+  occlussion_base.lock();
+  occlussion_base = S.occlussion_base;
+  occlussion_base.unlock();
+
   diffuse.set_type("diffuse");
   normal.set_type("normal");
   specular.set_type("specular");
@@ -53,6 +63,8 @@ Sprite::Sprite(const Sprite &S){
   heightmap.set_type("heightmap");
   distance.set_type("distance");
   neighbours.set_type("neighbours");
+  specular_base.set_type("specular_base");
+  occlussion_base.set_type("occlussion_base");
 }
 
 Sprite& Sprite::operator=(const Sprite &S){
@@ -88,6 +100,14 @@ Sprite& Sprite::operator=(const Sprite &S){
   neighbours = S.neighbours;
   neighbours.unlock();
 
+  specular_base.lock();
+  specular_base = S.specular_base;
+  specular_base.unlock();
+
+  occlussion_base.lock();
+  occlussion_base = S.occlussion_base;
+  occlussion_base.unlock();
+
   diffuse.set_type("diffuse");
   normal.set_type("normal");
   specular.set_type("specular");
@@ -96,6 +116,8 @@ Sprite& Sprite::operator=(const Sprite &S){
   heightmap.set_type("heightmap");
   distance.set_type("distance");
   neighbours.set_type("neighbours");
+  specular_base.set_type("specular_base");
+  occlussion_base.set_type("occlussion_base");
 
   return *this;
 }
@@ -117,6 +139,10 @@ void Sprite::set_image(QString type, QImage i){
     distance.set_image(i);
   } else if (type == "neighbours"){
     neighbours.set_image(i);
+  } else if (type == "specular_base"){
+    specular_base.set_image(i);
+  } else if (type == "occlussion_base"){
+    occlussion_base.set_image(i);
   }
 }
 
@@ -137,6 +163,10 @@ bool Sprite::get_image(QString type, QImage *dst){
     return distance.get_image(dst);
   }else if (type == "neighbours"){
     return neighbours.get_image(dst);
+  }else if (type == "specular_base"){
+    return specular_base.get_image(dst);
+  }else if (type == "occlussion_base"){
+    return occlussion_base.get_image(dst);
   }
   return false;
 }
@@ -174,5 +204,13 @@ void Sprite::set_texture(QString type, Texture t){
     neighbours.lock();
     neighbours = t;
     neighbours.unlock();
+  } else if (type == "specular_base"){
+    specular_base.lock();
+    specular_base = t;
+    specular_base.unlock();
+  } else if (type == "occlussion_base"){
+    occlussion_base.lock();
+    occlussion_base = t;
+    occlussion_base.unlock();
   }
 }

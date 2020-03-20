@@ -28,9 +28,13 @@ class Sprite
   Texture specular;
   Texture parallax;
   Texture occlussion;
+
+  /* This textures are needed to generate the maps */
   Texture heightmap;
   Texture distance;
   Texture neighbours;
+  Texture specular_base;
+  Texture occlussion_base;
 };
 
 #endif // SPRITE_H

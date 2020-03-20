@@ -140,6 +140,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   Sprite s;
   s.set_image("diffuse", image);
   s.set_image("heightmap", image);
+  s.set_image("specular_base",image);
   s.fileName = fileName;
   frames.append(s);
 
@@ -237,47 +238,52 @@ void ImageProcessor::calculate_parallax() {
     return;
   parallax_counter++;
   QMutexLocker locker(&parallax_mutex);
+  int frame = current_frame_id;
 
-  QImage ovi = get_parallax_overlay();
-  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
+  for (int i = 0; i < frames.count(); i++){
+    set_current_frame_id(i);
+    QImage ovi = get_parallax_overlay();
+    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
 
-  Mat channels[4];
-  split(ov, channels);
+    Mat channels[4];
+    split(ov, channels);
 
-  Mat alpha = channels[3];
-  ov = channels[0];
-  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
-  ov.convertTo(ov, CV_32FC1, 1.0/255);
+    Mat alpha = channels[3];
+    ov = channels[0];
+    alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+    ov.convertTo(ov, CV_32FC1, 1.0/255);
 
-  current_parallax = modify_parallax();
+    current_parallax = modify_parallax();
 
-  Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && current_parallax.rows == m_img.rows * 3) {
-    current_parallax(rect).copyTo(current_parallax);
+    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
+    if (tileable && current_parallax.rows == m_img.rows * 3) {
+      current_parallax(rect).copyTo(current_parallax);
+    }
+
+    switch (current_parallax.channels()) {
+    case 3:
+      cvtColor(current_parallax, current_parallax, COLOR_RGB2GRAY);
+      break;
+    case 4:
+      cvtColor(current_parallax, current_parallax, COLOR_RGBA2GRAY);
+      break;
+    }
+
+    current_parallax.convertTo(current_parallax, CV_32FC1, 1.0/255);
+    multiply(Scalar::all(1.0)-alpha,current_parallax,current_parallax);
+    add(ov, current_parallax, current_parallax);
+    current_parallax.convertTo(current_parallax, CV_8UC1, 255);
+
+
+    parallax_ready.lock();
+    frames[current_frame_id].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
+                                                          current_parallax.cols, current_parallax.rows,
+                                                          current_parallax.step, QImage::Format_Grayscale8));
+
+    frames[current_frame_id].get_image("parallax", &parallax);
+    parallax_ready.unlock();
   }
-
-  switch (current_parallax.channels()) {
-  case 3:
-    cvtColor(current_parallax, current_parallax, COLOR_RGB2GRAY);
-    break;
-  case 4:
-    cvtColor(current_parallax, current_parallax, COLOR_RGBA2GRAY);
-    break;
-  }
-
-  current_parallax.convertTo(current_parallax, CV_32FC1, 1.0/255);
-  multiply(Scalar::all(1.0)-alpha,current_parallax,current_parallax);
-  add(ov, current_parallax, current_parallax);
-  current_parallax.convertTo(current_parallax, CV_8UC1, 255);
-
-
-  parallax_ready.lock();
-  frames[current_frame_id].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
-                                                        current_parallax.cols, current_parallax.rows,
-                                                        current_parallax.step, QImage::Format_Grayscale8));
-
-  frames[current_frame_id].get_image("parallax", &parallax);
-  parallax_ready.unlock();
+  set_current_frame_id(frame);
   processed();
   parallax_counter--;
 }
@@ -287,51 +293,56 @@ void ImageProcessor::calculate_specular() {
     return;
   specular_counter++;
   QMutexLocker locker(&specular_mutex);
-  current_specular = modify_specular();
+  int frame = current_frame_id;
+  for (int i = 0; i < frames.count(); i++){
 
-  QImage ovi = get_specular_overlay();
-  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-  Mat channels[4];
-  split(ov, channels);
+    set_current_frame_id(i);
 
-  Mat alpha = channels[3];
-  ov = channels[0];
-  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
-  ov.convertTo(ov, CV_32FC1, 1.0/255);
+    current_specular = modify_specular();
 
-  // multiply(alpha,ov,ov);
+    QImage ovi = get_specular_overlay();
+    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
+    Mat channels[4];
+    split(ov, channels);
 
-  Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && current_specular.rows == m_img.rows * 3) {
-    current_specular(rect).copyTo(current_specular);
+    Mat alpha = channels[3];
+    ov = channels[0];
+    alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+    ov.convertTo(ov, CV_32FC1, 1.0/255);
+
+    // multiply(alpha,ov,ov);
+
+    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
+    if (tileable && current_specular.rows == m_img.rows * 3) {
+      current_specular(rect).copyTo(current_specular);
+    }
+
+
+
+    switch (current_specular.channels()) {
+    case 3:
+      cvtColor(current_specular, current_specular, COLOR_RGB2GRAY);
+      break;
+    case 4:
+      cvtColor(current_specular, current_specular, COLOR_RGBA2GRAY);
+      break;
+    }
+
+    current_specular.convertTo(current_specular, CV_32FC1, 1.0/255);
+    multiply(Scalar::all(1.0)-alpha,current_specular,current_specular);
+    add(ov, current_specular, current_specular);
+    current_specular.convertTo(current_specular, CV_8UC1, 255);
+
+    specular_ready.lock();
+    frames[i].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
+                                           current_specular.cols, current_specular.rows,
+                                           current_specular.step, QImage::Format_Grayscale8));
+
+    //    frames[i].get_image("specular", &specular);
+    specular_ready.unlock();
   }
-
-
-
-  switch (current_specular.channels()) {
-  case 3:
-    cvtColor(current_specular, current_specular, COLOR_RGB2GRAY);
-    break;
-  case 4:
-    cvtColor(current_specular, current_specular, COLOR_RGBA2GRAY);
-    break;
-  }
-
-  current_specular.convertTo(current_specular, CV_32FC1, 1.0/255);
-  multiply(Scalar::all(1.0)-alpha,current_specular,current_specular);
-  add(ov, current_specular, current_specular);
-  current_specular.convertTo(current_specular, CV_8UC1, 255);
-
-  specular_ready.lock();
-  frames[current_frame_id].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
-                                                        current_specular.cols, current_specular.rows,
-                                                        current_specular.step, QImage::Format_Grayscale8));
-
-  frames[current_frame_id].get_image("specular", &specular);
-  specular_ready.unlock();
-
   specular_counter--;
-
+  set_current_frame_id(frame);
   processed();
 }
 
@@ -727,6 +738,8 @@ Mat ImageProcessor::modify_parallax() {
   Mat m;
   Mat d;
 
+  set_current_heightmap();
+
   int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
   Mat shape = getStructuringElement(MORPH_RECT,
                                     Size(abs(parallax_erode_dilate) * 2 + 1,
@@ -787,8 +800,9 @@ Mat ImageProcessor::modify_parallax() {
 Mat ImageProcessor::modify_specular() {
   Mat m;
 
-  m_specular.copyTo(m);
-
+  current_frame->get_image("specular_base", &specular_base);
+  m =
+    Mat(specular_base.height(), specular_base.width(), CV_8UC4, specular_base.scanLine(0));
   m.convertTo(m, CV_32F, 1 / 255.0);
   cvtColor(m, m, CV_RGBA2GRAY);
   m.convertTo(m, -1, 1, -specular_thresh / 255.0);
