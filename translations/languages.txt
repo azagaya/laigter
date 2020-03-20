@@ -1,8 +1,10 @@
+Català	ES_CA.png	ca_ES
+Dansk	DK.png	da
 English	GB.png	en
-Español ES.png	es
-Português brasileiro	BR.png	pt_BR
+Español	ES.png	es
 Français	FR.png	fr
+Português brasileiro	BR.png	pt_BR
 ελληνικά	GR.png	el
-Català	ES_CA.png	es_CA
+
 
 
