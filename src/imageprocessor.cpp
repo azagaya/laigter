@@ -141,6 +141,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   s.set_image("diffuse", image);
   s.set_image("heightmap", image);
   s.set_image("specular_base",image);
+  s.set_image("occlussion_base",image);
   s.fileName = fileName;
   frames.append(s);
 
@@ -350,44 +351,49 @@ void ImageProcessor::calculate_occlusion() {
   if (occlussion_counter > 2)
     return;
   occlussion_counter++;
+  int frame = current_frame_id;
   QMutexLocker locker(&occlusion_mutex);
-  current_occlusion = modify_occlusion();
+  for (int i=0; i < frames.count(); i++){
+    set_current_frame_id(i);
+    current_occlusion = modify_occlusion();
 
-  QImage ovi = get_occlusion_overlay();
-  Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-  Mat channels[4];
-  split(ov, channels);
+    QImage ovi = get_occlusion_overlay();
+    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
+    Mat channels[4];
+    split(ov, channels);
 
-  Mat alpha = channels[3];
-  ov = channels[0];
-  alpha.convertTo(alpha, CV_32FC1, 1.0/255);
-  ov.convertTo(ov, CV_32FC1, 1.0/255);
+    Mat alpha = channels[3];
+    ov = channels[0];
+    alpha.convertTo(alpha, CV_32FC1, 1.0/255);
+    ov.convertTo(ov, CV_32FC1, 1.0/255);
 
-  Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-  if (tileable && current_occlusion.rows == m_img.rows * 3) {
-    current_occlusion(rect).copyTo(current_occlusion);
+    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
+    if (tileable && current_occlusion.rows == m_img.rows * 3) {
+      current_occlusion(rect).copyTo(current_occlusion);
+    }
+
+    switch (current_occlusion.channels()) {
+    case 3:
+      cvtColor(current_occlusion, current_occlusion, COLOR_RGB2GRAY);
+      break;
+    case 4:
+      cvtColor(current_occlusion, current_occlusion, COLOR_RGBA2GRAY);
+      break;
+    }
+
+    current_occlusion.convertTo(current_occlusion, CV_32FC1, 1.0/255);
+    multiply(Scalar::all(1.0)-alpha,current_occlusion,current_occlusion);
+    add(ov, current_occlusion, current_occlusion);
+    current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
+
+    occlussion_ready.lock();
+    frames[current_frame_id].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
+                                                            current_occlusion.cols, current_occlusion.rows,
+                                                            current_occlusion.step, QImage::Format_Grayscale8));
+    frames[current_frame_id].get_image("occlussion", &occlussion);
+    occlussion_ready.unlock();
   }
-
-  switch (current_occlusion.channels()) {
-  case 3:
-    cvtColor(current_occlusion, current_occlusion, COLOR_RGB2GRAY);
-    break;
-  case 4:
-    cvtColor(current_occlusion, current_occlusion, COLOR_RGBA2GRAY);
-    break;
-  }
-
-  current_occlusion.convertTo(current_occlusion, CV_32FC1, 1.0/255);
-  multiply(Scalar::all(1.0)-alpha,current_occlusion,current_occlusion);
-  add(ov, current_occlusion, current_occlusion);
-  current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
-
-  occlussion_ready.lock();
-  frames[current_frame_id].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
-                                                          current_occlusion.cols, current_occlusion.rows,
-                                                          current_occlusion.step, QImage::Format_Grayscale8));
-  frames[current_frame_id].get_image("occlussion", &occlussion);
-  occlussion_ready.unlock();
+  set_current_frame_id(frame);
   processed();
 
   occlussion_counter--;
@@ -696,7 +702,7 @@ Mat ImageProcessor::modify_distance() {
 
 Mat ImageProcessor::modify_occlusion() {
   Mat m;
-
+  set_current_heightmap();
   m_occlusion.copyTo(m);
   if (occlusion_invert) {
     subtract(Scalar::all(255), m, m);
