@@ -308,29 +308,31 @@ void MainWindow::open_files(QStringList fileNames) {
   QImage auximage;
 
   QStringList similarFiles;
+  QStringList checkedFiles;
   foreach (QString fileName, fileNames) {
     if (similarFiles.contains(fileName)){
       continue;
     }
     /* Check for auto loading of frames */
-    QRegularExpression rx("(\\d+)(?!.*\\d)");
-
-    QFileInfo info(fileName);
-
-    QRegularExpressionMatch match = rx.match(info.fileName());
-    QString prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
-    QDir dir = info.absoluteDir();
 
     QStringList similarList;
-    if (prefix != ""){
-      foreach(QString file, dir.entryList()){
-        if (file.startsWith(prefix) && file.endsWith("."+info.suffix())){
-          similarList.append(dir.path()+"/"+file);
-          similarFiles.append(dir.path()+"/"+file);
+    if (!checkedFiles.contains(fileName)){
+      QRegularExpression rx("(\\d+)(?!.*\\d)");
+
+      QFileInfo info(fileName);
+
+      QRegularExpressionMatch match = rx.match(info.fileName());
+      QString prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
+      QDir dir = info.absoluteDir();
+
+      if (prefix != ""){
+        foreach(QString file, dir.entryList()){
+          if (file.startsWith(prefix) && file.endsWith("."+info.suffix())){
+            similarList.append(dir.path()+"/"+file);
+          }
         }
       }
     }
-
 
     if (similarList.count() == 0){
       similarList.append(fileName);
@@ -339,12 +341,14 @@ void MainWindow::open_files(QStringList fileNames) {
       reply = QMessageBox::question(this, "Load as Animation?", "Images with similar names where detected in the same folder. Load as Animation?",
                                     QMessageBox::Yes|QMessageBox::No);
       if (reply == QMessageBox::No) {
+        checkedFiles = similarList;
         similarList.clear();
         similarList.append(fileName);
       } else {
-
+        similarFiles = similarList;
       }
     }
+
     ImageProcessor *p = new ImageProcessor();
     p->copy_settings(processor->get_settings());
     bool loaded = false;
@@ -363,18 +367,18 @@ void MainWindow::open_files(QStringList fileNames) {
         }
         auximage =
           auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-//        int i;
-//        for (i = 0; i < ui->listWidget->count(); i++) {
-//          if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
-//            QMessageBox msgBox;
-//            msgBox.setText(tr("The image is already opened in Laigter."));
-//            msgBox.exec();
-//            break;
-//          }
-//        }
+        //        int i;
+        //        for (i = 0; i < ui->listWidget->count(); i++) {
+        //          if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
+        //            QMessageBox msgBox;
+        //            msgBox.setText(tr("The image is already opened in Laigter."));
+        //            msgBox.exec();
+        //            break;
+        //          }
+        //        }
 
-//        if (i != ui->listWidget->count())
-//          continue;
+        //        if (i != ui->listWidget->count())
+        //          continue;
 
         p->loadImage(fileName, auximage);
 
