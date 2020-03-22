@@ -314,12 +314,13 @@ void MainWindow::open_files(QStringList fileNames) {
     /* Check for auto loading of frames */
 
     QStringList similarList;
+    QString prefix;
     QFileInfo info(fileName);
     if (!checkedFiles.contains(fileName)){
 
       QRegularExpression rx("(\\d+)(?!.*\\d)");
       QRegularExpressionMatch match = rx.match(info.fileName());
-      QString prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
+      prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
       QDir dir = info.absoluteDir();
 
       if (prefix != ""){
@@ -330,6 +331,8 @@ void MainWindow::open_files(QStringList fileNames) {
         }
       }
     }
+
+    QString name = info.baseName();
 
     if (similarList.count() == 0){
       similarList.append(fileName);
@@ -343,12 +346,13 @@ void MainWindow::open_files(QStringList fileNames) {
         similarList.append(fileName);
       } else {
         similarFiles = similarList;
+        name = prefix;
       }
     }
 
     ImageProcessor *p = new ImageProcessor();
 
-    QString name = info.baseName();
+
     int i=1;
     while(ui->listWidget->findItems(name, Qt::MatchExactly).count()){
       name = info.baseName() + " (" + QString::number(++i) +")";
