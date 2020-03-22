@@ -138,6 +138,8 @@ private slots:
 
   void on_actionLanguages_triggered();
 
+  void on_listWidget_itemClicked(QListWidgetItem *item);
+
   private:
   Ui::MainWindow *ui;
   QOpenGLWidget *gl;
@@ -156,6 +158,7 @@ private slots:
   QList <QPluginLoader *> plugin_list;
   QList <BrushInterface *> brush_list;
   LanguageSelector *el;
+  QListWidgetItem *current_item;
 
   protected slots:
   virtual void changeEvent(QEvent * event);

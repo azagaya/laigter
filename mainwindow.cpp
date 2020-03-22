@@ -173,6 +173,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
   if (ui->listWidget->selectedItems().count() == 0)
     return;
+  current_item = ui->listWidget->itemAt(pos);
   QMenu contextMenu(tr("Context menu"), ui->listWidget);
   contextMenu.addAction(new QAction(tr("Remove"), ui->listWidget));
   contextMenu.addSeparator();
@@ -194,17 +195,18 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action) {
+  ImageProcessor *p = find_processor(current_item->text());
+  qDebug() << current_item->text();
   if (action->text() == tr("Remove")) {
-    QListWidgetItem *item = ui->listWidget->selectedItems().at(0);
-    fs_watcher.removePath(item->data(Qt::UserRole).toString());
+    fs_watcher.removePath(current_item->data(Qt::UserRole).toString());
     for (int i = 0; i < processorList.count(); i++) {
-      if (processorList.at(i)->get_name() == item->data(Qt::UserRole).toString()) {
+      if (processorList.at(i)->get_name() == current_item->data(Qt::UserRole).toString()) {
         processorList.at(i)->deleteLater();
         processorList.removeAt(i);
         break;
       }
     }
-    delete item;
+    delete current_item;
     if (processorList.count() == 0) {
       ui->openGLPreviewWidget->clear_processor_list();
       processor_selected(sample_processor, true);
@@ -222,14 +224,14 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
       fs_watcher.addPath(fileName);
       height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-      processor->loadHeightMap(fileName, height);
+      p->loadHeightMap(fileName, height);
     }
   } else if (action->text() == tr("Reset heightmap")) {
     bool succes;
-    fs_watcher.removePath(processor->get_heightmap_path());
-    QImage height = il.loadImage(processor->get_name(), &succes);
+    fs_watcher.removePath(p->get_heightmap_path());
+    QImage height = il.loadImage(p->get_name(), &succes);
     height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-    processor->loadHeightMap(processor->get_name(), height);
+    p->loadHeightMap(p->get_name(), height);
   } else if (action->text() == tr("Load specular map")) {
     QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
@@ -242,15 +244,15 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
       fs_watcher.addPath(fileName);
       spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-      processor->loadSpecularMap(fileName, spec);
+      p->loadSpecularMap(fileName, spec);
     }
 
   } else if (action->text() == tr("Reset specular map")) {
     bool succes;
-    fs_watcher.removePath(processor->get_specular_path());
-    QImage specular = il.loadImage(processor->get_name(), &succes);
+    fs_watcher.removePath(p->get_specular_path());
+    QImage specular = il.loadImage(p->get_name(), &succes);
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-    processor->loadSpecularMap(processor->get_name(), specular);
+    p->loadSpecularMap(p->get_name(), specular);
   } else if (action->text() == tr("Add new frames")){
     QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
@@ -263,7 +265,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
         fs_watcher.addPath(fileName);
         image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-        processor->loadImage(fileName, image);
+        p->loadImage(fileName, image);
       }
     }
   }
@@ -1382,4 +1384,9 @@ void MainWindow::retranslate(){
       a->setIcon(el->icon);
     }
   }
+}
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+  current_item = item;
 }
