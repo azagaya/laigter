@@ -286,9 +286,7 @@ void MainWindow::add_processor(ImageProcessor *p) {
   processorList.append(p);
   processor = p;
   on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
-  QStringList parts = p->get_name().split("/");
-  QString filename = parts.at(parts.size()-1);
-  QListWidgetItem *i = new QListWidgetItem(filename);
+  QListWidgetItem *i = new QListWidgetItem(p->get_name());
   i->setData(Qt::UserRole,p->get_name());
   i->setIcon(QIcon(QPixmap::fromImage(*p->get_texture())));
   ui->listWidget->addItem(i);
@@ -316,11 +314,10 @@ void MainWindow::open_files(QStringList fileNames) {
     /* Check for auto loading of frames */
 
     QStringList similarList;
+    QFileInfo info(fileName);
     if (!checkedFiles.contains(fileName)){
+
       QRegularExpression rx("(\\d+)(?!.*\\d)");
-
-      QFileInfo info(fileName);
-
       QRegularExpressionMatch match = rx.match(info.fileName());
       QString prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
       QDir dir = info.absoluteDir();
@@ -350,6 +347,14 @@ void MainWindow::open_files(QStringList fileNames) {
     }
 
     ImageProcessor *p = new ImageProcessor();
+
+    QString name = info.baseName();
+    int i=1;
+    while(ui->listWidget->findItems(name, Qt::MatchExactly).count()){
+      name = info.baseName() + " (" + QString::number(++i) +")";
+    }
+    p->set_name(name);
+
     p->copy_settings(processor->get_settings());
     bool loaded = false;
     foreach(fileName, similarList){

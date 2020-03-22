@@ -134,7 +134,6 @@ ImageProcessor::~ImageProcessor(){
 
 int ImageProcessor::loadImage(QString fileName, QImage image) {
   m_fileName = fileName;
-  m_name = fileName;
   texture = image;
 
   Sprite s;
