@@ -376,18 +376,6 @@ void MainWindow::open_files(QStringList fileNames) {
         }
         auximage =
           auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-        //        int i;
-        //        for (i = 0; i < ui->listWidget->count(); i++) {
-        //          if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == fileName) {
-        //            QMessageBox msgBox;
-        //            msgBox.setText(tr("The image is already opened in Laigter."));
-        //            msgBox.exec();
-        //            break;
-        //          }
-        //        }
-
-        //        if (i != ui->listWidget->count())
-        //          continue;
 
         p->loadImage(fileName, auximage);
 
