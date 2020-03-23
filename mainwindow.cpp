@@ -106,6 +106,10 @@ MainWindow::MainWindow(QWidget *parent)
   ui->labelBrightness->setVisible(false);
   ui->labelContrast->setVisible(false);
 
+  QSettings settings("Azagaya", "Laigter");
+  restoreGeometry(settings.value("geometry").toByteArray());
+  restoreState(settings.value("windowState").toByteArray());
+
   setAcceptDrops(true);
 
   ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -271,7 +275,12 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
   }
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  QSettings settings("Azagaya", "Laigter");
+  settings.setValue("geometry", saveGeometry());
+  settings.setValue("windowState", saveState());
+  delete ui;
+}
 
 void MainWindow::update_scene() {
   ui->openGLPreviewWidget->need_to_update = true;
