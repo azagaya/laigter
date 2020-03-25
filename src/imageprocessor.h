@@ -300,6 +300,8 @@ class ImageProcessor : public QObject {
 
 
   private:
+  void convert_to_8U(cv::Mat src, cv::Mat dst);
+
   ProcessorSettings settings;
   QString m_name, m_heightmapPath, m_specularPath;
   cv::Mat m_img;
@@ -313,7 +315,6 @@ class ImageProcessor : public QObject {
   cv::Mat new_distance;
   cv::Mat m_heightmap;
   cv::Mat m_parallax;
-  cv::Mat m_specular;
   cv::Mat m_occlusion;
   cv::Mat current_heightmap;
   cv::Mat neighbours;

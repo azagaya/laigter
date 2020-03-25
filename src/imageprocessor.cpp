@@ -161,36 +161,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   occlussionOverlay = QImage(image.width(), image.height(), QImage::Format_RGBA8888_Premultiplied);
   occlussionOverlay.fill(QColor(0,0,0,0));
 
-  int aux = m_img.depth();
-  switch (aux) {
-  case CV_8S:
-    m_img.convertTo(m_img, CV_8U, 0, 128);
-    break;
-  case CV_16U:
-    m_img.convertTo(m_img, CV_8U, 1 / 255.0);
-    break;
-  case CV_16S:
-    m_img.convertTo(m_img, CV_8U, 1 / 255.0, 128);
-    break;
-  case CV_32S:
-    m_img.convertTo(m_img, CV_8U, 1 / 255.0 / 255.0, 128);
-    break;
-  case CV_32F:
-  case CV_64F:
-    m_img.convertTo(m_img, CV_8U, 255);
-    break;
-  }
 
-  if (m_img.channels() < 4) {
-    if (m_img.channels() == 3) {
-      cvtColor(m_img, m_img, COLOR_RGB2RGBA);
-    } else {
-      cvtColor(m_img, m_img, COLOR_GRAY2RGBA);
-    }
-  }
-  if (!customSpecularMap) {
-    m_img.copyTo(m_specular);
-  }
   if (!customHeightMap) {
     neighbours = Mat::zeros(m_img.rows * 3, m_img.cols * 3, m_img.type());
 
@@ -490,51 +461,20 @@ QImage ImageProcessor::get_neighbour(int x, int y) {
   return p;
 }
 
-QString ImageProcessor::get_specular_path() { return m_specularPath; }
+QString ImageProcessor::get_specular_path() { return current_frame->specularPath; }
 
-QString ImageProcessor::get_heightmap_path() { return m_heightmapPath; }
+QString ImageProcessor::get_heightmap_path() { return current_frame->heightmapPath; }
 
 int ImageProcessor::loadSpecularMap(QString fileName, QImage specular) {
   if (fileName == get_name()) {
-    m_specularPath = "";
+    current_frame->specularPath = "";
     customSpecularMap = false;
   } else {
-    m_specularPath = fileName;
+    current_frame->specularPath = fileName;
+    customSpecularMap = true;
   }
-  customSpecularMap = true;
-  m_specular =
-    Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
-
-  int aux = m_specular.depth();
-  switch (aux) {
-  case CV_8S:
-    m_specular.convertTo(m_specular, CV_8U, 0, 128);
-    break;
-  case CV_16U:
-    m_specular.convertTo(m_specular, CV_8U, 1 / 255.0);
-    break;
-  case CV_16S:
-    m_specular.convertTo(m_specular, CV_8U, 1 / 255.0, 128);
-    break;
-  case CV_32S:
-    m_specular.convertTo(m_specular, CV_8U, 1 / 255.0 / 255.0, 128);
-    break;
-  case CV_32F:
-  case CV_64F:
-    m_specular.convertTo(m_specular, CV_8U, 255);
-    break;
-  }
-
-  if (m_specular.channels() < 4) {
-    if (m_specular.channels() == 3) {
-      cvtColor(m_specular, m_specular, COLOR_RGB2RGBA);
-    } else {
-      cvtColor(m_specular, m_specular, COLOR_GRAY2RGBA);
-    }
-  }
-  // cvtColor(m_specular,m_specular,COLOR_RGBA2BGRA);
-  cv::resize(m_specular, m_specular, m_img.size() * 2);
-  cv::resize(m_specular, m_specular, m_img.size());
+  specular = specular.scaled(m_img.cols, m_img.rows);
+  current_frame->set_image("specular_base",specular);
 
   calculate();
 
@@ -1501,4 +1441,36 @@ void ImageProcessor::remove_frame(int id){
 
 void ImageProcessor::remove_current_frame(){
   remove_frame(current_frame_id);
+}
+
+void ImageProcessor::convert_to_8U(Mat src, Mat dst){
+  int aux = src.depth();
+  switch (aux) {
+  case CV_8S:
+    src.convertTo(dst, CV_8U, 0, 128);
+    break;
+  case CV_16U:
+    src.convertTo(dst, CV_8U, 1 / 255.0);
+    break;
+  case CV_16S:
+    src.convertTo(dst, CV_8U, 1 / 255.0, 128);
+    break;
+  case CV_32S:
+    src.convertTo(dst, CV_8U, 1 / 255.0 / 255.0, 128);
+    break;
+  case CV_32F:
+  case CV_64F:
+    src.convertTo(dst, CV_8U, 255);
+    break;
+  }
+
+  if (src.channels() < 4) {
+    if (src.channels() == 3) {
+      cvtColor(src, dst, COLOR_RGB2RGBA);
+    } else {
+      cvtColor(src, dst, COLOR_GRAY2RGBA);
+    }
+  }
+  cv::resize(src, dst, m_img.size() * 2);
+  cv::resize(src, dst, m_img.size());
 }
