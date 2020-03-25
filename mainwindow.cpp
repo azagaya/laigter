@@ -290,6 +290,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
     p->animation.start();
   } else if (option == tr("Remove current frame")){
     p->remove_current_frame();
+    fs_watcher.removePath(p->get_current_frame()->fileName);
   }
 }
 
@@ -1230,18 +1231,12 @@ void MainWindow::onFileChanged(const QString &file_path) {
     bool success;
     auximage = il.loadImage(file_path, &success);
     if (file_path == ip->get_name()) {
-      //      QMessageBox::information(this, tr("Image modified"),
-      //                               tr("An image was modified"));
       ip->loadImage(file_path, auximage);
     }
     if (file_path == ip->get_specular_path()) {
-      //      QMessageBox::information(this, tr("Specular map modified"),
-      //                               tr("A custom specular map was modified"));
       ip->loadSpecularMap(file_path, auximage);
     }
     if (file_path == ip->get_heightmap_path()) {
-      //      QMessageBox::information(this, tr("Height map modified"),
-      //                               tr("A custom height map was modified"));
       ip->loadHeightMap(file_path, auximage);
     }
   }
