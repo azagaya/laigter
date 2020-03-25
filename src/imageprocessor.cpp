@@ -1493,3 +1493,12 @@ void ImageProcessor::next_frame(){
     normal_mutex.unlock();
   }
 }
+
+void ImageProcessor::remove_frame(int id){
+  frames.remove(id);
+  set_current_frame_id(id);
+}
+
+void ImageProcessor::remove_current_frame(){
+  remove_frame(current_frame_id);
+}

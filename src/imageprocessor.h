@@ -187,6 +187,9 @@ class ImageProcessor : public QObject {
   void set_current_frame_id(int id);
   int get_current_frame_id();
 
+  void remove_frame(int id);
+  void remove_current_frame();
+
   void copy_settings(ProcessorSettings s);
   void set_normal_depth(int depth);
   int get_normal_depth();

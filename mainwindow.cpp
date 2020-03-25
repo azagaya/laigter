@@ -188,7 +188,18 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
   contextMenu.addAction(new QAction(tr("Reset specular map")));
   contextMenu.addSeparator();
   contextMenu.addAction(new QAction(tr("Add new frames")));
-  contextMenu.addAction(new QAction(tr("Remove current frame")));
+
+  ImageProcessor *p = find_processor(current_item->text());
+  if (p->frames.count() > 1){
+    QAction *removeFrame = new QAction(tr("Remove current frame"));
+    contextMenu.addAction(removeFrame);
+    if (p->animation.isActive()) {
+      contextMenu.addAction(new QAction(tr("Stop Animation")));
+      removeFrame->setEnabled(false);
+    } else {
+      contextMenu.addAction(new QAction(tr("Start Animation")));
+    }
+  }
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
           SLOT(list_menu_action_triggered(QAction *)));
@@ -200,8 +211,9 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
 
 void MainWindow::list_menu_action_triggered(QAction *action) {
   ImageProcessor *p = find_processor(current_item->text());
+  QString option = action->text();
   qDebug() << current_item->text();
-  if (action->text() == tr("Remove")) {
+  if (option == tr("Remove")) {
     fs_watcher.removePath(current_item->data(Qt::UserRole).toString());
     for (int i = 0; i < processorList.count(); i++) {
       if (processorList.at(i)->get_name() == current_item->data(Qt::UserRole).toString()) {
@@ -216,7 +228,7 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
       processor_selected(sample_processor, true);
       ui->openGLPreviewWidget->add_processor(sample_processor);
     }
-  } else if (action->text() == tr("Load heightmap")) {
+  } else if (option == tr("Load heightmap")) {
     QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
@@ -230,13 +242,13 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
 
       p->loadHeightMap(fileName, height);
     }
-  } else if (action->text() == tr("Reset heightmap")) {
+  } else if (option == tr("Reset heightmap")) {
     bool succes;
     fs_watcher.removePath(p->get_heightmap_path());
     QImage height = il.loadImage(p->get_name(), &succes);
     height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadHeightMap(p->get_name(), height);
-  } else if (action->text() == tr("Load specular map")) {
+  } else if (option == tr("Load specular map")) {
     QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
 
@@ -251,13 +263,13 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
       p->loadSpecularMap(fileName, spec);
     }
 
-  } else if (action->text() == tr("Reset specular map")) {
+  } else if (option == tr("Reset specular map")) {
     bool succes;
     fs_watcher.removePath(p->get_specular_path());
     QImage specular = il.loadImage(p->get_name(), &succes);
     specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadSpecularMap(p->get_name(), specular);
-  } else if (action->text() == tr("Add new frames")){
+  } else if (option == tr("Add new frames")){
     QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
     foreach (QString fileName, fileNames){
@@ -272,6 +284,12 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
         p->loadImage(fileName, image);
       }
     }
+  } else if (option == tr("Stop Animation")){
+    p->animation.stop();
+  } else if (option == tr("Start Animation")){
+    p->animation.start();
+  } else if (option == tr("Remove current frame")){
+    p->remove_current_frame();
   }
 }
 
