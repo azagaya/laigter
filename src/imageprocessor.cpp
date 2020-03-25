@@ -483,52 +483,15 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular) {
 
 int ImageProcessor::loadHeightMap(QString fileName, QImage height) {
   if (fileName == get_name()) {
-    m_heightmapPath = "";
+    current_frame->heightmapPath = "";
     customHeightMap = false;
   } else {
-    m_heightmapPath = fileName;
-  }
-  customHeightMap = true;
-  m_heightmap =
-    Mat(height.height(), height.width(), CV_8UC4, height.scanLine(0));
-
-  int aux = m_heightmap.depth();
-  switch (aux) {
-  case CV_8S:
-    m_heightmap.convertTo(m_heightmap, CV_8U, 0, 128);
-    break;
-  case CV_16U:
-    m_heightmap.convertTo(m_heightmap, CV_8U, 1 / 255.0);
-    break;
-  case CV_16S:
-    m_heightmap.convertTo(m_heightmap, CV_8U, 1 / 255.0, 128);
-    break;
-  case CV_32S:
-    m_heightmap.convertTo(m_heightmap, CV_8U, 1 / 255.0 / 255.0, 128);
-    break;
-  case CV_32F:
-  case CV_64F:
-    m_heightmap.convertTo(m_heightmap, CV_8U, 255);
-    break;
+    current_frame->heightmapPath = fileName;
+    customHeightMap = true;
   }
 
-  if (m_heightmap.channels() < 4) {
-    if (m_heightmap.channels() == 3) {
-      cvtColor(m_heightmap, m_heightmap, COLOR_RGB2RGBA);
-    } else {
-      cvtColor(m_heightmap, m_heightmap, COLOR_GRAY2RGBA);
-    }
-  }
-  // cvtColor(m_heightmap,m_heightmap,COLOR_RGBA2BGRA);
-  cv::resize(m_heightmap, m_heightmap, m_img.size() * 2);
-  cv::resize(m_heightmap, m_heightmap, m_img.size());
-
-  cvtColor(m_heightmap, m_gray, COLOR_RGBA2GRAY);
-
-  set_neighbour(m_heightmap, neighbours, 1, 1);
-
-  if (m_gray.type() != CV_32FC1)
-    m_gray.convertTo(m_gray, CV_32FC1);
+  height = height.scaled(m_img.cols, m_img.rows);
+  current_frame->set_image("heightmap", height);
 
   calculate();
 
