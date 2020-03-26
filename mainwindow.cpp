@@ -192,13 +192,24 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
   ImageProcessor *p = find_processor(current_item->text());
   if (p->frames.count() > 1){
     QAction *removeFrame = new QAction(tr("Remove current frame"));
+    QAction *nextFrame = new QAction(tr("Next Frame"));
+    QAction *prevFrame = new QAction(tr("Previous Frame"));
     contextMenu.addAction(removeFrame);
     if (p->animation.isActive()) {
       contextMenu.addAction(new QAction(tr("Stop Animation")));
       removeFrame->setEnabled(false);
+      nextFrame->setEnabled(false);
+      prevFrame->setEnabled(false);
     } else {
       contextMenu.addAction(new QAction(tr("Start Animation")));
     }
+    if (p->get_current_frame_id() == p->frames.count()-1){
+      nextFrame->setEnabled(false);
+    } else if (p->get_current_frame_id() == 0){
+      prevFrame->setEnabled(false);
+    }
+    contextMenu.addAction(nextFrame);
+    contextMenu.addAction(prevFrame);
   }
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
@@ -291,6 +302,10 @@ void MainWindow::list_menu_action_triggered(QAction *action) {
   } else if (option == tr("Remove current frame")){
     p->remove_current_frame();
     fs_watcher.removePath(p->get_current_frame()->fileName);
+  } else if (option == tr("Next Frame")){
+    p->set_current_frame_id(p->get_current_frame_id()+1);
+  } else if (option == tr("Previous Frame")) {
+    p->set_current_frame_id(p->get_current_frame_id()-1);
   }
 }
 
