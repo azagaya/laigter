@@ -299,11 +299,9 @@ class ImageProcessor : public QObject {
 
 
   private:
-  void convert_to_8U(cv::Mat src, cv::Mat dst);
 
   ProcessorSettings settings;
   QString m_name, m_heightmapPath, m_specularPath;
-  cv::Mat m_img;
   cv::Mat m_gray;
   cv::Mat m_gradient;
   cv::Mat m_distance;

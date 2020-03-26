@@ -167,11 +167,11 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
   if (!customHeightMap) {
 
-    m_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC3);
-    aux_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC1);
+    m_height_ov = Mat(image.width(), image.height(),CV_32FC3);
+    aux_height_ov = Mat(image.width(), image.height(),CV_32FC1);
     aux_height_ov = Scalar::all(0.0);
-    m_emboss_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
-    m_distance_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
+    m_emboss_normal = Mat(image.width(), image.height(),CV_32FC3);
+    m_distance_normal = Mat(image.width(), image.height(),CV_32FC3);
 
     fill_neighbours(image);
   }
@@ -225,8 +225,10 @@ void ImageProcessor::calculate_parallax() {
 
     current_parallax = modify_parallax();
 
-    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-    if (tileable && current_parallax.rows == m_img.rows * 3) {
+    QSize s = current_frame->size();
+
+    Rect rect(s.width(), s.height(), s.width(), s.height());
+    if (tileable && current_parallax.rows == s.height() * 3) {
       current_parallax(rect).copyTo(current_parallax);
     }
 
@@ -281,9 +283,10 @@ void ImageProcessor::calculate_specular() {
     ov.convertTo(ov, CV_32FC1, 1.0/255);
 
     // multiply(alpha,ov,ov);
+    QSize s = current_frame->size();
 
-    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-    if (tileable && current_specular.rows == m_img.rows * 3) {
+    Rect rect(s.width(), s.height(), s.width(), s.height());
+    if (tileable && current_specular.rows == s.height() * 3) {
       current_specular(rect).copyTo(current_specular);
     }
 
@@ -335,9 +338,10 @@ void ImageProcessor::calculate_occlusion() {
     ov = channels[0];
     alpha.convertTo(alpha, CV_32FC1, 1.0/255);
     ov.convertTo(ov, CV_32FC1, 1.0/255);
+    QSize s = current_frame->size();
 
-    Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
-    if (tileable && current_occlusion.rows == m_img.rows * 3) {
+    Rect rect(s.width(), s.height(), s.width(), s.height());
+    if (tileable && current_occlusion.rows == s.height() * 3) {
       current_occlusion(rect).copyTo(current_occlusion);
     }
 
@@ -444,7 +448,10 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular) {
     current_frame->specularPath = fileName;
     customSpecularMap = true;
   }
-  specular = specular.scaled(m_img.cols, m_img.rows);
+
+  QSize s = current_frame->size();
+
+  specular = specular.scaled(s.width(), s.height());
   current_frame->set_image("specular_base",specular);
 
   calculate();
@@ -460,8 +467,8 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height) {
     current_frame->heightmapPath = fileName;
     customHeightMap = true;
   }
-
-  height = height.scaled(m_img.cols, m_img.rows);
+  QSize s = current_frame->size();
+  height = height.scaled(s.width(), s.height());
   current_frame->set_image("heightmap", height);
 
   calculate();
@@ -844,18 +851,18 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radius, QRect r) {
 
   Mat aux;
-
-  Rect rect(m_img.cols, m_img.rows, m_img.cols, m_img.rows);
+  QSize s = current_frame->size();
+  Rect rect(s.width(), s.height(), s.width(), s.height());
 
   float dx, dy;
   int br = blur_radius * 2 + 1;
 
-  if (mat.cols == m_img.cols *3){
+  if (mat.cols == s.width() *3){
     GaussianBlur(mat, aux, Size(br, br), 0);
   } else {
     copyMakeBorder(mat,aux,br,br,br,br,BORDER_WRAP);
     GaussianBlur(aux, aux, Size(br, br), 0);
-    aux = aux(Rect(br,br,m_img.cols,m_img.rows));
+    aux = aux(Rect(br,br,s.width(),s.height()));
   }
   int xs, xe, ys, ye;
   if (r == QRect(0,0,0,0)){
@@ -871,7 +878,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
   }
 
   Mat normals(aux.size(), CV_32FC3);
-  if (tileable && normals.rows == m_img.rows * 3){
+  if (tileable && normals.rows == s.height() * 3){
     src.copyTo(normals(rect));
   }else{
     src.copyTo(normals);
@@ -910,7 +917,7 @@ void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth, int blur_radi
     }
 
   }
-  if (tileable && normals.rows == m_img.rows * 3){
+  if (tileable && normals.rows == s.height() * 3){
     normals(rect).copyTo(normals);
 
   }
@@ -1343,7 +1350,6 @@ void ImageProcessor::set_current_frame_id(int id){
   current_frame = &frames[id];
   current_frame_id = id;
   current_frame->get_image("diffuse", &texture);
-  m_img = Mat(texture.height(), texture.width(), CV_8UC4, texture.scanLine(0));
 
 }
 
@@ -1377,34 +1383,3 @@ void ImageProcessor::remove_current_frame(){
   remove_frame(current_frame_id);
 }
 
-void ImageProcessor::convert_to_8U(Mat src, Mat dst){
-  int aux = src.depth();
-  switch (aux) {
-  case CV_8S:
-    src.convertTo(dst, CV_8U, 0, 128);
-    break;
-  case CV_16U:
-    src.convertTo(dst, CV_8U, 1 / 255.0);
-    break;
-  case CV_16S:
-    src.convertTo(dst, CV_8U, 1 / 255.0, 128);
-    break;
-  case CV_32S:
-    src.convertTo(dst, CV_8U, 1 / 255.0 / 255.0, 128);
-    break;
-  case CV_32F:
-  case CV_64F:
-    src.convertTo(dst, CV_8U, 255);
-    break;
-  }
-
-  if (src.channels() < 4) {
-    if (src.channels() == 3) {
-      cvtColor(src, dst, COLOR_RGB2RGBA);
-    } else {
-      cvtColor(src, dst, COLOR_GRAY2RGBA);
-    }
-  }
-  cv::resize(src, dst, m_img.size() * 2);
-  cv::resize(src, dst, m_img.size());
-}
