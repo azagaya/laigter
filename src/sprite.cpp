@@ -214,3 +214,7 @@ void Sprite::set_texture(QString type, Texture t){
     occlussion_base.unlock();
   }
 }
+
+QSize Sprite::size(){
+  return diffuse.size();
+}

@@ -49,3 +49,7 @@ void Texture::lock(){
 void Texture::unlock(){
   mutex.unlock();
 }
+
+QSize Texture::size(){
+  return  image.size();
+}

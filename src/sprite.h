@@ -23,6 +23,8 @@ class Sprite
 
   QString get_file_name();
 
+  QSize size();
+
   private:
   Texture diffuse;
   Texture normal;

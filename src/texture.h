@@ -19,6 +19,7 @@ class Texture : public QObject
       QString get_type();
       void lock();
       void unlock();
+      QSize size();
 
 
   signals:

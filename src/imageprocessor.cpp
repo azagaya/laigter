@@ -141,6 +141,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   s.set_image("heightmap", image);
   s.set_image("specular_base",image);
   s.set_image("occlussion_base",image);
+  QImage n(3*image.size(), QImage::Format_RGBA8888_Premultiplied);
+  n.fill(0);
+  s.set_image("neighbours",n);
   s.fileName = fileName;
   frames.append(s);
 
@@ -163,10 +166,6 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
 
   if (!customHeightMap) {
-    neighbours = Mat::zeros(m_img.rows * 3, m_img.cols * 3, m_img.type());
-
-    m_img.copyTo(m_heightmap);
-    m_img.copyTo(m_occlusion);
 
     m_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC3);
     aux_height_ov = Mat(m_img.rows, m_img.cols,CV_32FC1);
@@ -174,7 +173,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     m_emboss_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
     m_distance_normal = Mat(m_img.rows, m_img.cols,CV_32FC3);
 
-    fill_neighbours(m_heightmap, neighbours);
+    fill_neighbours(image);
   }
 
   return 0;
@@ -375,89 +374,61 @@ void ImageProcessor::calculate_heightmap() {
     m_gray.convertTo(m_gray, CV_32FC1);
 }
 
-int ImageProcessor::fill_neighbours(Mat src, Mat dst) {
-  if (src.cols != dst.cols / 3 || src.rows != dst.rows / 3) {
-    return -1;
-  }
-  Rect rect;
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      rect = Rect(i * src.cols, j * src.rows, src.cols, src.rows);
-      src.copyTo(dst(rect));
+int ImageProcessor::fill_neighbours(QImage image) {
+  QImage neighbours;
+  current_frame->get_image("neighbours", &neighbours);
+  QSize s = current_frame->size();
+  image = image.scaled(s);
+
+  for (int x = 0; x < 3; x++){
+    for (int y = 0; y < 3; y++){
+      set_neighbour_image("asdf",image,x,y);
     }
   }
+
   calculate();
   return 0;
 }
 
 void ImageProcessor::reset_neighbours() {
-
-  fill_neighbours(m_heightmap, neighbours);
+  QImage diffuse;
+  current_frame->get_image("diffuse",&diffuse);
+  fill_neighbours(diffuse);
 }
 
 int ImageProcessor::empty_neighbour(int x, int y) {
-  Mat n = Mat::zeros(m_heightmap.rows, m_heightmap.cols, m_heightmap.type());
-  set_neighbour(n, neighbours, x, y);
+  QImage image(current_frame->size(),QImage::Format_RGBA64_Premultiplied);
+  image.fill(0);
+  set_neighbour_image("",image, x, y);
   return 0;
 }
 
-int ImageProcessor::set_neighbour(Mat src, Mat dst, int x, int y) {
-  if (src.cols != dst.cols / 3 || src.rows != dst.rows / 3) {
-    return -1;
-  }
-  Rect rect(y * src.cols, x * src.rows, src.cols, src.rows);
-  src.copyTo(dst(rect));
-  return 0;
-}
+int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, int y) {
+  QImage neighbours;
+  current_frame->get_image("neighbours", &neighbours);
+  QSize s = current_frame->size();
 
-int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x,
-                                        int y) {
+  int aleft = x*s.width();
+  int atop = y*s.height();
+  QRect r(aleft, atop, s.width(), s.height());
 
-  Mat n = Mat(image.height(), image.width(), CV_8UC4, image.scanLine(0));
+  QPainter p(&neighbours);
 
-  int aux = n.depth();
-  switch (aux) {
-  case CV_8S:
-    n.convertTo(n, CV_8U, 0, 128);
-    break;
-  case CV_16U:
-    n.convertTo(n, CV_8U, 1 / 255.0);
-    break;
-  case CV_16S:
-    n.convertTo(n, CV_8U, 1 / 255.0, 128);
-    break;
-  case CV_32S:
-    n.convertTo(n, CV_8U, 1 / 255.0 / 255.0, 128);
-    break;
-  case CV_32F:
-  case CV_64F:
-    n.convertTo(n, CV_8U, 255);
-    break;
-  }
-
-  if (n.channels() < 4) {
-    if (n.channels() == 3) {
-      cvtColor(n, n, COLOR_RGB2RGBA);
-    } else {
-      cvtColor(n, n, COLOR_GRAY2RGBA);
-    }
-  }
-  // cvtColor(n,n,COLOR_RGBA2BGRA);
-  cv::resize(n, n, m_img.size() * 2);
-  cv::resize(n, n, m_img.size());
-
-  set_neighbour(n, neighbours, x, y);
+  p.setCompositionMode(QPainter::CompositionMode_Source);
+  p.drawImage(r, image);
+  current_frame->set_image("neighbours",neighbours);
 
   return 0;
 }
 
 QImage ImageProcessor::get_neighbour(int x, int y) {
-  Rect rect(y * m_img.cols, x * m_img.rows, m_img.cols, m_img.rows);
-  neighbours(rect).copyTo(m_aux);
-  // cvtColor(m_aux,m_aux,CV_BGRA2RGBA);
-  QImage p =
-    QImage(static_cast<unsigned char *>(m_aux.data), m_aux.cols, m_aux.rows,
-           m_aux.step, QImage::Format_RGBA8888_Premultiplied);
+  QImage neighbours;
+  current_frame->get_image("neighbours", &neighbours);
+  QSize s = current_frame->size();
+  x *= s.width();
+  y *= s.height();
+  QRect r(x, y, s.width(), s.height());
+  QImage p = neighbours.copy(r);
   return p;
 }
 
