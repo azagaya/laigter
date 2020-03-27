@@ -59,7 +59,6 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
   specular_contrast = 1;
   specular_thresh = 127;
   specular_invert = false;
-  specular_base_color = Vec4b(0, 0, 0, 0);
 
   occlusion_blur = 10;
   occlusion_bright = 16;
@@ -137,13 +136,13 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   texture = image;
 
   Sprite s;
-  s.set_image("diffuse", image);
-  s.set_image("heightmap", image);
-  s.set_image("specular_base",image);
-  s.set_image("occlussion_base",image);
+  s.set_image(TextureTypes::Diffuse, image);
+  s.set_image(TextureTypes::Heightmap, image);
+  s.set_image(TextureTypes::SpecularBase,image);
+  s.set_image(TextureTypes::OcclussionBase,image);
   QImage n(3*image.size(), QImage::Format_RGBA8888_Premultiplied);
   n.fill(0);
-  s.set_image("neighbours",n);
+  s.set_image(TextureTypes::Neighbours,n);
   s.fileName = fileName;
 
   frames.append(s);
@@ -181,9 +180,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
 void ImageProcessor::set_current_heightmap() {
   if (tileable){
-    current_frame->get_image("neighbours",&heightmap);
+    current_frame->get_image(TextureTypes::Neighbours,&heightmap);
   } else {
-    current_frame->get_image("heightmap",&heightmap);
+    current_frame->get_image(TextureTypes::Heightmap,&heightmap);
   }
   current_heightmap =
     Mat(heightmap.height(), heightmap.width(), CV_8UC4, heightmap.scanLine(0));
@@ -248,11 +247,11 @@ void ImageProcessor::calculate_parallax() {
 
 
     parallax_ready.lock();
-    frames[current_frame_id].set_image("parallax", QImage(static_cast<unsigned char *>(current_parallax.data),
+    frames[current_frame_id].set_image(TextureTypes::Parallax, QImage(static_cast<unsigned char *>(current_parallax.data),
                                                           current_parallax.cols, current_parallax.rows,
                                                           current_parallax.step, QImage::Format_Grayscale8));
 
-    frames[current_frame_id].get_image("parallax", &parallax);
+    frames[current_frame_id].get_image(TextureTypes::Parallax, &parallax);
     parallax_ready.unlock();
   }
   set_current_frame_id(frame);
@@ -307,11 +306,11 @@ void ImageProcessor::calculate_specular() {
     current_specular.convertTo(current_specular, CV_8UC1, 255);
 
     specular_ready.lock();
-    frames[i].set_image("specular", QImage(static_cast<unsigned char *>(current_specular.data),
+    frames[i].set_image(TextureTypes::Specular, QImage(static_cast<unsigned char *>(current_specular.data),
                                            current_specular.cols, current_specular.rows,
                                            current_specular.step, QImage::Format_Grayscale8));
 
-    //    frames[i].get_image("specular", &specular);
+    //    frames[i].get_image(TextureTypes::Specular, &specular);
     specular_ready.unlock();
   }
   specular_counter--;
@@ -360,10 +359,10 @@ void ImageProcessor::calculate_occlusion() {
     current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
 
     occlussion_ready.lock();
-    frames[current_frame_id].set_image("occlussion", QImage(static_cast<unsigned char *>(current_occlusion.data),
+    frames[current_frame_id].set_image(TextureTypes::Occlussion, QImage(static_cast<unsigned char *>(current_occlusion.data),
                                                             current_occlusion.cols, current_occlusion.rows,
                                                             current_occlusion.step, QImage::Format_Grayscale8));
-    frames[current_frame_id].get_image("occlussion", &occlussion);
+    frames[current_frame_id].get_image(TextureTypes::Occlussion, &occlussion);
     occlussion_ready.unlock();
   }
   set_current_frame_id(frame);
@@ -380,7 +379,7 @@ void ImageProcessor::calculate_heightmap() {
 
 int ImageProcessor::fill_neighbours(QString fileName, QImage image) {
   QImage neighbours;
-  current_frame->get_image("neighbours", &neighbours);
+  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
   QSize s = current_frame->size();
   image = image.scaled(s);
 
@@ -396,7 +395,7 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image) {
 
 void ImageProcessor::reset_neighbours() {
   QImage diffuse;
-  current_frame->get_image("diffuse",&diffuse);
+  current_frame->get_image(TextureTypes::Diffuse,&diffuse);
   fill_neighbours(current_frame->fileName ,diffuse);
 }
 
@@ -409,7 +408,7 @@ int ImageProcessor::empty_neighbour(int x, int y) {
 
 int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, int y) {
   QImage neighbours;
-  current_frame->get_image("neighbours", &neighbours);
+  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
   QSize s = current_frame->size();
 
   current_frame->neighours_paths[x][y] = fileName;
@@ -422,14 +421,14 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, i
 
   p.setCompositionMode(QPainter::CompositionMode_Source);
   p.drawImage(r, image);
-  current_frame->set_image("neighbours",neighbours);
+  current_frame->set_image(TextureTypes::Neighbours,neighbours);
 
   return 0;
 }
 
 QImage ImageProcessor::get_neighbour(int x, int y) {
   QImage neighbours;
-  current_frame->get_image("neighbours", &neighbours);
+  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
   QSize s = current_frame->size();
   x *= s.width();
   y *= s.height();
@@ -454,7 +453,7 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular) {
   QSize s = current_frame->size();
 
   specular = specular.scaled(s.width(), s.height());
-  current_frame->set_image("specular_base",specular);
+  current_frame->set_image(TextureTypes::SpecularBase,specular);
 
   calculate();
 
@@ -471,7 +470,7 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height) {
   }
   QSize s = current_frame->size();
   height = height.scaled(s.width(), s.height());
-  current_frame->set_image("heightmap", height);
+  current_frame->set_image(TextureTypes::Heightmap, height);
 
   calculate();
 
@@ -687,9 +686,9 @@ Mat ImageProcessor::modify_parallax() {
 Mat ImageProcessor::modify_specular() {
   Mat m;
 
-  current_frame->get_image("specular_base", &specular_base);
+  current_frame->get_image(TextureTypes::SpecularBase, &specular);
   m =
-    Mat(specular_base.height(), specular_base.width(), CV_8UC4, specular_base.scanLine(0));
+    Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
   m.convertTo(m, CV_32F, 1 / 255.0);
   cvtColor(m, m, CV_RGBA2GRAY);
   m.convertTo(m, -1, 1, -specular_thresh / 255.0);
@@ -784,6 +783,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       for (int i=0; i < rlist.count(); i++)
         calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
                          , normal_bisel_blur_radius);
+
+
+
     }
 
     Mat normals;
@@ -828,9 +830,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     }
 
     normal_ready.lock();
-    frames[i].set_image("normal", QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
+    frames[i].set_image(TextureTypes::Normal, QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                                          m_normal.rows, m_normal.step, QImage::Format_RGB888));
-    frames[i].get_image("normal", &normal);
+    frames[i].get_image(TextureTypes::Normal, &normal);
     normal_ready.unlock();
 
   }
@@ -958,22 +960,22 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
-  frames[current_frame_id].get_image("normal", &last_normal);
+  frames[current_frame_id].get_image(TextureTypes::Normal, &last_normal);
   return &last_normal;
 }
 
 QImage *ImageProcessor::get_parallax() {
-  frames[current_frame_id].get_image("parallax", &last_parallax);
+  frames[current_frame_id].get_image(TextureTypes::Parallax, &last_parallax);
   return &last_parallax;
 }
 
 QImage *ImageProcessor::get_specular() {
-  frames[current_frame_id].get_image("specular", &last_specular);
+  frames[current_frame_id].get_image(TextureTypes::Specular, &last_specular);
   return &last_specular;
 }
 
 QImage *ImageProcessor::get_occlusion() {
-  frames[current_frame_id].get_image("occlussion", &last_occlussion);
+  frames[current_frame_id].get_image(TextureTypes::Occlussion, &last_occlussion);
   return &last_occlussion;
 }
 
@@ -1350,7 +1352,7 @@ void ImageProcessor::set_current_frame_id(int id){
   }
   current_frame = &frames[id];
   current_frame_id = id;
-  current_frame->get_image("diffuse", &texture);
+  current_frame->get_image(TextureTypes::Diffuse, &texture);
 
 }
 

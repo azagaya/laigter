@@ -180,7 +180,6 @@ void OpenGlWidget::paintGL() {
 }
 
 void OpenGlWidget::update() {
-  need_to_update = true;
   QOpenGLWidget::update();
 }
 
@@ -221,15 +220,15 @@ void OpenGlWidget::update_scene() {
   apply_light_params();
   foreach (ImageProcessor *processor, processorList) {
 
-    if (processor->get_current_frame()->get_image("diffuse", &m_image))
+    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
       setImage(&m_image);
-    if (processor->get_current_frame()->get_image("normal", &normalMap))
+    if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
       setNormalMap(&normalMap);
-    if (processor->get_current_frame()->get_image("specular", &specularMap))
+    if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
       setSpecularMap(&specularMap);
-    if (processor->get_current_frame()->get_image("parallax", &parallaxMap))
+    if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
       setParallaxMap(&parallaxMap);
-    if (processor->get_current_frame()->get_image("occlussion", &occlusionMap))
+    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
       setOcclusionMap(&occlusionMap);
 
     transform.setToIdentity();
@@ -772,7 +771,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
     QFileInfo info;
     foreach (ImageProcessor *processor, processorList) {
       setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image("normal", &normalMap))
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
         setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
@@ -926,7 +925,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview) {
       }
 
       setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image("normal", &normalMap))
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
         setNormalMap(&normalMap);
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());

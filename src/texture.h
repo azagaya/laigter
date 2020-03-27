@@ -10,7 +10,7 @@ class Texture : public QObject
   Q_OBJECT
   public:
   explicit Texture(QObject *parent = nullptr);
-  explicit Texture(Texture &T);
+  explicit Texture(const Texture &T);
   Texture &operator=(const Texture &T);
   public slots:
       bool set_image(QImage i);

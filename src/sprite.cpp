@@ -2,16 +2,7 @@
 
 Sprite::Sprite()
 {
-  diffuse.set_type("diffuse");
-  normal.set_type("normal");
-  specular.set_type("specular");
-  parallax.set_type("parallax");
-  occlussion.set_type("occlussion");
-  heightmap.set_type("heightmap");
-  distance.set_type("distance");
-  neighbours.set_type("neighbours");
-  specular_base.set_type("specular_base");
-  occlussion_base.set_type("occlussion_base");
+  textures.resize(15);
 
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
@@ -20,56 +11,7 @@ Sprite::Sprite()
 }
 
 Sprite::Sprite(const Sprite &S){
-  diffuse.lock();
-  diffuse = S.diffuse;
-  diffuse.unlock();
-
-  normal.lock();
-  normal = S.normal;
-  normal.unlock();
-
-  specular.lock();
-  specular = S.specular;
-  specular.unlock();
-
-  parallax.lock();
-  parallax = S.parallax;
-  parallax.unlock();
-
-  occlussion.lock();
-  occlussion = S.occlussion;
-  occlussion.unlock();
-
-  heightmap.lock();
-  heightmap = S.heightmap;
-  heightmap.unlock();
-
-  distance.lock();
-  distance = S.distance;
-  distance.unlock();
-
-  neighbours.lock();
-  neighbours = S.neighbours;
-  neighbours.unlock();
-
-  specular_base.lock();
-  specular_base = S.specular_base;
-  specular_base.unlock();
-
-  occlussion_base.lock();
-  occlussion_base = S.occlussion_base;
-  occlussion_base.unlock();
-
-  diffuse.set_type("diffuse");
-  normal.set_type("normal");
-  specular.set_type("specular");
-  parallax.set_type("parallax");
-  occlussion.set_type("occlussion");
-  heightmap.set_type("heightmap");
-  distance.set_type("distance");
-  neighbours.set_type("neighbours");
-  specular_base.set_type("specular_base");
-  occlussion_base.set_type("occlussion_base");
+  textures = S.textures;
 
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
@@ -78,57 +20,7 @@ Sprite::Sprite(const Sprite &S){
 }
 
 Sprite& Sprite::operator=(const Sprite &S){
-  diffuse.lock();
-  diffuse = S.diffuse;
-  diffuse.unlock();
-
-  normal.lock();
-  normal = S.normal;
-  normal.unlock();
-
-  specular.lock();
-  specular = S.specular;
-  specular.unlock();
-
-  parallax.lock();
-  parallax = S.parallax;
-  parallax.unlock();
-
-  occlussion.lock();
-  occlussion = S.occlussion;
-  occlussion.unlock();
-
-  heightmap.lock();
-  heightmap = S.heightmap;
-  heightmap.unlock();
-
-  distance.lock();
-  distance = S.distance;
-  distance.unlock();
-
-  neighbours.lock();
-  neighbours = S.neighbours;
-  neighbours.unlock();
-
-  specular_base.lock();
-  specular_base = S.specular_base;
-  specular_base.unlock();
-
-  occlussion_base.lock();
-  occlussion_base = S.occlussion_base;
-  occlussion_base.unlock();
-
-  diffuse.set_type("diffuse");
-  normal.set_type("normal");
-  specular.set_type("specular");
-  parallax.set_type("parallax");
-  occlussion.set_type("occlussion");
-  heightmap.set_type("heightmap");
-  distance.set_type("distance");
-  neighbours.set_type("neighbours");
-  specular_base.set_type("specular_base");
-  occlussion_base.set_type("occlussion_base");
-
+  textures = S.textures;
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
   neighours_paths[1].resize(3);
@@ -137,99 +29,23 @@ Sprite& Sprite::operator=(const Sprite &S){
   return *this;
 }
 
-void Sprite::set_image(QString type, QImage i){
-  if (type == "diffuse"){
-    diffuse.set_image(i);
-  }else if (type == "normal"){
-    normal.set_image(i);
-  }else if (type == "specular"){
-    specular.set_image(i);
-  }else if (type == "parallax"){
-    parallax.set_image(i);
-  } else if (type == "occlussion"){
-    occlussion.set_image(i);
-  } else if (type == "heightmap"){
-    heightmap.set_image(i);
-  } else if (type == "distance"){
-    distance.set_image(i);
-  } else if (type == "neighbours"){
-    neighbours.set_image(i);
-  } else if (type == "specular_base"){
-    specular_base.set_image(i);
-  } else if (type == "occlussion_base"){
-    occlussion_base.set_image(i);
-  }
+void Sprite::set_image(TextureTypes type, QImage i){
+  int t = static_cast<int>(type);
+  textures[t].set_image(i);
 }
 
-bool Sprite::get_image(QString type, QImage *dst){
-  if (type == "diffuse"){
-    return diffuse.get_image(dst);
-  }else if (type == "normal"){
-    return normal.get_image(dst);
-  }else if (type == "specular"){
-    return specular.get_image(dst);
-  }else if (type == "parallax"){
-    return parallax.get_image(dst);
-  } else if (type == "occlussion"){
-    return occlussion.get_image(dst);
-  }else if (type == "heightmap"){
-    return heightmap.get_image(dst);
-  }else if (type == "distance"){
-    return distance.get_image(dst);
-  }else if (type == "neighbours"){
-    return neighbours.get_image(dst);
-  }else if (type == "specular_base"){
-    return specular_base.get_image(dst);
-  }else if (type == "occlussion_base"){
-    return occlussion_base.get_image(dst);
-  }
-  return false;
+bool Sprite::get_image(TextureTypes type, QImage *dst){
+  int t = static_cast<int>(type);
+  return textures[t].get_image(dst);
 }
 
-void Sprite::set_texture(QString type, Texture t){
-  if (type == "diffuse"){
-    diffuse.lock();
-    diffuse = t;
-    diffuse.unlock();
-  }else if (type == "normal"){
-    normal.lock();
-    normal = t;
-    normal.unlock();
-  }else if (type == "specular"){
-    specular.lock();
-    specular = t;
-    specular.unlock();
-  }else if (type == "parallax"){
-    parallax.lock();
-    parallax = t;
-    parallax.unlock();
-  } else if (type == "occlussion"){
-    occlussion.lock();
-    occlussion = t;
-    occlussion.unlock();
-  } else if (type == "heightmap"){
-    heightmap.lock();
-    heightmap = t;
-    heightmap.unlock();
-  } else if (type == "distance"){
-    distance.lock();
-    distance = t;
-    distance.unlock();
-  } else if (type == "neighbours"){
-    neighbours.lock();
-    neighbours = t;
-    neighbours.unlock();
-  } else if (type == "specular_base"){
-    specular_base.lock();
-    specular_base = t;
-    specular_base.unlock();
-  } else if (type == "occlussion_base"){
-    occlussion_base.lock();
-    occlussion_base = t;
-    occlussion_base.unlock();
-  }
+void Sprite::set_texture(TextureTypes type, Texture t){
+  int tex = static_cast<int>(type);
+  textures[tex].lock();
+  textures[tex] = t;
+  textures[tex].unlock();
 }
 
 QSize Sprite::size(){
-  return diffuse.size();
+  return textures[0].size();
 }

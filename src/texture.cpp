@@ -5,7 +5,7 @@ Texture::Texture(QObject *parent) : QObject(parent)
 
 }
 
-Texture::Texture(Texture &T){
+Texture::Texture(const Texture &T){
   image = T.image;
   type = T.type;
 }
