@@ -122,7 +122,7 @@ class ImageProcessor : public QObject {
   QImage *get_occlusion();
 
   QImage texture;
-  QImage normal, last_normal;
+  QImage last_normal;
   QImage parallax, last_parallax;
   QImage specular, last_specular;
   QImage occlussion, last_occlussion;

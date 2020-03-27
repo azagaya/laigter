@@ -310,7 +310,6 @@ void ImageProcessor::calculate_specular() {
                                            current_specular.cols, current_specular.rows,
                                            current_specular.step, QImage::Format_Grayscale8));
 
-    //    frames[i].get_image(TextureTypes::Specular, &specular);
     specular_ready.unlock();
   }
   specular_counter--;
@@ -832,7 +831,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     normal_ready.lock();
     frames[i].set_image(TextureTypes::Normal, QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
                                          m_normal.rows, m_normal.step, QImage::Format_RGB888));
-    frames[i].get_image(TextureTypes::Normal, &normal);
+//    frames[i].get_image(TextureTypes::Normal, &normal);
     normal_ready.unlock();
 
   }
@@ -1361,6 +1360,7 @@ Sprite *ImageProcessor::get_current_frame(){
 }
 
 void ImageProcessor::next_frame(){
+  if (frames.count() == 1) return;
   if (normal_mutex.tryLock()){
     if (specular_mutex.tryLock()){
       if (parallax_mutex.tryLock()){

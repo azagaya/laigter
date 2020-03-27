@@ -185,8 +185,9 @@ void OpenGlWidget::update() {
 
 void OpenGlWidget::force_update() {
 
-  if (need_to_update)
+  if (need_to_update){
     update();
+  }
 }
 
 void OpenGlWidget::update_scene() {
