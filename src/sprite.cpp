@@ -12,6 +12,11 @@ Sprite::Sprite()
   neighbours.set_type("neighbours");
   specular_base.set_type("specular_base");
   occlussion_base.set_type("occlussion_base");
+
+  neighours_paths.resize(3);
+  neighours_paths[0].resize(3);
+  neighours_paths[1].resize(3);
+  neighours_paths[2].resize(3);
 }
 
 Sprite::Sprite(const Sprite &S){
@@ -65,6 +70,11 @@ Sprite::Sprite(const Sprite &S){
   neighbours.set_type("neighbours");
   specular_base.set_type("specular_base");
   occlussion_base.set_type("occlussion_base");
+
+  neighours_paths.resize(3);
+  neighours_paths[0].resize(3);
+  neighours_paths[1].resize(3);
+  neighours_paths[2].resize(3);
 }
 
 Sprite& Sprite::operator=(const Sprite &S){
@@ -118,6 +128,11 @@ Sprite& Sprite::operator=(const Sprite &S){
   neighbours.set_type("neighbours");
   specular_base.set_type("specular_base");
   occlussion_base.set_type("occlussion_base");
+
+  neighours_paths.resize(3);
+  neighours_paths[0].resize(3);
+  neighours_paths[1].resize(3);
+  neighours_paths[2].resize(3);
 
   return *this;
 }

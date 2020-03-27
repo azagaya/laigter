@@ -263,7 +263,7 @@ class ImageProcessor : public QObject {
 
   ParallaxType get_parallax_type();
 
-  int fill_neighbours(QImage image);
+  int fill_neighbours(QString fileName, QImage image);
   int set_neighbour_image(QString fileName, QImage image, int x, int y);
   int empty_neighbour(int x, int y);
   void reset_neighbours();
@@ -303,18 +303,14 @@ class ImageProcessor : public QObject {
   ProcessorSettings settings;
   QString m_name, m_heightmapPath, m_specularPath;
   cv::Mat m_gray;
-  cv::Mat m_gradient;
   cv::Mat m_distance;
-  cv::Mat aux_distance;
   cv::Mat m_normal;
   cv::Mat m_emboss_normal;
   cv::Mat m_distance_normal;
   cv::Mat new_distance;
-  cv::Mat m_heightmap;
   cv::Mat m_parallax;
   cv::Mat m_occlusion;
   cv::Mat current_heightmap;
-  cv::Mat m_aux;
   cv::Mat m_height_ov, aux_height_ov;
 
   cv::Mat current_specular;

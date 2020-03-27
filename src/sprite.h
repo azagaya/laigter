@@ -14,6 +14,9 @@ class Sprite
   QString fileName;
   QString specularPath = "";
   QString heightmapPath = "";
+
+  QVector<QVector<QString>> neighours_paths;
+
   Sprite& operator=(const Sprite& S);
   void set_image(QString type, QImage i);
   bool get_image(QString type, QImage *dst);

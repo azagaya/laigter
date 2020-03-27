@@ -145,6 +145,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   n.fill(0);
   s.set_image("neighbours",n);
   s.fileName = fileName;
+
   frames.append(s);
 
   set_current_frame_id(frames.count() -1);
@@ -172,8 +173,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
     aux_height_ov = Scalar::all(0.0);
     m_emboss_normal = Mat(image.width(), image.height(),CV_32FC3);
     m_distance_normal = Mat(image.width(), image.height(),CV_32FC3);
-
-    fill_neighbours(image);
+    fill_neighbours(fileName, image);
   }
 
   return 0;
@@ -378,7 +378,7 @@ void ImageProcessor::calculate_heightmap() {
     m_gray.convertTo(m_gray, CV_32FC1);
 }
 
-int ImageProcessor::fill_neighbours(QImage image) {
+int ImageProcessor::fill_neighbours(QString fileName, QImage image) {
   QImage neighbours;
   current_frame->get_image("neighbours", &neighbours);
   QSize s = current_frame->size();
@@ -386,7 +386,7 @@ int ImageProcessor::fill_neighbours(QImage image) {
 
   for (int x = 0; x < 3; x++){
     for (int y = 0; y < 3; y++){
-      set_neighbour_image("asdf",image,x,y);
+      set_neighbour_image(fileName,image,x,y);
     }
   }
 
@@ -397,7 +397,7 @@ int ImageProcessor::fill_neighbours(QImage image) {
 void ImageProcessor::reset_neighbours() {
   QImage diffuse;
   current_frame->get_image("diffuse",&diffuse);
-  fill_neighbours(diffuse);
+  fill_neighbours(current_frame->fileName ,diffuse);
 }
 
 int ImageProcessor::empty_neighbour(int x, int y) {
@@ -411,6 +411,8 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x, i
   QImage neighbours;
   current_frame->get_image("neighbours", &neighbours);
   QSize s = current_frame->size();
+
+  current_frame->neighours_paths[x][y] = fileName;
 
   int aleft = x*s.width();
   int atop = y*s.height();
@@ -511,7 +513,6 @@ void ImageProcessor::calculate_distance() {
   m_distance.convertTo(m_distance, CV_32FC1, 1.0 / 255);
 
   m_distance.copyTo(new_distance);
-  //  new_distance = modify_distance();
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert) {

@@ -33,19 +33,19 @@ NBSelector::~NBSelector() { delete ui; }
 void NBSelector::get_neighbours() {
   QImage image = processor->get_neighbour(0, 0);
   ui->NUL->setIcon(QIcon(QPixmap::fromImage(image)));
-  image = processor->get_neighbour(0, 1);
-  ui->NUM->setIcon(QIcon(QPixmap::fromImage(image)));
-  image = processor->get_neighbour(0, 2);
-  ui->NUR->setIcon(QIcon(QPixmap::fromImage(image)));
   image = processor->get_neighbour(1, 0);
+  ui->NUM->setIcon(QIcon(QPixmap::fromImage(image)));
+  image = processor->get_neighbour(2, 0);
+  ui->NUR->setIcon(QIcon(QPixmap::fromImage(image)));
+  image = processor->get_neighbour(0, 1);
   ui->NML->setIcon(QIcon(QPixmap::fromImage(image)));
   image = processor->get_neighbour(1, 1);
   ui->NMM->setIcon(QIcon(QPixmap::fromImage(image)));
-  image = processor->get_neighbour(1, 2);
-  ui->NMR->setIcon(QIcon(QPixmap::fromImage(image)));
-  image = processor->get_neighbour(2, 0);
-  ui->NBL->setIcon(QIcon(QPixmap::fromImage(image)));
   image = processor->get_neighbour(2, 1);
+  ui->NMR->setIcon(QIcon(QPixmap::fromImage(image)));
+  image = processor->get_neighbour(0, 2);
+  ui->NBL->setIcon(QIcon(QPixmap::fromImage(image)));
+  image = processor->get_neighbour(1, 2);
   ui->NBM->setIcon(QIcon(QPixmap::fromImage(image)));
   image = processor->get_neighbour(2, 2);
   ui->NBR->setIcon(QIcon(QPixmap::fromImage(image)));
@@ -76,7 +76,7 @@ void NBSelector::on_NUM_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 0, 1);
+    processor->set_neighbour_image(fileName, image, 1, 0);
     get_neighbours();
     processor->calculate();
   }
@@ -89,7 +89,7 @@ void NBSelector::on_NUR_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 0, 2);
+    processor->set_neighbour_image(fileName, image, 2, 0);
     get_neighbours();
     processor->calculate();
   }
@@ -102,7 +102,7 @@ void NBSelector::on_NML_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 1, 0);
+    processor->set_neighbour_image(fileName, image, 0, 1);
     get_neighbours();
     processor->calculate();
   }
@@ -128,7 +128,7 @@ void NBSelector::on_NMR_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 1, 2);
+    processor->set_neighbour_image(fileName, image, 2, 1);
     get_neighbours();
     processor->calculate();
   }
@@ -141,7 +141,7 @@ void NBSelector::on_NBL_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 2, 0);
+    processor->set_neighbour_image(fileName, image, 0, 2);
     get_neighbours();
     processor->calculate();
   }
@@ -154,7 +154,7 @@ void NBSelector::on_NBM_clicked() {
     bool success;
     QImage image = il->loadImage(fileName, &success);
     image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 2, 1);
+    processor->set_neighbour_image(fileName, image, 1, 2);
     get_neighbours();
     processor->calculate();
   }
