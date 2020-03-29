@@ -143,27 +143,20 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   QImage n(3*image.size(), QImage::Format_RGBA8888_Premultiplied);
   n.fill(0);
   s.set_image(TextureTypes::Neighbours,n);
+
+  n = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
+  n.fill(0);
+
+  s.set_image(TextureTypes::NormalOverlay,n);
+  s.set_image(TextureTypes::HeightmapOverlay,n);
+  s.set_image(TextureTypes::SpecularOverlay,n);
+  s.set_image(TextureTypes::ParallaxOverlay,n);
+  s.set_image(TextureTypes::OcclussionOverlay,n);
   s.fileName = fileName;
 
   frames.append(s);
 
   set_current_frame_id(frames.count() -1);
-
-  normalOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  normalOverlay.fill(QColor(0,0,0,0));
-
-  specularOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  specularOverlay.fill(QColor(0,0,0,0));
-
-  heightOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  heightOverlay.fill(QColor(128,128,128,0));
-
-  parallaxOverlay = QImage(image.width(),image.height(),QImage::Format_RGBA8888_Premultiplied);
-  parallaxOverlay.fill(QColor(0,0,0,0));
-
-  occlussionOverlay = QImage(image.width(), image.height(), QImage::Format_RGBA8888_Premultiplied);
-  occlussionOverlay.fill(QColor(0,0,0,0));
-
 
   if (!customHeightMap) {
 
@@ -811,7 +804,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
         for (int y = ymin; y <= ymax; ++y) {
           int yaux = y;
 
-          QColor oColor = normalOverlay.pixelColor(xaux,yaux);
+          QColor oColor = get_normal_overlay()->pixelColor(xaux,yaux);
           Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
           Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
 
@@ -959,83 +952,77 @@ QImage *ImageProcessor::get_texture() {
 }
 
 QImage *ImageProcessor::get_normal() {
-  frames[current_frame_id].get_image(TextureTypes::Normal, &last_normal);
+  current_frame->get_image(TextureTypes::Normal, &last_normal);
   return &last_normal;
 }
 
 QImage *ImageProcessor::get_parallax() {
-  frames[current_frame_id].get_image(TextureTypes::Parallax, &last_parallax);
+  current_frame->get_image(TextureTypes::Parallax, &last_parallax);
   return &last_parallax;
 }
 
 QImage *ImageProcessor::get_specular() {
-  frames[current_frame_id].get_image(TextureTypes::Specular, &last_specular);
+  current_frame->get_image(TextureTypes::Specular, &last_specular);
   return &last_specular;
 }
 
 QImage *ImageProcessor::get_occlusion() {
-  frames[current_frame_id].get_image(TextureTypes::Occlussion, &last_occlussion);
+  current_frame->get_image(TextureTypes::Occlussion, &last_occlussion);
   return &last_occlussion;
 }
 
 QImage *ImageProcessor::get_texture_overlay() {
-  QMutexLocker locker(&texture_overlay_mutex);
+  current_frame->get_image(TextureTypes::TextureOverlay, &textureOverlay);
   return &textureOverlay;
 }
 
 void ImageProcessor::set_texture_overlay(QImage to){
-  QMutexLocker locker(&texture_overlay_mutex);
-  textureOverlay = to;
+  current_frame->set_image(TextureTypes::TextureOverlay, to);
 }
 
 QImage *ImageProcessor::get_normal_overlay() {
-  QMutexLocker locker(&normal_overlay_mutex);
+  current_frame->get_image(TextureTypes::NormalOverlay, &normalOverlay);
   return &normalOverlay;
 }
 
 void ImageProcessor::set_normal_overlay(QImage no){
-  QMutexLocker locker(&normal_overlay_mutex);
-  normalOverlay = no;
+  current_frame->set_image(TextureTypes::NormalOverlay, no);
 }
 
 QImage ImageProcessor::get_parallax_overlay() {
-  QMutexLocker locker(&parallax_overlay_mutex);
+  current_frame->get_image(TextureTypes::ParallaxOverlay, &parallaxOverlay);
   return parallaxOverlay;
 }
 
 void ImageProcessor::set_parallax_overlay(QImage po){
-  QMutexLocker locker(&parallax_overlay_mutex);
-  parallaxOverlay = po;
+  current_frame->set_image(TextureTypes::ParallaxOverlay, po);
 }
 
 QImage ImageProcessor::get_specular_overlay() {
-  QMutexLocker locker(&specular_overlay_mutex);
+  current_frame->get_image(TextureTypes::SpecularOverlay, &specularOverlay);
   return specularOverlay;
 }
 
 void ImageProcessor::set_specular_overlay(QImage so){
-  QMutexLocker locker(&specular_overlay_mutex);
-  specularOverlay = so;
+  current_frame->set_image(TextureTypes::SpecularOverlay, so);
 }
 
 QImage ImageProcessor::get_heightmap_overlay(){
-  QMutexLocker locker(&heightmap_overlay_mutex);
+  current_frame->get_image(TextureTypes::HeightmapOverlay, &heightOverlay);
   return heightOverlay;
 }
 
 void ImageProcessor::set_heightmap_overlay(QImage ho){
-  QMutexLocker locker(&heightmap_overlay_mutex);
-  heightOverlay = ho;
+  current_frame->set_image(TextureTypes::HeightmapOverlay, ho);
 }
 
 QImage ImageProcessor::get_occlusion_overlay() {
-  QMutexLocker locker(&occlussion_overlay_mutex);
+  current_frame->get_image(TextureTypes::OcclussionOverlay, &occlussionOverlay);
   return occlussionOverlay;
 }
 
 void ImageProcessor::set_occlussion_overlay(QImage oo){
-  QMutexLocker locker(&occlussion_overlay_mutex);
-  occlussionOverlay = oo;
+  current_frame->set_image(TextureTypes::OcclussionOverlay, oo);
 }
 
 bool ImageProcessor::get_parallax_invert() {

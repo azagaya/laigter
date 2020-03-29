@@ -16,6 +16,7 @@ enum class TextureTypes
   Neighbours,
   SpecularBase,
   OcclussionBase,
+  TextureOverlay,
   NormalOverlay,
   HeightmapOverlay,
   SpecularOverlay,

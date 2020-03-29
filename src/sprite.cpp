@@ -2,7 +2,7 @@
 
 Sprite::Sprite()
 {
-  textures.resize(15);
+  textures.resize(16);
 
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
