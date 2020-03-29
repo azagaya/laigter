@@ -12,6 +12,7 @@ Sprite::Sprite()
 
 Sprite::Sprite(const Sprite &S){
   textures = S.textures;
+  fileName = S.fileName;
 
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
@@ -21,6 +22,8 @@ Sprite::Sprite(const Sprite &S){
 
 Sprite& Sprite::operator=(const Sprite &S){
   textures = S.textures;
+  fileName = S.fileName;
+
   neighours_paths.resize(3);
   neighours_paths[0].resize(3);
   neighours_paths[1].resize(3);

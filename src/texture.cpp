@@ -27,7 +27,7 @@ bool Texture::set_image(QImage i){
 
 bool Texture::get_image(QImage *dst){
   if (mutex.tryLock()){
-    *dst = image.copy();
+    *dst = image;
     mutex.unlock();
     return true;
   }

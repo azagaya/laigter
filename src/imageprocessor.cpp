@@ -29,7 +29,6 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent) {
   position = offset = QVector2D(0, 0);
   zoom = 1.0;
   selected = false;
-
   normal_bisel_depth = 1000;
   normal_bisel_distance = 60;
   normal_depth = 100;
@@ -160,11 +159,11 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
 
   if (!customHeightMap) {
 
-    m_height_ov = Mat(image.width(), image.height(),CV_32FC3);
-    aux_height_ov = Mat(image.width(), image.height(),CV_32FC1);
+    m_height_ov = Mat(image.height(), image.width(),CV_32FC3);
+    aux_height_ov = Mat(image.height(), image.width(),CV_32FC1);
     aux_height_ov = Scalar::all(0.0);
-    m_emboss_normal = Mat(image.width(), image.height(),CV_32FC3);
-    m_distance_normal = Mat(image.width(), image.height(),CV_32FC3);
+    m_emboss_normal = Mat(image.height(), image.width(),CV_32FC3);
+    m_distance_normal = Mat(image.height(), image.width(),CV_32FC3);
     fill_neighbours(fileName, image);
   }
 
@@ -797,16 +796,16 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       if (rect != QRect(0,0,0,0)){
         rect.getCoords(&xmin, &ymin, &xmax, &ymax);
       }
-
+      get_normal_overlay();
       for (int x = xmin; x <= xmax; ++x) {
         int xaux = x;
 
         for (int y = ymin; y <= ymax; ++y) {
           int yaux = y;
 
-          QColor oColor = get_normal_overlay()->pixelColor(xaux,yaux);
+          QColor oColor = normalOverlay.pixelColor(xaux,yaux);
           Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
+          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux)));//*(1-oColor.alphaF())+overlay*oColor.alphaF());
 
           n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
           m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;

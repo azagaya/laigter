@@ -59,6 +59,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionSaveProject"/>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
    <addaction name="actionFitZoom"/>
@@ -1702,6 +1703,11 @@
   <action name="actionLanguages">
    <property name="text">
     <string>Languages</string>
+   </property>
+  </action>
+  <action name="actionSaveProject">
+   <property name="text">
+    <string>SaveProject</string>
    </property>
   </action>
  </widget>

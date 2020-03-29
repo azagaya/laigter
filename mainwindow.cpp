@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
 
+  p.processorList = &processorList;
+
   sample_processor = new ImageProcessor();
   processor = sample_processor;
   ui->openGLPreviewWidget->sampleLightList =
@@ -223,7 +225,6 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos) {
 void MainWindow::list_menu_action_triggered(QAction *action) {
   ImageProcessor *p = find_processor(current_item->text());
   QString option = action->text();
-  qDebug() << current_item->text();
   if (option == tr("Remove")) {
     fs_watcher.removePath(current_item->data(Qt::UserRole).toString());
     for (int i = 0; i < processorList.count(); i++) {
@@ -379,9 +380,7 @@ void MainWindow::open_files(QStringList fileNames) {
 
     QString name = info.baseName();
 
-    if (similarList.count() == 0){
-      similarList.append(fileName);
-    } else {
+    if (similarList.count() > 1) {
       QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "Load as Animation?", "Images with similar names where detected in the same folder. Load as Animation?",
                                     QMessageBox::Yes|QMessageBox::No);
@@ -1239,7 +1238,6 @@ void MainWindow::onFileChanged(const QString &file_path) {
   // no file system watcher reports "change" when creating file (bug?)
   if (QFile(file_path).size() == 0) return;
 
-  qDebug() << QFile(file_path).size();
   Q_FOREACH (ImageProcessor *ip, processorList) {
     QImage auximage;
     ImageLoader il;
@@ -1426,4 +1424,9 @@ void MainWindow::retranslate(){
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
   current_item = item;
+}
+
+void MainWindow::on_actionSaveProject_triggered()
+{
+  p.save("/home/azagaya/Documentos/");
 }

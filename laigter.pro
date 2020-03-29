@@ -55,8 +55,10 @@ SOURCES += \
     src/lightsource.cpp \
     src/openglwidget.cpp \
     gui/nbselector.cpp \
+  src/project.cpp \
   src/sprite.cpp \
-  src/texture.cpp
+  src/texture.cpp \
+  thirdparty/zip.c
 
 HEADERS += \
   gui/Widgets/slider.h \
@@ -73,8 +75,11 @@ HEADERS += \
     src/lightsource.h \
     src/openglwidget.h \
     gui/nbselector.h \
+  src/project.h \
   src/sprite.h \
-  src/texture.h
+  src/texture.h \
+  thirdparty/miniz.h \
+  thirdparty/zip.h
 
 FORMS += \
     gui/aboutdialog.ui \

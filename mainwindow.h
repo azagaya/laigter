@@ -25,6 +25,7 @@
 #include "src/lightsource.h"
 #include "src/brushinterface.h"
 #include "gui/languageselector.h"
+#include "src/project.h"
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -49,6 +50,8 @@ public:
   void dropEvent(QDropEvent *event);
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
+
+  Project p;
 
 public slots:
   void update_scene();
@@ -139,6 +142,8 @@ private slots:
   void on_actionLanguages_triggered();
 
   void on_listWidget_itemClicked(QListWidgetItem *item);
+
+  void on_actionSaveProject_triggered();
 
   private:
   Ui::MainWindow *ui;
