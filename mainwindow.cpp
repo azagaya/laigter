@@ -380,6 +380,9 @@ void MainWindow::open_files(QStringList fileNames) {
 
     QString name = info.baseName();
 
+    if (similarList.count() == 0){
+      similarList.append(fileName);
+    }
     if (similarList.count() > 1) {
       QMessageBox::StandardButton reply;
       reply = QMessageBox::question(this, "Load as Animation?", "Images with similar names where detected in the same folder. Load as Animation?",
