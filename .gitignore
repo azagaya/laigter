@@ -4,3 +4,4 @@
 deploy/
 .ignore/
 compile_commands.json
+build

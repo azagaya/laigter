@@ -53,17 +53,52 @@ Beautifier plugin, or just use it's standalone version.
 
 The following should be use:
 
-* For file names: `snake_case` (example: `main.cpp`, `window.h`, `brush_interface.h`)
+* For **file names**: `snake_case` (example: `main.cpp`, `brush_interface.h`, `spin_box_slider2.qss`)
 
-* For class names: `UpperCamelCase` (example: `ImageLoader`)
+* For **class names**: `UpperCamelCase` (example: `ImageLoader`)
 
-* For class members: `m_case` (example: `m_parallel_min`)
+* For **class members**: `m_case` (example: `m_parallel_min`)
 
-* For class methods: `UpperCamelCase` (example: `ImageLoader::LoadImage`)
+* For **class methods**: `UpperCamelCase` (example: `ImageLoader::LoadImage`)
 
-* For variables: `snake_case` (example : `loaded_image`, `brush_size`)
+* For **variables**: `snake_case` (example : `loaded_image`, `brush_size`)
 
-* For signals and slots: `loweCamelCase` (example: `updateScene`)
+* For **signals** and **slots**: `loweCamelCase` (example: `updateScene`)
+
+* For **indentations**: use `2 spaces`
+
+* For **statement codeblocks**:
+	The same goes for `if`, `for`, `while`, and `function` blocks
+	```cpp
+	if (statement)
+	{
+	}
+	else
+	{
+	}
+
+	for (int i = 0; i <= 10; i++)
+	{
+	}
+
+	void foo()
+	{
+	}
+	```
+
+* For **operators**:
+	```cpp
+	char assignment = 'a';
+	int add = 1 + 1;
+	int sub = 1 - 1;
+	int mul = 1*1;
+	int div = 1/1;
+	```
+
+* For **data types**:
+	```cpp
+	float a_float = 0.1f; //always put number(s) before the decimal point
+	```
 
 Others are not yet defined. If you need to define them, open an issue
 and lets discuss about that!
