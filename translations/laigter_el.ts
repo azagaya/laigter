@@ -968,552 +968,587 @@ p, li { white-space: pre-wrap; }
         <translation>Laigter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="90"/>
-        <location filename="../mainwindow.ui" line="1451"/>
+        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="1452"/>
         <source>Normal</source>
         <translation>Κανονικό</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="106"/>
+        <location filename="../mainwindow.ui" line="107"/>
         <source>Enhance:</source>
         <translation>Ενίσχυση:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="114"/>
-        <location filename="../mainwindow.ui" line="211"/>
-        <location filename="../mainwindow.ui" line="546"/>
+        <location filename="../mainwindow.ui" line="115"/>
+        <location filename="../mainwindow.ui" line="212"/>
+        <location filename="../mainwindow.ui" line="547"/>
         <source>Height:</source>
         <translation>Ύψος:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="137"/>
-        <location filename="../mainwindow.ui" line="251"/>
-        <location filename="../mainwindow.ui" line="894"/>
-        <location filename="../mainwindow.ui" line="1177"/>
-        <location filename="../mainwindow.ui" line="1231"/>
+        <location filename="../mainwindow.ui" line="138"/>
+        <location filename="../mainwindow.ui" line="252"/>
+        <location filename="../mainwindow.ui" line="895"/>
+        <location filename="../mainwindow.ui" line="1178"/>
+        <location filename="../mainwindow.ui" line="1232"/>
         <source>Soft:</source>
         <translation>Απαλότητα:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="174"/>
+        <location filename="../mainwindow.ui" line="175"/>
         <source>Axis:</source>
         <translation>Άξονες:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="180"/>
+        <location filename="../mainwindow.ui" line="181"/>
         <source>Invert x</source>
         <translation>Αντιστροφή x</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="187"/>
+        <location filename="../mainwindow.ui" line="188"/>
         <source>Invert y</source>
         <translation>Αντιστροφή y</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="203"/>
+        <location filename="../mainwindow.ui" line="204"/>
         <source>Bump:</source>
         <translation>Φούσκωμα:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="231"/>
-        <location filename="../mainwindow.ui" line="1333"/>
+        <location filename="../mainwindow.ui" line="232"/>
+        <location filename="../mainwindow.ui" line="1334"/>
         <source>Distance:</source>
         <translation>Απόσταση:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="277"/>
+        <location filename="../mainwindow.ui" line="278"/>
         <source>Soft</source>
         <translation>Απαλό</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="290"/>
+        <location filename="../mainwindow.ui" line="291"/>
         <source>Abrupt</source>
         <translation>Απότομο</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="313"/>
+        <location filename="../mainwindow.ui" line="314"/>
         <source>Visualization</source>
         <translation>Οραματισμός</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="329"/>
+        <location filename="../mainwindow.ui" line="330"/>
         <source>Light</source>
         <translation>Φώς</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="363"/>
+        <location filename="../mainwindow.ui" line="364"/>
         <source>Diffuse</source>
         <translation>Διάχυση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="369"/>
-        <location filename="../mainwindow.ui" line="414"/>
-        <location filename="../mainwindow.ui" line="464"/>
+        <location filename="../mainwindow.ui" line="370"/>
+        <location filename="../mainwindow.ui" line="415"/>
+        <location filename="../mainwindow.ui" line="465"/>
         <source>Intensity:</source>
         <translation>Ένταση:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="390"/>
-        <location filename="../mainwindow.ui" line="1078"/>
-        <location filename="../mainwindow.ui" line="1461"/>
+        <location filename="../mainwindow.ui" line="391"/>
+        <location filename="../mainwindow.ui" line="1079"/>
+        <location filename="../mainwindow.ui" line="1462"/>
         <source>Specular</source>
         <translation>Κατοπτρικό</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="421"/>
+        <location filename="../mainwindow.ui" line="422"/>
         <source>Scatter:</source>
         <translation>Σκόρπισμα:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="458"/>
+        <location filename="../mainwindow.ui" line="459"/>
         <source>Ambient</source>
         <translation>Περιβάλλον</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="484"/>
-        <location filename="../mainwindow.ui" line="575"/>
+        <location filename="../mainwindow.ui" line="485"/>
+        <location filename="../mainwindow.ui" line="576"/>
         <source>Color:</source>
         <translation>Χρώμα:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="510"/>
+        <location filename="../mainwindow.ui" line="511"/>
         <source>Background:</source>
         <translation>Υπόβαθρο:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="601"/>
+        <location filename="../mainwindow.ui" line="602"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Εάν είναι ενεργοποιημένο, κάθε υφή θα έχει τα δικά της φώτα, με τις δικές της αντίστοιχες ρυθμίσεις.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="604"/>
+        <location filename="../mainwindow.ui" line="605"/>
         <source>Lights per texture</source>
         <translation>Φώτα ανά υφή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="623"/>
+        <location filename="../mainwindow.ui" line="624"/>
         <source>View</source>
         <translation>Προβολή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="635"/>
+        <location filename="../mainwindow.ui" line="636"/>
         <source>Mode:</source>
         <translation>Λειτουργία:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="643"/>
+        <location filename="../mainwindow.ui" line="644"/>
         <source>Texture</source>
         <translation>Υφή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="648"/>
+        <location filename="../mainwindow.ui" line="649"/>
         <source>Normal Map</source>
         <translation>Κανονικός Χάρτης</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="653"/>
+        <location filename="../mainwindow.ui" line="654"/>
         <source>Specular Map</source>
         <translation>Κατοπτρικός Χάρτης</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="658"/>
+        <location filename="../mainwindow.ui" line="659"/>
         <source>Parallax Map</source>
         <translation>Χάρτης Παράλλαξης</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="663"/>
+        <location filename="../mainwindow.ui" line="664"/>
         <source>Occlussion Map</source>
         <translation>Χάρτης Εμποδίων</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="668"/>
-        <location filename="../mainwindow.ui" line="1491"/>
+        <location filename="../mainwindow.ui" line="669"/>
+        <location filename="../mainwindow.ui" line="1492"/>
         <source>Preview</source>
         <translation>Προεπισκόπηση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="689"/>
+        <location filename="../mainwindow.ui" line="690"/>
         <source>Pixelated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="702"/>
+        <location filename="../mainwindow.ui" line="703"/>
         <source>Toon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="718"/>
-        <location filename="../mainwindow.ui" line="1364"/>
-        <location filename="../mainwindow.ui" line="1411"/>
+        <location filename="../mainwindow.ui" line="719"/>
+        <location filename="../mainwindow.ui" line="1365"/>
+        <location filename="../mainwindow.ui" line="1412"/>
         <source>Tile</source>
         <translation>Μοτίβο</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="733"/>
+        <location filename="../mainwindow.ui" line="734"/>
         <source>Tile y</source>
         <translation>Μοτίβο y</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="740"/>
+        <location filename="../mainwindow.ui" line="741"/>
         <source>Tile x</source>
         <translation>Μοτίβο x</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="747"/>
-        <location filename="../mainwindow.ui" line="796"/>
-        <location filename="../mainwindow.ui" line="1481"/>
+        <location filename="../mainwindow.ui" line="748"/>
+        <location filename="../mainwindow.ui" line="797"/>
+        <location filename="../mainwindow.ui" line="1482"/>
         <source>Parallax</source>
         <translation>Παράλλαξη</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="775"/>
+        <location filename="../mainwindow.ui" line="776"/>
         <source>Textures</source>
         <translation>Υφές</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="806"/>
+        <location filename="../mainwindow.ui" line="807"/>
         <source>Type</source>
         <translation>Είδος</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="814"/>
+        <location filename="../mainwindow.ui" line="815"/>
         <source>Binary</source>
         <translation>Δυαδικό</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="819"/>
+        <location filename="../mainwindow.ui" line="820"/>
         <source>Height Map</source>
         <translation>Χάρτης Ύψους</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="827"/>
-        <location filename="../mainwindow.ui" line="1088"/>
-        <location filename="../mainwindow.ui" line="1218"/>
-        <location filename="../mainwindow.ui" line="1380"/>
+        <location filename="../mainwindow.ui" line="828"/>
+        <location filename="../mainwindow.ui" line="1089"/>
+        <location filename="../mainwindow.ui" line="1219"/>
+        <location filename="../mainwindow.ui" line="1381"/>
         <source>Controls:</source>
         <translation>Ρυθμίσεις:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="855"/>
+        <location filename="../mainwindow.ui" line="856"/>
         <source>Quantization:</source>
         <translation>Κβαντισμός</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="868"/>
-        <location filename="../mainwindow.ui" line="1107"/>
-        <location filename="../mainwindow.ui" line="1326"/>
+        <location filename="../mainwindow.ui" line="869"/>
+        <location filename="../mainwindow.ui" line="1108"/>
+        <location filename="../mainwindow.ui" line="1327"/>
         <source>Threshold:</source>
         <translation>Όριο:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="881"/>
+        <location filename="../mainwindow.ui" line="882"/>
         <source>Min Height:</source>
         <translation>Ελάχιστο Ύψος:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1666"/>
-        <location filename="../mainwindow.cpp" line="1197"/>
+        <location filename="../mainwindow.ui" line="1667"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Load Plugins</source>
         <translation>Φόρτωση Προσθέτων</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1669"/>
+        <location filename="../mainwindow.ui" line="1670"/>
         <source>Reload Plugins</source>
         <translation>Επαναφόρτωση Προσθέτων</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1681"/>
-        <location filename="../mainwindow.ui" line="1684"/>
-        <location filename="../mainwindow.cpp" line="1197"/>
+        <location filename="../mainwindow.ui" line="1682"/>
+        <location filename="../mainwindow.ui" line="1685"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Install Plugin</source>
         <translation>Εγκατάσταση Πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1696"/>
-        <location filename="../mainwindow.ui" line="1699"/>
-        <location filename="../mainwindow.cpp" line="1198"/>
+        <location filename="../mainwindow.ui" line="1697"/>
+        <location filename="../mainwindow.ui" line="1700"/>
+        <location filename="../mainwindow.cpp" line="1276"/>
         <source>Delete Plugin</source>
         <translation>Διαγραφή Πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1704"/>
-        <location filename="../mainwindow.cpp" line="1343"/>
+        <location filename="../mainwindow.ui" line="1705"/>
+        <location filename="../mainwindow.cpp" line="1421"/>
         <source>Languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="920"/>
-        <location filename="../mainwindow.ui" line="1114"/>
-        <location filename="../mainwindow.ui" line="1280"/>
+        <location filename="../mainwindow.ui" line="1710"/>
+        <source>SaveProject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="921"/>
+        <location filename="../mainwindow.ui" line="1115"/>
+        <location filename="../mainwindow.ui" line="1281"/>
         <source>Contrast:</source>
         <translation>Αντίθεση:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="943"/>
-        <location filename="../mainwindow.ui" line="1170"/>
-        <location filename="../mainwindow.ui" line="1224"/>
+        <location filename="../mainwindow.ui" line="944"/>
+        <location filename="../mainwindow.ui" line="1171"/>
+        <location filename="../mainwindow.ui" line="1225"/>
         <source>Invert</source>
         <translation>Αντιστροφή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="956"/>
+        <location filename="../mainwindow.ui" line="957"/>
         <source>Focus:</source>
         <translation>Εστίαση:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="969"/>
-        <location filename="../mainwindow.ui" line="1163"/>
-        <location filename="../mainwindow.ui" line="1319"/>
+        <location filename="../mainwindow.ui" line="970"/>
+        <location filename="../mainwindow.ui" line="1164"/>
+        <location filename="../mainwindow.ui" line="1320"/>
         <source>Brightness:</source>
         <translation>Φωτεινότητα:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1050"/>
+        <location filename="../mainwindow.ui" line="1051"/>
         <source>Erode / Dilate:</source>
         <translation>Διάβρωση / Διαστολλή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1208"/>
-        <location filename="../mainwindow.ui" line="1471"/>
+        <location filename="../mainwindow.ui" line="1209"/>
+        <location filename="../mainwindow.ui" line="1472"/>
         <source>Occlussion</source>
         <translation>Εμπόδιο</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1401"/>
+        <location filename="../mainwindow.ui" line="1402"/>
         <source>Neighbours</source>
         <translation>Γείτονες</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1426"/>
-        <location filename="../mainwindow.ui" line="1524"/>
-        <location filename="../mainwindow.ui" line="1606"/>
-        <location filename="../mainwindow.ui" line="1609"/>
+        <location filename="../mainwindow.ui" line="1427"/>
+        <location filename="../mainwindow.ui" line="1525"/>
+        <location filename="../mainwindow.ui" line="1607"/>
+        <location filename="../mainwindow.ui" line="1610"/>
         <source>Export</source>
         <translation>Εξαγωγή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1505"/>
+        <location filename="../mainwindow.ui" line="1506"/>
         <source>Export to...</source>
         <translation>Εξαγωγή σε...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1533"/>
+        <location filename="../mainwindow.ui" line="1534"/>
         <source>toolBar</source>
         <translation>Γραμμή Εργαλείων</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1552"/>
-        <location filename="../mainwindow.ui" line="1555"/>
+        <location filename="../mainwindow.ui" line="1553"/>
+        <location filename="../mainwindow.ui" line="1556"/>
         <source>Open</source>
         <translation>Άνοιγμα</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1567"/>
-        <location filename="../mainwindow.ui" line="1570"/>
+        <location filename="../mainwindow.ui" line="1568"/>
+        <location filename="../mainwindow.ui" line="1571"/>
         <source>Fit Zoom</source>
         <translation>Προσαρμογή Μεγέθυνσης</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1579"/>
+        <location filename="../mainwindow.ui" line="1580"/>
         <source>Zoom 100%</source>
         <translation>Μεγέθυνση 100%</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1588"/>
+        <location filename="../mainwindow.ui" line="1589"/>
         <source>Zoom +</source>
         <translation>Μεγέθυνση +</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1597"/>
+        <location filename="../mainwindow.ui" line="1598"/>
         <source>Zoom -</source>
         <translation>Μεγέθυνση -</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1618"/>
+        <location filename="../mainwindow.ui" line="1619"/>
         <source>Presets</source>
         <translation>Προεπιλογές</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1627"/>
-        <location filename="../mainwindow.ui" line="1630"/>
+        <location filename="../mainwindow.ui" line="1628"/>
+        <location filename="../mainwindow.ui" line="1631"/>
         <source>Export Preview</source>
         <translation>Προεπισκόπηση εξαγωγής</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1639"/>
-        <location filename="../mainwindow.ui" line="1642"/>
+        <location filename="../mainwindow.ui" line="1640"/>
+        <location filename="../mainwindow.ui" line="1643"/>
         <source>About</source>
         <translation>Σχετικά</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1654"/>
+        <location filename="../mainwindow.ui" line="1655"/>
         <source>Add Light</source>
         <translation>Προσθήκη Φωτός</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1657"/>
+        <location filename="../mainwindow.ui" line="1658"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Προσθήκη Πηγής Φωτός:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Αριστερό κλικ για να προσθέσετε πηγή φωτός.&lt;/p&gt;&lt;p&gt;Δεξί κλικ για να διαγράψετε πηγή φωτός ή για ακύρωση.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="154"/>
+        <location filename="../mainwindow.cpp" line="183"/>
         <source>Context menu</source>
         <translation>Κατάλογος συμφραζόμενων</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="155"/>
-        <location filename="../mainwindow.cpp" line="175"/>
+        <location filename="../mainwindow.cpp" line="184"/>
+        <location filename="../mainwindow.cpp" line="228"/>
         <source>Remove</source>
         <translation>Αφαίρεση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="157"/>
-        <location filename="../mainwindow.cpp" line="191"/>
+        <location filename="../mainwindow.cpp" line="186"/>
+        <location filename="../mainwindow.cpp" line="243"/>
         <source>Load heightmap</source>
         <translation>Φόρτωση χάρτη ύψους</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="158"/>
-        <location filename="../mainwindow.cpp" line="205"/>
+        <location filename="../mainwindow.cpp" line="187"/>
+        <location filename="../mainwindow.cpp" line="257"/>
         <source>Reset heightmap</source>
         <translation>Επαναφορά χάρτη ύψους</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="160"/>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="189"/>
+        <location filename="../mainwindow.cpp" line="263"/>
         <source>Load specular map</source>
         <translation>Φόρτωση κατοπτρικού χάρτη</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="190"/>
+        <location filename="../mainwindow.cpp" line="278"/>
         <source>Reset specular map</source>
         <translation>Επαναφορά κατοπτρικού χάρτη</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="163"/>
-        <location filename="../mainwindow.cpp" line="232"/>
+        <location filename="../mainwindow.cpp" line="192"/>
+        <location filename="../mainwindow.cpp" line="284"/>
         <source>Add new frames</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="164"/>
+        <location filename="../mainwindow.cpp" line="196"/>
+        <location filename="../mainwindow.cpp" line="303"/>
         <source>Remove current frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="193"/>
-        <location filename="../mainwindow.cpp" line="213"/>
-        <location filename="../mainwindow.cpp" line="234"/>
-        <location filename="../mainwindow.cpp" line="258"/>
+        <location filename="../mainwindow.cpp" line="197"/>
+        <location filename="../mainwindow.cpp" line="306"/>
+        <source>Next Frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="308"/>
+        <source>Previous Frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="299"/>
+        <source>Stop Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="206"/>
+        <location filename="../mainwindow.cpp" line="301"/>
+        <source>Start Animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="245"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="286"/>
+        <location filename="../mainwindow.cpp" line="326"/>
         <source>Open Image</source>
         <translation>Άνοιγμα Εικόνας</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="193"/>
-        <location filename="../mainwindow.cpp" line="213"/>
-        <location filename="../mainwindow.cpp" line="234"/>
-        <location filename="../mainwindow.cpp" line="258"/>
+        <location filename="../mainwindow.cpp" line="245"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="286"/>
+        <location filename="../mainwindow.cpp" line="326"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
         <translation>Αρχείο Εικόνας (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="322"/>
+        <location filename="../mainwindow.cpp" line="419"/>
         <source>Cannot open </source>
         <translation>Δεν μπορεί να ανοίξει το αρχείο </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="323"/>
+        <location filename="../mainwindow.cpp" line="420"/>
         <source>Unsupported or incorrect format.</source>
         <translation>Μη υποστηριζόμενη ή λανθασμένη μορφή.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="333"/>
-        <source>The image is already opened in Laigter.</source>
-        <translation>Η εικόνα είναι ήδη ανοιγμένη στο Laigter</translation>
+        <location filename="../mainwindow.cpp" line="1435"/>
+        <source>Image File (*.laigter)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="374"/>
-        <location filename="../mainwindow.cpp" line="1001"/>
+        <source>The image is already opened in Laigter.</source>
+        <translation type="vanished">Η εικόνα είναι ήδη ανοιγμένη στο Laigter</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="459"/>
+        <location filename="../mainwindow.cpp" line="1086"/>
+        <location filename="../mainwindow.cpp" line="1435"/>
         <source>Save Image</source>
         <translation>Αποθήκευση Εικόνας</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="374"/>
-        <location filename="../mainwindow.cpp" line="1001"/>
+        <location filename="../mainwindow.cpp" line="459"/>
+        <location filename="../mainwindow.cpp" line="1086"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
         <translation>Αρχείο Εικόνας (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="395"/>
+        <location filename="../mainwindow.cpp" line="480"/>
         <source>Normal map was exported.
 </source>
         <translation>Έγινε εξαγωγή κανονικού χάρτη.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="401"/>
+        <location filename="../mainwindow.cpp" line="486"/>
         <source>Parallax map was exported.
 </source>
         <translation>Έγινε εξαγωγή χάρτη παράλλαξης.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="407"/>
+        <location filename="../mainwindow.cpp" line="492"/>
         <source>Specular map was exported.
 </source>
         <translation>Έγινε εξαγωγή κατοπτρικού χάρτη.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="413"/>
+        <location filename="../mainwindow.cpp" line="498"/>
         <source>Occlussion map was exported.
 </source>
         <translation>Έγινε εξαγωγή του χάρτη εμποδίων.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="419"/>
+        <location filename="../mainwindow.cpp" line="504"/>
         <source>Preview was exported.
 </source>
         <translation>Έγινε εξαγωγή της προεπισκόπησης.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="692"/>
-        <location filename="../mainwindow.cpp" line="859"/>
+        <location filename="../mainwindow.cpp" line="777"/>
+        <location filename="../mainwindow.cpp" line="944"/>
         <source>All normal maps were exported.
 </source>
         <translation>Έγινε εξαγωγή όλων των κανονικών χαρτών.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="702"/>
-        <location filename="../mainwindow.cpp" line="873"/>
+        <location filename="../mainwindow.cpp" line="787"/>
+        <location filename="../mainwindow.cpp" line="958"/>
         <source>All parallax maps were exported.
 </source>
         <translation>Έγινε εξαγωγή όλων των χαρτών παράλλαξης.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="712"/>
-        <location filename="../mainwindow.cpp" line="887"/>
+        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="972"/>
         <source>All specular maps were exported.
 </source>
         <translation>Έγινε εξαγωγή όλων των κατοπτρικών χαρτών.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="722"/>
-        <location filename="../mainwindow.cpp" line="901"/>
+        <location filename="../mainwindow.cpp" line="807"/>
+        <location filename="../mainwindow.cpp" line="986"/>
         <source>All occlussion maps were exported.
 </source>
         <translation>Έγινε εξαγωγή όλων των χαρτών εμποδίων.
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="726"/>
-        <location filename="../mainwindow.cpp" line="905"/>
+        <location filename="../mainwindow.cpp" line="811"/>
+        <location filename="../mainwindow.cpp" line="990"/>
         <source>All previews were exported.
 </source>
         <translation>Έγινε εξαγωγή όλων των προεπισκοπήσεων.
@@ -1544,24 +1579,24 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Ένας προσαρμοσμένος χάρτης ύψους τροποποιήθηκε</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1258"/>
-        <location filename="../mainwindow.cpp" line="1261"/>
-        <location filename="../mainwindow.cpp" line="1264"/>
+        <location filename="../mainwindow.cpp" line="1336"/>
+        <location filename="../mainwindow.cpp" line="1339"/>
+        <location filename="../mainwindow.cpp" line="1342"/>
         <source>Open Plugin</source>
         <translation>Άνοιγμα Πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1258"/>
+        <location filename="../mainwindow.cpp" line="1336"/>
         <source>Shared Library (*.so)</source>
         <translation>Κοινόχρηστη βιβλιοθήκη (*.so)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1261"/>
+        <location filename="../mainwindow.cpp" line="1339"/>
         <source>Shared Library (*.dll)</source>
         <translation>Κοινόχρηστη βιβλιοθήκη (*.dll)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1264"/>
+        <location filename="../mainwindow.cpp" line="1342"/>
         <source>Shared Library (*.dylib)</source>
         <translation>Κοινόχρηστη βιβλιοθήκη (*.dylib)</translation>
     </message>

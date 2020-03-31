@@ -147,7 +147,7 @@ class ImageProcessor : public QObject {
   void set_texture_overlay(QImage to);
 
   QMutex normal_overlay_mutex;
-  QImage *get_normal_overlay();
+  QImage get_normal_overlay();
   void set_normal_overlay(QImage no);
 
   QMutex parallax_overlay_mutex;
