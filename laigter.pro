@@ -94,39 +94,39 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix{
-    CONFIG += link_pkgconfig
-    packagesExist(opencv4){
-        PKGCONFIG += opencv4
-    } else {
-        PKGCONFIG += opencv
-    }
+unix {
+	CONFIG += link_pkgconfig
+	packagesExist(opencv4) {
+		PKGCONFIG += opencv4
+	} else {
+		PKGCONFIG += opencv
+	}
 }
 
 DISTFILES += \
-    ACKNOWLEDGEMETS \
-    LICENSE
+	ACKNOWLEDGEMETS \
+	LICENSE
 
 TRANSLATIONS = translations/laigter_da.ts \
-               translations/laigter_es.ts \
-               translations/laigter_en.ts \
-               translations/laigter_fr.ts \
-               translations/laigter_pt_BR.ts \
-               translations/laigter_ca_ES.ts \
-               translations/laigter_el.ts
+	translations/laigter_es.ts \
+	translations/laigter_en.ts \
+	translations/laigter_fr.ts \
+	translations/laigter_pt_BR.ts \
+	translations/laigter_ca_ES.ts \
+	translations/laigter_el.ts
 
 LANGUAGES = da\
-            en \
-            es \
-            fr \
-            pt_BR \
-            ca_ES \
-            el
+	en \
+	es \
+	fr \
+	pt_BR \
+	ca_ES \
+	el
 
 # parameters: var, prepend, append
 defineReplace(prependAll) {
- for(a,$$1):result += $$2$${a}$$3
- return($$result)
+	for(a,$$1):result += $$2$${a}$$3
+		return($$result)
 }
 
 TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
@@ -135,23 +135,23 @@ TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
 for(tsfile, TRANSLATIONS) {
- qmfile = $$tsfile
- qmfile ~= s,.ts$,.qm,
- qmdir = $$dirname(qmfile)
- !exists($$qmdir) {
- mkpath($$qmdir)|error("Aborting.")
- }
- command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
- system($$command)|error("Failed to run: $$command")
- TRANSLATIONS_FILES += $$qmfile
+	qmfile = $$tsfile
+	qmfile ~= s,.ts$,.qm,
+	qmdir = $$dirname(qmfile)
+	!exists($$qmdir) {
+		mkpath($$qmdir)|error("Aborting.")
+	}
+	command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
+	system($$command)|error("Failed to run: $$command")
+	TRANSLATIONS_FILES += $$qmfile
 }
 
 RESOURCES += \
-    shaders.qrc \
-    images.qrc \
-    styles.qrc \
-    translations.qrc \
-    icons.qrc
+	shaders.qrc \
+	images.qrc \
+	styles.qrc \
+	translations.qrc \
+	icons.qrc
 
 win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_core320.dll
 win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgproc320.dll

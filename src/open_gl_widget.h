@@ -36,144 +36,130 @@
 #include <QTimer>
 #include <QWheelEvent>
 
-enum ViewMode {
-  Texture,
-  NormalMap,
-  SpecularMap,
-  ParallaxMap,
-  OcclusionMap,
-  Preview
+enum ViewMode
+{
+	Texture,
+	NormalMap,
+	SpecularMap,
+	ParallaxMap,
+	OcclusionMap,
+	Preview
 };
 
-class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions {
-  Q_OBJECT
+class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
+{
+	Q_OBJECT
+
 public:
-  OpenGlWidget(QWidget *parent = nullptr);
-  bool need_to_update;
-  ImageProcessor *processor;
-  QList<LightSource *> *sampleLightList;
-
-  BrushInterface *currentBrush;
-
-public slots:
-  void update();
-  void force_update();
-  void setImage(QImage *image);
-  void setNormalMap(QImage *normalMap);
-  void setParallaxMap(QImage *parallaxMap);
-  void setSpecularMap(QImage *image);
-  void setOcclusionMap(QImage *occlusionMap);
-  void setZoom(float zoom);
-  void resetZoom();
-  void fitZoom();
-  float getZoom();
-  void setLight(bool light);
-  void setLightColor(QColor color);
-  void setSpecColor(QColor color);
-  void setLightHeight(float height);
-  void setLightIntensity(float intensity);
-  void setAmbientIntensity(float intensity);
-  void setSpecIntensity(float intensity);
-  void setSpecScatter(int scatter);
-  void setAmbientColor(QColor color);
-  void setBackgroundColor(QColor color);
-  void setTileX(bool x);
-  void setTileY(bool y);
-
-  void setPixelated(bool pixelated);
-  void setToon(bool toon);
-  void setPixelSize(int size);
-
-  void setParallaxHeight(int height);
-  void setParallax(bool p);
-
-  QImage calculate_preview(bool fullPreview = false);
-  QImage get_preview(bool fullPreview = true, bool autosave = false,
-                     QString basePath = "");
-
-  void update_scene();
-
-  QImage renderBuffer();
-
-  void loadTextures();
-
-  void set_add_light(bool add);
-  void update_light_position(QVector3D new_pos);
-  void remove_light(LightSource *light);
-  QList<LightSource *> *get_current_light_list_ptr();
-  void set_current_light_list(QList<LightSource *> *list);
-
-  void add_processor(ImageProcessor *p);
-  void set_current_processor(ImageProcessor *p);
-  void set_processor_list(QList<ImageProcessor *> list);
-  void clear_processor_list();
-  ImageProcessor *get_current_processor();
-
-  void set_processor_selected(ImageProcessor *processor, bool selected);
-  void set_all_processors_selected(bool selected);
-  QList<ImageProcessor *> get_all_selected_processors();
-
-  void set_view_mode(int mode);
-  void use_sample_light_list(bool l);
-
-signals:
-  void initialized();
-  void selectedLightChanged(LightSource *light);
-  void stopAddingLight();
-  void selectedProcessorsChanged(QList<ImageProcessor *> list);
-  void processor_selected(ImageProcessor *processor, bool selected);
-  void set_enabled_map_controls(bool e);
-  void set_enabled_light_controls(bool e);
-
-protected:
-  void initializeGL() override;
-  void paintGL() override;
-  void resizeGL(int width, int height) override;
-  void wheelEvent(QWheelEvent *event) override;
-  void mouseMoveEvent(QMouseEvent *event) override;
-  void mousePressEvent(QMouseEvent *event) override;
-  void mouseReleaseEvent(QMouseEvent *event) override;
+	BrushInterface *currentBrush;
+	ImageProcessor *processor;
+	QList<LightSource *> *sampleLightList;
+	bool need_to_update;
 
 private:
-  void select_current_light_list();
-
   GLuint shaderProgram, vertexShader, fragmentShader;
-  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture,
-      *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
-  QOpenGLVertexArrayObject VAO, VAO3D;
-  QOpenGLVertexArrayObject lightVAO;
+  LightSource *currentLight;
+  QColor lightColor, specColor, ambientColor, backgroundColor;
+  QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap, renderedPreview;
+  QList<ImageProcessor *> processorList, selectedProcessors;
+  QList<LightSource *> *currentLightList;
+  QList<LightSource *> lightList;
   QOpenGLBuffer VBO, VBO3D;
   QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
-  QImage m_image, normalMap, parallaxMap, laigter, specularMap,
-      occlusionMap, renderedPreview;
-  QVector3D lightPosition, texturePosition, textureOffset;
+  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
+  QOpenGLVertexArrayObject VAO, VAO3D;
+  QOpenGLVertexArrayObject lightVAO;
+  QPoint oldPos;
+  QString exportBasePath;
   QTimer refreshTimer;
-  bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
-  float sx, sy, parallax_height;
-  float m_zoom;
-  float diffIntensity, ambientIntensity, specIntensity, specScatter;
-  int pixelsX, pixelsY, pixelSize;
-  bool lightSelected;
-
+  QVector3D lightPosition, texturePosition, textureOffset;
   bool export_render, exportFullView, addLight;
-
-  QColor lightColor, specColor, ambientColor, backgroundColor;
-  QList<LightSource *> lightList;
-  QList<LightSource *> *currentLightList;
-  LightSource *currentLight;
-
-  void select_light(LightSource *light);
-  void apply_light_params();
-
-  QList<ImageProcessor *> processorList, selectedProcessors;
-
+  bool lightSelected;
+  bool m_fullPreview, m_autosave;
+  bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
+  bool sample_light_list_used;
+  float diffIntensity, ambientIntensity, specIntensity, specScatter;
+  float m_zoom;
+  float sx, sy, parallax_height;
+  int pixelsX, pixelsY, pixelSize;
   int viewmode;
 
-  bool sample_light_list_used;
-  bool m_fullPreview, m_autosave;
-  QString exportBasePath;
 
-  QPoint oldPos;
+public:
+	OpenGlWidget(QWidget *parent = nullptr);
+
+public slots:
+	float getZoom();
+	void add_processor(ImageProcessor *p);
+	void clear_processor_list();
+	void fitZoom();
+	void force_update();
+	void loadTextures();
+	void remove_light(LightSource *light);
+	void resetZoom();
+	void setAmbientColor(QColor color);
+	void setAmbientIntensity(float intensity);
+	void setBackgroundColor(QColor color);
+	void setImage(QImage *image);
+	void setLight(bool light);
+	void setLightColor(QColor color);
+	void setLightHeight(float height);
+	void setLightIntensity(float intensity);
+	void setNormalMap(QImage *normalMap);
+	void setOcclusionMap(QImage *occlusionMap);
+	void setParallax(bool p);
+	void setParallaxHeight(int height);
+	void setParallaxMap(QImage *parallaxMap);
+	void setPixelSize(int size);
+	void setPixelated(bool pixelated);
+	void setSpecColor(QColor color);
+	void setSpecIntensity(float intensity);
+	void setSpecScatter(int scatter);
+	void setSpecularMap(QImage *image);
+	void setTileX(bool x);
+	void setTileY(bool y);
+	void setToon(bool toon);
+	void setZoom(float zoom);
+	void set_add_light(bool add);
+	void set_all_processors_selected(bool selected);
+	void set_current_light_list(QList<LightSource *> *list);
+	void set_current_processor(ImageProcessor *p);
+	void set_processor_list(QList<ImageProcessor *> list);
+	void set_processor_selected(ImageProcessor *processor, bool selected);
+	void set_view_mode(int mode);
+	void update();
+	void update_light_position(QVector3D new_pos);
+	void update_scene();
+	void use_sample_light_list(bool l);
+	ImageProcessor *get_current_processor();
+	QImage calculate_preview(bool fullPreview = false);
+	QImage get_preview(bool fullPreview = true, bool autosave = false, QString basePath = "");
+	QImage renderBuffer();
+	QList<ImageProcessor *> get_all_selected_processors();
+	QList<LightSource *> *get_current_light_list_ptr();
+
+signals:
+	void initialized();
+	void processor_selected(ImageProcessor *processor, bool selected);
+	void selectedLightChanged(LightSource *light);
+	void selectedProcessorsChanged(QList<ImageProcessor *> list);
+	void set_enabled_light_controls(bool e);
+	void set_enabled_map_controls(bool e);
+	void stopAddingLight();
+
+protected:
+	void initializeGL() override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void paintGL() override;
+	void resizeGL(int width, int height) override;
+	void wheelEvent(QWheelEvent *event) override;
+
+private:
+  void apply_light_params();
+  void select_current_light_list();
+  void select_light(LightSource *light);
 };
 
 #endif // OPENGLWIDGET_H
