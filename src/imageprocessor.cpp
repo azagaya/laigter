@@ -132,6 +132,7 @@ ImageProcessor::~ImageProcessor(){
 
 int ImageProcessor::loadImage(QString fileName, QImage image) {
   m_fileName = fileName;
+  m_name = fileName;
   texture = image;
 
   Sprite s;
@@ -761,22 +762,19 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     calculate_heightmap();
     calculate_distance();
 
-    if (true){
+    if (enhance_requested || animation.isActive()){
       for (int i=0; i < rlist.count(); i++)
         calculate_normal(m_gray, m_emboss_normal, normal_depth, normal_blur_radius);
     }
 
-    if (true){
+    if (distance_requested || animation.isActive()){
       new_distance = modify_distance();
     }
 
-    if (true){
+    if (bump_requested || animation.isActive()){
       for (int i=0; i < rlist.count(); i++)
         calculate_normal(new_distance, m_distance_normal, normal_bisel_depth*normal_bisel_distance
                          , normal_bisel_blur_radius);
-
-
-
     }
 
     Mat normals;
@@ -805,7 +803,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
           QColor oColor = normalOverlay.pixelColor(xaux,yaux);
           Vec3f overlay(oColor.redF()*2-1,oColor.greenF()*2-1,oColor.blueF()*2-1);
-          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux)));//*(1-oColor.alphaF())+overlay*oColor.alphaF());
+          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux))*(1-oColor.alphaF())+overlay*oColor.alphaF());
 
           n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
           m_normal.at<Vec3b>(yaux,xaux)[0] = n[0]*255;
@@ -979,9 +977,9 @@ void ImageProcessor::set_texture_overlay(QImage to){
   current_frame->set_image(TextureTypes::TextureOverlay, to);
 }
 
-QImage *ImageProcessor::get_normal_overlay() {
+QImage ImageProcessor::get_normal_overlay() {
   current_frame->get_image(TextureTypes::NormalOverlay, &normalOverlay);
-  return &normalOverlay;
+  return normalOverlay;
 }
 
 void ImageProcessor::set_normal_overlay(QImage no){
@@ -1346,7 +1344,10 @@ Sprite *ImageProcessor::get_current_frame(){
 }
 
 void ImageProcessor::next_frame(){
-  if (frames.count() == 1) return;
+  if (frames.count() == 1){
+    animation.stop();
+    return;
+  }
   if (normal_mutex.tryLock()){
     if (specular_mutex.tryLock()){
       if (parallax_mutex.tryLock()){
