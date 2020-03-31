@@ -45,7 +45,11 @@ Compiling on Linux is pretty straightforward. Just use your package manager to i
 
 That's it, you can open the .pro file with Qt Creator and build or debug Laigter.
 
-You can also build from the terminal with `qmake && make`.
+You can also build from the terminal with
+	* `mkdir build`
+	* `cd build`
+	* `qmake ../`
+	* `make`
 
 ## Compiling on Windows
 

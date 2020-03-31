@@ -51,14 +51,54 @@ the text between `<translation><\translation>` tags to your language.
 For the code formatting we use clang-format. You can enable in Qt via
 Beautifier plugin, or just use it's standalone version.
 
-File names should be all lower case, sepparated with "\_" if needed.
+The following should be use:
 
-Class names should be UpperCamelCase.
+* For **file names**: `snake_case` (example: `main.cpp`, `brush_interface.h`, `spin_box_slider2.qss`)
 
-Function names should be lowerCamelCase. Signal and slots should use
-the same format that Qt uses for them.
+* For **class names**: `UpperCamelCase` (example: `ImageLoader`)
 
-Variable names should use snake_case.
+* For **class members**: `m_case` (example: `m_parallel_min`)
+
+* For **class methods**: `UpperCamelCase` (example: `ImageLoader::LoadImage`)
+
+* For **variables**: `snake_case` (example : `loaded_image`, `brush_size`)
+
+* For **signals** and **slots**: `loweCamelCase` (example: `updateScene`)
+
+* For **indentations**: use `2 spaces`
+
+* For **statement codeblocks**:
+	The same goes for `if`, `for`, `while`, and `function` blocks
+	```cpp
+	if (statement)
+	{
+	}
+	else
+	{
+	}
+
+	for (int i = 0; i <= 10; i++)
+	{
+	}
+
+	void foo()
+	{
+	}
+	```
+
+* For **operators**:
+	```cpp
+	char assignment = 'a';
+	int add = 1 + 1;
+	int sub = 1 - 1;
+	int mul = 1*1;
+	int div = 1/1;
+	```
+
+* For **data types**:
+	```cpp
+	float a_float = 0.1f; //always put number(s) before the decimal point
+	```
 
 Others are not yet defined. If you need to define them, open an issue
 and lets discuss about that!
