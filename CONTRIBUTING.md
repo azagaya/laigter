@@ -53,7 +53,7 @@ Beautifier plugin, or just use it's standalone version.
 
 The following should be use:
 
-* For file names: `snake_case` (example: `main.cpp`, `window.h`, `brush_interface.h`)
+* For file names: `snake_case` (example: `main.cpp`, `brush_interface.h`, `spin_box_slider2.qss`)
 
 * For class names: `UpperCamelCase` (example: `ImageLoader`)
 
