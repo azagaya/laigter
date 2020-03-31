@@ -67,6 +67,38 @@ The following should be use:
 
 * For **indentations**: use `2 spaces`
 
+* For **class header**:
+	```cpp
+	class Name
+	{
+	//member variables first
+	public: //same indentation as the class syntax
+		int m_var;
+
+	private:
+		int m_var2;
+
+	//methods
+	public:
+		Name();
+		~Name();
+
+	//other (protected, slots, etc etc)
+	}
+	```
+
+* For **include**:
+	```cpp
+	//include files
+	#include "filename.h"
+
+	//include std lib
+	#include <string>
+
+	//include QT lib
+	#include Qtxxxxx
+	```
+
 * For **statement codeblocks**:
 	The same goes for `if`, `for`, `while`, and `function` blocks
 	```cpp
@@ -100,9 +132,27 @@ The following should be use:
 	float a_float = 0.1f; //always put number(s) before the decimal point
 	```
 
+* For **switch statements**:
+	```cpp
+	switch (var)
+	{
+		case 1:
+		{
+			//do stuff here
+			break;
+		}
+		case 2:
+		{
+			//do stuff here
+			break;
+		}
+	}
+	```
+
 Others are not yet defined. If you need to define them, open an issue
 and lets discuss about that!
 
 Thanks!
 
 Azagaya
+
