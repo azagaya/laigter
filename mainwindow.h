@@ -51,7 +51,7 @@ public:
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
 
-  Project p;
+  Project project;
 
 public slots:
   void update_scene();

@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
 
-  p.processorList = &processorList;
+  project.processorList = &processorList;
 
   sample_processor = new ImageProcessor();
   processor = sample_processor;
@@ -1431,5 +1431,12 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_actionSaveProject_triggered()
 {
-  p.save("/home/azagaya/Documentos/");
+  QString fileName = QFileDialog::getSaveFileName(
+    this, tr("Save Image"), "", tr("Image File (*.laigter)"));
+  if (fileName == "")
+    return;
+  if (!fileName.endsWith(".laigter")){
+    fileName += ".laigter";
+  }
+  project.save(fileName);
 }

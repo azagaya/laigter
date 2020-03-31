@@ -16,7 +16,8 @@ Project::Project(QObject *parent) : QObject(parent)
 }
 
 bool Project::save(QString path){
-  struct zip_t *zip = zip_open(path.toUtf8()+"sample.zip", ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
+  QString zipname = path;
+  struct zip_t *zip = zip_open(zipname.toUtf8(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
   {
     for (int j = 0; j < processorList->count(); j++){
       ImageProcessor *p = processorList->at(j);
@@ -45,17 +46,12 @@ bool Project::save(QString path){
           default:
             name = s->fileName;
             break;
-
-
           }
 
           QDir dir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
           name = dir.path()+"/"+name.split("/").last().split(".").join(suffixes.at(i)+".");
 
           texture.save(name);
-
-
-
 
           zip_entry_open(zip, (p->get_name()+"/"+types.at(i)+"/"+name.split("/").last()).toUtf8());
           {
