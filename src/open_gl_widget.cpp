@@ -17,7 +17,10 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "openglwidget.h"
+#include "open_gl_widget.h"
+
+#include <math.h>
+
 #include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
@@ -25,7 +28,6 @@
 #include <QOpenGLVersionProfile>
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
-#include <math.h>
 
 OpenGlWidget::OpenGlWidget(QWidget *parent) {
   m_zoom = 1.0;

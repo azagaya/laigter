@@ -17,10 +17,12 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "imageprocessor.h"
+#include "image_processor.h"
+
+#include <cmath>
+
 #include <QApplication>
 #include <QDebug>
-#include <cmath>
 #include <QtConcurrent/QtConcurrent>
 
 using namespace cv;

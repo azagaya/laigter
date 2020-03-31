@@ -17,9 +17,11 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "imageloader.h"
-#include <QFileInfo>
+#include "image_loader.h"
+
 #include <fstream>
+
+#include <QFileInfo>
 
 ImageLoader::ImageLoader(QObject *parent) : QObject(parent) {}
 

@@ -1,8 +1,9 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include <QObject>
 #include "texture.h"
+
+#include <QObject>
 
 enum class TextureTypes
 {

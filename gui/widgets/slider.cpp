@@ -1,11 +1,12 @@
 #include "slider.h"
 
+#include <math.h>
+
 #include <QStyleOptionSlider>
 #include <QToolTip>
 #include <QPainter>
 #include <QDebug>
 #include <QFile>
-#include <math.h>
 
 Slider::Slider(QWidget * parent)
     : QSlider(parent)

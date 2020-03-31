@@ -1,8 +1,8 @@
 #ifndef BRUSHINTERFACE_H
 #define BRUSHINTERFACE_H
 
-#include <QtPlugin>
 #include <QObject>
+#include <QtPlugin>
 
 QT_BEGIN_NAMESPACE
 class QImage;

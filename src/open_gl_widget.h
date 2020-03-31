@@ -20,6 +20,10 @@
 #ifndef OPENGLWIDGET_H
 #define OPENGLWIDGET_H
 
+#include "brush_interface.h"
+#include "image_processor.h"
+#include "light_source.h"
+
 #include <QList>
 #include <QObject>
 #include <QOpenGLBuffer>
@@ -31,10 +35,6 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QWheelEvent>
-
-#include "lightsource.h"
-#include "imageprocessor.h"
-#include "brushinterface.h"
 
 enum ViewMode {
   Texture,

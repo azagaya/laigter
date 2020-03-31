@@ -17,8 +17,9 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "nbselector.h"
-#include "ui_nbselector.h"
+#include "nb_selector.h"
+#include "ui_nb_selector.h"
+
 #include <QFileDialog>
 #include <QMessageBox>
 

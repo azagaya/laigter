@@ -1,5 +1,5 @@
-#include "languageselector.h"
-#include "ui_languageselector.h"
+#include "language_selector.h"
+#include "ui_language_selector.h"
 
 #include <QFile>
 #include <QDebug>

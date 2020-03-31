@@ -1,11 +1,12 @@
 #include "slider2.h"
 
+#include <math.h>
+
 #include <QStyleOptionSlider>
 #include <QToolTip>
 #include <QPainter>
 #include <QDebug>
 #include <QFile>
-#include <math.h>
 
 Slider2::Slider2(QWidget * parent)
     : QSlider(parent)
@@ -19,7 +20,7 @@ Slider2::Slider2(QWidget * parent)
   connect(this,SIGNAL(valueChanged(int)),&spin_box,SLOT(setValue(int)));
   connect(&spin_box,SIGNAL(valueChanged(int)),this,SLOT(setValue(int)));
   connect(this,SIGNAL(rangeChanged(int,int)),this,SLOT(setSpinBoxRange(int,int)));
-  QFile style(":/styles/spinboxslider2.qss");
+  QFile style(":/styles/spin_box_slider2.qss");
   style.open(QIODevice::ReadOnly);
   setStyleSheet(style.readAll());
 }

@@ -20,20 +20,19 @@
 #ifndef IMAGEPROCESSOR_H
 #define IMAGEPROCESSOR_H
 
-#include <QImage>
-#include <QList>
-#include <QObject>
+#include "src/light_source.h"
+#include "src/sprite.h"
 
-#include <QPixmap>
-#include <QMutex>
-#include <QPainter>
 #include <QBrush>
 #include <QFuture>
-#include <QVector2D>
+#include <QImage>
+#include <QList>
+#include <QMutex>
+#include <QObject>
+#include <QPainter>
+#include <QPixmap>
 #include <QTimer>
-
-#include "src/lightsource.h"
-#include "src/sprite.h"
+#include <QVector2D>
 
 #include <opencv2/opencv.hpp>
 #if CV_MAJOR_VERSION >= 4

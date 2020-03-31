@@ -1,10 +1,10 @@
 #include "project.h"
 
+#include <QDebug>
 #include <QFile>
 #include <QImage>
-#include <QDebug>
-#include <QTemporaryDir>
 #include <QStandardPaths>
+#include <QTemporaryDir>
 
 extern "C" {
 #include "thirdparty/zip.h"

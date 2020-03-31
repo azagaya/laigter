@@ -1,4 +1,4 @@
-#include "lightsource.h"
+#include "light_source.h"
 
 LightSource::LightSource(QObject *parent) : QObject(parent) {}
 

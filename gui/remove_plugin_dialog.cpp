@@ -1,8 +1,8 @@
-#include "removeplugindialog.h"
-#include "ui_removeplugindialog.h"
+#include "remove_plugin_dialog.h"
+#include "ui_remove_plugin_dialog.h"
 
-#include <QStandardPaths>
 #include <QDir>
+#include <QStandardPaths>
 
 RemovePluginDialog::RemovePluginDialog(QWidget *parent) :
     QDialog(parent),

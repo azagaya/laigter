@@ -17,29 +17,29 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "mainwindow.h"
-#include "gui/aboutdialog.h"
-#include "gui/nbselector.h"
-#include "gui/presetsmanager.h"
-#include "gui/removeplugindialog.h"
-#include "src/openglwidget.h"
-#include "ui_mainwindow.h"
-#include "src/brushinterface.h"
-#include "gui/languageselector.h"
+#include "main_window.h"
+#include "gui/about_dialog.h"
+#include "gui/language_selector.h"
+#include "gui/nb_selector.h"
+#include "gui/presets_manager.h"
+#include "gui/remove_plugin_dialog.h"
+#include "src/brush_interface.h"
+#include "src/open_gl_widget.h"
+#include "ui_main_window.h"
 
 #include <QColorDialog>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDockWidget>
 #include <QDragEnterEvent>
 #include <QFileDialog>
 #include <QListWidgetItem>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QPluginLoader>
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
-#include <QPluginLoader>
-#include <QDockWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {

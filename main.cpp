@@ -17,18 +17,19 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "gui/presetsmanager.h"
-#include "mainwindow.h"
-#include "src/imageprocessor.h"
+#include "main_window.h"
+#include "gui/presets_manager.h"
+#include "src/image_processor.h"
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QOpenGLContext>
+#include <QSplashScreen>
 #include <QStandardPaths>
 #include <QTranslator>
-#include <QSplashScreen>
 
 QCoreApplication *createApplication(int &argc, char *argv[]) {
   for (int i = 1; i < argc; ++i)
@@ -172,7 +173,7 @@ int main(int argc, char *argv[]) {
       qDebug() << "Soft OpenGL";
     }
     MainWindow w;
-    QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));
+    QGuiApplication::setWindowIcon(QIcon(":/images/laigter_icon.png"));
 
     w.show();
     qRegisterMetaType<ProcessedImage>("ProcessedImage");

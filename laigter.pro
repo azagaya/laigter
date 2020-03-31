@@ -42,52 +42,52 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += core ui c++11
 
 SOURCES += \
-    gui/aboutdialog.cpp \
-  gui/languageselector.cpp \
-    gui/presetsmanager.cpp \
-  gui/removeplugindialog.cpp \
-  gui/widgets/slider.cpp \
-  gui/widgets/slider2.cpp \
-        main.cpp \
-        mainwindow.cpp \
-    src/imageloader.cpp \
-    src/imageprocessor.cpp \
-    src/lightsource.cpp \
-    src/openglwidget.cpp \
-    gui/nbselector.cpp \
-  src/project.cpp \
-  src/sprite.cpp \
-  src/texture.cpp \
-  thirdparty/zip.c
+	gui/about_dialog.cpp \
+	gui/language_selector.cpp \
+	gui/presets_manager.cpp \
+	gui/remove_plugin_dialog.cpp \
+	gui/widgets/slider.cpp \
+	gui/widgets/slider2.cpp \
+	main.cpp \
+	main_window.cpp \
+	src/image_loader.cpp \
+	src/image_processor.cpp \
+	src/light_source.cpp \
+	src/open_gl_widget.cpp \
+	gui/nb_selector.cpp \
+	src/project.cpp \
+	src/sprite.cpp \
+	src/texture.cpp \
+	thirdparty/zip.c
 
 HEADERS += \
-  gui/Widgets/slider.h \
-    gui/aboutdialog.h \
-  gui/languageselector.h \
-    gui/presetsmanager.h \
-  gui/removeplugindialog.h \
-  gui/widgets/slider.h \
-  gui/widgets/slider2.h \
-        mainwindow.h \
-  src/brushinterface.h \
-    src/imageloader.h \
-    src/imageprocessor.h \
-    src/lightsource.h \
-    src/openglwidget.h \
-    gui/nbselector.h \
-  src/project.h \
-  src/sprite.h \
-  src/texture.h \
-  thirdparty/miniz.h \
-  thirdparty/zip.h
+	gui/widgets/slider.h \
+	gui/about_dialog.h \
+	gui/language_selector.h \
+	gui/presets_manager.h \
+	gui/remove_plugin_dialog.h \
+	gui/widgets/slider.h \
+	gui/widgets/slider2.h \
+	main_window.h \
+	src/brush_interface.h \
+	src/image_loader.h \
+	src/image_processor.h \
+	src/light_source.h \
+	src/open_gl_widget.h \
+	gui/nb_selector.h \
+	src/project.h \
+	src/sprite.h \
+	src/texture.h \
+	thirdparty/miniz.h \
+	thirdparty/zip.h
 
 FORMS += \
-    gui/aboutdialog.ui \
-  gui/languageselector.ui \
-    gui/presetsmanager.ui \
-  gui/removeplugindialog.ui \
-        mainwindow.ui \
-    gui/nbselector.ui
+	gui/about_dialog.ui \
+	gui/language_selector.ui \
+	gui/presets_manager.ui \
+	gui/remove_plugin_dialog.ui \
+	main_window.ui \
+	gui/nb_selector.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

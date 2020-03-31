@@ -20,12 +20,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "src/imageloader.h"
-#include "src/imageprocessor.h"
-#include "src/lightsource.h"
-#include "src/brushinterface.h"
-#include "gui/languageselector.h"
+#include "gui/language_selector.h"
+#include "src/brush_interface.h"
+#include "src/image_loader.h"
+#include "src/image_processor.h"
+#include "src/light_source.h"
 #include "src/project.h"
+
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -33,9 +34,9 @@
 #include <QListWidgetItem>
 #include <QMainWindow>
 #include <QOpenGLWidget>
+#include <QPluginLoader>
 #include <QThread>
 #include <QVector3D>
-#include <QPluginLoader>
 
 namespace Ui {
 class MainWindow;

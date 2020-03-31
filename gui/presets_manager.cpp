@@ -17,8 +17,9 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "presetsmanager.h"
-#include "ui_presetsmanager.h"
+#include "presets_manager.h"
+#include "ui_presets_manager.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QFileDialog>

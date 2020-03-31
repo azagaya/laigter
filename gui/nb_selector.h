@@ -20,8 +20,9 @@
 #ifndef NBSELECTOR_H
 #define NBSELECTOR_H
 
-#include "src/imageloader.h"
-#include "src/imageprocessor.h"
+#include "src/image_loader.h"
+#include "src/image_processor.h"
+
 #include <QDialog>
 
 namespace Ui {

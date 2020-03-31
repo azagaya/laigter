@@ -20,13 +20,13 @@
 #ifndef PRESETSMANAGER_H
 #define PRESETSMANAGER_H
 
+#include "src/image_processor.h"
+#include "src/light_source.h"
+
 #include <QDialog>
 #include <QDir>
 #include <QList>
 #include <QListWidgetItem>
-
-#include "src/imageprocessor.h"
-#include "src/lightsource.h"
 
 namespace Ui {
 

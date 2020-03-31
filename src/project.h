@@ -1,7 +1,8 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
-#include "src/imageprocessor.h"
+#include "src/image_processor.h"
+
 #include <QObject>
 
 class Project : public QObject

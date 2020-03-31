@@ -1,9 +1,9 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <QObject>
-#include <QMutex>
 #include <QImage>
+#include <QMutex>
+#include <QObject>
 
 class Texture : public QObject
 {
