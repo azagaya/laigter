@@ -6,70 +6,60 @@ Texture::Texture(QObject *parent) : QObject(parent)
 
 Texture::Texture(const Texture &T)
 {
-	image = T.image;
-	type = T.type;
+  image = T.image;
+  type = T.type;
 }
 
 Texture &Texture::operator=(const Texture &T)
 {
-	image = T.image;
-	type = T.type;
-	return *this;
+  image = T.image;
+  type = T.type;
+  return *this;
 }
 
 bool Texture::set_image(QImage i)
 {
-	if (mutex.tryLock())
-	{
-		image = i.copy();
-		mutex.unlock();
-		return true;
-	}
-	return false;
+  if (mutex.tryLock())
+  {
+    image = i.copy();
+    mutex.unlock();
+    return true;
+  }
+  return false;
 }
 
-<<<<<<< HEAD
-bool Texture::get_image(QImage *dst){
-  if (mutex.tryLock()){
+bool Texture::get_image(QImage *dst)
+{
+  if (mutex.tryLock())
+  {
     *dst = image.copy();
     mutex.unlock();
     return true;
   }
   return false;
-=======
-bool Texture::get_image(QImage *dst)
-{
-	if (mutex.tryLock())
-	{
-		*dst = image;
-		mutex.unlock();
-		return true;
-	}
-	return false;
->>>>>>> df610b52b5c36d592c12f73fd53de2d615a537bd
 }
 
 void Texture::set_type(QString t)
 {
-	type = t;
+  type = t;
 }
 
 QString Texture::get_type()
 {
-	return type;
+  return type;
 }
 
 void Texture::lock()
 {
-	mutex.lock();
+  mutex.lock();
 }
 
 void Texture::unlock()
 {
-	mutex.unlock();
+  mutex.unlock();
 }
 
 QSize Texture::size()
 {
-	return image.size();
+  return image.size();
 }
