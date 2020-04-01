@@ -17,22 +17,45 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#ifndef IMAGELOADER_H
-#define IMAGELOADER_H
+#ifndef NBSELECTOR_H
+#define NBSELECTOR_H
 
-#include <QImage>
-#include <QObject>
+#include "src/image_loader.h"
+#include "src/image_processor.h"
 
-class ImageLoader : public QObject {
-  Q_OBJECT
+#include <QDialog>
+
+namespace Ui
+{
+	class NBSelector;
+}
+
+class NBSelector : public QDialog
+{
+	Q_OBJECT
+
+private:
+	Ui::NBSelector *ui;
+	ImageProcessor *processor;
+	ImageLoader *il;
+
 public:
-  explicit ImageLoader(QObject *parent = nullptr);
-  QImage loadTga(const char *filePath, bool *success);
-  QImage loadImage(QString fileName, bool *success);
+	explicit NBSelector(ImageProcessor *processor, QWidget *parent = nullptr);
+	~NBSelector();
 
-signals:
-
-public slots:
+private slots:
+	void on_pushButtonResetNeighbours_clicked();
+	void get_neighbours();
+	void on_NUL_clicked();
+	void on_NUM_clicked();
+	void on_NUR_clicked();
+	void on_NML_clicked();
+	void on_NMM_clicked();
+	void on_NMR_clicked();
+	void on_NBL_clicked();
+	void on_NBM_clicked();
+	void on_NBR_clicked();
+	void on_pushButton_clicked();
 };
 
-#endif // IMAGELOADER_H
+#endif // NBSELECTOR_H

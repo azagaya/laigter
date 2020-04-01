@@ -1562,7 +1562,7 @@
   <action name="actionFitZoom">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/zoomfit.png</normaloff>:/icons/zoomfit.png</iconset>
+     <normaloff>:/icons/zoom_fit.png</normaloff>:/icons/zoom_fit.png</iconset>
    </property>
    <property name="text">
     <string>Fit Zoom</string>
@@ -1622,7 +1622,7 @@
   <action name="actionExportPreview">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/export-preview.png</normaloff>:/icons/export-preview.png</iconset>
+     <normaloff>:/icons/export_preview.png</normaloff>:/icons/export_preview.png</iconset>
    </property>
    <property name="text">
     <string>Export Preview</string>
@@ -1649,7 +1649,7 @@
    </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/add-light.png</normaloff>:/icons/add-light.png</iconset>
+     <normaloff>:/icons/add_light.png</normaloff>:/icons/add_light.png</iconset>
    </property>
    <property name="text">
     <string>Add Light</string>
@@ -1716,7 +1716,7 @@
   <customwidget>
    <class>OpenGlWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>src/openglwidget.h</header>
+   <header>src/open_gl_widget.h</header>
   </customwidget>
   <customwidget>
    <class>Slider</class>

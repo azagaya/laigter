@@ -1,26 +1,26 @@
 <RCC>
-    <qresource prefix="/">
-        <file>translations/laigter_da.ts</file>
-        <file>translations/laigter_en.ts</file>
-        <file>translations/laigter_pt_BR.ts</file>
-        <file>translations/laigter_fr.ts</file>
-        <file>translations/laigter_ca_ES.ts</file>
-        <file>translations/laigter_es.ts</file>
-        <file>translations/laigter_el.ts</file>
-        <file>translations/laigter_el.qm</file>
-        <file>translations/laigter_ca_ES.qm</file>
-        <file>translations/laigter_pt_BR.qm</file>
-        <file>translations/laigter_fr.qm</file>
-        <file>translations/laigter_es.qm</file>
-        <file>translations/laigter_en.qm</file>
-        <file>translations/laigter_da.qm</file>
-        <file>translations/languages.txt</file>
-        <file>translations/flags/ES.png</file>
-        <file>translations/flags/BR.png</file>
-        <file>translations/flags/FR.png</file>
-        <file>translations/flags/GB.png</file>
-        <file>translations/flags/GR.png</file>
-        <file>translations/flags/DK.png</file>
-        <file>translations/flags/ES_CA.png</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>translations/laigter_da.ts</file>
+		<file>translations/laigter_en.ts</file>
+		<file>translations/laigter_pt_BR.ts</file>
+		<file>translations/laigter_fr.ts</file>
+		<file>translations/laigter_ca_ES.ts</file>
+		<file>translations/laigter_es.ts</file>
+		<file>translations/laigter_el.ts</file>
+		<file>translations/laigter_el.qm</file>
+		<file>translations/laigter_ca_ES.qm</file>
+		<file>translations/laigter_pt_BR.qm</file>
+		<file>translations/laigter_fr.qm</file>
+		<file>translations/laigter_es.qm</file>
+		<file>translations/laigter_en.qm</file>
+		<file>translations/laigter_da.qm</file>
+		<file>translations/languages.txt</file>
+		<file>translations/flags/ES.png</file>
+		<file>translations/flags/BR.png</file>
+		<file>translations/flags/FR.png</file>
+		<file>translations/flags/GB.png</file>
+		<file>translations/flags/GR.png</file>
+		<file>translations/flags/DK.png</file>
+		<file>translations/flags/ES_CA.png</file>
+	</qresource>
 </RCC>
