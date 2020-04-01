@@ -132,6 +132,7 @@ class ImageProcessor : public QObject {
 
   QTimer animation;
 
+  QRect normalRect = QRect(0,0,0,0);
 
   /* Images for Plugins */
 

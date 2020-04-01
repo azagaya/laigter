@@ -152,11 +152,15 @@ int ImageProcessor::loadImage(QString fileName, QImage image) {
   s.set_image(TextureTypes::SpecularOverlay,n);
   s.set_image(TextureTypes::ParallaxOverlay,n);
   s.set_image(TextureTypes::OcclussionOverlay,n);
+
   s.fileName = fileName;
 
   frames.append(s);
 
   set_current_frame_id(frames.count() -1);
+
+
+  get_normal_overlay();
 
   if (!customHeightMap) {
 
@@ -241,8 +245,8 @@ void ImageProcessor::calculate_parallax() {
 
     parallax_ready.lock();
     frames[current_frame_id].set_image(TextureTypes::Parallax, QImage(static_cast<unsigned char *>(current_parallax.data),
-                                                          current_parallax.cols, current_parallax.rows,
-                                                          current_parallax.step, QImage::Format_Grayscale8));
+                                                                      current_parallax.cols, current_parallax.rows,
+                                                                      current_parallax.step, QImage::Format_Grayscale8));
 
     frames[current_frame_id].get_image(TextureTypes::Parallax, &parallax);
     parallax_ready.unlock();
@@ -300,8 +304,8 @@ void ImageProcessor::calculate_specular() {
 
     specular_ready.lock();
     frames[i].set_image(TextureTypes::Specular, QImage(static_cast<unsigned char *>(current_specular.data),
-                                           current_specular.cols, current_specular.rows,
-                                           current_specular.step, QImage::Format_Grayscale8));
+                                                       current_specular.cols, current_specular.rows,
+                                                       current_specular.step, QImage::Format_Grayscale8));
 
     specular_ready.unlock();
   }
@@ -352,8 +356,8 @@ void ImageProcessor::calculate_occlusion() {
 
     occlussion_ready.lock();
     frames[current_frame_id].set_image(TextureTypes::Occlussion, QImage(static_cast<unsigned char *>(current_occlusion.data),
-                                                            current_occlusion.cols, current_occlusion.rows,
-                                                            current_occlusion.step, QImage::Format_Grayscale8));
+                                                                        current_occlusion.cols, current_occlusion.rows,
+                                                                        current_occlusion.step, QImage::Format_Grayscale8));
     frames[current_frame_id].get_image(TextureTypes::Occlussion, &occlussion);
     occlussion_ready.unlock();
   }
@@ -708,7 +712,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   normal_counter++;
 
   QMutexLocker locker(&normal_mutex);
-
   /* Calculate rects to update */
 
   QList <QRect> rlist;
@@ -737,7 +740,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
 
   rlist.removeAll(QRect(0,0,0,0));
-
   if (rlist.count() == 0){
     rlist.append(QRect(0,0,0,0));
   }
@@ -745,7 +747,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(), CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay,heightmapOverlay,CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay,CV_32FC1,255);
-  //add(heightmapOverlay,aux_height_ov,aux_height_ov);
+  //  add(heightmapOverlay,aux_height_ov,aux_height_ov);
   for (int i=0; i < rlist.count(); i++){
     calculate_normal(heightmapOverlay, m_height_ov,1,1,rlist.at(i));
   }
@@ -755,12 +757,19 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (updateDistance) distance_requested++;
 
   int frame = current_frame_id;
-
   for (int i = 0; i < frames.count(); i++){
-    set_current_frame_id(i);
-    set_current_heightmap();
-    calculate_heightmap();
-    calculate_distance();
+
+    if (update_tileable || (animation.isActive() && frames.count() > 1)){
+      set_current_frame_id(i);
+      set_current_heightmap();
+      calculate_heightmap();
+      calculate_distance();
+    }
+
+    if (update_tileable){
+      update_tileable = false;
+      distance_requested = true;
+    }
 
     if (enhance_requested || animation.isActive()){
       for (int i=0; i < rlist.count(); i++)
@@ -794,7 +803,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       if (rect != QRect(0,0,0,0)){
         rect.getCoords(&xmin, &ymin, &xmax, &ymax);
       }
-      get_normal_overlay();
+//          get_normal_overlay();
       for (int x = xmin; x <= xmax; ++x) {
         int xaux = x;
 
@@ -820,8 +829,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
     normal_ready.lock();
     frames[i].set_image(TextureTypes::Normal, QImage(static_cast<unsigned char *>(m_normal.data), m_normal.cols,
-                                         m_normal.rows, m_normal.step, QImage::Format_RGB888));
-//    frames[i].get_image(TextureTypes::Normal, &normal);
+                                                     m_normal.rows, m_normal.step, QImage::Format_RGB888));
+    //    frames[i].get_image(TextureTypes::Normal, &normal);
     normal_ready.unlock();
 
   }
@@ -984,6 +993,9 @@ QImage ImageProcessor::get_normal_overlay() {
 
 void ImageProcessor::set_normal_overlay(QImage no){
   current_frame->set_image(TextureTypes::NormalOverlay, no);
+  normal_mutex.lock();
+  get_normal_overlay();
+  normal_mutex.unlock();
 }
 
 QImage ImageProcessor::get_parallax_overlay() {
