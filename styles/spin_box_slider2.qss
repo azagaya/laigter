@@ -1,51 +1,53 @@
-
-QSlider::groove:horizontal {
-    height: 5px;
-background: transparent;
-        padding: 0px;
-        margin-top: 10px;
+QSlider::groove:horizontal
+{
+	height: 5px;
+	background: transparent;
+	padding: 0px;
+	margin-top: 10px;
 }
 
-QSlider::handle:horizontal {
-    background: rgb(80%,80%, 100%);
-    width: 5px;
-    height: 5px;
-
+QSlider::handle:horizontal
+{
+	background: rgb(80%,80%, 100%);
+	width: 5px;
+	height: 5px;
 }
 
-QSlider::sub-page:horizontal {
-    background: rgb(30%, 30%, 40%);
-    margin-top: 10px;
+QSlider::sub-page:horizontal
+{
+	background: rgb(30%, 30%, 40%);
+	margin-top: 10px;
 }
 
-QSlider::add-page:horizontal {
-    background:  rgb(30%, 30%, 40%);
-    margin-top: 10px;
+QSlider::add-page:horizontal
+{
+	background:  rgb(30%, 30%, 40%);
+	margin-top: 10px;
 }
 
-QSpinBox {
-        border: 1px solid rgb(30%, 30%, 40%);
-        border-bottom: 1px solid transparent;
-        color:  black;
-        background: transparent;
-        margin-bottom: 0px;
-        padding-bottom: 1px;
+QSpinBox
+{
+	border: 1px solid rgb(30%, 30%, 40%);
+	border-bottom: 1px solid transparent;
+	color:  black;
+	background: transparent;
+	margin-bottom: 0px;
+	padding-bottom: 1px;
 }
 
-QSpinBox::up-button {
-    subcontrol-origin: border;
-    subcontrol-position: top right;
-    width: 0px;
-    border-width: 0px;
+QSpinBox::up-button
+{
+	subcontrol-origin: border;
+	subcontrol-position: top right;
+	width: 0px;
+	border-width: 0px;
 }
 
-QSpinBox::down-button {
-    subcontrol-origin: border;
-    subcontrol-position: bottom right;
-
-    width: 0px;
-    border-width: 0px;
-    border-top-width: 0;
+QSpinBox::down-button
+{
+	subcontrol-origin: border;
+	subcontrol-position: bottom right;
+	width: 0px;
+	border-width: 0px;
+	border-top-width: 0;
 }
-
-

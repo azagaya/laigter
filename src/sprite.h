@@ -56,12 +56,12 @@ private:
 public:
 	explicit Sprite();
 	explicit Sprite(const Sprite &S);
-  void set_image(TextureTypes type, QImage i);
-  bool get_image(TextureTypes type, QImage *dst);
-  void set_texture(TextureTypes type, Texture t);
-  Sprite& operator=(const Sprite& S);
-  QString get_file_name();
-  QSize size();
+	void set_image(TextureTypes type, QImage i);
+	bool get_image(TextureTypes type, QImage *dst);
+	void set_texture(TextureTypes type, Texture t);
+	Sprite& operator=(const Sprite& S);
+	QString get_file_name();
+	QSize size();
 };
 
 #endif // SPRITE_H

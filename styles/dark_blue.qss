@@ -1,284 +1,312 @@
-
-QWidget{
+QWidget
+{
 	color: rgb(90%,90%,100%);
 	background: rgb(21, 32, 43);
 }
 
-QPushButton{
+QPushButton
+{
 	border: 1px solid rgb(57, 71, 85);
-    background: rgb(37, 51, 65);
-    border-radius: 2px;
+	background: rgb(37, 51, 65);
+	border-radius: 2px;
 }
 
-QPushButton::hover{
+QPushButton::hover
+{
 	border: 1px solid rgb(29, 161, 242);
-    background: rgb(27, 31, 45);
-color: rgb(80%,80%,100%);
-
-    border-radius: 2px;
-}
-QPushButton::pressed{
-	border: 1px solid rgb(27, 31, 45); 
-    background: rgb(29, 161, 242);
-color: rgb(0%,0%,20%);
-
-    border-radius: 2px;
+	background: rgb(27, 31, 45);
+	color: rgb(80%,80%,100%);
+	border-radius: 2px;
 }
 
-QToolButton{
+QPushButton::pressed
+{
+	border: 1px solid rgb(27, 31, 45);
+	background: rgb(29, 161, 242);
+	color: rgb(0%,0%,20%);
+	border-radius: 2px;
+}
+
+QToolButton
+{
 	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.8 rgba(29, 161, 242, 255), stop:1 rgba(255, 255, 255, 0));
-    padding: 6px;
-border-radius: 15px;
+	padding: 6px;
+	border-radius: 15px;
 }
 
-QToolButton:disabled{
+QToolButton:disabled
+{
 	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.8 rgba(70, 70, 70, 255), stop:1 rgba(255, 255, 255, 0));
-    padding: 6px;
-border-radius: 15px;
+	padding: 6px;
+	border-radius: 15px;
 }
 
 QToolButton::hover{
-		background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.85 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
-border-radius: 15px;
-    padding: 6px;
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.85 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
+	border-radius: 15px;
+	padding: 6px;
 }
 
-QToolButton::checked{
-		background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.9 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
-border-radius: 15px;
-    padding: 6px;
+QToolButton::checked
+{
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.9 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
+	border-radius: 15px;
+	padding: 6px;
 }
 
-QToolButton::pressed{
-		background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.9 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
-border-radius: 15px;
-    padding: 7px;
+QToolButton::pressed
+{
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.9 rgba(75, 205, 255, 255), stop:1 rgba(255, 255, 255, 0));
+	border-radius: 15px;
+	padding: 7px;
 }
 
-QDockWidget{
+QDockWidget
+{
 	color: rgb(235, 235, 235);
-    border: 1px solid black;
-    titlebar-close-icon: url(close.png);
-    titlebar-normal-icon: url(:/icons/undock.png);
+	border: 1px solid black;
+	titlebar-close-icon: url(close.png);
+	titlebar-normal-icon: url(:/icons/undock.png);
 	margin: 0px
 }
 
-QDockWidget::title{
+QDockWidget::title
+{
 	background: rgb(37, 51, 65);
 	border-radius:4px;
 	margin:2px;
 	padding: 1px
 }
 
-QDockWidget::close-button, QDockWidget::float-button {
-background: transparent;
-border-radius: 6px;
+QDockWidget::close-button, QDockWidget::float-button
+{
+	background: transparent;
+	border-radius: 6px;
 }
 
-QDockWidget::close-button:hover, QDockWidget::float-button:hover {
-background: rgb(29, 161, 242);
+QDockWidget::close-button:hover, QDockWidget::float-button:hover
+{
+	background: rgb(29, 161, 242);
 }
 
-QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
-background: #b0b0b0;
-border: 1px inset #808080;
+QDockWidget::close-button:pressed, QDockWidget::float-button:pressed
+{
+	background: #b0b0b0;
+	border: 1px inset #808080;
 }
-
 
 /* Checkbox */
-QCheckBox {
-    spacing: 5px;
-    padding: 2px;
+QCheckBox
+{
+	spacing: 5px;
+	padding: 2px;
 }
 
-QCheckBox:disabled{
-    color: rgb(70,70,70);
-    spacing: 5px;
-    padding: 2px;
+QCheckBox:disabled
+{
+	color: rgb(70,70,70);
+	spacing: 5px;
+	padding: 2px;
 }
 
-QCheckBox::indicator:unchecked {
-    width: 10px;
-    height: 10px;
+QCheckBox::indicator:unchecked
+{
+	width: 10px;
+	height: 10px;
 	background:  rgb(37, 51, 65);
 	border: 1px solid  rgb(37, 51, 65);
 }
 
-QCheckBox::indicator:checked {
-    width: 6px;
-    height: 6px;
+QCheckBox::indicator:checked
+{
+	width: 6px;
+	height: 6px;
 	background:  rgb(29, 161, 242);
 	border: 3px solid  rgb(37, 51, 65);
 }
 
-QCheckBox::indicator:unchecked:disabled {
-    width: 10px;
-    height: 10px;
+QCheckBox::indicator:unchecked:disabled
+{
+	width: 10px;
+	height: 10px;
 	background:  rgb(30, 30, 30);
 	border: 1px solid  rgb(30, 30, 30);
 }
 
-QCheckBox::indicator:checked:disabled {
-    width: 6px;
-    height: 6px;
+QCheckBox::indicator:checked:disabled
+{
+	width: 6px;
+	height: 6px;
 	background:  rgb(30, 30, 30);
 	border: 3px solid  rgb(50, 50, 50);
 }
 
-QCheckBox::hover {
+QCheckBox::hover
+{
 	border: 1px solid  rgb(29, 161, 242);
-    border-radius: 3px;
-    background: rgba(29, 161, 242,50);
-    padding: 1px;
+	border-radius: 3px;
+	background: rgba(29, 161, 242,50);
+	padding: 1px;
 }
 
-QSlider::hover {
+QSlider::hover
+{
 	border: 1px solid  rgb(29, 161, 242);
-    border-radius: 3px;
-    background: rgba(29, 161, 242,50);
+	border-radius: 3px;
+	background: rgba(29, 161, 242,50);
 
 }
 
 /* Radio */
-QRadioButton {
-    spacing: 5px;
-    padding: 2px;
+QRadioButton
+{
+	spacing: 5px;
+	padding: 2px;
 }
 
-QRadioButton:disabled{
-    color: rgb(70,70,70);
-    spacing: 5px;
-    padding: 2px;
+QRadioButton:disabled
+{
+	color: rgb(70,70,70);
+	spacing: 5px;
+	padding: 2px;
 }
 
-QRadioButton::indicator:unchecked {
-    width: 6px;
-    height: 6px;
+QRadioButton::indicator:unchecked
+{
+	width: 6px;
+	height: 6px;
 	background: rgb(37, 51, 65);
 	border: 3px solid   rgb(37, 51, 65);;
-border-radius: 6px;
+	border-radius: 6px;
 }
 
-QRadioButton::indicator:checked:disabled {
-    width: 6px;
-    height: 6px;
+QRadioButton::indicator:checked:disabled
+{
+	width: 6px;
+	height: 6px;
 	background:  rgb(30, 30, 30);
 	border: 3px solid  rgb(50, 50, 50);
-border-radius: 6px;
+	border-radius: 6px;
 }
 
-QRadioButton::indicator:unchecked:disabled {
-    width: 6px;
-    height: 6px;
+QRadioButton::indicator:unchecked:disabled
+{
+	width: 6px;
+	height: 6px;
 	background: rgb(30, 30, 30);
 	border: 3px solid   rgb(30, 30, 30);;
-border-radius: 6px;
+	border-radius: 6px;
 }
 
-QRadioButton::indicator:checked {
-    width: 6px;
-    height: 6px;
+QRadioButton::indicator:checked
+{
+	width: 6px;
+	height: 6px;
 	background:  rgb(29, 161, 242);
 	border: 3px solid  rgb(37, 51, 65);
-border-radius: 6px;
+	border-radius: 6px;
 }
 
-QRadioButton::hover {
+QRadioButton::hover
+{
 	border: 1px solid  rgb(29, 161, 242);
-    border-radius: 3px;
-    background: rgba(29, 161, 242,50);
-    padding: 1px;
+	border-radius: 3px;
+	background: rgba(29, 161, 242,50);
+	padding: 1px;
 }
 
-Slider::groove:horizontal {
-    height: 10px;
-background: transparent;
-
-    margin: 4px 0px 4px 36px;
-        padding: 0px
+Slider::groove:horizontal
+{
+	height: 10px;
+	background: transparent;
+	margin: 4px 0px 4px 36px;
+	padding: 0px
 }
 
-Slider::handle:horizontal {
-    background: rgb(37, 51, 65);
-   border: 2px solid rgb(29, 161, 242);
-        border-left: 30px solid transparent;
-    width: 10px;
-    margin: -4px 0px -4px -30px;
-    border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-
+Slider::handle:horizontal
+{
+	background: rgb(37, 51, 65);
+	border: 2px solid rgb(29, 161, 242);
+	border-left: 30px solid transparent;
+	width: 10px;
+	margin: -4px 0px -4px -30px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 
-Slider::handle:horizontal:disabled {
-    background: rgb(30%, 30%, 30%);
-   border: 2px solid rgb(50%, 50%, 50%);
-        border-left: 30px solid transparent;
-    width: 10px;
-    margin: -4px 0px -4px -30px;
-    border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-
+Slider::handle:horizontal:disabled
+{
+	background: rgb(30%, 30%, 30%);
+	border: 2px solid rgb(50%, 50%, 50%);
+	border-left: 30px solid transparent;
+	width: 10px;
+	margin: -4px 0px -4px -30px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 
-Slider::sub-page:horizontal {
-    background: rgb(37, 51, 65);
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-        border: 2px solid rgb(29, 161, 242);
+Slider::sub-page:horizontal
+{
+	background: rgb(37, 51, 65);
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border: 2px solid rgb(29, 161, 242);
 }
 
-Slider::sub-page:horizontal:disabled {
-    background: rgb(30%, 30%, 30%);
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-        border: 2px solid rgb(50%, 50%, 50%);
+Slider::sub-page:horizontal:disabled
+{
+	background: rgb(30%, 30%, 30%);
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border: 2px solid rgb(50%, 50%, 50%);
 }
 
-Slider::add-page:horizontal {
-    background:  rgb(37, 51, 65);
-        border-radius: 5px;
-        border: 1px solid rgb(29, 161, 242);
-    margin: 4px 0;
+Slider::add-page:horizontal
+{
+	background:  rgb(37, 51, 65);
+	border-radius: 5px;
+	border: 1px solid rgb(29, 161, 242);
+	margin: 4px 0;
 }
 
-Slider::add-page:horizontal:disabled {
-    background:  rgb(30%, 30%, 30%);
-        border-radius: 5px;
-        border: 1px solid rgb(50%, 50%, 50%);
-    margin: 4px 0;
-}
-
-
-QSpinBox#flatSpinBox {
-        color:  rgb(80%, 90%, 100%);
-        background: transparent;
-        margin: 0px;
-        padding: 0px;
-}
-
-QSpinBox:disabled#flatSpinBox {
-        color:  rgb(80%, 80%, 80%);
-        background: transparent;
-        margin: 0px;
-        padding: 0px;
-}
-
-QSpinBox::up-button#flatSpinBox {
-    subcontrol-origin: border;
-    subcontrol-position: top right;
-    width: 0px;
-    border-width: 0px;
-}
-
-QSpinBox::down-button#flatSpinBox {
-    subcontrol-origin: border;
-    subcontrol-position: bottom right;
-
-    width: 0px;
-    border-width: 0px;
-    border-top-width: 0;
+Slider::add-page:horizontal:disabled
+{
+	background:  rgb(30%, 30%, 30%);
+	border-radius: 5px;
+	border: 1px solid rgb(50%, 50%, 50%);
+	margin: 4px 0;
 }
 
 
+QSpinBox#flatSpinBox
+{
+	color:  rgb(80%, 90%, 100%);
+	background: transparent;
+	margin: 0px;
+	padding: 0px;
+}
 
-R
+QSpinBox:disabled#flatSpinBox
+{
+	color:  rgb(80%, 80%, 80%);
+	background: transparent;
+	margin: 0px;
+	padding: 0px;
+}
+
+QSpinBox::up-button#flatSpinBox
+{
+	subcontrol-origin: border;
+	subcontrol-position: top right;
+	width: 0px;
+	border-width: 0px;
+}
+
+QSpinBox::down-button#flatSpinBox
+{
+	subcontrol-origin: border;
+	subcontrol-position: bottom right;
+	width: 0px;
+	border-width: 0px;
+	border-top-width: 0;
+}

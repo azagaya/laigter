@@ -57,33 +57,32 @@ public:
 	bool need_to_update;
 
 private:
-  GLuint shaderProgram, vertexShader, fragmentShader;
-  LightSource *currentLight;
-  QColor lightColor, specColor, ambientColor, backgroundColor;
-  QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap, renderedPreview;
-  QList<ImageProcessor *> processorList, selectedProcessors;
-  QList<LightSource *> *currentLightList;
-  QList<LightSource *> lightList;
-  QOpenGLBuffer VBO, VBO3D;
-  QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
-  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
-  QOpenGLVertexArrayObject VAO, VAO3D;
-  QOpenGLVertexArrayObject lightVAO;
-  QPoint oldPos;
-  QString exportBasePath;
-  QTimer refreshTimer;
-  QVector3D lightPosition, texturePosition, textureOffset;
-  bool export_render, exportFullView, addLight;
-  bool lightSelected;
-  bool m_fullPreview, m_autosave;
-  bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
-  bool sample_light_list_used;
-  float diffIntensity, ambientIntensity, specIntensity, specScatter;
-  float m_zoom;
-  float sx, sy, parallax_height;
-  int pixelsX, pixelsY, pixelSize;
-  int viewmode;
-
+	GLuint shaderProgram, vertexShader, fragmentShader;
+	LightSource *currentLight;
+	QColor lightColor, specColor, ambientColor, backgroundColor;
+	QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap, renderedPreview;
+	QList<ImageProcessor *> processorList, selectedProcessors;
+	QList<LightSource *> *currentLightList;
+	QList<LightSource *> lightList;
+	QOpenGLBuffer VBO, VBO3D;
+	QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
+	QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture, *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
+	QOpenGLVertexArrayObject VAO, VAO3D;
+	QOpenGLVertexArrayObject lightVAO;
+	QPoint oldPos;
+	QString exportBasePath;
+	QTimer refreshTimer;
+	QVector3D lightPosition, texturePosition, textureOffset;
+	bool export_render, exportFullView, addLight;
+	bool lightSelected;
+	bool m_fullPreview, m_autosave;
+	bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
+	bool sample_light_list_used;
+	float diffIntensity, ambientIntensity, specIntensity, specScatter;
+	float m_zoom;
+	float sx, sy, parallax_height;
+	int pixelsX, pixelsY, pixelSize;
+	int viewmode;
 
 public:
 	OpenGlWidget(QWidget *parent = nullptr);
@@ -157,9 +156,9 @@ protected:
 	void wheelEvent(QWheelEvent *event) override;
 
 private:
-  void apply_light_params();
-  void select_current_light_list();
-  void select_light(LightSource *light);
+	void apply_light_params();
+	void select_current_light_list();
+	void select_light(LightSource *light);
 };
 
 #endif // OPENGLWIDGET_H
