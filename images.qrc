@@ -1,7 +1,7 @@
 <RCC>
-    <qresource prefix="/">
-        <file>images/laigter-icon.png</file>
-        <file>images/laigter-texture.png</file>
-        <file>images/sample.png</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>images/laigter_icon.png</file>
+		<file>images/laigter_texture.png</file>
+		<file>images/sample.png</file>
+	</qresource>
 </RCC>

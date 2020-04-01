@@ -1,24 +1,24 @@
 <RCC>
-    <qresource prefix="/">
-        <file>icons/open.png</file>
-        <file>icons/zoom100.png</file>
-        <file>icons/zoom+.png</file>
-        <file>icons/zoom-.png</file>
-        <file>icons/zoomfit.png</file>
-        <file>icons/export.png</file>
-        <file>icons/presets.png</file>
-        <file>icons/delete.png</file>
-        <file>icons/import.png</file>
-        <file>icons/export-preview.png</file>
-        <file>icons/itchio.png</file>
-        <file>icons/patreon.jpg</file>
-        <file>icons/twitter.png</file>
-        <file>icons/kofi.png</file>
-        <file>icons/info.png</file>
-        <file>icons/github.png</file>
-        <file>icons/add-light.png</file>
-        <file>icons/refresh.png</file>
-        <file>icons/undock.png</file>
-        <file>icons/install.png</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>icons/open.png</file>
+		<file>icons/zoom100.png</file>
+		<file>icons/zoom+.png</file>
+		<file>icons/zoom-.png</file>
+		<file>icons/zoom_fit.png</file>
+		<file>icons/export.png</file>
+		<file>icons/presets.png</file>
+		<file>icons/delete.png</file>
+		<file>icons/import.png</file>
+		<file>icons/export_preview.png</file>
+		<file>icons/itchio.png</file>
+		<file>icons/patreon.jpg</file>
+		<file>icons/twitter.png</file>
+		<file>icons/kofi.png</file>
+		<file>icons/info.png</file>
+		<file>icons/github.png</file>
+		<file>icons/add_light.png</file>
+		<file>icons/refresh.png</file>
+		<file>icons/undock.png</file>
+		<file>icons/install.png</file>
+	</qresource>
 </RCC>
