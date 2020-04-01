@@ -32,7 +32,7 @@
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
 	m_zoom = 1.0;
-	laigter = QImage(":/images/laigter-texture.png");
+	laigter = QImage(":/images/laigter_texture.png");
 	ambientColor = QColor("white");
 	ambientIntensity = 0.8;
 	lightPosition = QVector3D(0.7, 0.7, 0.3);
