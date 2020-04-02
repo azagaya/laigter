@@ -38,45 +38,44 @@
 #include <QThread>
 #include <QVector3D>
 
-namespace Ui
-{
+namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
   Q_OBJECT
 
-  public:
+public:
   Project project;
 
-  private:
+private:
   ImageLoader il;
   ImageProcessor *processor;
   ImageProcessor *sample_processor;
   LanguageSelector *el;
-  QColor currentColor, currentAmbientcolor, currentBackgroundColor, currentSpecColor, currentSpecBaseColor;
+  QColor currentColor, currentAmbientcolor, currentBackgroundColor,
+      currentSpecColor, currentSpecBaseColor;
   QFileSystemWatcher fs_watcher;
   QGraphicsScene *m_normal_scene;
   QGraphicsScene *m_raw_scene;
-  QList <BrushInterface*> brush_list;
-  QList <QDockWidget*> plugin_docks_list;
-  QList <QPluginLoader*> plugin_list;
-  QList<ImageProcessor*> processorList;
-  QList<ImageProcessor*> selectedProcessors;
+  QList<BrushInterface *> brush_list;
+  QList<QDockWidget *> plugin_docks_list;
+  QList<QPluginLoader *> plugin_list;
+  QList<ImageProcessor *> processorList;
+  QList<ImageProcessor *> selectedProcessors;
   QListWidgetItem *current_item;
   QOpenGLWidget *gl;
   QThread *processingThread;
   Ui::MainWindow *ui;
 
-  public:
+public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
   void dropEvent(QDropEvent *event);
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
 
-  public slots:
+public slots:
   ImageProcessor *find_processor(QString name);
   void update_scene();
   void add_processor(ImageProcessor *p);
@@ -85,17 +84,17 @@ class MainWindow : public QMainWindow
   void set_light_color(const QColor &color);
   void set_ambient_color(const QColor &color);
   void set_background_color(const QColor &color);
-  void selectedProcessorsChanged(QList<ImageProcessor*> list);
+  void selectedProcessorsChanged(QList<ImageProcessor *> list);
   void processor_selected(ImageProcessor *processor, bool selected);
   void set_enabled_map_controls(bool e);
   void set_enabled_light_controls(bool e);
   void select_plugin(BrushInterface *b);
   void retranslate();
 
-  signals:
+signals:
   void normal_depth_changed(int value);
 
-  private slots:
+private slots:
   void connect_processor(ImageProcessor *p);
   void disconnect_processor(ImageProcessor *p);
   void showContextMenuForListWidget(const QPoint &pos);
@@ -135,8 +134,8 @@ class MainWindow : public QMainWindow
   void on_listWidget_itemClicked(QListWidgetItem *item);
   void on_actionSaveProject_triggered();
 
-  protected slots:
-  virtual void changeEvent(QEvent * event);
+protected slots:
+  virtual void changeEvent(QEvent *event);
 };
 
 #endif // MAINWINDOW_H

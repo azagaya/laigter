@@ -23,14 +23,13 @@
 #include <QImage>
 #include <QObject>
 
-class ImageLoader : public QObject
-{
-	Q_OBJECT
+class ImageLoader : public QObject {
+  Q_OBJECT
 
 public:
-	explicit ImageLoader(QObject *parent = nullptr);
-	QImage loadTga(const char *filePath, bool *success);
-	QImage loadImage(QString fileName, bool *success);
+  explicit ImageLoader(QObject *parent = nullptr);
+  QImage loadTga(const char *filePath, bool *success);
+  QImage loadImage(QString fileName, bool *success);
 };
 
 #endif // IMAGELOADER_H

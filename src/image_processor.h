@@ -43,30 +43,14 @@
 #include <opencv2/imgproc.hpp>
 #endif
 
+enum class ProcessedImage { Raw, Normal, Parallax, Specular, Occlusion };
 
+enum class ParallaxType { Binary, HeightMap, Quantization, Intervals };
 
-enum class ProcessedImage
-{
-  Raw,
-  Normal,
-  Parallax,
-  Specular,
-  Occlusion
-};
-
-enum class ParallaxType
-{
-  Binary,
-  HeightMap,
-  Quantization,
-  Intervals
-};
-
-class ProcessorSettings
-{
-  public:
+class ProcessorSettings {
+public:
   ParallaxType *parallax_type;
-  QList<LightSource*> *lightList;
+  QList<LightSource *> *lightList;
   bool *normal_bisel_soft, *tileable, *parallax_invert;
   bool *occlusion_distance_mode;
   bool *occlusion_invert;
@@ -96,28 +80,27 @@ class ProcessorSettings
   int *specular_bright;
   int *specular_thresh;
 
-  public:
+public:
   ProcessorSettings &operator=(ProcessorSettings other);
 };
 
-class ImageProcessor : public QObject
-{
+class ImageProcessor : public QObject {
   Q_OBJECT
 
-  public:
-  QImage heightOverlay = QImage(0,0,QImage::Format_RGBA8888);
+public:
+  QImage heightOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage heightmap;
   QImage last_normal;
-  QImage normalOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage normalOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage occlussion, last_occlussion;
-  QImage occlussionOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage occlussionOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage parallax, last_parallax;
-  QImage parallaxOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage parallaxOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage specular, last_specular;
-  QImage specularOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage specularOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage specular_base;
   QImage texture;
-  QImage textureOverlay = QImage(0,0,QImage::Format_RGBA8888);
+  QImage textureOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QMutex heightmap_overlay_mutex;
   QMutex normal_overlay_mutex;
   QMutex occlussion_overlay_mutex;
@@ -126,17 +109,18 @@ class ImageProcessor : public QObject
   QMutex texture_overlay_mutex;
   QString m_fileName;
   QTimer animation;
-  QVector <Sprite> frames;
+  QVector<Sprite> frames;
   bool busy, active;
   bool updated = false;
 
-  private:
+private:
   ParallaxType parallax_type;
   ProcessorSettings settings;
   QBrush normal_brush;
-  QFuture <void> normal_future;
-  QList<LightSource*> lightList;
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, normal_ready, specular_ready, parallax_ready, occlussion_ready;
+  QFuture<void> normal_future;
+  QList<LightSource *> lightList;
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex,
+      normal_ready, specular_ready, parallax_ready, occlussion_ready;
   QPainter normal_painter;
   QString m_name, m_heightmapPath, m_specularPath;
   QVector3D offset;
@@ -170,7 +154,7 @@ class ImageProcessor : public QObject
   float sx, sy;
   float zoom;
   int current_frame_id = 0;
-  int enhance_requested=0, bump_requested=0, distance_requested=0;
+  int enhance_requested = 0, bump_requested = 0, distance_requested = 0;
   int normalInvertX, normalInvertY, normalInvertZ;
   int normal_bisel_blur_radius;
   int normal_bisel_depth;
@@ -193,7 +177,7 @@ class ImageProcessor : public QObject
   int specular_bright;
   int specular_thresh;
 
-  public:
+public:
   explicit ImageProcessor(QObject *parent = nullptr);
   ~ImageProcessor();
   QImage *get_normal();
@@ -216,8 +200,11 @@ class ImageProcessor : public QObject
   void calculate_distance();
   void calculate_gradient();
   void calculate_heightmap();
-  void calculate_normal(cv::Mat mat, cv::Mat src, int depth, int blur_radius, QRect r = QRect(0,0,0,0));
-  void generate_normal_map(bool updateEnhance = true, bool updateBump = true, bool updateDistance = true, QRect rect = QRect(0,0,0,0));
+  void calculate_normal(cv::Mat mat, cv::Mat src, int depth, int blur_radius,
+                        QRect r = QRect(0, 0, 0, 0));
+  void generate_normal_map(bool updateEnhance = true, bool updateBump = true,
+                           bool updateDistance = true,
+                           QRect rect = QRect(0, 0, 0, 0));
   void set_name(QString name);
   QImage get_normal_overlay();
   QImage *get_texture_overlay();
@@ -236,11 +223,11 @@ class ImageProcessor : public QObject
   void set_specular_overlay(QImage so);
   void set_texture_overlay(QImage to);
 
-  public slots:
+public slots:
   ParallaxType get_parallax_type();
   ProcessorSettings get_settings();
   QImage get_neighbour(int x, int y);
-  QList<LightSource*> *get_light_list_ptr();
+  QList<LightSource *> *get_light_list_ptr();
   QVector3D *get_offset();
   QVector3D *get_position();
   Sprite *get_current_frame();
@@ -297,7 +284,7 @@ class ImageProcessor : public QObject
   void set_current_frame_id(int id);
   void set_current_heightmap();
   void set_is_parallax(bool p);
-  void set_light_list(QList<LightSource*> &list);
+  void set_light_list(QList<LightSource *> &list);
   void set_normal_bisel_blur_radius(int radius);
   void set_normal_bisel_depth(int depth);
   void set_normal_bisel_distance(int distance);
@@ -341,7 +328,7 @@ class ImageProcessor : public QObject
   void set_tileable(bool t);
   void set_zoom(float new_zoom);
 
-  signals:
+signals:
   void processed();
   void on_idle();
 };
