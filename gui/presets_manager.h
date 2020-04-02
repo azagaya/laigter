@@ -28,43 +28,43 @@
 #include <QList>
 #include <QListWidgetItem>
 
-namespace Ui {
-typedef QString preset_codes_array[30];
-class PresetsManager;
-} // namespace Ui
+namespace Ui
+{
+	typedef QString preset_codes_array[30];
+	class PresetsManager;
+}
 
-class PresetsManager : public QDialog {
-  Q_OBJECT
+class PresetsManager : public QDialog
+{
+	Q_OBJECT
 
 private:
-  Ui::PresetsManager *ui;
-  ProcessorSettings mSettings, loadedSettings;
-  QList<ImageProcessor *> *mProcessorList;
-  QString presetsPath;
-  QDir presetsDir;
-  QString currentValues[30];
-  QList<LightSource *> lightList;
+	Ui::PresetsManager *ui;
+	ProcessorSettings mSettings, loadedSettings;
+	QList<ImageProcessor*> *mProcessorList;
+	QString presetsPath;
+	QDir presetsDir;
+	QString currentValues[30];
+	QList<LightSource *> lightList;
 
 public:
-  explicit PresetsManager(ProcessorSettings settings,
-                          QList<ImageProcessor *> *processorList,
-                          QWidget *parent = nullptr);
-  ~PresetsManager();
-  static Ui::preset_codes_array &get_preset_codes();
-  static void applyPresetSettings(QByteArray &setting, ImageProcessor &p);
-  static void applyPresets(QString &preset, ImageProcessor &p);
+	explicit PresetsManager(ProcessorSettings settings, QList<ImageProcessor*> *processorList, QWidget *parent = nullptr);
+	~PresetsManager();
+	static Ui::preset_codes_array &get_preset_codes();
+	static void applyPresetSettings(QByteArray &setting, ImageProcessor &p);
+	static void applyPresets(QString &preset, ImageProcessor &p);
 
 private slots:
-  QStringList scan_presets();
-  void on_pushButtonSavePreset_clicked();
-  void update_presets();
-  void on_pushButtonDeletePreset_clicked();
-  void on_pushButtonAplyPreset_clicked();
-  void on_pushButtonExportPreset_clicked();
-  void on_pushButtonImportPreset_clicked();
+	QStringList scan_presets();
+	void on_pushButtonSavePreset_clicked();
+	void update_presets();
+	void on_pushButtonDeletePreset_clicked();
+	void on_pushButtonAplyPreset_clicked();
+	void on_pushButtonExportPreset_clicked();
+	void on_pushButtonImportPreset_clicked();
 
 signals:
-  void settingAplied();
+	void settingAplied();
 };
 
 #endif // PRESETSMANAGER_H

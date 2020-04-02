@@ -4,26 +4,28 @@
 #include <QDialog>
 #include <QTranslator>
 
-namespace Ui {
-class LanguageSelector;
+namespace Ui
+{
+	class LanguageSelector;
 }
 
-class LanguageSelector : public QDialog {
-  Q_OBJECT
+class LanguageSelector : public QDialog
+{
+	Q_OBJECT
 
 private:
-  Ui::LanguageSelector *ui;
-  QString icon_path;
+	Ui::LanguageSelector *ui;
+	QString icon_path;
 
 public:
-  explicit LanguageSelector(QWidget *parent = nullptr);
-  ~LanguageSelector();
-  QPixmap icon;
-  QTranslator *translator;
+	explicit LanguageSelector(QWidget *parent = nullptr);
+	~LanguageSelector();
+	QPixmap icon;
+	QTranslator *translator;
 
 private slots:
-  void on_listWidget_itemSelectionChanged();
-  void on_pushButton_clicked();
+	void on_listWidget_itemSelectionChanged();
+	void on_pushButton_clicked();
 };
 
 #endif // LANGUAGESELECTOR_H

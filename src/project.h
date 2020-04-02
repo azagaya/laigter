@@ -5,30 +5,57 @@
 
 #include <QObject>
 
-class Project : public QObject {
-  Q_OBJECT
+class Project : public QObject
+{
+	Q_OBJECT
 
 public:
-  QList<ImageProcessor *> *processorList;
+	QList<ImageProcessor *> *processorList;
 
 public:
-  explicit Project(QObject *parent = nullptr);
+	explicit Project(QObject *parent = nullptr);
 
 public slots:
-  bool save(QString path);
+    bool save(QString path);
 
 private:
-  const QStringList suffixes = {"",    "_n",     "_s",  "_p",  "_o",  "_h",
-                                "_d",  "_neigh", "_sb", "_ob", "_to", "_no",
-                                "_ho", "_so",    "_po", "_oo"};
+	const QStringList suffixes = {
+		"",
+		"_n",
+		"_s",
+		"_p",
+		"_o",
+		"_h",
+		"_d",
+		"_neigh",
+		"_sb",
+		"_ob",
+		"_to",
+		"_no",
+		"_ho",
+		"_so",
+		"_po",
+		"_oo"
+	};
 
-  const QStringList types = {
-      "diffuse",          "normal",          "specular",
-      "parallax",         "occlussion",      "heightmap",
-      "distance",         "neighbours",      "specularBase",
-      "occlussionBase",   "textureOverlay",  "normalOverlay",
-      "heightmapOverlay", "specularOverlay", "parallaxOverlay",
-      "occlussionOverlay"};
+	const QStringList types = {
+		"diffuse",
+		"normal",
+		"specular",
+		"parallax",
+		"occlussion",
+		"heightmap",
+		"distance",
+		"neighbours",
+		"specularBase",
+		"occlussionBase",
+		"textureOverlay",
+		"normalOverlay",
+		"heightmapOverlay",
+		"specularOverlay",
+		"parallaxOverlay",
+		"occlussionOverlay"
+	};
 };
 
 #endif // PROJECT_H
