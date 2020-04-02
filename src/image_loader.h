@@ -25,12 +25,12 @@
 
 class ImageLoader : public QObject
 {
-	Q_OBJECT
+  Q_OBJECT
 
 public:
-	explicit ImageLoader(QObject *parent = nullptr);
-	QImage loadTga(const char *filePath, bool *success);
-	QImage loadImage(QString fileName, bool *success);
+  explicit ImageLoader(QObject *parent = nullptr);
+  QImage loadTga(const char *filePath, bool *success);
+  QImage loadImage(QString fileName, bool *success);
 };
 
 #endif // IMAGELOADER_H

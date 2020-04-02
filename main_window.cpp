@@ -50,22 +50,31 @@ MainWindow::MainWindow(QWidget *parent)
   el = new LanguageSelector(this);
 
   QString current_language =
-    QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-    "/lang";
+      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+      "/lang";
   QFile l(current_language);
   QTranslator *translator = new QTranslator;
   el->translator = translator;
-  if (l.open(QIODevice::ReadOnly)){
+  if (l.open(QIODevice::ReadOnly))
+  {
     QTextStream in(&l);
     QStringList locale = in.readLine().split("\t");
-    translator->load(":/translations/laigter_"+locale[2]);
-    el->icon = QPixmap::fromImage(QImage(":/translations/flags/"+locale[1]));
-  } else {
-    bool loaded = translator->load(QLocale::system(), ":/translations/laigter", "_");
-    if (!loaded) {
+    translator->load(":/translations/laigter_" + locale[2]);
+    el->icon =
+        QPixmap::fromImage(QImage(":/translations/flags/" + locale[1]));
+  }
+  else
+  {
+    bool loaded =
+        translator->load(QLocale::system(), ":/translations/laigter", "_");
+    if (!loaded)
+    {
       translator->load(":/translations/laigter_en");
-      el->icon = QPixmap::fromImage(QImage(":/translations/flags/EN.png"));
-    } else {
+      el->icon =
+          QPixmap::fromImage(QImage(":/translations/flags/EN.png"));
+    }
+    else
+    {
       /* Get icon of locale language */
       QFile f(":/translations/languages.txt");
       f.open(QIODevice::ReadOnly);
@@ -74,11 +83,14 @@ MainWindow::MainWindow(QWidget *parent)
       while (!stream.atEnd())
       {
         QStringList line = stream.readLine().split("\t");
-        if (line.count() >= 3){
+        if (line.count() >= 3)
+        {
           QString icon_path = line[1];
           QString lang = line[2];
-          if (lang == locale || lang == locale.split("-")[0]){
-            el->icon = QPixmap::fromImage(QImage(":/translations/flags/"+icon_path));
+          if (lang == locale || lang == locale.split("-")[0])
+          {
+            el->icon = QPixmap::fromImage(
+                QImage(":/translations/flags/" + icon_path));
           }
         }
       }
@@ -90,7 +102,8 @@ MainWindow::MainWindow(QWidget *parent)
   project.processorList = &processorList;
   sample_processor = new ImageProcessor();
   processor = sample_processor;
-  ui->openGLPreviewWidget->sampleLightList = sample_processor->get_light_list_ptr();
+  ui->openGLPreviewWidget->sampleLightList =
+      sample_processor->get_light_list_ptr();
 
   QColor c;
   c.setRgbF(0.0, 1.0, 0.7);
@@ -110,14 +123,23 @@ MainWindow::MainWindow(QWidget *parent)
   ui->pushButtonBackgroundColor->setIcon(QIcon(pixmap));
 
   ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-  connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)), SLOT(showContextMenuForListWidget(const QPoint &)));
-  connect(ui->sliderParallax, SIGNAL(valueChanged(int)), ui->openGLPreviewWidget, SLOT(setParallaxHeight(int)));
-  connect(ui->checkBoxPixelated, SIGNAL(toggled(bool)), ui->openGLPreviewWidget, SLOT(setPixelated(bool)));
-  connect(ui->checkBoxToon, SIGNAL(toggled(bool)), ui->openGLPreviewWidget, SLOT(setToon(bool)));
-  connect(ui->openGLPreviewWidget, SIGNAL(selectedLightChanged(LightSource *)), this, SLOT(selectedLightChanged(LightSource *)));
-  connect(ui->openGLPreviewWidget, SIGNAL(stopAddingLight()), this, SLOT(stopAddingLight()));
-  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_map_controls(bool)), this, SLOT(set_enabled_map_controls(bool)));
-  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_light_controls(bool)), this, SLOT(set_enabled_light_controls(bool)));
+  connect(ui->listWidget, SIGNAL(customContextMenuRequested(const QPoint &)),
+          SLOT(showContextMenuForListWidget(const QPoint &)));
+  connect(ui->sliderParallax, SIGNAL(valueChanged(int)),
+          ui->openGLPreviewWidget, SLOT(setParallaxHeight(int)));
+  connect(ui->checkBoxPixelated, SIGNAL(toggled(bool)),
+          ui->openGLPreviewWidget, SLOT(setPixelated(bool)));
+  connect(ui->checkBoxToon, SIGNAL(toggled(bool)), ui->openGLPreviewWidget,
+          SLOT(setToon(bool)));
+  connect(ui->openGLPreviewWidget,
+          SIGNAL(selectedLightChanged(LightSource *)), this,
+          SLOT(selectedLightChanged(LightSource *)));
+  connect(ui->openGLPreviewWidget, SIGNAL(stopAddingLight()), this,
+          SLOT(stopAddingLight()));
+  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_map_controls(bool)),
+          this, SLOT(set_enabled_map_controls(bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_light_controls(bool)),
+          this, SLOT(set_enabled_light_controls(bool)));
 
   tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
   tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -141,9 +163,13 @@ MainWindow::MainWindow(QWidget *parent)
   ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
   ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
 
-  connect(ui->openGLPreviewWidget, SIGNAL(processor_selected(ImageProcessor *, bool)), this, SLOT(processor_selected(ImageProcessor *, bool)));
-  connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this, SLOT(openGL_initialized()));
-  connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
+  connect(ui->openGLPreviewWidget,
+          SIGNAL(processor_selected(ImageProcessor *, bool)), this,
+          SLOT(processor_selected(ImageProcessor *, bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this,
+          SLOT(openGL_initialized()));
+  connect(&fs_watcher, SIGNAL(fileChanged(QString)), this,
+          SLOT(onFileChanged(QString)));
   set_enabled_light_controls(false);
 
   // Setting style
@@ -151,7 +177,6 @@ MainWindow::MainWindow(QWidget *parent)
   stylesheet_file.open(QFile::ReadOnly);
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
-
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos)
@@ -188,7 +213,7 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
     else
       contextMenu.addAction(new QAction(tr("Start Animation")));
 
-    if (p->get_current_frame_id() == p->frames.count()-1)
+    if (p->get_current_frame_id() == p->frames.count() - 1)
       nextFrame->setEnabled(false);
     else if (p->get_current_frame_id() == 0)
       prevFrame->setEnabled(false);
@@ -197,9 +222,11 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
     contextMenu.addAction(prevFrame);
   }
 
-  connect(&contextMenu, SIGNAL(triggered(QAction *)), this, SLOT(list_menu_action_triggered(QAction *)));
+  connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
+          SLOT(list_menu_action_triggered(QAction *)));
   contextMenu.exec(ui->listWidget->mapToGlobal(pos));
-  disconnect(&contextMenu, SIGNAL(triggered(QAction *)), this, SLOT(list_menu_action_triggered(QAction *)));
+  disconnect(&contextMenu, SIGNAL(triggered(QAction *)), this,
+             SLOT(list_menu_action_triggered(QAction *)));
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action)
@@ -211,7 +238,8 @@ void MainWindow::list_menu_action_triggered(QAction *action)
     fs_watcher.removePath(current_item->data(Qt::UserRole).toString());
     for (int i = 0; i < processorList.count(); i++)
     {
-      if (processorList.at(i)->get_name() == current_item->data(Qt::UserRole).toString())
+      if (processorList.at(i)->get_name() ==
+          current_item->data(Qt::UserRole).toString())
       {
         processorList.at(i)->deleteLater();
         processorList.removeAt(i);
@@ -229,7 +257,9 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Load heightmap"))
   {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Open Image"), "",
+        tr("Image File (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr)
     {
       bool success;
@@ -238,7 +268,8 @@ void MainWindow::list_menu_action_triggered(QAction *action)
         return;
 
       fs_watcher.addPath(fileName);
-      height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+      height =
+          height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
       p->loadHeightMap(fileName, height);
     }
   }
@@ -253,7 +284,8 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   else if (option == tr("Load specular map"))
   {
     QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+        this, tr("Open Image"), "",
+        tr("Image File (*.png *.jpg *.bmp *.tga)"));
     if (fileName != nullptr)
     {
       bool success;
@@ -265,20 +297,21 @@ void MainWindow::list_menu_action_triggered(QAction *action)
       spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
       p->loadSpecularMap(fileName, spec);
     }
-
   }
   else if (option == tr("Reset specular map"))
   {
     bool succes;
     fs_watcher.removePath(p->get_specular_path());
     QImage specular = il.loadImage(p->get_name(), &succes);
-    specular = specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    specular =
+        specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadSpecularMap(p->get_name(), specular);
   }
   else if (option == tr("Add new frames"))
   {
     QStringList fileNames = QFileDialog::getOpenFileNames(
-      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+        this, tr("Open Image"), "",
+        tr("Image File (*.png *.jpg *.bmp *.tga)"));
     foreach (QString fileName, fileNames)
     {
       if (fileName != nullptr)
@@ -289,7 +322,8 @@ void MainWindow::list_menu_action_triggered(QAction *action)
           return;
 
         fs_watcher.addPath(fileName);
-        image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        image = image.convertToFormat(
+            QImage::Format_RGBA8888_Premultiplied);
         p->loadImage(fileName, image);
       }
     }
@@ -299,9 +333,9 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   else if (option == tr("Start Animation"))
     p->animation.start();
   else if (option == tr("Next Frame"))
-    p->set_current_frame_id(p->get_current_frame_id()+1);
+    p->set_current_frame_id(p->get_current_frame_id() + 1);
   else if (option == tr("Previous Frame"))
-    p->set_current_frame_id(p->get_current_frame_id()-1);
+    p->set_current_frame_id(p->get_current_frame_id() - 1);
   else if (option == tr("Remove current frame"))
   {
     p->remove_current_frame();
@@ -324,7 +358,8 @@ void MainWindow::update_scene()
 
 void MainWindow::on_actionOpen_triggered()
 {
-  QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+  QStringList fileNames = QFileDialog::getOpenFileNames(
+      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
   open_files(fileNames);
 }
 
@@ -334,7 +369,7 @@ void MainWindow::add_processor(ImageProcessor *p)
   processor = p;
   on_comboBoxView_currentIndexChanged(ui->comboBoxView->currentIndex());
   QListWidgetItem *i = new QListWidgetItem(p->get_name());
-  i->setData(Qt::UserRole,p->get_name());
+  i->setData(Qt::UserRole, p->get_name());
   i->setIcon(QIcon(QPixmap::fromImage(*p->get_texture())));
   ui->listWidget->addItem(i);
   ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
@@ -368,14 +403,16 @@ void MainWindow::open_files(QStringList fileNames)
     {
       QRegularExpression rx("(\\d+)(?!.*\\d)");
       QRegularExpressionMatch match = rx.match(info.fileName());
-      prefix = info.fileName().mid(0,info.fileName().indexOf(match.captured(0)));
+      prefix = info.fileName().mid(
+          0, info.fileName().indexOf(match.captured(0)));
       QDir dir = info.absoluteDir();
       if (prefix != "")
       {
-        foreach(QString file, dir.entryList())
+        foreach (QString file, dir.entryList())
         {
-          if (file.startsWith(prefix) && file.endsWith("."+info.suffix()))
-            similarList.append(dir.path()+"/"+file);
+          if (file.startsWith(prefix) &&
+              file.endsWith("." + info.suffix()))
+            similarList.append(dir.path() + "/" + file);
         }
       }
     }
@@ -387,7 +424,11 @@ void MainWindow::open_files(QStringList fileNames)
     if (similarList.count() > 1)
     {
       QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(this, "Load as Animation?", "Images with similar names where detected in the same folder. Load as Animation?", QMessageBox::Yes|QMessageBox::No);
+      reply = QMessageBox::question(
+          this, "Load as Animation?",
+          "Images with similar names where detected in the same folder. "
+          "Load as Animation?",
+          QMessageBox::Yes | QMessageBox::No);
 
       if (reply == QMessageBox::No)
       {
@@ -411,7 +452,7 @@ void MainWindow::open_files(QStringList fileNames)
     p->copy_settings(processor->get_settings());
 
     bool loaded = false;
-    foreach(fileName, similarList)
+    foreach (fileName, similarList)
     {
       if (fileName != nullptr)
       {
@@ -422,11 +463,13 @@ void MainWindow::open_files(QStringList fileNames)
         if (!succes || auximage.isNull())
         {
           QMessageBox msgBox;
-          msgBox.setText(tr("Cannot open ") + fileName + ".\n" + tr("Unsupported or incorrect format."));
+          msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                         tr("Unsupported or incorrect format."));
           msgBox.exec();
           continue;
         }
-        auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        auximage = auximage.convertToFormat(
+            QImage::Format_RGBA8888_Premultiplied);
         p->loadImage(fileName, auximage);
         fs_watcher.addPath(fileName);
       }
@@ -460,7 +503,8 @@ void MainWindow::on_actionZoomOut_triggered()
 
 void MainWindow::on_actionExport_triggered()
 {
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
   if (fileName == "")
     return;
 
@@ -502,7 +546,8 @@ void MainWindow::on_actionExport_triggered()
 
   if (ui->checkBoxExportOcclusion->isChecked())
   {
-    fileName = info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
+    fileName =
+        info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
     n = *processor->get_occlusion();
     n.save(fileName);
     message += tr("Occlussion map was exported.\n");
@@ -511,7 +556,8 @@ void MainWindow::on_actionExport_triggered()
   if (ui->checkBoxExportPreview->isChecked())
   {
     n = ui->openGLPreviewWidget->get_preview(false);
-    fileName = info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
+    fileName =
+        info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
     n.save(fileName);
     message += tr("Preview was exported.\n");
   }
@@ -534,7 +580,8 @@ void MainWindow::openGL_initialized()
   ui->openGLPreviewWidget->loadTextures();
   update_scene();
   processor_selected(processor, true);
-  processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
+  processor->set_light_list(
+      *(ui->openGLPreviewWidget->get_current_light_list_ptr()));
   on_comboBoxView_currentIndexChanged(Texture);
   on_actionLoadPlugins_triggered();
 }
@@ -542,9 +589,11 @@ void MainWindow::openGL_initialized()
 void MainWindow::on_pushButtonColor_clicked()
 {
   QColorDialog *cd = new QColorDialog(currentColor);
-  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_light_color(const QColor &)));
+  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+          SLOT(set_light_color(const QColor &)));
   cd->exec();
-  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_light_color(const QColor &)));
+  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+             SLOT(set_light_color(const QColor &)));
   delete cd;
 }
 
@@ -563,25 +612,27 @@ void MainWindow::set_light_color(const QColor &color)
 
 void MainWindow::on_horizontalSliderDiffHeight_valueChanged(int value)
 {
-  ui->openGLPreviewWidget->setLightHeight(value/100.0);
+  ui->openGLPreviewWidget->setLightHeight(value / 100.0);
 }
 
 void MainWindow::on_horizontalSliderDiffLight_valueChanged(int value)
 {
-  ui->openGLPreviewWidget->setLightIntensity(value/100.0);
+  ui->openGLPreviewWidget->setLightIntensity(value / 100.0);
 }
 
 void MainWindow::on_horizontalSliderAmbientLight_valueChanged(int value)
 {
-  ui->openGLPreviewWidget->setAmbientIntensity(value/100.0);
+  ui->openGLPreviewWidget->setAmbientIntensity(value / 100.0);
 }
 
 void MainWindow::on_pushButtonAmbientColor_clicked()
 {
   QColorDialog *cd = new QColorDialog(currentColor);
-  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_ambient_color(const QColor &)));
+  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+          SLOT(set_ambient_color(const QColor &)));
   cd->exec();
-  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_ambient_color(const QColor &)));
+  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+             SLOT(set_ambient_color(const QColor &)));
   delete cd;
 }
 
@@ -600,79 +651,146 @@ void MainWindow::set_ambient_color(const QColor &color)
 void MainWindow::connect_processor(ImageProcessor *p)
 {
   connect(p, SIGNAL(processed()), this, SLOT(update_scene()));
-  connect(ui->normalDepthSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_depth(int)));
-  connect(ui->normalBlurSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_blur_radius(int)));
-  connect(ui->normalBevelSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_depth(int)));
-  connect(ui->normalBiselDistanceSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_distance(int)));
-  connect(ui->normalBiselBlurSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_blur_radius(int)));
-  connect(ui->biselSoftRadio, SIGNAL(toggled(bool)), p, SLOT(set_normal_bisel_soft(bool)));
-  connect(ui->normalInvertX, SIGNAL(toggled(bool)), p, SLOT(set_normal_invert_x(bool)));
-  connect(ui->normalInvertY, SIGNAL(toggled(bool)), p, SLOT(set_normal_invert_y(bool)));
-  connect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p, SLOT(set_tileable(bool)));
-  connect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p, SLOT(set_parallax_invert(bool)));
-  connect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_soft(int)));
-  connect(ui->parallaxThreshSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_thresh(int)));
-  connect(ui->parallaxFocusSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_focus(int)));
-  connect(ui->parallaxMinHeight, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_min(int)));
-  connect(ui->parallaxQuantizationSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_quantization(int)));
-  connect(ui->sliderParallaxErodeDilate, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_erode_dilate(int)));
-  connect(ui->sliderParallaxBright, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_brightness(int)));
-  connect(ui->sliderParallaxContrast, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_contrast(int)));
-  connect(ui->sliderSpecSoft, SIGNAL(valueChanged(int)), p, SLOT(set_specular_blur(int)));
-  connect(ui->sliderSpecBright, SIGNAL(valueChanged(int)), p, SLOT(set_specular_bright(int)));
-  connect(ui->sliderSpecContrast, SIGNAL(valueChanged(int)), p, SLOT(set_specular_contrast(int)));
-  connect(ui->sliderSpecThresh, SIGNAL(valueChanged(int)), p, SLOT(set_specular_thresh(int)));
-  connect(ui->checkBoxSpecInvert, SIGNAL(toggled(bool)), p, SLOT(set_specular_invert(bool)));
-  connect(ui->sliderOcclusionSoft, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_blur(int)));
-  connect(ui->sliderOcclusionBright, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_bright(int)));
-  connect(ui->sliderOcclusionContrast, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_contrast(int)));
-  connect(ui->sliderOcclusionThresh, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_thresh(int)));
-  connect(ui->checkBoxOcclusionInvert, SIGNAL(toggled(bool)), p, SLOT(set_occlusion_invert(bool)));
-  connect(ui->checkBoxOcclusionDistance, SIGNAL(toggled(bool)), p, SLOT(set_occlusion_distance_mode(bool)));
-  connect(ui->sliderOcclusionDistance, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_distance(int)));
-  connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)), p, SLOT(set_tile_x(bool)));
-  connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)), p, SLOT(set_tile_y(bool)));
-  connect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p, SLOT(set_is_parallax(bool)));
+  connect(ui->normalDepthSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_normal_depth(int)));
+  connect(ui->normalBlurSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_normal_blur_radius(int)));
+  connect(ui->normalBevelSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_normal_bisel_depth(int)));
+  connect(ui->normalBiselDistanceSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_normal_bisel_distance(int)));
+  connect(ui->normalBiselBlurSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_normal_bisel_blur_radius(int)));
+  connect(ui->biselSoftRadio, SIGNAL(toggled(bool)), p,
+          SLOT(set_normal_bisel_soft(bool)));
+  connect(ui->normalInvertX, SIGNAL(toggled(bool)), p,
+          SLOT(set_normal_invert_x(bool)));
+  connect(ui->normalInvertY, SIGNAL(toggled(bool)), p,
+          SLOT(set_normal_invert_y(bool)));
+  connect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p,
+          SLOT(set_tileable(bool)));
+  connect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p,
+          SLOT(set_parallax_invert(bool)));
+  connect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_soft(int)));
+  connect(ui->parallaxThreshSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_thresh(int)));
+  connect(ui->parallaxFocusSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_focus(int)));
+  connect(ui->parallaxMinHeight, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_min(int)));
+  connect(ui->parallaxQuantizationSlider, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_quantization(int)));
+  connect(ui->sliderParallaxErodeDilate, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_erode_dilate(int)));
+  connect(ui->sliderParallaxBright, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_brightness(int)));
+  connect(ui->sliderParallaxContrast, SIGNAL(valueChanged(int)), p,
+          SLOT(set_parallax_contrast(int)));
+  connect(ui->sliderSpecSoft, SIGNAL(valueChanged(int)), p,
+          SLOT(set_specular_blur(int)));
+  connect(ui->sliderSpecBright, SIGNAL(valueChanged(int)), p,
+          SLOT(set_specular_bright(int)));
+  connect(ui->sliderSpecContrast, SIGNAL(valueChanged(int)), p,
+          SLOT(set_specular_contrast(int)));
+  connect(ui->sliderSpecThresh, SIGNAL(valueChanged(int)), p,
+          SLOT(set_specular_thresh(int)));
+  connect(ui->checkBoxSpecInvert, SIGNAL(toggled(bool)), p,
+          SLOT(set_specular_invert(bool)));
+  connect(ui->sliderOcclusionSoft, SIGNAL(valueChanged(int)), p,
+          SLOT(set_occlusion_blur(int)));
+  connect(ui->sliderOcclusionBright, SIGNAL(valueChanged(int)), p,
+          SLOT(set_occlusion_bright(int)));
+  connect(ui->sliderOcclusionContrast, SIGNAL(valueChanged(int)), p,
+          SLOT(set_occlusion_contrast(int)));
+  connect(ui->sliderOcclusionThresh, SIGNAL(valueChanged(int)), p,
+          SLOT(set_occlusion_thresh(int)));
+  connect(ui->checkBoxOcclusionInvert, SIGNAL(toggled(bool)), p,
+          SLOT(set_occlusion_invert(bool)));
+  connect(ui->checkBoxOcclusionDistance, SIGNAL(toggled(bool)), p,
+          SLOT(set_occlusion_distance_mode(bool)));
+  connect(ui->sliderOcclusionDistance, SIGNAL(valueChanged(int)), p,
+          SLOT(set_occlusion_distance(int)));
+  connect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)), p,
+          SLOT(set_tile_x(bool)));
+  connect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)), p,
+          SLOT(set_tile_y(bool)));
+  connect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p,
+          SLOT(set_is_parallax(bool)));
   p->set_connected(true);
 }
 
 void MainWindow::disconnect_processor(ImageProcessor *p)
 {
   disconnect(p, SIGNAL(processed()), this, SLOT(update_scene()));
-  disconnect(ui->normalDepthSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_depth(int)));
-  disconnect(ui->normalBlurSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_blur_radius(int)));
-  disconnect(ui->normalBevelSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_depth(int)));
-  disconnect(ui->normalBiselDistanceSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_distance(int)));
-  disconnect(ui->normalBiselBlurSlider, SIGNAL(valueChanged(int)), p, SLOT(set_normal_bisel_blur_radius(int)));
-  disconnect(ui->biselSoftRadio, SIGNAL(toggled(bool)), p, SLOT(set_normal_bisel_soft(bool)));
-  disconnect(ui->normalInvertX, SIGNAL(toggled(bool)), p, SLOT(set_normal_invert_x(bool)));
-  disconnect(ui->normalInvertY, SIGNAL(toggled(bool)), p, SLOT(set_normal_invert_y(bool)));
-  disconnect(ui->openGLPreviewWidget, SIGNAL(initialized()), this, SLOT(openGL_initialized()));
-  disconnect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p, SLOT(set_tileable(bool)));
-  disconnect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p, SLOT(set_parallax_invert(bool)));
-  disconnect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_soft(int)));
-  disconnect(ui->parallaxThreshSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_thresh(int)));
-  disconnect(ui->parallaxFocusSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_focus(int)));
-  disconnect(ui->parallaxMinHeight, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_min(int)));
-  disconnect(ui->parallaxQuantizationSlider, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_quantization(int)));
-  disconnect(ui->sliderParallaxErodeDilate, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_erode_dilate(int)));
-  disconnect(ui->sliderParallaxBright, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_brightness(int)));
-  disconnect(ui->sliderParallaxContrast, SIGNAL(valueChanged(int)), p, SLOT(set_parallax_contrast(int)));
-  disconnect(ui->sliderSpecSoft, SIGNAL(valueChanged(int)), p, SLOT(set_specular_blur(int)));
-  disconnect(ui->sliderSpecBright, SIGNAL(valueChanged(int)), p, SLOT(set_specular_bright(int)));
-  disconnect(ui->sliderSpecContrast, SIGNAL(valueChanged(int)), p, SLOT(set_specular_contrast(int)));
-  disconnect(ui->sliderSpecThresh, SIGNAL(valueChanged(int)), p, SLOT(set_specular_thresh(int)));
-  disconnect(ui->checkBoxSpecInvert, SIGNAL(toggled(bool)), p, SLOT(set_specular_invert(bool)));
-  disconnect(ui->sliderOcclusionSoft, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_blur(int)));
-  disconnect(ui->sliderOcclusionBright, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_bright(int)));
-  disconnect(ui->sliderOcclusionContrast, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_contrast(int)));
-  disconnect(ui->sliderOcclusionThresh, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_thresh(int)));
-  disconnect(ui->checkBoxOcclusionInvert, SIGNAL(toggled(bool)), p, SLOT(set_occlusion_invert(bool)));
-  disconnect(ui->checkBoxOcclusionDistance, SIGNAL(toggled(bool)), p, SLOT(set_occlusion_distance_mode(bool)));
-  disconnect(ui->sliderOcclusionDistance, SIGNAL(valueChanged(int)), p, SLOT(set_occlusion_distance(int)));
-  disconnect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)), p, SLOT(set_tile_x(bool)));
-  disconnect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)), p, SLOT(set_tile_y(bool)));
-  disconnect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p, SLOT(set_is_parallax(bool)));
+  disconnect(ui->normalDepthSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_normal_depth(int)));
+  disconnect(ui->normalBlurSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_normal_blur_radius(int)));
+  disconnect(ui->normalBevelSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_normal_bisel_depth(int)));
+  disconnect(ui->normalBiselDistanceSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_normal_bisel_distance(int)));
+  disconnect(ui->normalBiselBlurSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_normal_bisel_blur_radius(int)));
+  disconnect(ui->biselSoftRadio, SIGNAL(toggled(bool)), p,
+             SLOT(set_normal_bisel_soft(bool)));
+  disconnect(ui->normalInvertX, SIGNAL(toggled(bool)), p,
+             SLOT(set_normal_invert_x(bool)));
+  disconnect(ui->normalInvertY, SIGNAL(toggled(bool)), p,
+             SLOT(set_normal_invert_y(bool)));
+  disconnect(ui->openGLPreviewWidget, SIGNAL(initialized()), this,
+             SLOT(openGL_initialized()));
+  disconnect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p,
+             SLOT(set_tileable(bool)));
+  disconnect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p,
+             SLOT(set_parallax_invert(bool)));
+  disconnect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_soft(int)));
+  disconnect(ui->parallaxThreshSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_thresh(int)));
+  disconnect(ui->parallaxFocusSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_focus(int)));
+  disconnect(ui->parallaxMinHeight, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_min(int)));
+  disconnect(ui->parallaxQuantizationSlider, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_quantization(int)));
+  disconnect(ui->sliderParallaxErodeDilate, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_erode_dilate(int)));
+  disconnect(ui->sliderParallaxBright, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_brightness(int)));
+  disconnect(ui->sliderParallaxContrast, SIGNAL(valueChanged(int)), p,
+             SLOT(set_parallax_contrast(int)));
+  disconnect(ui->sliderSpecSoft, SIGNAL(valueChanged(int)), p,
+             SLOT(set_specular_blur(int)));
+  disconnect(ui->sliderSpecBright, SIGNAL(valueChanged(int)), p,
+             SLOT(set_specular_bright(int)));
+  disconnect(ui->sliderSpecContrast, SIGNAL(valueChanged(int)), p,
+             SLOT(set_specular_contrast(int)));
+  disconnect(ui->sliderSpecThresh, SIGNAL(valueChanged(int)), p,
+             SLOT(set_specular_thresh(int)));
+  disconnect(ui->checkBoxSpecInvert, SIGNAL(toggled(bool)), p,
+             SLOT(set_specular_invert(bool)));
+  disconnect(ui->sliderOcclusionSoft, SIGNAL(valueChanged(int)), p,
+             SLOT(set_occlusion_blur(int)));
+  disconnect(ui->sliderOcclusionBright, SIGNAL(valueChanged(int)), p,
+             SLOT(set_occlusion_bright(int)));
+  disconnect(ui->sliderOcclusionContrast, SIGNAL(valueChanged(int)), p,
+             SLOT(set_occlusion_contrast(int)));
+  disconnect(ui->sliderOcclusionThresh, SIGNAL(valueChanged(int)), p,
+             SLOT(set_occlusion_thresh(int)));
+  disconnect(ui->checkBoxOcclusionInvert, SIGNAL(toggled(bool)), p,
+             SLOT(set_occlusion_invert(bool)));
+  disconnect(ui->checkBoxOcclusionDistance, SIGNAL(toggled(bool)), p,
+             SLOT(set_occlusion_distance_mode(bool)));
+  disconnect(ui->sliderOcclusionDistance, SIGNAL(valueChanged(int)), p,
+             SLOT(set_occlusion_distance(int)));
+  disconnect(ui->checkBoxMosaicoX, SIGNAL(toggled(bool)), p,
+             SLOT(set_tile_x(bool)));
+  disconnect(ui->checkBoxMosaicoY, SIGNAL(toggled(bool)), p,
+             SLOT(set_tile_y(bool)));
+  disconnect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p,
+             SLOT(set_is_parallax(bool)));
   p->set_connected(false);
 }
 
@@ -689,7 +807,8 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     {
       foreach (QListWidgetItem *item, ui->listWidget->selectedItems())
       {
-        if (ui->listWidget->item(i)->data(Qt::UserRole).toString() == item->data(Qt::UserRole).toString())
+        if (ui->listWidget->item(i)->data(Qt::UserRole).toString() ==
+            item->data(Qt::UserRole).toString())
         {
           p = find_processor(item->data(Qt::UserRole).toString());
           if (p)
@@ -723,7 +842,8 @@ void MainWindow::on_pushButton_clicked()
       n = *p->get_normal();
       info = QFileInfo(p->get_name());
       suffix = info.completeSuffix();
-      name = info.absoluteFilePath().remove("." + suffix) + "_n." + suffix;
+      name =
+          info.absoluteFilePath().remove("." + suffix) + "_n." + suffix;
       n.save(name);
     }
     message += tr("All normal maps were exported.\n");
@@ -736,7 +856,8 @@ void MainWindow::on_pushButton_clicked()
       n = *p->get_parallax();
       info = QFileInfo(p->get_name());
       suffix = info.completeSuffix();
-      name = info.absoluteFilePath().remove("." + suffix) + "_p." + suffix;
+      name =
+          info.absoluteFilePath().remove("." + suffix) + "_p." + suffix;
       n.save(name);
     }
     message += tr("All parallax maps were exported.\n");
@@ -749,7 +870,8 @@ void MainWindow::on_pushButton_clicked()
       n = *p->get_specular();
       info = QFileInfo(p->get_name());
       suffix = info.completeSuffix();
-      name = info.absoluteFilePath().remove("." + suffix) + "_s." + suffix;
+      name =
+          info.absoluteFilePath().remove("." + suffix) + "_s." + suffix;
       n.save(name);
     }
     message += tr("All specular maps were exported.\n");
@@ -762,7 +884,8 @@ void MainWindow::on_pushButton_clicked()
       n = *p->get_occlusion();
       info = QFileInfo(p->get_name());
       suffix = info.completeSuffix();
-      name = info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
+      name =
+          info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
       n.save(name);
     }
     message += tr("All occlussion maps were exported.\n");
@@ -785,9 +908,11 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButtonBackgroundColor_clicked()
 {
   QColorDialog *cd = new QColorDialog(currentColor);
-  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_background_color(const QColor &)));
+  connect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+          SLOT(set_background_color(const QColor &)));
   cd->exec();
-  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this, SLOT(set_background_color(const QColor &)));
+  disconnect(cd, SIGNAL(currentColorChanged(const QColor &)), this,
+             SLOT(set_background_color(const QColor &)));
   delete cd;
 }
 
@@ -825,70 +950,70 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
   switch (ptype)
   {
-  case ParallaxType::Binary:
-  {
-    ui->parallaxMinHeight->setVisible(true);
-    ui->parallaxSoftSlider->setVisible(true);
-    ui->parallaxFocusSlider->setVisible(true);
-    ui->parallaxThreshSlider->setVisible(true);
-    ui->checkBoxParallaxInvert->setVisible(true);
-    ui->parallaxQuantizationSlider->setVisible(false);
-    ui->sliderParallaxErodeDilate->setVisible(true);
-    ui->sliderParallaxBright->setVisible(false);
-    ui->sliderParallaxContrast->setVisible(false);
-    ui->labelErodeDilate->setVisible(true);
-    ui->labelBrightness->setVisible(false);
-    ui->labelContrast->setVisible(false);
-    ui->labelThreshMin->setVisible(true);
-    ui->labelThreshSoft->setVisible(true);
-    ui->labelThreshFocus->setVisible(true);
-    ui->labelThreshParallax->setVisible(true);
-    ui->labelQuantization->setVisible(false);
-    break;
-  }
+    case ParallaxType::Binary:
+    {
+      ui->parallaxMinHeight->setVisible(true);
+      ui->parallaxSoftSlider->setVisible(true);
+      ui->parallaxFocusSlider->setVisible(true);
+      ui->parallaxThreshSlider->setVisible(true);
+      ui->checkBoxParallaxInvert->setVisible(true);
+      ui->parallaxQuantizationSlider->setVisible(false);
+      ui->sliderParallaxErodeDilate->setVisible(true);
+      ui->sliderParallaxBright->setVisible(false);
+      ui->sliderParallaxContrast->setVisible(false);
+      ui->labelErodeDilate->setVisible(true);
+      ui->labelBrightness->setVisible(false);
+      ui->labelContrast->setVisible(false);
+      ui->labelThreshMin->setVisible(true);
+      ui->labelThreshSoft->setVisible(true);
+      ui->labelThreshFocus->setVisible(true);
+      ui->labelThreshParallax->setVisible(true);
+      ui->labelQuantization->setVisible(false);
+      break;
+    }
 
-  case ParallaxType::HeightMap:
-  {
-    ui->parallaxMinHeight->setVisible(false);
-    ui->parallaxSoftSlider->setVisible(true);
-    ui->parallaxFocusSlider->setVisible(false);
-    ui->parallaxThreshSlider->setVisible(false);
-    ui->checkBoxParallaxInvert->setVisible(true);
-    ui->parallaxQuantizationSlider->setVisible(false);
-    ui->sliderParallaxErodeDilate->setVisible(false);
-    ui->sliderParallaxBright->setVisible(true);
-    ui->sliderParallaxContrast->setVisible(true);
-    ui->labelErodeDilate->setVisible(false);
-    ui->labelBrightness->setVisible(true);
-    ui->labelContrast->setVisible(true);
-    ui->labelThreshMin->setVisible(false);
-    ui->labelThreshSoft->setVisible(true);
-    ui->labelThreshFocus->setVisible(false);
-    ui->labelThreshParallax->setVisible(false);
-    ui->labelQuantization->setVisible(false);
-    break;
-  }
+    case ParallaxType::HeightMap:
+    {
+      ui->parallaxMinHeight->setVisible(false);
+      ui->parallaxSoftSlider->setVisible(true);
+      ui->parallaxFocusSlider->setVisible(false);
+      ui->parallaxThreshSlider->setVisible(false);
+      ui->checkBoxParallaxInvert->setVisible(true);
+      ui->parallaxQuantizationSlider->setVisible(false);
+      ui->sliderParallaxErodeDilate->setVisible(false);
+      ui->sliderParallaxBright->setVisible(true);
+      ui->sliderParallaxContrast->setVisible(true);
+      ui->labelErodeDilate->setVisible(false);
+      ui->labelBrightness->setVisible(true);
+      ui->labelContrast->setVisible(true);
+      ui->labelThreshMin->setVisible(false);
+      ui->labelThreshSoft->setVisible(true);
+      ui->labelThreshFocus->setVisible(false);
+      ui->labelThreshParallax->setVisible(false);
+      ui->labelQuantization->setVisible(false);
+      break;
+    }
 
-  case ParallaxType::Quantization:
-  {
-    ui->parallaxMinHeight->setVisible(true);
-    ui->parallaxSoftSlider->setVisible(true);
-    ui->parallaxFocusSlider->setVisible(true);
-    ui->parallaxThreshSlider->setVisible(true);
-    ui->checkBoxParallaxInvert->setVisible(true);
-    ui->parallaxQuantizationSlider->setVisible(true);
-    ui->sliderParallaxErodeDilate->setVisible(false);
-    ui->sliderParallaxBright->setVisible(true);
-    ui->sliderParallaxContrast->setVisible(true);
-    ui->labelErodeDilate->setVisible(false);
-    ui->labelBrightness->setVisible(true);
-    ui->labelContrast->setVisible(true);
-    ui->labelThreshMin->setVisible(true);
-    ui->labelThreshSoft->setVisible(true);
-    ui->labelThreshFocus->setVisible(true);
-    ui->labelThreshParallax->setVisible(true);
-    ui->labelQuantization->setVisible(true);
-  }
+    case ParallaxType::Quantization:
+    {
+      ui->parallaxMinHeight->setVisible(true);
+      ui->parallaxSoftSlider->setVisible(true);
+      ui->parallaxFocusSlider->setVisible(true);
+      ui->parallaxThreshSlider->setVisible(true);
+      ui->checkBoxParallaxInvert->setVisible(true);
+      ui->parallaxQuantizationSlider->setVisible(true);
+      ui->sliderParallaxErodeDilate->setVisible(false);
+      ui->sliderParallaxBright->setVisible(true);
+      ui->sliderParallaxContrast->setVisible(true);
+      ui->labelErodeDilate->setVisible(false);
+      ui->labelBrightness->setVisible(true);
+      ui->labelContrast->setVisible(true);
+      ui->labelThreshMin->setVisible(true);
+      ui->labelThreshSoft->setVisible(true);
+      ui->labelThreshFocus->setVisible(true);
+      ui->labelThreshParallax->setVisible(true);
+      ui->labelQuantization->setVisible(true);
+    }
   }
 }
 
@@ -913,7 +1038,8 @@ void MainWindow::on_pushButtonExportTo_clicked()
         name = path + "/" + info.baseName() + "_n." + suffix;
         int i = 1;
         while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_n." + suffix;
+          name = path + "/" + info.baseName() + "(" +
+                 QString::number(++i) + ")" + "_n." + suffix;
 
         n.save(name);
       }
@@ -930,7 +1056,8 @@ void MainWindow::on_pushButtonExportTo_clicked()
         name = path + "/" + info.baseName() + "_p." + suffix;
         int i = 1;
         while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_p." + suffix;
+          name = path + "/" + info.baseName() + "(" +
+                 QString::number(++i) + ")" + "_p." + suffix;
 
         n.save(name);
       }
@@ -947,7 +1074,8 @@ void MainWindow::on_pushButtonExportTo_clicked()
         name = path + "/" + info.baseName() + "_s." + suffix;
         int i = 1;
         while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_s." + suffix;
+          name = path + "/" + info.baseName() + "(" +
+                 QString::number(++i) + ")" + "_s." + suffix;
 
         n.save(name);
       }
@@ -964,7 +1092,8 @@ void MainWindow::on_pushButtonExportTo_clicked()
         name = path + "/" + info.baseName() + "_o." + suffix;
         int i = 1;
         while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_o." + suffix;
+          name = path + "/" + info.baseName() + "(" +
+                 QString::number(++i) + ")" + "_o." + suffix;
 
         n.save(name);
       }
@@ -1011,10 +1140,11 @@ void MainWindow::openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames)
     {
       QList<QUrl> uList;
       QDir dir(url.toLocalFile());
-      foreach(QFileInfo entry, dir.entryInfoList())
+      foreach (QFileInfo entry, dir.entryInfoList())
         uList.append(QUrl::fromLocalFile(entry.absoluteFilePath()));
 
-      /* Always remove 0 and 1 cause they are current dir and parent dir */
+      /* Always remove 0 and 1 cause they are current dir and parent dir
+             */
       uList.removeAt(0);
       uList.removeAt(0);
       openDroppedFiles(uList, fileNames);
@@ -1025,14 +1155,17 @@ void MainWindow::openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames)
 void MainWindow::on_actionPresets_triggered()
 {
   PresetsManager pm(processor->get_settings(), &processorList);
-  connect(&pm, SIGNAL(settingAplied()), this, SLOT(on_listWidget_itemSelectionChanged()));
+  connect(&pm, SIGNAL(settingAplied()), this,
+          SLOT(on_listWidget_itemSelectionChanged()));
   pm.exec();
-  disconnect(&pm, SIGNAL(settingAplied()), this, SLOT(on_listWidget_itemSelectionChanged()));
+  disconnect(&pm, SIGNAL(settingAplied()), this,
+             SLOT(on_listWidget_itemSelectionChanged()));
 }
 
 void MainWindow::on_horizontalSliderSpec_valueChanged(int value)
 {
-  ui->openGLPreviewWidget->setSpecIntensity(static_cast<float>(value/100.0));
+  ui->openGLPreviewWidget->setSpecIntensity(
+      static_cast<float>(value / 100.0));
 }
 
 void MainWindow::on_horizontalSliderSpecScatter_valueChanged(int value)
@@ -1054,42 +1187,42 @@ void MainWindow::on_comboBoxView_currentIndexChanged(int index)
 
   switch (index)
   {
-  case ViewMode::Texture:
-  {
-    ui->openGLPreviewWidget->set_view_mode(Texture);
-    break;
-  }
+    case ViewMode::Texture:
+    {
+      ui->openGLPreviewWidget->set_view_mode(Texture);
+      break;
+    }
 
-  case ViewMode::NormalMap:
-  {
-    ui->openGLPreviewWidget->set_view_mode(NormalMap);
-    break;
-  }
+    case ViewMode::NormalMap:
+    {
+      ui->openGLPreviewWidget->set_view_mode(NormalMap);
+      break;
+    }
 
-  case ViewMode::SpecularMap:
-  {
-    ui->openGLPreviewWidget->set_view_mode(SpecularMap);
-    break;
-  }
+    case ViewMode::SpecularMap:
+    {
+      ui->openGLPreviewWidget->set_view_mode(SpecularMap);
+      break;
+    }
 
-  case ViewMode::ParallaxMap:
-  {
-    ui->openGLPreviewWidget->set_view_mode(ParallaxMap);
-    break;
-  }
+    case ViewMode::ParallaxMap:
+    {
+      ui->openGLPreviewWidget->set_view_mode(ParallaxMap);
+      break;
+    }
 
-  case ViewMode::OcclusionMap:
-  {
-    ui->openGLPreviewWidget->set_view_mode(OcclusionMap);
-    break;
-  }
+    case ViewMode::OcclusionMap:
+    {
+      ui->openGLPreviewWidget->set_view_mode(OcclusionMap);
+      break;
+    }
 
-  case ViewMode::Preview:
-  {
-    ui->openGLPreviewWidget->setLight(true);
-    ui->openGLPreviewWidget->set_view_mode(Preview);
-    break;
-  }
+    case ViewMode::Preview:
+    {
+      ui->openGLPreviewWidget->setLight(true);
+      ui->openGLPreviewWidget->set_view_mode(Preview);
+      break;
+    }
   }
 }
 
@@ -1098,7 +1231,8 @@ void MainWindow::on_actionExportPreview_triggered()
   int current_view = ui->comboBoxView->currentIndex();
   ui->comboBoxView->setCurrentIndex(ViewMode::Preview);
   QImage preview = ui->openGLPreviewWidget->get_preview();
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
 
   if (fileName == "")
     return;
@@ -1126,10 +1260,11 @@ void MainWindow::on_actionAdd_Light_triggered(bool checked)
 
 void MainWindow::selectedLightChanged(LightSource *light)
 {
-  ui->horizontalSliderDiffLight->setValue(light->get_diffuse_intensity()*100);
-  ui->horizontalSliderSpec->setValue(light->get_specular_intesity()*100);
+  ui->horizontalSliderDiffLight->setValue(light->get_diffuse_intensity() *
+                                          100);
+  ui->horizontalSliderSpec->setValue(light->get_specular_intesity() * 100);
   ui->horizontalSliderSpecScatter->setValue(light->get_specular_scatter());
-  ui->horizontalSliderDiffHeight->setValue(light->get_height()*100);
+  ui->horizontalSliderDiffHeight->setValue(light->get_height() * 100);
 
   QPixmap pixmap(100, 100);
   currentColor = light->get_diffuse_color();
@@ -1175,31 +1310,44 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     ui->normalBlurSlider->setValue(processor->get_normal_blur_radius());
     ui->normalBevelSlider->setValue(processor->get_normal_bisel_depth());
     ui->normalDepthSlider->setValue(processor->get_normal_depth());
-    ui->normalBiselBlurSlider->setValue(processor->get_normal_bisel_blur_radius());
-    ui->normalBiselDistanceSlider->setValue(processor->get_normal_bisel_distance());
+    ui->normalBiselBlurSlider->setValue(
+        processor->get_normal_bisel_blur_radius());
+    ui->normalBiselDistanceSlider->setValue(
+        processor->get_normal_bisel_distance());
     ui->checkBoxTileable->setChecked(processor->get_tileable());
     ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
     ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
     ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
-    ui->checkBoxParallaxInvert->setChecked(processor->get_parallax_invert());
-    ui->comboBox->setCurrentIndex(static_cast<int>(processor->get_parallax_type()));
+    ui->checkBoxParallaxInvert->setChecked(
+        processor->get_parallax_invert());
+    ui->comboBox->setCurrentIndex(
+        static_cast<int>(processor->get_parallax_type()));
     ui->parallaxMinHeight->setValue(processor->get_parallax_min());
-    ui->parallaxQuantizationSlider->setValue(processor->get_parallax_quantization());
-    ui->sliderParallaxBright->setValue(processor->get_parallax_brightness());
-    ui->sliderParallaxContrast->setValue(static_cast<int>(processor->get_parallax_contrast()*1000));
-    ui->sliderParallaxErodeDilate->setValue(processor->get_parallax_erode_dilate());
+    ui->parallaxQuantizationSlider->setValue(
+        processor->get_parallax_quantization());
+    ui->sliderParallaxBright->setValue(
+        processor->get_parallax_brightness());
+    ui->sliderParallaxContrast->setValue(
+        static_cast<int>(processor->get_parallax_contrast() * 1000));
+    ui->sliderParallaxErodeDilate->setValue(
+        processor->get_parallax_erode_dilate());
     ui->sliderSpecSoft->setValue(processor->get_specular_blur());
     ui->sliderSpecBright->setValue(processor->get_specular_bright());
     ui->sliderSpecThresh->setValue(processor->get_specular_trhesh());
-    ui->sliderSpecContrast->setValue(static_cast<int>(processor->get_specular_contrast()*1000));
+    ui->sliderSpecContrast->setValue(
+        static_cast<int>(processor->get_specular_contrast() * 1000));
     ui->checkBoxSpecInvert->setChecked(processor->get_specular_invert());
     ui->sliderOcclusionSoft->setValue(processor->get_occlusion_blur());
     ui->sliderOcclusionBright->setValue(processor->get_occlusion_bright());
     ui->sliderOcclusionThresh->setValue(processor->get_occlusion_trhesh());
-    ui->sliderOcclusionContrast->setValue(static_cast<int>(processor->get_occlusion_contrast()*1000));
-    ui->sliderOcclusionDistance->setValue(processor->get_occlusion_distance());
-    ui->checkBoxOcclusionInvert->setChecked(processor->get_occlusion_invert());
-    ui->checkBoxOcclusionDistance->setChecked(processor->get_occlusion_distance_mode());
+    ui->sliderOcclusionContrast->setValue(
+        static_cast<int>(processor->get_occlusion_contrast() * 1000));
+    ui->sliderOcclusionDistance->setValue(
+        processor->get_occlusion_distance());
+    ui->checkBoxOcclusionInvert->setChecked(
+        processor->get_occlusion_invert());
+    ui->checkBoxOcclusionDistance->setChecked(
+        processor->get_occlusion_distance_mode());
     this->processor = processor;
     ui->checkBoxMosaicoX->setChecked(processor->get_tile_x());
     ui->checkBoxMosaicoY->setChecked(processor->get_tile_y());
@@ -1209,7 +1357,10 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
   {
     foreach (ImageProcessor *p, processorList)
     {
-      if (p->get_name() == ui->listWidget->selectedItems().at(0)->data(Qt::UserRole).toString())
+      if (p->get_name() == ui->listWidget->selectedItems()
+                               .at(0)
+                               ->data(Qt::UserRole)
+                               .toString())
         p->set_selected(true);
     }
   }
@@ -1219,7 +1370,8 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     if (p->get_selected())
     {
       connect_processor(p);
-      ui->openGLPreviewWidget->set_current_light_list(p->get_light_list_ptr());
+      ui->openGLPreviewWidget->set_current_light_list(
+          p->get_light_list_ptr());
       set_enabled_map_controls(true);
     }
   }
@@ -1284,7 +1436,8 @@ void MainWindow::onFileChanged(const QString &file_path)
 
 void MainWindow::on_actionLoadPlugins_triggered()
 {
-  QString appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  QString appData =
+      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   QDir dir(appData);
   QDir tmp(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
   dir.cd("plugins");
@@ -1298,7 +1451,9 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
   foreach (QAction *action, ui->pluginToolBar->actions())
   {
-    if (action->text() == tr("Load Plugins") || (action->text() == tr("Install Plugin")) || (action->text() == tr("Delete Plugin")))
+    if (action->text() == tr("Load Plugins") ||
+        (action->text() == tr("Install Plugin")) ||
+        (action->text() == tr("Delete Plugin")))
       continue;
     ui->pluginToolBar->removeAction(action);
   }
@@ -1308,9 +1463,15 @@ void MainWindow::on_actionLoadPlugins_triggered()
     if (QFile(tmp.absoluteFilePath(fileName)).exists())
     {
       QFile(tmp.absoluteFilePath(fileName)).remove();
-      QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
-      QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
-      if (pl->metaData().value("MetaData").toObject().value("version").toInt() < 1)
+      QFile(dir.absoluteFilePath(fileName))
+          .copy(tmp.absoluteFilePath(fileName));
+      QPluginLoader *pl =
+          new QPluginLoader(tmp.absoluteFilePath(fileName));
+      if (pl->metaData()
+              .value("MetaData")
+              .toObject()
+              .value("version")
+              .toInt() < 1)
       {
         qDebug() << "incorrect plugin version.";
         pl->unload();
@@ -1320,24 +1481,28 @@ void MainWindow::on_actionLoadPlugins_triggered()
         return;
       }
 
-      BrushInterface *b = qobject_cast<BrushInterface *>( pl->instance());
+      BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());
       qDebug() << pl->errorString();
-      if(b != nullptr)
+      if (b != nullptr)
       {
         ui->openGLPreviewWidget->currentBrush = b;
         b->setProcessor(&processor);
-        QAction *action = new QAction(b->getIcon(),b->getName());
+        QAction *action = new QAction(b->getIcon(), b->getName());
         action->setCheckable(true);
-        QDockWidget *pluginDock = new QDockWidget(b->getName(),this);
+        QDockWidget *pluginDock = new QDockWidget(b->getName(), this);
         QWidget *pluginGui = b->loadGUI();
 
-        addDockWidget(Qt::LeftDockWidgetArea,pluginDock);
+        addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
         pluginDock->setFloating(true);
-        pluginDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+        pluginDock->setFeatures(QDockWidget::DockWidgetMovable |
+                                QDockWidget::DockWidgetFloatable);
         pluginDock->setWidget(pluginGui);
         pluginDock->setVisible(false);
-        connect(action, SIGNAL(toggled(bool)), pluginDock, SLOT(setVisible(bool)));
-        connect(b->getObject(), SIGNAL(selected_changed(BrushInterface*)), this, SLOT(select_plugin(BrushInterface*)));
+        connect(action, SIGNAL(toggled(bool)), pluginDock,
+                SLOT(setVisible(bool)));
+        connect(b->getObject(),
+                SIGNAL(selected_changed(BrushInterface *)), this,
+                SLOT(select_plugin(BrushInterface *)));
         ui->pluginToolBar->addAction(action);
         b->set_selected(false);
         plugin_docks_list.append(pluginDock);
@@ -1364,19 +1529,23 @@ void MainWindow::select_plugin(BrushInterface *b)
 void MainWindow::on_actionInstall_Plugin_triggered()
 {
 #ifdef Q_OS_LINUX
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Plugin"), "", tr("Shared Library (*.so)"));
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Plugin"), "", tr("Shared Library (*.so)"));
 #elif defined(Q_OS_WIN)
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Plugin"), "", tr("Shared Library (*.dll)"));
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Plugin"), "", tr("Shared Library (*.dll)"));
 #elif defined(Q_OS_MAC)
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Plugin"), "", tr("Shared Library (*.dylib)"));
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Plugin"), "", tr("Shared Library (*.dylib)"));
 #endif
 
   if (fileName != nullptr)
   {
     QFile f(fileName);
     QFileInfo i(f);
-    QString appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QDir dir(appData+"/plugins/");
+    QString appData =
+        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir dir(appData + "/plugins/");
     QString new_plugin_path = dir.absoluteFilePath(i.fileName());
     if (QFile::exists(new_plugin_path))
       QFile::remove(new_plugin_path);
@@ -1403,17 +1572,18 @@ void MainWindow::on_actionDelete_Plugin_triggered()
     ui->openGLPreviewWidget->currentBrush = nullptr;
   }
 
-  foreach(QPluginLoader *pl, plugin_list)
+  foreach (QPluginLoader *pl, plugin_list)
   {
     plugin_list.removeOne(pl);
     pl->unload();
     delete pl;
   }
 
-  foreach(BrushInterface *pl, brush_list)
+  foreach (BrushInterface *pl, brush_list)
     brush_list.removeOne(pl);
 
-  QString appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  QString appData =
+      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   QDir dir(appData);
   dir.cd("plugins");
   QStringList entryList = dir.entryList(QDir::Files);
@@ -1429,15 +1599,12 @@ void MainWindow::on_actionDelete_Plugin_triggered()
   on_actionLoadPlugins_triggered();
 }
 
-void MainWindow::on_actionLanguages_triggered()
-{
-  el->show();
-}
+void MainWindow::on_actionLanguages_triggered() { el->show(); }
 
 void MainWindow::changeEvent(QEvent *event)
 {
-  //QDialog::changeEvent(event);
-  if(QEvent::LanguageChange == event->type())
+  // QDialog::changeEvent(event);
+  if (QEvent::LanguageChange == event->type())
     retranslate();
 }
 
@@ -1459,10 +1626,11 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 void MainWindow::on_actionSaveProject_triggered()
 {
   QString fileName = QFileDialog::getSaveFileName(
-    this, tr("Save Image"), "", tr("Image File (*.laigter)"));
+      this, tr("Save Image"), "", tr("Image File (*.laigter)"));
   if (fileName == "")
     return;
-  if (!fileName.endsWith(".laigter")){
+  if (!fileName.endsWith(".laigter"))
+  {
     fileName += ".laigter";
   }
   project.save(fileName);

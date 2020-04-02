@@ -1,8 +1,6 @@
 #include "texture.h"
 
-Texture::Texture(QObject *parent) : QObject(parent)
-{
-}
+Texture::Texture(QObject *parent) : QObject(parent) {}
 
 Texture::Texture(const Texture &T)
 {
@@ -39,27 +37,12 @@ bool Texture::get_image(QImage *dst)
   return false;
 }
 
-void Texture::set_type(QString t)
-{
-  type = t;
-}
+void Texture::set_type(QString t) { type = t; }
 
-QString Texture::get_type()
-{
-  return type;
-}
+QString Texture::get_type() { return type; }
 
-void Texture::lock()
-{
-  mutex.lock();
-}
+void Texture::lock() { mutex.lock(); }
 
-void Texture::unlock()
-{
-  mutex.unlock();
-}
+void Texture::unlock() { mutex.unlock(); }
 
-QSize Texture::size()
-{
-  return image.size();
-}
+QSize Texture::size() { return image.size(); }

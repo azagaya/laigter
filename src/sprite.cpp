@@ -21,7 +21,7 @@ Sprite::Sprite(const Sprite &S)
   neighours_paths[2].resize(3);
 }
 
-Sprite& Sprite::operator=(const Sprite &S)
+Sprite &Sprite::operator=(const Sprite &S)
 {
   textures = S.textures;
   fileName = S.fileName;
@@ -54,7 +54,4 @@ void Sprite::set_texture(TextureTypes type, Texture t)
   textures[tex].unlock();
 }
 
-QSize Sprite::size()
-{
-  return textures[0].size();
-}
+QSize Sprite::size() { return textures[0].size(); }

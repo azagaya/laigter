@@ -19,7 +19,8 @@
 
 #define DIFFUSE 0
 
-struct lightSource {
+struct lightSource
+{
   vec3 lightPos;
   vec3 lightColor;
   float diffIntensity;
@@ -60,39 +61,40 @@ uniform float rotation_angle;
 uniform int pixelsX, pixelsY;
 uniform int view_mode;
 
-
-
 uniform vec3 outlineColor;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 mat4 rotationZ(float angle);
 
-void main() {
+void main()
+{
 
-
-  if (selected && (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x ||
-                   texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x ||
-                   texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y ||
-                   texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y )) {
+  if (selected &&
+      (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x ||
+       texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x ||
+       texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y ||
+       texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y))
+  {
     gl_FragColor.xyz = 1.0 - outlineColor;
     gl_FragColor.a = 0.5;
     return;
   }
-
 
   vec2 dis;
   vec3 viewDir = normalize(viewPos - FragPos);
 
   vec2 texCoords = texCoord;
 
-  if (pixelated) {
+  if (pixelated)
+  {
 
     vec2 d = vec2(float(pixelsX), float(pixelsY)) * ratio;
     vec2 coords = texCoords * d;
 
-    texCoords = (floor(coords)/d + 0.5/d);
+    texCoords = (floor(coords) / d + 0.5 / d);
   }
-  if (parallax) {
+  if (parallax)
+  {
     texCoords = ParallaxMapping(texCoords, viewDir);
 
     if (texCoords.x > 1.0 || texCoords.y > 1.0 || texCoords.x < 0.0 ||
@@ -102,34 +104,52 @@ void main() {
 
   texCoords *= ratio;
 
-  if (view_mode == 0){
+  if (view_mode == 0)
+  {
     gl_FragColor = texture2D(diffuse, texCoords);
-  } else if (view_mode == 1){
+  }
+  else if (view_mode == 1)
+  {
     gl_FragColor = texture2D(normalMap, texCoords);
-  } else if (view_mode == 2) {
+  }
+  else if (view_mode == 2)
+  {
     gl_FragColor = texture2D(specularMap, texCoords);
-  } else if (view_mode == 3){
+  }
+  else if (view_mode == 3)
+  {
     gl_FragColor = texture2D(parallaxMap, texCoords);
-  } else if (view_mode == 4) {
+  }
+  else if (view_mode == 4)
+  {
     gl_FragColor = texture2D(occlussionMap, texCoords);
-  } else if (view_mode == 5) {
+  }
+  else if (view_mode == 5)
+  {
 
-
-    vec3 normal = normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0,0.0)*rotationZ(rotation_angle)).xyz;
+    vec3 normal =
+        normalize(
+            vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) *
+            rotationZ(rotation_angle))
+            .xyz;
     vec3 specMap = texture2D(specularMap, texCoords).xyz;
     vec4 l_color = vec4(0.0);
     vec4 tex = texture2D(diffuse, texCoords);
 
     float occlusion = texture2D(occlussionMap, texCoords).x;
 
-    for (int i = 0; i < lightNum; i++) {
-      vec3 lightDir = normalize(Light[i].lightPos - vec3(FragPos.xy, 0.0));
+    for (int i = 0; i < lightNum; i++)
+    {
+      vec3 lightDir =
+          normalize(Light[i].lightPos - vec3(FragPos.xy, 0.0));
 
       vec3 reflectDir = reflect(-lightDir, normal);
 
       float nl = dot(viewDir, reflectDir);
-      float spec = pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
-      if (toon){
+      float spec =
+          pow(max(dot(viewDir, reflectDir), 0.0), Light[i].specScatter);
+      if (toon)
+      {
         spec = smoothstep(0.005, 0.01, spec);
       }
       vec3 specular =
@@ -137,29 +157,29 @@ void main() {
 
       nl = dot(lightDir, normal);
       float diff = max(nl, 0.0);
-      if (toon){
+      if (toon)
+      {
         diff = smoothstep(0.495, 0.505, diff);
       }
       vec3 diffuse = diff * Light[i].lightColor * Light[i].diffIntensity;
 
       l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
     }
-    l_color =
-        tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity * occlusion);
+    l_color = tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity *
+                                   occlusion);
     l_color.a = tex.a;
     gl_FragColor = l_color;
-
   }
 }
 
-mat4 rotationZ( in float angle ) {
-  return mat4(	cos(angle), -sin(angle),	0,	0,
-                sin(angle), cos(angle),		0,	0,
-                0,          0,                  1,	0,
-                0,          0,                  0,	1);
+mat4 rotationZ(in float angle)
+{
+  return mat4(cos(angle), -sin(angle), 0, 0, sin(angle), cos(angle), 0, 0, 0,
+              0, 1, 0, 0, 0, 0, 1);
 }
 
-vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
+{
   // number of depth layers
 
   const float minLayers = 10.0;
@@ -179,12 +199,14 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
   float currentDepthMapValue =
       texture2D(parallaxMap, currentTexCoords * ratio).r;
   vec2 finalTexCoords;
-  while (currentLayerDepth < currentDepthMapValue) {
+  while (currentLayerDepth < currentDepthMapValue)
+  {
     // shift texture coordinates along direction of P
     currentTexCoords.y += deltaTexCoords.y;
     currentTexCoords.x -= deltaTexCoords.x;
     // get depthmap value at current texture coordinates
-    currentDepthMapValue = texture2D(parallaxMap, currentTexCoords * ratio).r;
+    currentDepthMapValue =
+        texture2D(parallaxMap, currentTexCoords * ratio).r;
     // get depth of next layer
     currentLayerDepth += layerDepth;
   }
@@ -196,7 +218,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir) {
   // get depth after and before collision for linear interpolation
   float afterDepth = currentDepthMapValue - currentLayerDepth;
   float beforeDepth = texture2D(parallaxMap, prevTexCoords * ratio).r -
-      currentLayerDepth + layerDepth;
+                      currentLayerDepth + layerDepth;
 
   // interpolation of texture coordinates
   float weight = afterDepth / (afterDepth - beforeDepth);

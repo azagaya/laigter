@@ -25,13 +25,14 @@ uniform bool selected;
 uniform float scale;
 uniform bool pixelated;
 
-
-void main() {
+void main()
+{
 
   vec2 texCoords = texCoord;
-  if (pixelated) {
+  if (pixelated)
+  {
 
-    vec2 d = vec2(float(1.0/pixelSize.x), float(1.0/pixelSize.y));
+    vec2 d = vec2(float(1.0 / pixelSize.x), float(1.0 / pixelSize.y));
     vec2 coords = texCoords * d;
 
     texCoords = (round(coords) + 0.5 / d) / d;
@@ -40,12 +41,13 @@ void main() {
   vec4 color = texture2D(tex, texCoords);
   float alpha = color.a;
 
-  float l = length(texCoord-0.5);
+  float l = length(texCoord - 0.5);
 
-  if (l < 0.5 && l > 0.5 - 1.0*(pixelSize.x / scale))
-    color = vec4(0.6,0.6,1.0,1.0);
-  if (l < 0.5 - 2.0*(pixelSize.x / scale) && l > 0.5 - 3.0*(pixelSize.x / scale))
-    color = vec4(0.0,0.0,0.4,1.0);
+  if (l < 0.5 && l > 0.5 - 1.0 * (pixelSize.x / scale))
+    color = vec4(0.6, 0.6, 1.0, 1.0);
+  if (l < 0.5 - 2.0 * (pixelSize.x / scale) &&
+      l > 0.5 - 3.0 * (pixelSize.x / scale))
+    color = vec4(0.0, 0.0, 0.4, 1.0);
 
   gl_FragColor = vec4(color);
 }
