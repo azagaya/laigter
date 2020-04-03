@@ -4,7 +4,6 @@
 #include "src/image_processor.h"
 
 #include <QObject>
-#include <QJsonObject>
 
 class Project : public QObject
 {
@@ -31,8 +30,6 @@ private:
       "occlussionBase", "textureOverlay", "normalOverlay",
       "heightmapOverlay", "specularOverlay", "parallaxOverlay",
       "occlussionOverlay"};
-
-  QJsonObject json;
 };
 
 #endif // PROJECT_H
