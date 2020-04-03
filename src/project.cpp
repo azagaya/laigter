@@ -24,6 +24,7 @@ bool Project::save(QString path)
       ImageProcessor *p = processorList->at(j);
       for (int i = 0; i < p->frames.count(); i++)
       {
+        p->set_current_frame_id(i);
         Sprite *s = p->get_current_frame();
         QString name;
         QImage texture;
@@ -66,20 +67,22 @@ bool Project::save(QString path)
                  name.split("/").last().split(".").join(
                      suffixes.at(i) + ".");
           texture.save(name);
-          zip_entry_open(zip, (p->get_name() + "/" + types.at(i) +
-                               "/" + name.split("/").last())
-                                  .toUtf8());
-          {
-            QFile f(name);
-            if (f.open(QIODevice::ReadOnly))
+          if (save){
+            zip_entry_open(zip, (p->get_name() + "/" + types.at(i) +
+                                 "/" + name.split("/").last())
+                                    .toUtf8());
             {
-              QByteArray a = f.readAll();
-              const char *buf = a.constData();
-              zip_entry_write(zip, buf, a.count());
-              f.close();
+              QFile f(name);
+              if (f.open(QIODevice::ReadOnly))
+              {
+                QByteArray a = f.readAll();
+                const char *buf = a.constData();
+                zip_entry_write(zip, buf, a.count());
+                f.close();
+              }
             }
+            zip_entry_close(zip);
           }
-          zip_entry_close(zip);
         }
       }
     }
