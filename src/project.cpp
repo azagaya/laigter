@@ -20,7 +20,7 @@ Project::Project(QObject *parent) : QObject(parent) {}
 bool Project::save(QString path)
 {
   QString zipname = path;
-  QJsonObject json;
+  QJsonArray json;
   struct zip_t *zip = zip_open(zipname.toUtf8(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
   for (int j = 0; j < processorList->count(); j++)
   {
@@ -111,14 +111,15 @@ bool Project::save(QString path)
       frames_json.append(frame_json);
     }
     processor_json.insert("frames", frames_json);
-    QJsonDocument doc_json(processor_json);
+    json.append(processor_json);
 
-    zip_entry_open(zip, "project.json");
-    {
-      zip_entry_write(zip, doc_json.toJson(), doc_json.toJson().count());
-    }
-    zip_entry_close(zip);
   }
+  QJsonDocument json_project(json);
+  zip_entry_open(zip, "project.json");
+  {
+    zip_entry_write(zip, json_project.toJson(), json_project.toJson().count());
+  }
+  zip_entry_close(zip);
 
   zip_close(zip);
   return true;
