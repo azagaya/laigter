@@ -55,6 +55,7 @@ public:
   ImageProcessor *processor;
   QList<LightSource *> *sampleLightList;
   bool need_to_update;
+  int blend_factor = 0;
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;

@@ -27,6 +27,7 @@ bool Project::save(QString path)
     QJsonObject processor_json;
     processor_json.insert("processor name", p->get_name());
     processor_json.insert("frame count", p->frames.count());
+    processor_json.insert("tiled",p->get_tileable());
     QJsonArray frames_json;
     for (int i = 0; i < p->frames.count(); i++)
     {

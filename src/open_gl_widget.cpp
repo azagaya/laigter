@@ -197,6 +197,7 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("toon", m_toon);
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
+  m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
 
   apply_light_params();
   foreach (ImageProcessor *processor, processorList)

@@ -1635,3 +1635,9 @@ void MainWindow::on_actionSaveProject_triggered()
   }
   project.save(fileName);
 }
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+  ui->openGLPreviewWidget->blend_factor = value;
+  ui->openGLPreviewWidget->need_to_update = true;
+}

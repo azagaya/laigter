@@ -136,6 +136,8 @@ private slots:
   void on_listWidget_itemClicked(QListWidgetItem *item);
   void on_actionSaveProject_triggered();
 
+  void on_horizontalSlider_valueChanged(int value);
+
 protected slots:
   virtual void changeEvent(QEvent *event);
 };
