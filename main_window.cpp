@@ -33,6 +33,7 @@
 #include <QDockWidget>
 #include <QDragEnterEvent>
 #include <QFileDialog>
+#include <QJsonObject>
 #include <QListWidgetItem>
 #include <QMenu>
 #include <QMessageBox>
@@ -1636,10 +1637,47 @@ void MainWindow::on_actionSaveProject_triggered()
   {
     fileName += ".laigter";
   }
-  project.save(fileName);
+
+  QJsonObject general_settings;
+  general_settings.insert("viewmode", ui->comboBoxView->currentIndex());
+  general_settings.insert("toon", ui->checkBoxToon->isChecked());
+  general_settings.insert("pixelated", ui->checkBoxPixelated->isChecked());
+  general_settings.insert("blend",ui->blendSlider->value());
+
+  QJsonArray sample_lights;
+
+  foreach (LightSource *light, *sample_processor->get_light_list_ptr())
+  {
+    QJsonObject light_props;
+    QJsonObject light_position;
+    QVector3D position = light->get_light_position();
+    light_position.insert("x", position.x());
+    light_position.insert("y", position.y());
+    light_position.insert("z", position.z());
+    light_props.insert("position", light_position);
+
+    QJsonObject light_color;
+    QColor color = light->get_diffuse_color();
+    light_color.insert("r", color.red());
+    light_color.insert("g", color.green());
+    light_color.insert("b", color.blue());
+    light_props.insert("diffuse color", light_color);
+    /* if we get back the option to change specular color, this should be added here */
+    light_props.insert("specular color", light_color);
+
+    light_props.insert("diffuse intensity", light->get_diffuse_intensity());
+    light_props.insert("specular intensity", light->get_specular_intesity());
+    light_props.insert("specular scatter", light->get_specular_scatter());
+
+    sample_lights.append(light_props);
+
+  }
+  general_settings.insert("sample lights", sample_lights);
+  general_settings.insert("ambient light", ui->horizontalSliderAmbientLight->value());
+  project.save(fileName, general_settings);
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)
+void MainWindow::on_blendSlider_valueChanged(int value)
 {
   ui->openGLPreviewWidget->blend_factor = value;
   ui->openGLPreviewWidget->need_to_update = true;

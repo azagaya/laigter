@@ -135,8 +135,7 @@ private slots:
   void on_actionLanguages_triggered();
   void on_listWidget_itemClicked(QListWidgetItem *item);
   void on_actionSaveProject_triggered();
-
-  void on_horizontalSlider_valueChanged(int value);
+  void on_blendSlider_valueChanged(int value);
 
 protected slots:
   virtual void changeEvent(QEvent *event);

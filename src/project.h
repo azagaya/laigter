@@ -4,6 +4,7 @@
 #include "src/image_processor.h"
 
 #include <QObject>
+#include <QJsonObject>
 
 class Project : public QObject
 {
@@ -16,7 +17,7 @@ public:
   explicit Project(QObject *parent = nullptr);
 
 public slots:
-  bool save(QString path);
+  bool save(QString path, QJsonObject general_settings = {});
 
 private:
   const QStringList suffixes = {"", "_n", "_s", "_p", "_o", "_h",

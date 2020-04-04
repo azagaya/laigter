@@ -372,7 +372,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -809,7 +809,7 @@
          </widget>
         </item>
         <item row="3" column="2" colspan="2">
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="blendSlider">
           <property name="maximum">
            <number>100</number>
           </property>

@@ -17,7 +17,7 @@ extern "C"
 
 Project::Project(QObject *parent) : QObject(parent) {}
 
-bool Project::save(QString path)
+bool Project::save(QString path, QJsonObject general_settings)
 {
   QString zipname = path;
   QJsonArray json_array;
@@ -116,6 +116,7 @@ bool Project::save(QString path)
   }
   QJsonObject project_json;
   project_json.insert("processors",json_array);
+  project_json.insert("general",general_settings);
   QJsonDocument json_project(project_json);
   zip_entry_open(zip, "project.json");
   {
