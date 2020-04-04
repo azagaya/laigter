@@ -127,6 +127,7 @@ public slots:
   void set_current_light_list(QList<LightSource *> *list);
   void set_current_processor(ImageProcessor *p);
   void set_processor_list(QList<ImageProcessor *> list);
+  QList<ImageProcessor *> * get_processor_list();
   void set_processor_selected(ImageProcessor *processor, bool selected);
   void set_view_mode(int mode);
   void update();

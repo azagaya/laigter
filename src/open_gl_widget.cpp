@@ -1264,6 +1264,10 @@ void OpenGlWidget::set_processor_list(QList<ImageProcessor *> list)
   processorList = list;
 }
 
+QList<ImageProcessor *> *OpenGlWidget::get_processor_list(){
+  return &processorList;
+}
+
 void OpenGlWidget::clear_processor_list()
 {
   set_all_processors_selected(false);

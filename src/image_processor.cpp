@@ -834,7 +834,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
   for (int i = 0; i < frames.count(); i++)
   {
-    if (update_tileable || (animation.isActive() && frames.count() > 1))
+    if (update_tileable || animation.isActive() )
     {
       set_current_frame_id(i);
       set_current_heightmap();
@@ -848,7 +848,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
       distance_requested = true;
     }
 
-    if (enhance_requested || animation.isActive())
+    if (enhance_requested || animation.isActive() )
     {
       for (int i = 0; i < rlist.count(); i++)
         calculate_normal(m_gray, m_emboss_normal, normal_depth,
@@ -860,7 +860,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
       new_distance = modify_distance();
     }
 
-    if (bump_requested || animation.isActive())
+    if (bump_requested || animation.isActive() )
     {
       for (int i = 0; i < rlist.count(); i++)
       {

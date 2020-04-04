@@ -722,7 +722,10 @@ void MainWindow::connect_processor(ImageProcessor *p)
 
 void MainWindow::disconnect_processor(ImageProcessor *p)
 {
-  disconnect(p, SIGNAL(processed()), this, SLOT(update_scene()));
+  if (!p->animation.isActive() || !ui->openGLPreviewWidget->get_processor_list()->contains(p))
+  {
+    disconnect(p, SIGNAL(processed()), this, SLOT(update_scene()));
+  }
   disconnect(ui->normalDepthSlider, SIGNAL(valueChanged(int)), p,
              SLOT(set_normal_depth(int)));
   disconnect(ui->normalBlurSlider, SIGNAL(valueChanged(int)), p,
