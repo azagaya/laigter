@@ -1,3 +1,4 @@
+#include "gui/presets_manager.h"
 #include "project.h"
 
 #include <QDebug>
@@ -27,7 +28,7 @@ bool Project::save(QString path)
     QJsonObject processor_json;
     processor_json.insert("processor name", p->get_name());
     processor_json.insert("frame count", p->frames.count());
-    processor_json.insert("tiled",p->get_tileable());
+
     QJsonArray frames_json;
     for (int i = 0; i < p->frames.count(); i++)
     {
@@ -74,9 +75,7 @@ bool Project::save(QString path)
         {
           QDir dir(QStandardPaths::writableLocation(
               QStandardPaths::TempLocation));
-          name = dir.path() + "/" +
-                 name.split("/").last().split(".").join(
-                     suffixes.at(i) + ".");
+          name = dir.path() + "/" + name.split("/").last().split(".").join(suffixes.at(i) + ".");
           texture.save(name);
           QString entry_name = p->get_name() + "/" + types.at(i) + "/" + name.split("/").last();
 
@@ -95,6 +94,20 @@ bool Project::save(QString path)
           zip_entry_close(zip);
         }
       }
+      zip_entry_open(zip, (p->get_name() + "/" +p->get_name()+".settings").toUtf8());
+      {
+        QDir dir(QStandardPaths::writableLocation(
+            QStandardPaths::TempLocation));
+        name = dir.path() + "/" + p->get_name()+".settings";
+        PresetsManager::SaveAllPresets(p,name);
+        QFile f(name);
+        if (f.open(QIODevice::ReadOnly))
+        {
+          QByteArray content = f.readAll();
+          zip_entry_write(zip, content, content.count());
+        }
+      }
+      zip_entry_close(zip);
       frames_json.append(frame_json);
     }
     processor_json.insert("frames", frames_json);
