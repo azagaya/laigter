@@ -1707,16 +1707,24 @@ void MainWindow::on_actionSaveProject_triggered()
 
 void MainWindow::on_actionLoadProject_triggered()
 {
+
   processorList.clear();
   QList <ImageProcessor *> newList;
   QJsonObject general_settings;
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Laigter Project"), "",
       tr("Project File (*.laigter)"));
-  project.load(fileName, &newList, &general_settings);
-  foreach (ImageProcessor *p, newList)
+  if (fileName != "")
   {
-    add_processor(p);
+    foreach (ImageProcessor *p, processorList)
+    {
+      remove_processor(p);
+    }
+    project.load(fileName, &newList, &general_settings);
+    foreach (ImageProcessor *p, newList)
+    {
+      add_processor(p);
+    }
   }
 }
 
