@@ -58,12 +58,13 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       for (int j = 0; j < frames.count(); j++)
       {
         QJsonObject frame = frames.at(j).toObject();
-        zip_entry_open(zip, frame.value("diffuse").toString().toUtf8());
+        QString diffuse_path = frame.value("diffuse").toString();
+        zip_entry_open(zip, diffuse_path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
           data.append((char*)buf, bufsize);
           diffuse = QImage::fromData(data);
-          p->loadImage("", diffuse);
+          p->loadImage(diffuse_path, diffuse);
         }
         zip_entry_close(zip);
       }

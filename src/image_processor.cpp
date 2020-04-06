@@ -105,8 +105,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   customSpecularMap = false;
   customHeightMap = false;
   active = true;
-  normal_counter = parallax_counter = specular_counter = occlussion_counter =
-      0;
+  normal_counter = parallax_counter = specular_counter = occlussion_counter =  0;
 
   connect(&animation, SIGNAL(timeout()), this, SLOT(next_frame()));
 
@@ -119,6 +118,12 @@ ImageProcessor::~ImageProcessor()
 {
   active = false;
   while (normal_counter > 0)
+    QThread::msleep(10);
+  while (parallax_counter > 0)
+    QThread::msleep(10);
+  while (specular_counter > 0)
+    QThread::msleep(10);
+  while (occlussion_counter > 0)
     QThread::msleep(10);
 }
 

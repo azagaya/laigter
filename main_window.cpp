@@ -269,11 +269,18 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   {
     remove_processor(p);
 
-    if (processorList.count() == 0)
+    if (ui->listWidget->selectedItems().count() == 0)
     {
-      ui->openGLPreviewWidget->clear_processor_list();
-      processor_selected(sample_processor, true);
-      ui->openGLPreviewWidget->add_processor(sample_processor);
+      if (ui->listWidget->count() == 0)
+      {
+        ui->openGLPreviewWidget->clear_processor_list();
+        processor_selected(sample_processor, true);
+        ui->openGLPreviewWidget->add_processor(sample_processor);
+      }
+      else
+      {
+        ui->listWidget->setCurrentRow(0);
+      }
     }
   }
   else if (option == tr("Load heightmap"))
