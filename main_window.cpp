@@ -1395,8 +1395,8 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     {
       connect_processor(p);
       if (p->get_light_list_ptr()->count() > 0)
-      ui->openGLPreviewWidget->set_current_light_list(
-          p->get_light_list_ptr());
+        ui->openGLPreviewWidget->set_current_light_list(
+            p->get_light_list_ptr());
       set_enabled_map_controls(true);
     }
   }
@@ -1665,6 +1665,7 @@ void MainWindow::on_actionSaveProject_triggered()
   general_settings.insert("toon", ui->checkBoxToon->isChecked());
   general_settings.insert("pixelated", ui->checkBoxPixelated->isChecked());
   general_settings.insert("blend",ui->blendSlider->value());
+  general_settings.insert("lights per texture", ui->checkBoxLightsPerTexture->isChecked());
 
   QJsonArray sample_lights;
 
@@ -1696,7 +1697,12 @@ void MainWindow::on_actionSaveProject_triggered()
   }
   general_settings.insert("sample lights", sample_lights);
   general_settings.insert("ambient light", ui->horizontalSliderAmbientLight->value());
-  project.save(fileName, general_settings);
+  QList<ImageProcessor*> p_list;
+  for (int i = 0; i < ui->listWidget->count(); i++)
+  {
+    p_list.append(find_processor(ui->listWidget->item(i)->text()));
+  }
+  project.save(fileName, p_list, general_settings);
 }
 
 void MainWindow::on_actionLoadProject_triggered()
@@ -1707,8 +1713,11 @@ void MainWindow::on_actionLoadProject_triggered()
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Laigter Project"), "",
       tr("Project File (*.laigter)"));
-  Project::load(fileName, &newList, &general_settings);
-  add_processor(newList.at(0));
+  project.load(fileName, &newList, &general_settings);
+  foreach (ImageProcessor *p, newList)
+  {
+    add_processor(p);
+  }
 }
 
 void MainWindow::on_blendSlider_valueChanged(int value)

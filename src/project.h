@@ -17,8 +17,8 @@ public:
   explicit Project(QObject *parent = nullptr);
 
 public slots:
-  bool save(QString path, QJsonObject general_settings = {});
-  static bool load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings = nullptr);
+  bool save(QString path, QList<ImageProcessor *> processorList, QJsonObject general_settings = {});
+  bool load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings = nullptr);
 
 private:
   QString m_path;

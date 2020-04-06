@@ -68,6 +68,23 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_close(zip);
       }
 
+      /* restore postion of processor */
+      QVector3D position;
+      position.setX(p_json.value("position").toObject().value("x").toDouble());
+      position.setY(p_json.value("position").toObject().value("y").toDouble());
+      position.setZ(p_json.value("position").toObject().value("z").toDouble());
+
+      p->set_position(position);
+
+      /* restore tile options */
+
+      p->set_tile_x(p_json.value("tile x").toBool());
+      p->set_tile_y(p_json.value("tile y").toBool());
+
+      /* restore individual zoom */
+
+      p->set_zoom(p_json.value("zoom").toDouble());
+
       /* Read Presets */
       data.clear();
       zip_entry_open(zip, (processor_name+"/"+processor_name+".presets").toUtf8());
@@ -88,14 +105,13 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
   return true;
 }
 
-bool Project::save(QString path, QJsonObject general_settings)
+bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObject general_settings)
 {
   QJsonArray json_array;
-  m_path = path;
   struct zip_t *zip = zip_open(path.toUtf8(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
-  for (int j = 0; j < processorList->count(); j++)
+  for (int j = 0; j < processorList.count(); j++)
   {
-    ImageProcessor *p = processorList->at(j);
+    ImageProcessor *p = processorList.at(j);
     QJsonObject processor_json;
     processor_json.insert("processor name", p->get_name());
     processor_json.insert("frame count", p->frames.count());
@@ -183,6 +199,19 @@ bool Project::save(QString path, QJsonObject general_settings)
     }
     processor_json.insert("frames", frames_json);
     processor_json.insert("presets",p->get_name() + "/" +p->get_name()+".presets");
+    QJsonObject position;
+    position.insert("x",p->get_position()->x());
+    position.insert("y",p->get_position()->y());
+    position.insert("z",p->get_position()->z());
+    processor_json.insert("position",position);
+
+    /* tile preview options */
+    processor_json.insert("tile x", p->get_tile_x());
+    processor_json.insert("tile y", p->get_tile_y());
+
+    /* individual zoom option */
+    processor_json.insert("zoom", p->get_zoom());
+
     json_array.append(processor_json);
 
   }
