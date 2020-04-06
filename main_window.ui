@@ -59,6 +59,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionLoadProject"/>
    <addaction name="actionSaveProject"/>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
@@ -1513,7 +1514,7 @@
           <x>0</x>
           <y>0</y>
           <width>262</width>
-          <height>335</height>
+          <height>326</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">
@@ -1779,6 +1780,11 @@
   <action name="actionSaveProject">
    <property name="text">
     <string>SaveProject</string>
+   </property>
+  </action>
+  <action name="actionLoadProject">
+   <property name="text">
+    <string>LoadProject</string>
    </property>
   </action>
  </widget>

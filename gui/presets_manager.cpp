@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QThread>
 
 static QString presetCodes[30] = {"EnhanceHeight ",
                                   "EnhanceSoft ",
@@ -440,6 +441,21 @@ void PresetsManager::applyPresets(QString &preset, ImageProcessor &p)
   {
     QByteArray setting = settings_list.at(i);
     applyPresetSettings(setting, p);
+  }
+}
+
+void PresetsManager::applyPresetsString(QString presets, ImageProcessor *p)
+{
+
+  QByteArray settings = presets.toUtf8();
+  if (settings.contains("LightSource"))
+    p->get_light_list_ptr()->clear();
+
+  QList<QByteArray> settings_list = settings.split('\n');
+  for (int i = 0; i < settings_list.count(); i++)
+  {
+    QByteArray setting = settings_list.at(i);
+    applyPresetSettings(setting, *p);
   }
 }
 

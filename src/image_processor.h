@@ -134,7 +134,7 @@ private:
   QBrush normal_brush;
   QFuture<void> normal_future;
   QList<LightSource *> lightList;
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex,
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, heightmap_mutex,
       normal_ready, specular_ready, parallax_ready, occlussion_ready;
   QPainter normal_painter;
   QString m_name, m_heightmapPath, m_specularPath;

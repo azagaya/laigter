@@ -81,6 +81,7 @@ public slots:
   ImageProcessor *find_processor(QString name);
   void update_scene();
   void add_processor(ImageProcessor *p);
+  void remove_processor(ImageProcessor *p);
   void selectedLightChanged(LightSource *light);
   void stopAddingLight();
   void set_light_color(const QColor &color);
@@ -136,6 +137,8 @@ private slots:
   void on_listWidget_itemClicked(QListWidgetItem *item);
   void on_actionSaveProject_triggered();
   void on_blendSlider_valueChanged(int value);
+
+  void on_actionLoadProject_triggered();
 
 protected slots:
   virtual void changeEvent(QEvent *event);

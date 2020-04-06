@@ -230,24 +230,44 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
              SLOT(list_menu_action_triggered(QAction *)));
 }
 
+void MainWindow::remove_processor(ImageProcessor *p){
+  QStringList paths;
+
+  for (int i=0; i<p->frames.count(); i++){
+    Sprite frame;
+    frame = p->frames[i];
+    paths.append(frame.fileName);
+    paths.append(frame.heightmapPath);
+    paths.append(frame.specularPath);
+    for (int j = 0; j < 3; j++){
+      for (int k = 0; k < 3; k++){
+        paths.append(frame.neighours_paths[j][k]);
+      }
+    }
+  }
+
+  fs_watcher.removePaths(paths);
+
+  for (int i = 0; i < ui->listWidget->count(); i++){
+    QListWidgetItem *item = ui->listWidget->item(i);
+    if (p->get_name() == item->text()){
+      delete item;
+      break;
+    }
+  }
+
+  processorList.removeOne(p);
+  p->deleteLater();
+
+}
+
 void MainWindow::list_menu_action_triggered(QAction *action)
 {
   ImageProcessor *p = find_processor(current_item->text());
   QString option = action->text();
   if (option == tr("Remove"))
   {
-    fs_watcher.removePath(current_item->data(Qt::UserRole).toString());
-    for (int i = 0; i < processorList.count(); i++)
-    {
-      if (processorList.at(i)->get_name() ==
-          current_item->data(Qt::UserRole).toString())
-      {
-        processorList.at(i)->deleteLater();
-        processorList.removeAt(i);
-        break;
-      }
-    }
-    delete current_item;
+    remove_processor(p);
 
     if (processorList.count() == 0)
     {
@@ -1374,6 +1394,7 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     if (p->get_selected())
     {
       connect_processor(p);
+      if (p->get_light_list_ptr()->count() > 0)
       ui->openGLPreviewWidget->set_current_light_list(
           p->get_light_list_ptr());
       set_enabled_map_controls(true);
@@ -1425,6 +1446,7 @@ void MainWindow::onFileChanged(const QString &file_path)
     QImage auximage;
     ImageLoader il;
     bool success;
+    // IMPORTANT TODO, replace this with a function in ImageProcessor that takes a string and an image replaces all images with that path //
     auximage = il.loadImage(file_path, &success);
     if (file_path == ip->get_name())
       ip->loadImage(file_path, auximage);
@@ -1677,8 +1699,22 @@ void MainWindow::on_actionSaveProject_triggered()
   project.save(fileName, general_settings);
 }
 
+void MainWindow::on_actionLoadProject_triggered()
+{
+  processorList.clear();
+  QList <ImageProcessor *> newList;
+  QJsonObject general_settings;
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Laigter Project"), "",
+      tr("Project File (*.laigter)"));
+  Project::load(fileName, &newList, &general_settings);
+  add_processor(newList.at(0));
+}
+
 void MainWindow::on_blendSlider_valueChanged(int value)
 {
   ui->openGLPreviewWidget->blend_factor = value;
   ui->openGLPreviewWidget->need_to_update = true;
 }
+
+

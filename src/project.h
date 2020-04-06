@@ -18,8 +18,10 @@ public:
 
 public slots:
   bool save(QString path, QJsonObject general_settings = {});
+  static bool load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings = nullptr);
 
 private:
+  QString m_path;
   const QStringList suffixes = {"", "_n", "_s", "_p", "_o", "_h",
                                 "_d", "_neigh", "_sb", "_ob", "_to", "_no",
                                 "_ho", "_so", "_po", "_oo"};

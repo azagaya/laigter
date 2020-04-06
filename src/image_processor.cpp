@@ -449,7 +449,7 @@ QString ImageProcessor::get_heightmap_path()
 
 int ImageProcessor::loadSpecularMap(QString fileName, QImage specular)
 {
-  if (fileName == get_name())
+  if (fileName == m_fileName)
   {
     current_frame->specularPath = "";
     customSpecularMap = false;
@@ -470,7 +470,7 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular)
 
 int ImageProcessor::loadHeightMap(QString fileName, QImage height)
 {
-  if (fileName == get_name())
+  if (fileName == m_fileName)
   {
     current_frame->heightmapPath = "";
     customHeightMap = false;
@@ -497,6 +497,7 @@ void ImageProcessor::calculate_gradient() {}
 
 void ImageProcessor::calculate_distance()
 {
+
   if (!current_heightmap.ptr<int>(0))
     return;
 
@@ -631,6 +632,8 @@ Mat ImageProcessor::modify_distance()
 Mat ImageProcessor::modify_occlusion()
 {
   Mat m;
+
+  QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap();
   m_occlusion.copyTo(m);
 
@@ -680,6 +683,8 @@ Mat ImageProcessor::modify_parallax()
 {
   Mat m;
   Mat d;
+
+  QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap();
   int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
   Mat shape = getStructuringElement(MORPH_RECT,
@@ -781,6 +786,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
   normal_counter++;
   QMutexLocker locker(&normal_mutex);
+  QMutexLocker hlocker(&heightmap_mutex);
   /* Calculate rects to update */
   QList<QRect> rlist;
   bool diagonal = true;
@@ -1384,6 +1390,8 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 QImage ImageProcessor::get_heightmap()
 {
   Mat m;
+
+  QMutexLocker locker(&heightmap_mutex);
   cvtColor(current_heightmap, m, CV_RGBA2GRAY);
   cvtColor(m, m, CV_GRAY2RGB);
   m.convertTo(m, CV_8UC3, 1);
@@ -1496,7 +1504,7 @@ Sprite *ImageProcessor::get_current_frame() { return current_frame; }
 
 void ImageProcessor::next_frame()
 {
-  if (frames.count() == 1)
+  if (frames.count() <= 1)
   {
     animation.stop();
     return;

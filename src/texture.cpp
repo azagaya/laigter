@@ -19,7 +19,7 @@ bool Texture::set_image(QImage i)
 {
   if (mutex.tryLock())
   {
-    image = i.copy();
+         image = i.copy();
     mutex.unlock();
     return true;
   }
