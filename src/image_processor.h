@@ -31,6 +31,7 @@
 #include <QObject>
 #include <QPainter>
 #include <QPixmap>
+#include <QSemaphore>
 #include <QTimer>
 #include <QVector2D>
 
@@ -123,7 +124,7 @@ public:
   QMutex specular_overlay_mutex;
   QMutex texture_overlay_mutex;
   QString m_fileName;
-  QTimer animation;
+  QTimer animation, recalculate;
   QVector<Sprite> frames;
   bool busy, active;
   bool updated = false;
@@ -239,6 +240,7 @@ public:
   void set_texture_overlay(QImage to);
 
 public slots:
+  void Recalculate();
   ParallaxType get_parallax_type();
   ProcessorSettings get_settings();
   QImage get_neighbour(int x, int y);

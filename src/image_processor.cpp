@@ -108,10 +108,16 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   normal_counter = parallax_counter = specular_counter = occlussion_counter =  0;
 
   connect(&animation, SIGNAL(timeout()), this, SLOT(next_frame()));
+  connect(&recalculate, SIGNAL(timeout()), this, SLOT(Recalculate()));
 
   animation.setInterval(80);
   animation.setSingleShot(false);
   animation.start();
+
+  recalculate.setInterval(100);
+  recalculate.setSingleShot(false);
+  recalculate.start();
+
 }
 
 ImageProcessor::~ImageProcessor()
@@ -189,13 +195,37 @@ void ImageProcessor::calculate()
   calculate_occlusion();
 }
 
+void ImageProcessor::Recalculate(){
+  if (normal_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
+                      false, QRect(0, 0, 0, 0));
+    normal_counter = 0;
+  }
+  if (specular_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_specular);
+    specular_counter = 0;
+  }
+  if (parallax_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_parallax);
+    parallax_counter = 0;
+  }
+  if (occlussion_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_occlusion);
+    occlussion_counter = 0;
+  }
+}
+
 void ImageProcessor::calculate_parallax()
 {
-  if (parallax_counter > 2)
+  if (!parallax_mutex.tryLock())
+  {
+    parallax_counter = 1;
     return;
-
-  parallax_counter++;
-  QMutexLocker locker(&parallax_mutex);
+  }
   int frame = current_frame_id;
 
   for (int i = 0; i < frames.count(); i++)
@@ -247,16 +277,16 @@ void ImageProcessor::calculate_parallax()
 
   set_current_frame_id(frame);
   processed();
-  parallax_counter--;
+  parallax_mutex.unlock();
 }
 
 void ImageProcessor::calculate_specular()
 {
-  if (specular_counter > 2)
+  if (!specular_mutex.tryLock())
+  {
+    specular_counter = 1;
     return;
-
-  specular_counter++;
-  QMutexLocker locker(&specular_mutex);
+  }
   int frame = current_frame_id;
 
   for (int i = 0; i < frames.count(); i++)
@@ -306,17 +336,17 @@ void ImageProcessor::calculate_specular()
 
   set_current_frame_id(frame);
   processed();
-  specular_counter--;
+  specular_mutex.unlock();
 }
 
 void ImageProcessor::calculate_occlusion()
 {
-  if (occlussion_counter > 2)
+  if (!occlusion_mutex.tryLock())
+  {
+    occlussion_counter = 1;
     return;
-
-  occlussion_counter++;
+  }
   int frame = current_frame_id;
-  QMutexLocker locker(&occlusion_mutex);
 
   for (int i = 0; i < frames.count(); i++)
   {
@@ -368,7 +398,7 @@ void ImageProcessor::calculate_occlusion()
 
   set_current_frame_id(frame);
   processed();
-  occlussion_counter--;
+  occlusion_mutex.unlock();
 }
 
 void ImageProcessor::calculate_heightmap()
@@ -786,11 +816,12 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius)
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                                          bool updateDistance, QRect rect)
 {
-  if (normal_counter > 2 || !active)
-    return;
 
-  normal_counter++;
-  QMutexLocker locker(&normal_mutex);
+  if (!normal_mutex.tryLock()){
+    normal_counter = 1;
+    return;
+  }
+
   QMutexLocker hlocker(&heightmap_mutex);
   /* Calculate rects to update */
   QList<QRect> rlist;
@@ -829,17 +860,17 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                              CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay, heightmapOverlay, CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay, CV_32FC1, 255);
-  // add(heightmapOverlay,aux_height_ov,aux_height_ov);
-  //
   for (int i = 0; i < rlist.count(); i++)
+  {
     calculate_normal(heightmapOverlay, m_height_ov, 1, 1, rlist.at(i));
+  }
 
   if (updateEnhance)
-    enhance_requested++;
+    enhance_requested=1;
   if (updateBump)
-    bump_requested++;
+    bump_requested=1;
   if (updateDistance)
-    distance_requested++;
+    distance_requested=1;
 
   int frame = current_frame_id;
 
@@ -919,7 +950,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
           if (!active)
           {
-            normal_counter--;
+            normal_mutex.unlock();
             return;
           }
         }
@@ -931,7 +962,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                         QImage(static_cast<unsigned char *>(m_normal.data),
                                m_normal.cols, m_normal.rows, m_normal.step,
                                QImage::Format_RGB888));
-    //    frames[i].get_image(TextureTypes::Normal, &normal);
     normal_ready.unlock();
   }
 
@@ -946,7 +976,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
   set_current_frame_id(frame);
   processed();
-  normal_counter--;
+  normal_mutex.unlock();
 }
 
 void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth,
