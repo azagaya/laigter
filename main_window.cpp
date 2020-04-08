@@ -1658,15 +1658,76 @@ void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void MainWindow::on_actionSaveProject_triggered()
 {
-  QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save Image"), "", tr("Image File (*.laigter)"));
-  if (fileName == "")
-    return;
-  if (!fileName.endsWith(".laigter"))
+  QString projectPath = project.GetCurrentPath();
+  if (projectPath == "")
   {
-    fileName += ".laigter";
+    on_actionSave_Project_As_triggered();
   }
+  else
+  {
+    SaveProject(projectPath);
+  }
+}
 
+void MainWindow::on_actionLoadProject_triggered()
+{
+
+  QList <ImageProcessor *> newList;
+  QJsonObject general_settings;
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Laigter Project"), "",
+      tr("Project File (*.laigter)"));
+  if (fileName != "")
+  {
+    /* Remove Current Processors */
+    foreach (ImageProcessor *p, processorList)
+    {
+      remove_processor(p);
+    }
+
+    processorList.clear();
+
+    project.load(fileName, &newList, &general_settings);
+
+    /* Add processors from project */
+    foreach (ImageProcessor *p, newList)
+    {
+      add_processor(p);
+    }
+    general_settings = general_settings.value("general").toObject();
+    /* Apply general settings */
+    ui->horizontalSliderAmbientLight->setValue(general_settings.value("ambient light").toInt());
+    ui->blendSlider->setValue(general_settings.value("blend").toInt());
+    ui->checkBoxLightsPerTexture->setChecked(general_settings.value("lights per texture").toBool());
+    ui->checkBoxPixelated->setChecked(general_settings.value("pixelated").toBool());
+    ui->checkBoxToon->setChecked(general_settings.value("toon").toBool());
+    ui->comboBoxView->setCurrentIndex(general_settings.value("viewmode").toInt());
+
+    /* Apply sample lights */
+    QJsonArray lights = general_settings.value("sample lights").toArray();
+    sample_processor->get_light_list_ptr()->clear();
+    for (int i = 0; i < lights.count(); i++)
+    {
+      LightSource *light = new LightSource;
+      QJsonObject light_json = lights.at(i).toObject();
+      QJsonObject position_json = light_json.value("position").toObject();
+      QVector3D light_position(position_json.value("x").toDouble(), position_json.value("y").toDouble(), position_json.value("z").toDouble());
+      light->set_light_position(light_position);
+      QJsonObject color_json = light_json.value("diffuse color").toObject();
+      QColor diffuse(color_json.value("r").toInt(), color_json.value("g").toInt(), color_json.value("b").toInt());
+      light->set_diffuse_color(diffuse);
+      /* Change if plan to support different specular color */
+      light->set_specular_color(diffuse);
+      light->set_specular_scatter(light_json.value("specular scatter").toDouble());
+      light->set_specular_intensity(light_json.value("specular intensity").toDouble());
+      light->set_diffuse_intensity(light_json.value("diffuse intensity").toDouble());
+      sample_processor->get_light_list_ptr()->append(light);
+    }
+  }
+}
+
+void MainWindow::SaveProject(QString path)
+{
   QJsonObject general_settings;
   general_settings.insert("viewmode", ui->comboBoxView->currentIndex());
   general_settings.insert("toon", ui->checkBoxToon->isChecked());
@@ -1709,30 +1770,7 @@ void MainWindow::on_actionSaveProject_triggered()
   {
     p_list.append(find_processor(ui->listWidget->item(i)->text()));
   }
-  project.save(fileName, p_list, general_settings);
-}
-
-void MainWindow::on_actionLoadProject_triggered()
-{
-
-  processorList.clear();
-  QList <ImageProcessor *> newList;
-  QJsonObject general_settings;
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Laigter Project"), "",
-      tr("Project File (*.laigter)"));
-  if (fileName != "")
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      remove_processor(p);
-    }
-    project.load(fileName, &newList, &general_settings);
-    foreach (ImageProcessor *p, newList)
-    {
-      add_processor(p);
-    }
-  }
+  project.save(path, p_list, general_settings);
 }
 
 void MainWindow::on_blendSlider_valueChanged(int value)
@@ -1742,3 +1780,17 @@ void MainWindow::on_blendSlider_valueChanged(int value)
 }
 
 
+
+void MainWindow::on_actionSave_Project_As_triggered()
+{
+  QString fileName = QFileDialog::getSaveFileName(
+      this, tr("Save Image"), "", tr("Image File (*.laigter)"));
+  if (fileName == "")
+    return;
+  if (!fileName.endsWith(".laigter"))
+  {
+    fileName += ".laigter";
+  }
+
+  SaveProject(fileName);
+}

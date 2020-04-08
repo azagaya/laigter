@@ -76,6 +76,7 @@ public:
   void dropEvent(QDropEvent *event);
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
+  void SaveProject(QString path);
 
 public slots:
   ImageProcessor *find_processor(QString name);
@@ -139,6 +140,8 @@ private slots:
   void on_blendSlider_valueChanged(int value);
 
   void on_actionLoadProject_triggered();
+
+  void on_actionSave_Project_As_triggered();
 
 protected slots:
   virtual void changeEvent(QEvent *event);

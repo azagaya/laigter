@@ -18,6 +18,10 @@ extern "C"
 
 Project::Project(QObject *parent) : QObject(parent) {}
 
+QString Project::GetCurrentPath(){
+  return m_path;
+}
+
 bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings){
   void *buf = NULL;
   size_t bufsize;
@@ -25,8 +29,13 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
   QJsonObject project_json;
   QByteArray data;
 
-  /*TODO erase this when using real general_settings */
-  general_settings = new QJsonObject;
+  QFileInfo info(project_path);
+  if (!info.exists())
+  {
+    return 1;
+  }
+
+  m_path = project_path;
 
   struct zip_t *zip = zip_open(project_path.toUtf8(), 0, 'r');
   {
@@ -109,6 +118,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObject general_settings)
 {
   QJsonArray json_array;
+  m_path = path;
   struct zip_t *zip = zip_open(path.toUtf8(), ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
   for (int j = 0; j < processorList.count(); j++)
   {

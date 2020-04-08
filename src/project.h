@@ -15,6 +15,7 @@ public:
 
 public:
   explicit Project(QObject *parent = nullptr);
+  QString GetCurrentPath();
 
 public slots:
   bool save(QString path, QList<ImageProcessor *> processorList, QJsonObject general_settings = {});
