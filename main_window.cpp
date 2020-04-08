@@ -221,6 +221,8 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
 
     contextMenu.addAction(nextFrame);
     contextMenu.addAction(prevFrame);
+  } else {
+    contextMenu.addAction(new QAction(tr("Split in frames")));
   }
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
@@ -368,6 +370,20 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   {
     p->remove_current_frame();
     fs_watcher.removePath(p->get_current_frame()->fileName);
+  }
+  else if (option == tr("Split in frames"))
+  {
+    QImage original;
+    p->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
+    ImageProcessor *n_p = new ImageProcessor;
+    n_p->set_name(p->get_name()+"(frames)");
+    for (int i=0; i<8; i++)
+    {
+      QPoint top_left(i*original.width()/8,0);
+      QSize size(original.width()/8, original.height());
+      n_p->loadImage("",original.copy(QRect(top_left,size)));
+    }
+    add_processor(n_p);
   }
 }
 
@@ -1155,8 +1171,27 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 void MainWindow::dropEvent(QDropEvent *event)
 {
   QStringList fileNames;
+  QStringList projectNames;
   QList<QUrl> urlList = event->mimeData()->urls();
   openDroppedFiles(urlList, &fileNames);
+  foreach (QString path, fileNames)
+  {
+    if (path.endsWith(".laigter"))
+    {
+      projectNames.append(path);
+      fileNames.removeOne(path);
+    }
+  }
+  if (projectNames.count() > 0)
+  {
+    if (projectNames.count() > 1)
+    {
+      QMessageBox msg_box;
+      msg_box.setText("Only one project at a time can be loaded for now.");
+      msg_box.exec();
+    }
+    LoadProject(projectNames[0]);
+  }
   open_files(fileNames);
 }
 
@@ -1671,58 +1706,62 @@ void MainWindow::on_actionSaveProject_triggered()
 
 void MainWindow::on_actionLoadProject_triggered()
 {
-
-  QList <ImageProcessor *> newList;
-  QJsonObject general_settings;
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Laigter Project"), "",
       tr("Project File (*.laigter)"));
-  if (fileName != "")
+  if (fileName == "")
   {
-    /* Remove Current Processors */
-    foreach (ImageProcessor *p, processorList)
-    {
-      remove_processor(p);
-    }
+    return;
+  }
+  LoadProject(fileName);
+}
 
-    processorList.clear();
+void MainWindow::LoadProject(QString path){
+  QList <ImageProcessor *> newList;
+  QJsonObject general_settings;
+  /* Remove Current Processors */
+  foreach (ImageProcessor *p, processorList)
+  {
+    remove_processor(p);
+  }
 
-    project.load(fileName, &newList, &general_settings);
+  processorList.clear();
 
-    /* Add processors from project */
-    foreach (ImageProcessor *p, newList)
-    {
-      add_processor(p);
-    }
-    general_settings = general_settings.value("general").toObject();
-    /* Apply general settings */
-    ui->horizontalSliderAmbientLight->setValue(general_settings.value("ambient light").toInt());
-    ui->blendSlider->setValue(general_settings.value("blend").toInt());
-    ui->checkBoxLightsPerTexture->setChecked(general_settings.value("lights per texture").toBool());
-    ui->checkBoxPixelated->setChecked(general_settings.value("pixelated").toBool());
-    ui->checkBoxToon->setChecked(general_settings.value("toon").toBool());
-    ui->comboBoxView->setCurrentIndex(general_settings.value("viewmode").toInt());
+  project.load(path, &newList, &general_settings);
 
-    /* Apply sample lights */
-    QJsonArray lights = general_settings.value("sample lights").toArray();
-    sample_processor->get_light_list_ptr()->clear();
-    for (int i = 0; i < lights.count(); i++)
-    {
-      LightSource *light = new LightSource;
-      QJsonObject light_json = lights.at(i).toObject();
-      QJsonObject position_json = light_json.value("position").toObject();
-      QVector3D light_position(position_json.value("x").toDouble(), position_json.value("y").toDouble(), position_json.value("z").toDouble());
-      light->set_light_position(light_position);
-      QJsonObject color_json = light_json.value("diffuse color").toObject();
-      QColor diffuse(color_json.value("r").toInt(), color_json.value("g").toInt(), color_json.value("b").toInt());
-      light->set_diffuse_color(diffuse);
-      /* Change if plan to support different specular color */
-      light->set_specular_color(diffuse);
-      light->set_specular_scatter(light_json.value("specular scatter").toDouble());
-      light->set_specular_intensity(light_json.value("specular intensity").toDouble());
-      light->set_diffuse_intensity(light_json.value("diffuse intensity").toDouble());
-      sample_processor->get_light_list_ptr()->append(light);
-    }
+  /* Add processors from project */
+  foreach (ImageProcessor *p, newList)
+  {
+    add_processor(p);
+  }
+  general_settings = general_settings.value("general").toObject();
+  /* Apply general settings */
+  ui->horizontalSliderAmbientLight->setValue(general_settings.value("ambient light").toInt());
+  ui->blendSlider->setValue(general_settings.value("blend").toInt());
+  ui->checkBoxLightsPerTexture->setChecked(general_settings.value("lights per texture").toBool());
+  ui->checkBoxPixelated->setChecked(general_settings.value("pixelated").toBool());
+  ui->checkBoxToon->setChecked(general_settings.value("toon").toBool());
+  ui->comboBoxView->setCurrentIndex(general_settings.value("viewmode").toInt());
+
+  /* Apply sample lights */
+  QJsonArray lights = general_settings.value("sample lights").toArray();
+  sample_processor->get_light_list_ptr()->clear();
+  for (int i = 0; i < lights.count(); i++)
+  {
+    LightSource *light = new LightSource;
+    QJsonObject light_json = lights.at(i).toObject();
+    QJsonObject position_json = light_json.value("position").toObject();
+    QVector3D light_position(position_json.value("x").toDouble(), position_json.value("y").toDouble(), position_json.value("z").toDouble());
+    light->set_light_position(light_position);
+    QJsonObject color_json = light_json.value("diffuse color").toObject();
+    QColor diffuse(color_json.value("r").toInt(), color_json.value("g").toInt(), color_json.value("b").toInt());
+    light->set_diffuse_color(diffuse);
+    /* Change if plan to support different specular color */
+    light->set_specular_color(diffuse);
+    light->set_specular_scatter(light_json.value("specular scatter").toDouble());
+    light->set_specular_intensity(light_json.value("specular intensity").toDouble());
+    light->set_diffuse_intensity(light_json.value("diffuse intensity").toDouble());
+    sample_processor->get_light_list_ptr()->append(light);
   }
 }
 

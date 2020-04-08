@@ -77,6 +77,7 @@ public:
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
   void SaveProject(QString path);
+  void LoadProject(QString path);
 
 public slots:
   ImageProcessor *find_processor(QString name);
