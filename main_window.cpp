@@ -19,6 +19,7 @@
 
 #include "main_window.h"
 #include "gui/about_dialog.h"
+#include "gui/frame_splitter.h"
 #include "gui/language_selector.h"
 #include "gui/nb_selector.h"
 #include "gui/presets_manager.h"
@@ -373,17 +374,26 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Split in frames"))
   {
-    QImage original;
-    p->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-    ImageProcessor *n_p = new ImageProcessor;
-    n_p->set_name(p->get_name()+"(frames)");
-    for (int i=0; i<8; i++)
+    int h_frames, v_frames;
+    FrameSplitter fs(&h_frames, &v_frames);
+    fs.exec();
+    if (h_frames > 0 && v_frames > 0)
     {
-      QPoint top_left(i*original.width()/8,0);
-      QSize size(original.width()/8, original.height());
-      n_p->loadImage("",original.copy(QRect(top_left,size)));
+      QImage original;
+      p->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
+      ImageProcessor *n_p = new ImageProcessor;
+      n_p->set_name(p->get_name()+"(frames)");
+      for (int i=0; i<v_frames; i++)
+      {
+        for (int j=0; j<h_frames; j++)
+        {
+          QPoint top_left(j*original.width()/h_frames,i*original.height()/v_frames);
+          QSize size(original.width()/h_frames, original.height()/v_frames);
+          n_p->loadImage("",original.copy(QRect(top_left,size)));
+        }
+      }
+      add_processor(n_p);
     }
-    add_processor(n_p);
   }
 }
 

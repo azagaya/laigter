@@ -43,6 +43,7 @@ CONFIG += core ui c++11
 
 SOURCES += \
 	gui/about_dialog.cpp \
+	gui/frame_splitter.cpp \
 	gui/language_selector.cpp \
 	gui/presets_manager.cpp \
 	gui/remove_plugin_dialog.cpp \
@@ -61,6 +62,7 @@ SOURCES += \
 	thirdparty/zip.c
 
 HEADERS += \
+	gui/frame_splitter.h \
 	gui/widgets/slider.h \
 	gui/about_dialog.h \
 	gui/language_selector.h \
@@ -83,6 +85,7 @@ HEADERS += \
 
 FORMS += \
 	gui/about_dialog.ui \
+	gui/frame_splitter.ui \
 	gui/language_selector.ui \
 	gui/presets_manager.ui \
 	gui/remove_plugin_dialog.ui \
