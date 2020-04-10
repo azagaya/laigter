@@ -171,7 +171,6 @@ void OpenGlWidget::force_update()
 
 void OpenGlWidget::update_scene()
 {
-  static float rotation = 0;
   glClearColor(
       backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
       backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
@@ -238,7 +237,7 @@ void OpenGlWidget::update_scene()
     float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
     transform.scale(zoomX, zoomY, 1);
 
-    transform.rotate(180.0 * rotation / 3.1415, QVector3D(0, 0, 1));
+    transform.rotate(180.0 * processor->get_rotation() / 3.1415, QVector3D(0, 0, 1));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -267,7 +266,7 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
-    m_program.setUniformValue("rotation_angle", rotation);
+    m_program.setUniformValue("rotation_angle", processor->get_rotation());
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
     zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
@@ -497,6 +496,7 @@ float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
+  old_position = event->localPos();
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
@@ -537,7 +537,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       return;
     }
     /* Loops for selecting textues */
-    if (QApplication::keyboardModifiers() != Qt::CTRL)
+    if (QApplication::keyboardModifiers() != Qt::CTRL && QApplication::keyboardModifiers() != Qt::SHIFT)
       set_all_processors_selected(false);
 
     bool selected = false;
@@ -717,13 +717,40 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         {
           if (processor->get_selected())
           {
-            if (!processor->get_tile_x())
-              processor->get_position()->setX(
-                  (mouseX - processor->get_offset()->x()));
+            /* Rotate */
+            if (QApplication::keyboardModifiers() == Qt::SHIFT)
+            {
+              if (!processor->get_tile_x() && !processor->get_tile_y())
+              {
+                QVector3D newpoint(mouseX, mouseY, 0);
+                newpoint -= *processor->get_position();
+                float rotation = atan(newpoint.y()/newpoint.x());
+                if (newpoint.x() < 0)
+                {
+                  rotation += M_PI;
+                }
+                for (float i = 0; i < 2*M_PI; i += M_PI/4)
+                {
+                  if (abs(rotation - i) < 5*M_PI/180.0)
+                  {
+                    rotation = i;
+                    break;
+                  }
+                }
+                processor->set_rotation(rotation);
+              }
+            }
+            /* Move */
+            else
+            {
+              if (!processor->get_tile_x())
+                processor->get_position()->setX(
+                    (mouseX - processor->get_offset()->x()));
 
-            if (!processor->get_tile_y())
-              processor->get_position()->setY(
-                  (mouseY - processor->get_offset()->y()));
+              if (!processor->get_tile_y())
+                processor->get_position()->setY(
+                    (mouseY - processor->get_offset()->y()));
+            }
           }
         }
       }

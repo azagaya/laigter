@@ -73,6 +73,7 @@ private:
   QOpenGLVertexArrayObject VAO, VAO3D;
   QOpenGLVertexArrayObject lightVAO;
   QPoint oldPos;
+  QPointF old_position;
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;

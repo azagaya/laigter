@@ -108,15 +108,15 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   normal_counter = parallax_counter = specular_counter = occlussion_counter =  0;
 
   connect(&animation, SIGNAL(timeout()), this, SLOT(next_frame()));
-  connect(&recalculate, SIGNAL(timeout()), this, SLOT(Recalculate()));
+  connect(&recalculate_timer, SIGNAL(timeout()), this, SLOT(recalculate()));
 
   animation.setInterval(80);
   animation.setSingleShot(false);
   animation.start();
 
-  recalculate.setInterval(100);
-  recalculate.setSingleShot(false);
-  recalculate.start();
+  recalculate_timer.setInterval(100);
+  recalculate_timer.setSingleShot(false);
+  recalculate_timer.start();
 
 }
 
@@ -195,7 +195,7 @@ void ImageProcessor::calculate()
   calculate_occlusion();
 }
 
-void ImageProcessor::Recalculate(){
+void ImageProcessor::recalculate(){
   if (normal_counter > 0)
   {
     QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
@@ -1488,6 +1488,8 @@ float ImageProcessor::get_sy() { return sy; }
 void ImageProcessor::set_tile_x(bool tx)
 {
   tileX = tx;
+  /* TODO remove this when properly handling tile feature */
+  set_rotation(0);
   processed();
 }
 
@@ -1496,6 +1498,8 @@ bool ImageProcessor::get_tile_x() { return tileX; }
 void ImageProcessor::set_tile_y(bool ty)
 {
   tileY = ty;
+  /* TODO remove this when properly handling tile feature */
+  set_rotation(0);
   processed();
 }
 
@@ -1573,3 +1577,8 @@ void ImageProcessor::remove_frame(int id)
 }
 
 void ImageProcessor::remove_current_frame() { remove_frame(current_frame_id); }
+
+void ImageProcessor::setAnimationRate(int fps)
+{
+  animation.setInterval(1000.0/fps);
+}

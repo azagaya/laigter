@@ -124,7 +124,7 @@ public:
   QMutex specular_overlay_mutex;
   QMutex texture_overlay_mutex;
   QString m_fileName;
-  QTimer animation, recalculate;
+  QTimer animation, recalculate_timer;
   QVector<Sprite> frames;
   bool busy, active;
   bool updated = false;
@@ -240,7 +240,8 @@ public:
   void set_texture_overlay(QImage to);
 
 public slots:
-  void Recalculate();
+  void recalculate();
+  void setAnimationRate(int fps);
   ParallaxType get_parallax_type();
   ProcessorSettings get_settings();
   QImage get_neighbour(int x, int y);
