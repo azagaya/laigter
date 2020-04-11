@@ -1620,7 +1620,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+     <normaloff>:/icons/import.png</normaloff>:/icons/import.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -1779,16 +1779,28 @@
    </property>
   </action>
   <action name="actionSaveProject">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save Project</string>
    </property>
   </action>
   <action name="actionLoadProject">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+   </property>
    <property name="text">
     <string>Load Project</string>
    </property>
   </action>
   <action name="actionSave_Project_As">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
+   </property>
    <property name="text">
     <string>Save Project As</string>
    </property>
