@@ -201,26 +201,26 @@ void OpenGlWidget::update_scene()
   apply_light_params();
   foreach (ImageProcessor *processor, processorList)
   {
-    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse,
-                                                  &m_image))
+    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+    {
       setImage(&m_image);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                  &normalMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+    {
       setNormalMap(&normalMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Specular,
-                                                  &specularMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+    {
       setSpecularMap(&specularMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Parallax,
-                                                  &parallaxMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+    {
       setParallaxMap(&parallaxMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion,
-                                                  &occlusionMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+    {
       setOcclusionMap(&occlusionMap);
-
+    }
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
     if (processor->get_tile_x())
@@ -888,10 +888,27 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QFileInfo info;
     foreach (ImageProcessor *processor, processorList)
     {
-      setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                    &normalMap))
+
+      if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+      {
+        setImage(&m_image);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+      {
         setNormalMap(&normalMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+      {
+        setSpecularMap(&specularMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+      {
+        setParallaxMap(&parallaxMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+      {
+        setOcclusionMap(&occlusionMap);
+      }
 
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
@@ -1070,14 +1087,27 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
           ymax = yf;
       }
 
-      setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                    &normalMap))
+      if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+      {
+        setImage(&m_image);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+      {
         setNormalMap(&normalMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+      {
+        setSpecularMap(&specularMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+      {
+        setParallaxMap(&parallaxMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+      {
+        setOcclusionMap(&occlusionMap);
+      }
 
-      setSpecularMap(processor->get_specular());
-      setParallaxMap(processor->get_parallax());
-      setOcclusionMap(processor->get_occlusion());
       transform.setToIdentity();
 
       QVector3D texPos = *processor->get_position();

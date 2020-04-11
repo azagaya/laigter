@@ -78,6 +78,7 @@ public:
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
   void SaveProject(QString path);
   void LoadProject(QString path);
+  void ExportMap(TextureTypes type, ImageProcessor *p, QString postfix);
 
 public slots:
   ImageProcessor *find_processor(QString name);

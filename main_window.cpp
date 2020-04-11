@@ -383,13 +383,16 @@ void MainWindow::list_menu_action_triggered(QAction *action)
       p->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
       ImageProcessor *n_p = new ImageProcessor;
       n_p->set_name(p->get_name()+"(frames)");
+      QString filePath = p->get_current_frame()->get_file_name();
       for (int i=0; i<v_frames; i++)
       {
         for (int j=0; j<h_frames; j++)
         {
+          QString frame_number = QString("%1").arg(j+i*h_frames, (int)(log10(v_frames*h_frames)+1), 10, QChar('0'));
+          QString path = filePath.split(".").join("_"+frame_number+".");
           QPoint top_left(j*original.width()/h_frames,i*original.height()/v_frames);
           QSize size(original.width()/h_frames, original.height()/v_frames);
-          n_p->loadImage("",original.copy(QRect(top_left,size)));
+          n_p->loadImage(path,original.copy(QRect(top_left,size)));
         }
       }
       add_processor(n_p);
@@ -451,22 +454,29 @@ void MainWindow::open_files(QStringList fileNames)
 
     /* Check for auto loading of frames */
     QStringList similarList;
-    QString prefix;
+    QString prefix, postfix;
     QFileInfo info(fileName);
     if (!checkedFiles.contains(fileName))
     {
-      QRegularExpression rx("(\\d+)(?!.*\\d)");
+      QRegularExpression rx("((\\d+)(?!.*\\d))");
       QRegularExpressionMatch match = rx.match(info.fileName());
-      prefix = info.fileName().mid(
-          0, info.fileName().indexOf(match.captured(0)));
+      QStringList parts = fileName.split("/").last().split(match.captured(0));
+      prefix = parts.first();
+      postfix = parts.last();
       QDir dir = info.absoluteDir();
       if (prefix != "")
       {
         foreach (QString file, dir.entryList())
         {
-          if (file.startsWith(prefix) &&
-              file.endsWith("." + info.suffix()))
+          qDebug() << file;
+          match = rx.match(file);
+
+          QStringList parts = file.split("/").last().split(match.captured(0));
+          qDebug() << prefix << parts.first() << postfix << parts.last();
+          if (parts.first() == prefix && parts.last() == postfix)
+          {
             similarList.append(dir.path() + "/" + file);
+          }
         }
       }
     }
@@ -884,82 +894,69 @@ void MainWindow::on_listWidget_itemSelectionChanged()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
+
+void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix){
   QImage n;
   QString suffix;
   QString name;
   QFileInfo info;
+  for (int i=0; i< p->frames.count(); i++)
+  {
+    p->frames[i].get_image(type, &n);
+    info = QFileInfo(p->frames[i].get_file_name());
+    suffix = info.completeSuffix();
+    name = info.absoluteFilePath().remove("." + suffix) + postfix + "." + suffix;
+    n.save(name);
+  }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+
   QString message = "";
 
-  if (ui->checkBoxExportNormal->isChecked())
-  {
     foreach (ImageProcessor *p, processorList)
     {
-      n = *p->get_normal();
-      info = QFileInfo(p->get_name());
-      suffix = info.completeSuffix();
-      name =
-          info.absoluteFilePath().remove("." + suffix) + "_n." + suffix;
-      n.save(name);
+      if (ui->checkBoxExportNormal->isChecked())
+      {
+        ExportMap(TextureTypes::Normal, p, "_n");
+      }
+      if (ui->checkBoxExportParallax->isChecked())
+      {
+        ExportMap(TextureTypes::Parallax, p, "_p");
+      }
+      if (ui->checkBoxExportSpecular->isChecked())
+      {
+        ExportMap(TextureTypes::Specular, p, "_s");
+      }
+      if (ui->checkBoxExportOcclusion->isChecked())
+      {
+        ExportMap(TextureTypes::Occlussion, p, "_o");
+      }
     }
-    message += tr("All normal maps were exported.\n");
-  }
-
-  if (ui->checkBoxExportParallax->isChecked())
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      n = *p->get_parallax();
-      info = QFileInfo(p->get_name());
-      suffix = info.completeSuffix();
-      name =
-          info.absoluteFilePath().remove("." + suffix) + "_p." + suffix;
-      n.save(name);
-    }
-    message += tr("All parallax maps were exported.\n");
-  }
-
-  if (ui->checkBoxExportSpecular->isChecked())
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      n = *p->get_specular();
-      info = QFileInfo(p->get_name());
-      suffix = info.completeSuffix();
-      name =
-          info.absoluteFilePath().remove("." + suffix) + "_s." + suffix;
-      n.save(name);
-    }
-    message += tr("All specular maps were exported.\n");
-  }
-
-  if (ui->checkBoxExportOcclusion->isChecked())
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      n = *p->get_occlusion();
-      info = QFileInfo(p->get_name());
-      suffix = info.completeSuffix();
-      name =
-          info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
-      n.save(name);
-    }
-    message += tr("All occlussion maps were exported.\n");
-  }
-
   if (ui->checkBoxExportPreview->isChecked())
   {
-    ui->openGLPreviewWidget->get_preview(false, true);
-    message += tr("All previews were exported.\n");
+    QImage n;
+    QString suffix;
+    QString name;
+    QFileInfo info;
+    foreach (ImageProcessor *p, processorList)
+    {
+      for (int i=0; i< p->frames.count(); i++)
+      {
+        n = ui->openGLPreviewWidget->get_preview(false, false);
+        info = QFileInfo(p->frames[i].get_file_name());
+        suffix = info.completeSuffix();
+        name = info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
+        n.save(name);
+      }
+    }
   }
 
-  if (message != "")
-  {
-    QMessageBox msgBox;
-    msgBox.setText(message);
-    msgBox.exec();
-  }
+  message = tr("All selected maps were exported.\n");
+  QMessageBox msgBox;
+  msgBox.setText(message);
+  msgBox.exec();
 }
 
 void MainWindow::on_pushButtonBackgroundColor_clicked()
