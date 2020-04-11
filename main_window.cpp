@@ -903,10 +903,17 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
   for (int i=0; i< p->frames.count(); i++)
   {
     p->frames[i].get_image(type, &n);
-    info = QFileInfo(p->frames[i].get_file_name());
+    QString file_name = p->frames[i].get_file_name();
+    if (!file_name.startsWith("/"))
+    {
+      info = QFileInfo(project.GetCurrentPath());
+      file_name = info.dir().path() + "/" + file_name.split("/").last();
+    }
+    info = QFileInfo(file_name);
     suffix = info.completeSuffix();
     name = info.absoluteFilePath().remove("." + suffix) + postfix + "." + suffix;
     n.save(name);
+
   }
 }
 
