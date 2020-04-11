@@ -1533,9 +1533,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
   foreach (QAction *action, ui->pluginToolBar->actions())
   {
-    if (action->text() == tr("Load Plugins") ||
-        (action->text() == tr("Install Plugin")) ||
-        (action->text() == tr("Delete Plugin")))
+    if (action->text() == "Load Plugins" || action->text() == "Install Plugin" ||action->text() == "Delete Plugin")
       continue;
     ui->pluginToolBar->removeAction(action);
   }
@@ -1545,8 +1543,8 @@ void MainWindow::on_actionLoadPlugins_triggered()
     if (QFile(tmp.absoluteFilePath(fileName)).exists())
     {
       QFile(tmp.absoluteFilePath(fileName)).remove();
-      QFile(dir.absoluteFilePath(fileName))
-          .copy(tmp.absoluteFilePath(fileName));
+    }
+      QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
       QPluginLoader *pl =
           new QPluginLoader(tmp.absoluteFilePath(fileName));
       if (pl->metaData()
@@ -1592,7 +1590,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
         brush_list.append(b);
       }
     }
-  }
+
 }
 
 void MainWindow::select_plugin(BrushInterface *b)
