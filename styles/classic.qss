@@ -2,34 +2,47 @@ QDockWidget
 {
 	color: rgb(235, 235, 235);
 	border: 1px solid black;
-	titlebar-close-icon: url(close.png);
+        titlebar-close-icon: url(:/icons/close.png);
 	titlebar-normal-icon: url(:/icons/undock.png);
-	margin: 0px
+        margin: 0px;
 }
 
 QDockWidget::title
 {
 	background:  rgb(30%, 30%, 40%);
 	border-radius:4px;
-	margin:2px;
-	padding: 1px
+        margin:2px;
+        padding: 1px;
 }
 
 QDockWidget::close-button, QDockWidget::float-button
 {
-	background: transparent;
-	border-radius: 6px;
+        background: transparent;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        padding: 0px;
+        width: 14px;
+}
+QDockWidget::close-button
+{
+        position: relative;
+        right: 3px; top: 3px;
+}
+QDockWidget::float-button
+{
+        position: relative;
+        right: 19px; top: 3px;
 }
 
 QDockWidget::close-button:hover, QDockWidget::float-button:hover
 {
-	background: rgb(60%, 60%, 100%);
+        border: 0px solid transparent;
 }
 
 QDockWidget::close-button:pressed, QDockWidget::float-button:pressed
 {
-	background: #b0b0b0;
-	border: 1px inset #808080;
+        background: #b0b0b0;
+        border: 1px inset #808080;
 }
 
 Slider::groove:horizontal
@@ -126,40 +139,6 @@ QSpinBox:down-button#flatSpinBox
 	width: 0px;
 	border-width: 0px;
 	border-top-width: 0;
-}
-
-QDockWidge
-{
-	color: rgb(235, 235, 235);
-	border: 1px solid black;
-	titlebar-close-icon: url(close.png);
-	titlebar-normal-icon: url(:/icons/undock.png);
-	margin: 0px
-}
-
-QDockWidget::titl
-{
-	background:  rgb(30%, 30%, 40%);
-	border-radius:4px;
-	margin:2px;
-	padding: 1px
-}
-
-QDockWidget::close-button, QDockWidget::float-button
-{
-	background: transparent;
-	border-radius: 6px;
-}
-
-QDockWidget::close-button:hover, QDockWidget::float-button:hover
-{
-	background: rgb(60%, 60%, 100%);
-}
-
-QDockWidget::close-button:pressed, QDockWidget::float-button:pressed
-{
-	background: #b0b0b0;
-	border: 1px inset #808080;
 }
 
 Slider::groove:horizontal

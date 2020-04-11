@@ -27,6 +27,8 @@
 #include "src/light_source.h"
 #include "src/project.h"
 
+#include "gui/widgets/animation_dock.h"
+
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -69,6 +71,8 @@ private:
   QOpenGLWidget *gl;
   QThread *processingThread;
   Ui::MainWindow *ui;
+  QDockWidget *animation_dock;
+  AnimationDock *animation_widget;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -82,6 +86,7 @@ public:
 
 public slots:
   ImageProcessor *find_processor(QString name);
+  void setCurrentItem(QListWidgetItem *i);
   void update_scene();
   void add_processor(ImageProcessor *p);
   void remove_processor(ImageProcessor *p);

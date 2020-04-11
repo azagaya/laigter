@@ -22,5 +22,6 @@
         <file>icons/install.png</file>
         <file>icons/save.png</file>
         <file>icons/save_as.png</file>
+        <file>icons/close.png</file>
     </qresource>
 </RCC>

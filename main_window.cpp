@@ -24,6 +24,7 @@
 #include "gui/nb_selector.h"
 #include "gui/presets_manager.h"
 #include "gui/remove_plugin_dialog.h"
+#include "gui/widgets/animation_dock.h"
 #include "src/brush_interface.h"
 #include "src/open_gl_widget.h"
 #include "ui_main_window.h"
@@ -131,17 +132,11 @@ MainWindow::MainWindow(QWidget *parent)
           ui->openGLPreviewWidget, SLOT(setParallaxHeight(int)));
   connect(ui->checkBoxPixelated, SIGNAL(toggled(bool)),
           ui->openGLPreviewWidget, SLOT(setPixelated(bool)));
-  connect(ui->checkBoxToon, SIGNAL(toggled(bool)), ui->openGLPreviewWidget,
-          SLOT(setToon(bool)));
-  connect(ui->openGLPreviewWidget,
-          SIGNAL(selectedLightChanged(LightSource *)), this,
-          SLOT(selectedLightChanged(LightSource *)));
-  connect(ui->openGLPreviewWidget, SIGNAL(stopAddingLight()), this,
-          SLOT(stopAddingLight()));
-  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_map_controls(bool)),
-          this, SLOT(set_enabled_map_controls(bool)));
-  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_light_controls(bool)),
-          this, SLOT(set_enabled_light_controls(bool)));
+  connect(ui->checkBoxToon, SIGNAL(toggled(bool)), ui->openGLPreviewWidget, SLOT(setToon(bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(selectedLightChanged(LightSource *)), this, SLOT(selectedLightChanged(LightSource *)));
+  connect(ui->openGLPreviewWidget, SIGNAL(stopAddingLight()), this, SLOT(stopAddingLight()));
+  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_map_controls(bool)), this, SLOT(set_enabled_map_controls(bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(set_enabled_light_controls(bool)), this, SLOT(set_enabled_light_controls(bool)));
 
   tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
   tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
@@ -157,21 +152,26 @@ MainWindow::MainWindow(QWidget *parent)
   ui->labelBrightness->setVisible(false);
   ui->labelContrast->setVisible(false);
 
+  /* Create Animation Dock Widget */
+  animation_dock = new QDockWidget("Animation Dock Widget", this);
+  animation_widget = new AnimationDock;
+  animation_dock->setWidget(animation_widget);
+  animation_dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+  animation_dock->setObjectName("AnimationDock");
+  addDockWidget(Qt::BottomDockWidgetArea, animation_dock);
+
   QSettings settings("Azagaya", "Laigter");
   restoreGeometry(settings.value("geometry").toByteArray());
   restoreState(settings.value("windowState").toByteArray());
+
   setAcceptDrops(true);
 
   ui->listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
   ui->listWidget->setDragDropMode(QAbstractItemView::InternalMove);
 
-  connect(ui->openGLPreviewWidget,
-          SIGNAL(processor_selected(ImageProcessor *, bool)), this,
-          SLOT(processor_selected(ImageProcessor *, bool)));
-  connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this,
-          SLOT(openGL_initialized()));
-  connect(&fs_watcher, SIGNAL(fileChanged(QString)), this,
-          SLOT(onFileChanged(QString)));
+  connect(ui->openGLPreviewWidget, SIGNAL(processor_selected(ImageProcessor *, bool)), this, SLOT(processor_selected(ImageProcessor *, bool)));
+  connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this, SLOT(openGL_initialized()));
+  connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
   set_enabled_light_controls(false);
 
   // Setting style
@@ -181,12 +181,33 @@ MainWindow::MainWindow(QWidget *parent)
   qApp->setStyleSheet(stylesheet);
 }
 
+MainWindow::~MainWindow()
+{
+  QSettings settings("Azagaya", "Laigter");
+  settings.setValue("geometry", saveGeometry());
+  settings.setValue("windowState", saveState());
+  delete ui;
+}
+
+void MainWindow::setCurrentItem(QListWidgetItem *i)
+{
+  current_item = i;
+  ImageProcessor *p = find_processor(i->text());
+
+
+  animation_dock->setVisible(p->frames.count() > 1);
+  if (p->frames.count() > 1)
+  {
+    animation_widget->setCurrentProcessor(p);
+  }
+}
+
 void MainWindow::showContextMenuForListWidget(const QPoint &pos)
 {
   if (ui->listWidget->selectedItems().count() == 0)
     return;
 
-  current_item = ui->listWidget->itemAt(pos);
+  setCurrentItem(ui->listWidget->itemAt(pos));
   QMenu contextMenu(tr("Context menu"), ui->listWidget);
   contextMenu.addAction(new QAction(tr("Remove"), ui->listWidget));
   contextMenu.addSeparator();
@@ -400,14 +421,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
 }
 
-MainWindow::~MainWindow()
-{
-  QSettings settings("Azagaya", "Laigter");
-  settings.setValue("geometry", saveGeometry());
-  settings.setValue("windowState", saveState());
-  delete ui;
-}
-
 void MainWindow::update_scene()
 {
   ui->openGLPreviewWidget->need_to_update = true;
@@ -468,11 +481,9 @@ void MainWindow::open_files(QStringList fileNames)
       {
         foreach (QString file, dir.entryList())
         {
-          qDebug() << file;
           match = rx.match(file);
 
           QStringList parts = file.split("/").last().split(match.captured(0));
-          qDebug() << prefix << parts.first() << postfix << parts.last();
           if (parts.first() == prefix && parts.last() == postfix)
           {
             similarList.append(dir.path() + "/" + file);
@@ -1379,6 +1390,11 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     disconnect_processor(p);
 
   processor->set_selected(selected);
+  QList <QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
+  if (itemList.count() > 0)
+  {
+    setCurrentItem(itemList.at(0));
+  }
   set_enabled_map_controls(false);
   if (selected)
   {
@@ -1533,7 +1549,9 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
   foreach (QAction *action, ui->pluginToolBar->actions())
   {
-    if (action->text() == "Load Plugins" || action->text() == "Install Plugin" ||action->text() == "Delete Plugin")
+    /* Had to duplicate the checks because translations were not working at first.. need to check this */
+    if (action->text() == "Load Plugins" || action->text() == "Install Plugin" ||action->text() == "Delete Plugin"
+        || action->text() == tr("Load Plugins") || action->text() == tr("Install Plugin") ||action->text() == tr("Delete Plugin"))
       continue;
     ui->pluginToolBar->removeAction(action);
   }
@@ -1558,7 +1576,10 @@ void MainWindow::on_actionLoadPlugins_triggered()
       }
 
       BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());
-      qDebug() << pl->errorString();
+      if (pl->errorString() != "Unknown error")
+      {
+        qDebug() << pl->errorString();
+      }
       if (b != nullptr)
       {
         ui->openGLPreviewWidget->currentBrush = b;
@@ -1571,14 +1592,13 @@ void MainWindow::on_actionLoadPlugins_triggered()
         addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
         pluginDock->setFloating(true);
         pluginDock->setFeatures(QDockWidget::DockWidgetMovable |
-                                QDockWidget::DockWidgetFloatable);
+                                QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
         pluginDock->setWidget(pluginGui);
         pluginDock->setVisible(false);
         connect(action, SIGNAL(toggled(bool)), pluginDock,
                 SLOT(setVisible(bool)));
-        connect(b->getObject(),
-                SIGNAL(selected_changed(BrushInterface *)), this,
-                SLOT(select_plugin(BrushInterface *)));
+        connect(b->getObject(), SIGNAL(selected_changed(BrushInterface *)), this, SLOT(select_plugin(BrushInterface *)));
+        connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
         ui->pluginToolBar->addAction(action);
         b->set_selected(false);
         plugin_docks_list.append(pluginDock);
@@ -1696,7 +1716,7 @@ void MainWindow::retranslate()
 
 void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-  current_item = item;
+  setCurrentItem(item);
 }
 
 void MainWindow::on_actionSaveProject_triggered()

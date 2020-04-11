@@ -1537,6 +1537,10 @@ void ImageProcessor::set_current_frame_id(int id)
   current_frame = &frames[id];
   current_frame_id = id;
   current_frame->get_image(TextureTypes::Diffuse, &texture);
+
+  frameChanged(id);
+
+  processed();
 }
 
 Sprite *ImageProcessor::get_current_frame() { return current_frame; }
@@ -1559,7 +1563,6 @@ void ImageProcessor::next_frame()
         {
           set_current_frame_id((current_frame_id + 1) %
                                frames.count());
-          processed();
           occlusion_mutex.unlock();
         }
         parallax_mutex.unlock();
@@ -1581,4 +1584,9 @@ void ImageProcessor::remove_current_frame() { remove_frame(current_frame_id); }
 void ImageProcessor::setAnimationRate(int fps)
 {
   animation.setInterval(1000.0/fps);
+}
+
+void ImageProcessor::playAnimation(bool play)
+{
+  play ? animation.start() : animation.stop();
 }

@@ -240,6 +240,7 @@ public:
   void set_texture_overlay(QImage to);
 
 public slots:
+  void playAnimation(bool play);
   void recalculate();
   void setAnimationRate(int fps);
   ParallaxType get_parallax_type();
@@ -348,6 +349,7 @@ public slots:
 
 signals:
   void processed();
+  void frameChanged(int index);
   void on_idle();
 };
 

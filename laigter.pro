@@ -47,6 +47,7 @@ SOURCES += \
 	gui/language_selector.cpp \
 	gui/presets_manager.cpp \
 	gui/remove_plugin_dialog.cpp \
+	gui/widgets/animation_dock.cpp \
 	gui/widgets/slider.cpp \
 	gui/widgets/slider2.cpp \
 	main.cpp \
@@ -63,6 +64,7 @@ SOURCES += \
 
 HEADERS += \
 	gui/frame_splitter.h \
+	gui/widgets/animation_dock.h \
 	gui/widgets/slider.h \
 	gui/about_dialog.h \
 	gui/language_selector.h \
@@ -89,6 +91,7 @@ FORMS += \
 	gui/language_selector.ui \
 	gui/presets_manager.ui \
 	gui/remove_plugin_dialog.ui \
+	gui/widgets/animation_dock.ui \
 	main_window.ui \
 	gui/nb_selector.ui
 
