@@ -876,7 +876,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
   for (int i = 0; i < frames.count(); i++)
   {
-    if (update_tileable || animation.isActive() )
+    if (update_tileable || frames.count() > 1 )
     {
       set_current_frame_id(i);
       set_current_heightmap();
@@ -890,19 +890,19 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
       distance_requested = true;
     }
 
-    if (enhance_requested || animation.isActive() )
+    if (enhance_requested || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
         calculate_normal(m_gray, m_emboss_normal, normal_depth,
                          normal_blur_radius);
     }
 
-    if (distance_requested || animation.isActive())
+    if (distance_requested || frames.count() > 1)
     {
       new_distance = modify_distance();
     }
 
-    if (bump_requested || animation.isActive() )
+    if (bump_requested || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
       {
@@ -1533,30 +1533,14 @@ void ImageProcessor::set_current_frame_id(int id)
     id = frames.count() - 1;
   else if (id < 0)
     id = 0;
-  if (normal_mutex.tryLock())
-  {
-    if (specular_mutex.tryLock())
-    {
-      if (parallax_mutex.tryLock())
-      {
-        if (occlusion_mutex.tryLock())
-        {
-          current_frame = &frames[id];
-          current_frame_id = id;
-          current_frame->get_image(TextureTypes::Diffuse, &texture);
 
-          frameChanged(id);
+  current_frame = &frames[id];
+  current_frame_id = id;
+  current_frame->get_image(TextureTypes::Diffuse, &texture);
 
-          processed();
+  frameChanged(id);
 
-          occlusion_mutex.unlock();
-        }
-        parallax_mutex.unlock();
-      }
-      specular_mutex.unlock();
-    }
-    normal_mutex.unlock();
-  }
+  processed();
 }
 
 Sprite *ImageProcessor::get_current_frame() { return current_frame; }
@@ -1568,8 +1552,24 @@ void ImageProcessor::next_frame()
     animation.stop();
     return;
   }
-  set_current_frame_id((current_frame_id + 1) % frames.count());
 
+  if (normal_mutex.tryLock())
+  {
+    if (specular_mutex.tryLock())
+    {
+      if (parallax_mutex.tryLock())
+      {
+        if (occlusion_mutex.tryLock())
+        {
+          set_current_frame_id((current_frame_id + 1) % frames.count());
+          occlusion_mutex.unlock();
+        }
+        parallax_mutex.unlock();
+      }
+      specular_mutex.unlock();
+    }
+    normal_mutex.unlock();
+  }
 }
 
 void ImageProcessor::remove_frame(int id)

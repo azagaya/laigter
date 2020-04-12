@@ -52,7 +52,10 @@ void AnimationDock::updateProcessorFrame(int index)
 {
   if (index >= 0 && index < m_current_processor->frames.count() && ui->listWidget->selectedItems().count() > 0)
   {
-    m_current_processor->set_current_frame_id(index);
+    if (!m_current_processor->animation.isActive())
+    {
+     m_current_processor->set_current_frame_id(index);
+    }
   }
 }
 
