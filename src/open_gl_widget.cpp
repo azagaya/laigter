@@ -191,7 +191,6 @@ void OpenGlWidget::update_scene()
 
   QVector3D viewport_size(width(), height(),1.0);
   view.translate(-origin/viewport_size*m_global_zoom);
-  qDebug() << origin;
   view.scale(1366.0/width(), 768.0/height());
   view.scale(m_global_zoom);
 
@@ -464,12 +463,19 @@ void OpenGlWidget::setParallax(bool p)
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
+  float mouseX = ((float)event->position().x() * 2 - width()) / m_global_zoom;
+  float mouseY = (-(float)event->position().y() * 2 + height()) / m_global_zoom;
   QPoint degree = event->angleDelta() / 8;
 
   if (!degree.isNull() && degree.y() != 0)
   {
     QPoint step = degree / qAbs(degree.y());
-    setZoom(step.y() > 0 ?  m_global_zoom * 1.1 * step.y() :  -m_global_zoom * 0.9 * step.y());
+    float zoom = step.y() > 0 ?  1.1 * step.y() :  -0.9 * step.y();
+    setZoom(zoom*m_global_zoom);
+
+    double dx = (zoom)*(mouseX);
+    double dy = (zoom)*(mouseY);
+    origin -= QVector3D(mouseX - dx,mouseY - dy,0);
   }
 
   need_to_update = true;
