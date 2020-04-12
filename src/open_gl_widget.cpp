@@ -35,7 +35,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8;
-  lightPosition = QVector3D(0.7, 0.7, 0.3);
+  lightPosition = QVector3D(0.0, 0.0, 0.0);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03;
@@ -186,6 +186,10 @@ void OpenGlWidget::update_scene()
   int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
   QMatrix4x4 transform;
+  QMatrix4x4 model;
+  QMatrix4x4 view;
+
+  view.scale(1366.0/width(), 768.0/height());
 
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
@@ -223,18 +227,14 @@ void OpenGlWidget::update_scene()
     }
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
-    if (processor->get_tile_x())
-      texPos.setX(0);
 
-    if (processor->get_tile_y())
-      texPos.setY(0);
+    transform.translate(texPos*QVector2D(1.0/1366, 1.0/768));
 
-    transform.translate(texPos);
-    float scaleX = !processor->get_tile_x() ? sx : 1;
-    float scaleY = !processor->get_tile_y() ? sy : 1;
+    float scaleX = !processor->get_tile_x() ? m_image.width()/1366.0 : m_image.width()/1366.0*3;
+    float scaleY = !processor->get_tile_y() ? m_image.height()/768.0 : m_image.height()/768.0*3;
     transform.scale(scaleX, scaleY, 1);
-    float zoomX = !processor->get_tile_x() ? processor->get_zoom() : 1;
-    float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
+    float zoomX =  processor->get_zoom() ;
+    float zoomY = processor->get_zoom() ;
     transform.scale(zoomX, zoomY, 1);
 
     transform.rotate(180.0 * processor->get_rotation() / 3.1415, QVector3D(0, 0, 1));
@@ -260,7 +260,7 @@ void OpenGlWidget::update_scene()
 
     glActiveTexture(GL_TEXTURE0);
 
-    m_program.setUniformValue("transform", transform);
+    m_program.setUniformValue("transform", view*transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
@@ -269,10 +269,9 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("rotation_angle", processor->get_rotation());
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
-    zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
-    zoomY = processor->get_tile_y() ? processor->get_zoom() : 1;
-    m_program.setUniformValue(
-        "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
+    zoomX = processor->get_tile_x() ? 1.0/3 : 1;
+    zoomY = processor->get_tile_y() ? 1.0/3 : 1;
+    m_program.setUniformValue("ratio", QVector2D(1  / zoomX, 1  / zoomY));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -310,15 +309,15 @@ void OpenGlWidget::update_scene()
   {
     foreach (LightSource *light, currentLightList)
     {
-      float x = static_cast<float>(laigter.width()) / width();
-      float y = static_cast<float>(laigter.height()) / height();
+      float x = static_cast<float>(laigter.width())/1366.0 ;
+      float y = static_cast<float>(laigter.height())/768.0 ;
       transform.setToIdentity();
-      transform.translate(light->get_light_position());
+      transform.translate(light->get_light_position()*QVector2D(1.0/1366, 1.0/768));
       transform.scale(static_cast<float>(0.3) * x,
                       static_cast<float>(0.3) * y, 1);
       lightProgram.bind();
       lightVAO.bind();
-      lightProgram.setUniformValue("transform", transform);
+      lightProgram.setUniformValue("transform", view*transform);
       laigterTexture->bind(0);
 
       if (m_light)
@@ -523,11 +522,13 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     currentBrush->mousePress(tpos);
   }
 
-  float lightWidth = (float)laigter.width() / width() *
+  float lightWidth = (float)laigter.width() *
                      0.3; // en paintgl la imagen la escalamos por 0.3
-  float lightHeight = (float)laigter.height() / height() * 0.3;
-  float mouseX = (float)event->localPos().x() / width() * 2 - 1;
-  float mouseY = -(float)event->localPos().y() / height() * 2 + 1;
+  float lightHeight = (float)laigter.height() * 0.3;
+  float mouseX = (float)event->localPos().x() * 2 - width();
+  float mouseY = -(float)event->localPos().y() * 2 + height();
+
+  qDebug() << mouseX << mouseY;
 
   if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
   {
@@ -587,14 +588,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(mouseX, mouseY, 0) -
                               *processor->get_position());
-        float w = processor->get_tile_x()
-                      ? 2
-                      : processor->get_zoom() *
-                            processor->texture.width() / width();
-        float h = processor->get_tile_y()
-                      ? 2
-                      : processor->get_zoom() *
-                            processor->texture.height() / height();
+        float w = processor->get_tile_x() ? 3*processor->texture.width() : processor->texture.width();
+        float h = processor->get_tile_y() ? 3*processor->texture.height() : processor->texture.height();
         if (qAbs(mouseX - processor->get_position()->x()) < w &&
             qAbs(mouseY - processor->get_position()->y()) < h &&
             not selected)
@@ -667,8 +662,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
-  float mouseX = (float)event->localPos().x() / width() * 2 - 1;
-  float mouseY = -(float)event->localPos().y() / height() * 2 + 1;
+  float mouseX = (float)event->localPos().x() * 2 - width();
+  float mouseY = -(float)event->localPos().y() * 2 + height();
   QVector3D newLightPos(mouseX, mouseY, currentLight->get_height());
 
   if (addLight)
@@ -743,13 +738,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
             /* Move */
             else
             {
-              if (!processor->get_tile_x())
-                processor->get_position()->setX(
-                    (mouseX - processor->get_offset()->x()));
-
-              if (!processor->get_tile_y())
-                processor->get_position()->setY(
-                    (mouseY - processor->get_offset()->y()));
+              processor->get_position()->setX((mouseX - processor->get_offset()->x()));
+              processor->get_position()->setY((mouseY - processor->get_offset()->y()));
             }
           }
         }
@@ -768,22 +758,21 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 
 void OpenGlWidget::update_light_position(QVector3D new_pos)
 {
-  float lightWidth = (float)laigter.width() / width() *
-                     0.3; // en paintgl la imagen la escalamos por 0.3
-  float lightHeight = (float)laigter.height() / height() * 0.3;
+  float lightWidth = (float)laigter.width() * 0.3; // en paintgl la imagen la escalamos por 0.3
+  float lightHeight = (float)laigter.height() * 0.3;
   lightPosition.setX(new_pos.x());
 
-  if (lightPosition.x() >= 1 - lightWidth / 2)
-    lightPosition.setX(1 - lightWidth / 2);
-  else if (lightPosition.x() < -1 + lightWidth / 2)
-    lightPosition.setX(-1 + lightWidth / 2);
+  if (lightPosition.x() >= width() - lightWidth / 2)
+    lightPosition.setX(width() - lightWidth / 2);
+  else if (lightPosition.x() < -width() + lightWidth / 2)
+    lightPosition.setX(-width() + lightWidth / 2);
 
   lightPosition.setY(new_pos.y());
 
-  if (lightPosition.y() > 1 - lightHeight / 2)
-    lightPosition.setY(1 - lightHeight / 2);
-  else if (lightPosition.y() < -1 + lightHeight / 2)
-    lightPosition.setY(-1 + lightHeight / 2);
+  if (lightPosition.y() > height() - lightHeight / 2)
+    lightPosition.setY(height() - lightHeight / 2);
+  else if (lightPosition.y() < -height() + lightHeight / 2)
+    lightPosition.setY(-height() + lightHeight / 2);
 
   currentLight->set_light_position(lightPosition);
 }
