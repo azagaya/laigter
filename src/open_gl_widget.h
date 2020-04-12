@@ -83,7 +83,7 @@ private:
   bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
   bool sample_light_list_used;
   float diffIntensity, ambientIntensity, specIntensity, specScatter;
-  float m_zoom;
+  float m_zoom, m_global_zoom = 1;
   float sx, sy, parallax_height;
   int pixelsX, pixelsY, pixelSize;
   int viewmode;

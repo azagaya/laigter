@@ -35,7 +35,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8;
-  lightPosition = QVector3D(0.0, 0.0, 0.0);
+  lightPosition = QVector3D(900.0, 500.0, 0.3);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03;
@@ -190,6 +190,7 @@ void OpenGlWidget::update_scene()
   QMatrix4x4 view;
 
   view.scale(1366.0/width(), 768.0/height());
+  view.scale(m_global_zoom);
 
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
@@ -289,9 +290,9 @@ void OpenGlWidget::update_scene()
                                               viewmode == Preview);
     // m_texture->bind(0);
     glDrawArrays(GL_QUADS, 0, 4);
-    /* Render light texture */
   }
 
+  /* Render light texture */
   m_program.release();
   QList<LightSource *> currentLightList;
   if (sample_light_list_used)
@@ -309,12 +310,11 @@ void OpenGlWidget::update_scene()
   {
     foreach (LightSource *light, currentLightList)
     {
-      float x = static_cast<float>(laigter.width())/1366.0 ;
-      float y = static_cast<float>(laigter.height())/768.0 ;
+      float x = static_cast<float>(laigter.width())/1366.0 / m_global_zoom ;
+      float y = static_cast<float>(laigter.height())/768.0 / m_global_zoom;
       transform.setToIdentity();
       transform.translate(light->get_light_position()*QVector2D(1.0/1366, 1.0/768));
-      transform.scale(static_cast<float>(0.3) * x,
-                      static_cast<float>(0.3) * y, 1);
+      transform.scale(static_cast<float>(0.25) * x, static_cast<float>(0.25) * y, 1);
       lightProgram.bind();
       lightVAO.bind();
       lightProgram.setUniformValue("transform", view*transform);
@@ -462,16 +462,13 @@ void OpenGlWidget::setParallax(bool p)
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
   QPoint degree = event->angleDelta() / 8;
-  foreach (ImageProcessor *processor, get_all_selected_processors())
+
+  if (!degree.isNull() && degree.y() != 0)
   {
-    if (!degree.isNull() && degree.y() != 0)
-    {
-      QPoint step = degree / qAbs(degree.y());
-      processor->set_zoom(step.y() > 0
-                              ? processor->get_zoom() * 1.1 * step.y()
-                              : -processor->get_zoom() * 0.9 * step.y());
-    }
+    QPoint step = degree / qAbs(degree.y());
+    m_global_zoom *= step.y() > 0 ?  1.1 * step.y() :  -0.9 * step.y();
   }
+
   need_to_update = true;
 }
 
@@ -500,12 +497,9 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   {
     QPoint tpos;
     if (!processor->get_tile_x())
-      tpos.setX((event->localPos().x() -
-                 ((processor->get_position()->x() + 1) * width() -
-                  processor->get_texture()->size().width() *
-                      processor->get_zoom()) *
-                     0.5) /
-                processor->get_zoom());
+      tpos.setX((event->localPos().x() - ((processor->get_position()->x() + 1) *
+                                              width() - processor->get_texture()->size().width()
+                                              * processor->get_zoom()) * 0.5) / processor->get_zoom());
     else
       tpos.setX((event->localPos().x()) / processor->get_zoom());
     if (!processor->get_tile_y())
@@ -522,13 +516,10 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     currentBrush->mousePress(tpos);
   }
 
-  float lightWidth = (float)laigter.width() *
-                     0.3; // en paintgl la imagen la escalamos por 0.3
-  float lightHeight = (float)laigter.height() * 0.3;
-  float mouseX = (float)event->localPos().x() * 2 - width();
-  float mouseY = -(float)event->localPos().y() * 2 + height();
-
-  qDebug() << mouseX << mouseY;
+  float lightWidth = (float)laigter.width() * 0.25; // en paintgl la imagen la escalamos por 0.25
+  float lightHeight = (float)laigter.height() * 0.25;
+  float mouseX = ((float)event->localPos().x() * 2 - width()) / m_global_zoom;
+  float mouseY = (-(float)event->localPos().y() * 2 + height()) / m_global_zoom;
 
   if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
   {
@@ -549,8 +540,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       foreach (LightSource *light, *sampleLightList)
       {
         lightPosition = light->get_light_position();
-        if (qAbs(mouseX - lightPosition.x()) < lightWidth &&
-            qAbs(mouseY - lightPosition.y()) < lightHeight && m_light)
+        if (qAbs(mouseX - lightPosition.x()) < lightWidth / m_global_zoom &&
+            qAbs(mouseY - lightPosition.y()) < lightHeight / m_global_zoom && m_light)
         {
           lightSelected = true;
           select_light(light);
@@ -662,8 +653,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
-  float mouseX = (float)event->localPos().x() * 2 - width();
-  float mouseY = -(float)event->localPos().y() * 2 + height();
+  float mouseX = ((float)event->localPos().x() * 2 - width()) / m_global_zoom;
+  float mouseY = (-(float)event->localPos().y() * 2 + height()) / m_global_zoom;
   QVector3D newLightPos(mouseX, mouseY, currentLight->get_height());
 
   if (addLight)
@@ -758,21 +749,10 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 
 void OpenGlWidget::update_light_position(QVector3D new_pos)
 {
-  float lightWidth = (float)laigter.width() * 0.3; // en paintgl la imagen la escalamos por 0.3
-  float lightHeight = (float)laigter.height() * 0.3;
+  float lightWidth = (float)laigter.width() * 0.25; // en paintgl la imagen la escalamos por 0.25
+  float lightHeight = (float)laigter.height() * 0.25;
   lightPosition.setX(new_pos.x());
-
-  if (lightPosition.x() >= width() - lightWidth / 2)
-    lightPosition.setX(width() - lightWidth / 2);
-  else if (lightPosition.x() < -width() + lightWidth / 2)
-    lightPosition.setX(-width() + lightWidth / 2);
-
   lightPosition.setY(new_pos.y());
-
-  if (lightPosition.y() > height() - lightHeight / 2)
-    lightPosition.setY(height() - lightHeight / 2);
-  else if (lightPosition.y() < -height() + lightHeight / 2)
-    lightPosition.setY(-height() + lightHeight / 2);
 
   currentLight->set_light_position(lightPosition);
 }
@@ -1233,7 +1213,7 @@ void OpenGlWidget::apply_light_params()
     color = QVector3D(r, g, b);
     QString Light = "Light[" + QString::number(i) + "]";
     m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(),
-                              light->get_light_position());
+                              light->get_light_position()/QVector3D(1366.0,768.0,1.0));
     m_program.setUniformValue((Light + ".lightColor").toUtf8().constData(),
                               color);
     light->get_specular_color().getRgbF(&r, &g, &b, nullptr);
