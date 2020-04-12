@@ -77,6 +77,7 @@ private:
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;
+  QVector3D origin = QVector3D(0,0,0);
   bool export_render, exportFullView, addLight;
   bool lightSelected;
   bool m_fullPreview, m_autosave;

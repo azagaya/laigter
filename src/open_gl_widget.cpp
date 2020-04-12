@@ -189,6 +189,9 @@ void OpenGlWidget::update_scene()
   QMatrix4x4 model;
   QMatrix4x4 view;
 
+  QVector3D viewport_size(width(), height(),1.0);
+  view.translate(-origin/viewport_size*m_global_zoom);
+  qDebug() << origin;
   view.scale(1366.0/width(), 768.0/height());
   view.scale(m_global_zoom);
 
@@ -475,16 +478,88 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 void OpenGlWidget::resetZoom()
 {
   setZoom(1.0);
+  origin = QVector3D(0,0,0);
 }
 
 void OpenGlWidget::fitZoom()
 {
-  float x, y, s;
-  x = (float)m_image.width() / width();
-  y = (float)m_image.height() / height();
-  s = qMax(x, y);
-  setZoom(1 / s);
-  processor->set_position(QVector3D(0, 0, 0));
+  QList<LightSource *> currentLightList;
+  if (sample_light_list_used)
+    currentLightList = *sampleLightList;
+  else
+  {
+    foreach (ImageProcessor *processor, processorList)
+    {
+      foreach (LightSource *l, *processor->get_light_list_ptr())
+        currentLightList.append(l);
+    }
+  }
+
+  float x_min, x_max, y_min, y_max;
+  x_min = currentLightList.at(0)->get_light_position().x();
+  x_max = x_min;
+  y_min = currentLightList.at(0)->get_light_position().y();
+  y_max = y_min;
+  /* Get min and max from lights positions */
+  foreach(LightSource *s, currentLightList)
+  {
+    float x = s->get_light_position().x();
+    float y = s->get_light_position().y();
+    if (x < x_min)
+    {
+      x_min = x;
+    }
+    else if (x > x_max)
+    {
+      x_max = x;
+    }
+    if (y < y_min)
+    {
+      y_min = y;
+    }
+    else if (y > y_max)
+    {
+      y_max = y;
+    }
+  }
+
+  x_min -= laigter.width();
+  x_max += laigter.width();
+  y_min -= laigter.height();
+  y_max += laigter.height();
+
+  foreach(ImageProcessor *p, processorList)
+  {
+    if (x_min > p->get_position()->x() - p->get_texture()->width())
+    {
+      x_min = p->get_position()->x() - p->get_texture()->width();
+    }
+    else if (x_max < p->get_position()->x() + p->get_texture()->width() )
+    {
+      x_max = p->get_position()->x() + p->get_texture()->width();
+    }
+    if (y_min > p->get_position()->y() - p->get_texture()->height())
+    {
+      y_min = p->get_position()->y() - p->get_texture()->height();
+    }
+    else if (y_max < p->get_position()->y() + p->get_texture()->height() )
+    {
+      y_max = p->get_position()->y() + p->get_texture()->height();
+    }
+  }
+
+  float dx = x_max - x_min;
+  float dy = y_max - y_min;
+  float zoom = 2*width()/dx;
+  if (2*height()/dy < zoom)
+  {
+    zoom = 2*height()/dy;
+  }
+  setZoom(zoom);
+
+  origin.setX(0.5*(x_max + x_min));
+  origin.setY(0.5*(y_max + y_min));
+
 }
 
 float OpenGlWidget::getZoom() { return processor->get_zoom(); }
@@ -517,8 +592,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
   float lightWidth = (float)laigter.width() * 0.25; // en paintgl la imagen la escalamos por 0.25
   float lightHeight = (float)laigter.height() * 0.25;
-  float mouseX = ((float)event->localPos().x() * 2 - width()) / m_global_zoom;
-  float mouseY = (-(float)event->localPos().y() * 2 + height()) / m_global_zoom;
+  float mouseX = ((float)event->localPos().x() * 2 - width() ) / m_global_zoom + origin.x();
+  float mouseY = (-(float)event->localPos().y() * 2 + height() ) / m_global_zoom + origin.y();
 
   if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
   {
@@ -652,8 +727,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
-  float mouseX = ((float)event->localPos().x() * 2 - width()) / m_global_zoom;
-  float mouseY = (-(float)event->localPos().y() * 2 + height()) / m_global_zoom;
+  float mouseX = ((float)event->localPos().x() * 2 - width() ) / m_global_zoom + origin.x();
+  float mouseY = (-(float)event->localPos().y() * 2 + height() ) / m_global_zoom + origin.y();
   QVector3D newLightPos(mouseX, mouseY, currentLight->get_height());
 
   if (addLight)
