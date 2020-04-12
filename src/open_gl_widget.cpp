@@ -35,7 +35,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8;
-  lightPosition = QVector3D(900.0, 500.0, 0.3);
+  lightPosition = QVector3D(500.0, 300.0, 0.3);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03;
@@ -432,7 +432,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 
 void OpenGlWidget::setZoom(float zoom)
 {
-  processor->set_zoom(zoom);
+  m_global_zoom = zoom;
   need_to_update = true;
 }
 
@@ -466,7 +466,7 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
   if (!degree.isNull() && degree.y() != 0)
   {
     QPoint step = degree / qAbs(degree.y());
-    m_global_zoom *= step.y() > 0 ?  1.1 * step.y() :  -0.9 * step.y();
+    setZoom(step.y() > 0 ?  m_global_zoom * 1.1 * step.y() :  -m_global_zoom * 0.9 * step.y());
   }
 
   need_to_update = true;
@@ -475,7 +475,6 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 void OpenGlWidget::resetZoom()
 {
   setZoom(1.0);
-  processor->set_position(QVector3D(0, 0, 0));
 }
 
 void OpenGlWidget::fitZoom()
