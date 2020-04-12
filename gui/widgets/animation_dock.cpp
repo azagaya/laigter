@@ -18,8 +18,13 @@ AnimationDock::~AnimationDock()
 
 void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
+ // if (m_current_processor != nullptr)
+  {
+    disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+    disconnect(ui->listWidget, SIGNAL(currentRowChanged(int)), m_current_processor, SLOT(set_current_frame_id(int)));
+  }
+
   m_current_processor = p;
-  ui->listWidget->setCurrentRow(p->get_current_frame_id());
   ui->playButton->setChecked(p->animation.isActive());
   for (int i = 0; i < ui->listWidget->count(); i++) {
     delete ui->listWidget->item(i);
@@ -34,18 +39,18 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
     ui->listWidget->addItem(item);
 
   }
-  if (m_current_processor)
-  {
-    disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
-    disconnect(ui->listWidget, SIGNAL(currentRowChanged(int)), m_current_processor, SLOT(set_current_frame_id(int)));
-  }
+
+  ui->listWidget->setCurrentRow(p->get_current_frame_id());
+  ui->fpsSpinBox->setValue(1/(p->animation.interval()/1000.0));
+
   connect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   connect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
+
 }
 
 void AnimationDock::updateProcessorFrame(int index)
 {
-  if (index >= 0 && index < m_current_processor->frames.count())
+  if (index >= 0 && index < m_current_processor->frames.count() && ui->listWidget->selectedItems().count() > 0)
   {
     m_current_processor->set_current_frame_id(index);
   }

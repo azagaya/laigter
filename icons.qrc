@@ -23,5 +23,8 @@
         <file>icons/save.png</file>
         <file>icons/save_as.png</file>
         <file>icons/close.png</file>
+        <file>icons/play.png</file>
+        <file>icons/right.png</file>
+        <file>icons/left.png</file>
     </qresource>
 </RCC>
