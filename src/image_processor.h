@@ -301,7 +301,7 @@ public slots:
   void reset_neighbours();
   void set_connected(bool c);
   void set_current_frame_id(int id);
-  void set_current_heightmap();
+  void set_current_heightmap(int id);
   void set_is_parallax(bool p);
   void set_light_list(QList<LightSource *> &list);
   void set_normal_bisel_blur_radius(int radius);

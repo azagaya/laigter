@@ -171,8 +171,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image)
   return 0;
 }
 
-void ImageProcessor::set_current_heightmap()
+void ImageProcessor::set_current_heightmap(int id)
 {
+  Sprite *current_frame = &frames[id];
   if (tileable)
     current_frame->get_image(TextureTypes::Neighbours, &heightmap);
   else
@@ -186,7 +187,7 @@ void ImageProcessor::set_current_heightmap()
 
 void ImageProcessor::calculate()
 {
-  set_current_heightmap();
+  set_current_heightmap(current_frame_id);
   calculate_distance();
   calculate_heightmap();
   generate_normal_map();
@@ -669,7 +670,7 @@ Mat ImageProcessor::modify_occlusion()
   Mat m;
 
   QMutexLocker locker(&heightmap_mutex);
-  set_current_heightmap();
+  set_current_heightmap(current_frame_id);
   m_occlusion.copyTo(m);
 
   if (occlusion_invert)
@@ -720,7 +721,7 @@ Mat ImageProcessor::modify_parallax()
   Mat d;
 
   QMutexLocker locker(&heightmap_mutex);
-  set_current_heightmap();
+  set_current_heightmap(current_frame_id);
   int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
   Mat shape = getStructuringElement(MORPH_RECT,
                                     Size(abs(parallax_erode_dilate) * 2 + 1,
@@ -872,14 +873,11 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   if (updateDistance)
     distance_requested=1;
 
-  int frame = current_frame_id;
-
   for (int i = 0; i < frames.count(); i++)
   {
     if (update_tileable || frames.count() > 1 )
     {
-      set_current_frame_id(i);
-      set_current_heightmap();
+      set_current_heightmap(i);
       calculate_heightmap();
       calculate_distance();
     }
@@ -974,7 +972,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   if (bump_requested)
     bump_requested--;
 
-  set_current_frame_id(frame);
   processed();
   normal_mutex.unlock();
 }
@@ -1538,9 +1535,10 @@ void ImageProcessor::set_current_frame_id(int id)
   current_frame_id = id;
   current_frame->get_image(TextureTypes::Diffuse, &texture);
 
-  frameChanged(id);
 
+  frameChanged(id);
   processed();
+
 }
 
 Sprite *ImageProcessor::get_current_frame() { return current_frame; }
@@ -1561,7 +1559,8 @@ void ImageProcessor::next_frame()
       {
         if (occlusion_mutex.tryLock())
         {
-          set_current_frame_id((current_frame_id + 1) % frames.count());
+          int id = (current_frame_id + 1) % frames.count();
+          set_current_frame_id(id);
           occlusion_mutex.unlock();
         }
         parallax_mutex.unlock();
