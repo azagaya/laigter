@@ -61,11 +61,13 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       ImageProcessor *p = new ImageProcessor;
       p->set_name(processor_name);
       /* Read Diffuse image. Maps are calculated when settings applied */
-      QImage diffuse;
-      data.clear();
+
+
       QJsonArray frames = p_json.value("frames").toArray();
       for (int j = 0; j < frames.count(); j++)
       {
+        data.clear();
+        QImage diffuse;
         QJsonObject frame = frames.at(j).toObject();
         QString diffuse_path = frame.value("diffuse").toString();
         zip_entry_open(zip, diffuse_path.toUtf8());
@@ -132,26 +134,26 @@ bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObje
     {
       QJsonObject frame_json;
       frame_json.insert("id", i);
-      p->set_current_frame_id(i);
-      Sprite *s = p->get_current_frame();
+      Sprite s;
+      s = p->frames[i];
       QString name;
-      QImage texture;
       bool save = true;
       for (int i = 0; i < types.count(); i++)
       {
-        s->get_image((TextureTypes)i, &texture);
+        QImage texture;
+        s.get_image((TextureTypes)i, &texture);
         switch ((TextureTypes)i)
         {
           case TextureTypes::Heightmap:
           {
-            name = s->heightmapPath;
+            name = s.heightmapPath;
             save = name != "";
             break;
           }
 
           case TextureTypes::SpecularBase:
           {
-            name = s->specularPath;
+            name = s.specularPath;
             save = name != "";
             break;
           }
@@ -164,7 +166,7 @@ bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObje
 
           default:
           {
-            name = s->fileName;
+            name = s.fileName;
             break;
           }
         }
