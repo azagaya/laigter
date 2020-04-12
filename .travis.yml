@@ -15,6 +15,8 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+  - mkdir -p appdir/usr/share/applications/
+  - wget --output-document="appdir/usr/share/applications/laigter.desktop" "https://github.com/azagaya/laigter/blob/master/dist/io.itch.azagaya.Laigter.desktop"
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   # export VERSION=... # linuxdeployqt uses this for naming the file
