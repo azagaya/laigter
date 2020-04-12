@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get -y install qt512base qt512x11extras qt512tools libgl1-mesa-dev libopencv-dev 
+  - sudo apt-get -y install qt514base qt514x11extras qt514tools libgl1-mesa-dev libopencv-dev 
   - source /opt/qt*/bin/qt*-env.sh
 
 script:
