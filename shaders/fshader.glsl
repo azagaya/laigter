@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 #define DIFFUSE 0
 
 struct lightSource
@@ -107,12 +107,12 @@ void main()
 
   vec4 tex = texture2D(diffuse, texCoords);
 
-  bool blend = 1;
+  bool blend = true;
 
   if (view_mode == 0)
   {
     gl_FragColor = texture2D(diffuse, texCoords);
-    blend = 0;
+    blend = false;
   }
   else if (view_mode == 1)
   {
@@ -132,7 +132,7 @@ void main()
   }
   else if (view_mode == 5)
   {
-    blend = 0;
+    blend = false;
     vec3 normal =
         normalize(
           vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) *
@@ -178,7 +178,7 @@ void main()
   if (blend)
   {
     float src_a = tex.a * blend_factor;
-    gl_FragColor = (tex*src_a + gl_FragColor*(1-src_a));
+    gl_FragColor = (tex*src_a + gl_FragColor*(1.0-src_a));
   }
 }
 
