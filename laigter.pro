@@ -106,7 +106,7 @@ unix{
     shortcutfiles.path = $$PREFIX/share/applications/
     iconfiles.files = dist/laigter.png
     iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/
-    appdatafiles.files = $$PREFIX/dist/laigter.appdata.xlm
+    appdatafiles.files = dist/laigter.appdata.xlm
     appdatafiles.path = $$PREFIX/share/metainfo
 
     INSTALLS += target
