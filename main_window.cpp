@@ -159,6 +159,7 @@ MainWindow::MainWindow(QWidget *parent)
   animation_dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
   animation_dock->setObjectName("AnimationDock");
   addDockWidget(Qt::BottomDockWidgetArea, animation_dock);
+  animation_dock->setVisible(false);
 
   QSettings settings("Azagaya", "Laigter");
   restoreGeometry(settings.value("geometry").toByteArray());
