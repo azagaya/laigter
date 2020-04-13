@@ -4,7 +4,5 @@ English	GB.png	en
 Español	ES.png	es
 Français	FR.png	fr
 Português brasileiro	BR.png	pt_BR
+Türkçe	TR.png	tr
 ελληνικά	GR.png	el
-
-
-
