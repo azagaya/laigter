@@ -75,41 +75,46 @@
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="263"/>
-        <source>Manolis Papadeas (Overloaded) - Greek</source>
+        <source>Muhammed Altaş - Turkish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="268"/>
+        <source>Manolis Papadeas (Overloaded) - Greek</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/about_dialog.ui" line="273"/>
         <source>Hugo Locurcio (Calinou) - French</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="273"/>
+        <location filename="../gui/about_dialog.ui" line="278"/>
         <source>George Marques (vnen) - Brazilian Portuguese</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="278"/>
+        <location filename="../gui/about_dialog.ui" line="283"/>
         <source>Xavier Gómez (hiulit) - Catalán</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="283"/>
+        <location filename="../gui/about_dialog.ui" line="288"/>
         <source>Lars Pontoppidan (Larpon) - Danish</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="288"/>
+        <location filename="../gui/about_dialog.ui" line="293"/>
         <source>Azagaya - English and Spanish</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="297"/>
+        <location filename="../gui/about_dialog.ui" line="302"/>
         <source>Acknowledgements</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="303"/>
+        <location filename="../gui/about_dialog.ui" line="308"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
