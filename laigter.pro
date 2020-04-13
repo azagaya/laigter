@@ -95,10 +95,24 @@ FORMS += \
 	main_window.ui \
 	gui/nb_selector.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = $$PREFIX/bin
-!isEmpty(target.path): INSTALLS += target
+unix{
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+
+    target.path = $$PREFIX/bin
+
+    shortcutfiles.files = dist/laigter.desktop
+    shortcutfiles.path = $$PREFIX/share/applications/
+    iconfiles.files = dist/laigter.png
+    iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/
+    appdatafiles.files = $$PREFIX/dist/laigter.appdata.xlm
+    appdatafiles.path = $$PREFIX/share/metainfo
+
+    INSTALLS += shortcutfiles
+    INSTALLS += iconfiles
+    INSTALLS += appdatafiles
+}
 
 unix {
 	CONFIG += link_pkgconfig

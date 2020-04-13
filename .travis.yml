@@ -15,10 +15,6 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
-  - mkdir -p appdir/usr/share/applications/
-  - mkdir -p appdir/usr/share/icons/hicolor/256x256/apps/
-  - cp dist/io.itch.azagaya.Laigter.desktop appdir/usr/share/applications/laigter.desktop # FIXME: Let the .pro file do this
-  - cp images/laigter_icon.png appdir/usr/share/icons/hicolor/256x256/apps/laigter.png # FIXME: Let the .pro file do this
   - find appdir/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
@@ -32,3 +28,4 @@ branches:
   except:
     - # Do not build tags that we create when we upload to GitHub Releases
     - /^(?i:continuous)/
+
