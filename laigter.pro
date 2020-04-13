@@ -109,6 +109,7 @@ unix{
     appdatafiles.files = $$PREFIX/dist/laigter.appdata.xlm
     appdatafiles.path = $$PREFIX/share/metainfo
 
+    INSTALLS += target
     INSTALLS += shortcutfiles
     INSTALLS += iconfiles
     INSTALLS += appdatafiles
