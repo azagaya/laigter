@@ -1,15 +1,14 @@
-image: Visual Studio 2019
 branches:
   only:
     - master
 
 install:
-  - set QTDIR=C:\Qt\5.14.1\mingw73_64
+  - set QTDIR=C:\Qt\5.13.2\mingw73_32
   - choco install -y InnoSetup
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
 build_script:
   - qmake laigter.pro
-  - mingw64-make
+  - mingw32-make
 after_build:
   - windeployqt release/laigter.exe
   - cmd: cp LICENSE release/LICENSE.txt"
@@ -18,6 +17,6 @@ after_build:
   - rm release/*.cpp
 
 artifacts:
-  - path: Output\laigter-*.exe 
+  - path: Output\laigter-*.exe
   - path: release
     type: zip
