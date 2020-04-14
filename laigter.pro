@@ -155,6 +155,7 @@ TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
+message($$LRELEASE)
 for(tsfile, TRANSLATIONS) {
 	qmfile = $$tsfile
 	qmfile ~= s,.ts$,.qm,
