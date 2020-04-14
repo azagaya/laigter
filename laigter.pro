@@ -126,6 +126,7 @@ DISTFILES += \
 	ACKNOWLEDGEMETS \
 	LICENSE
 
+unix{
 TRANSLATIONS = translations/laigter_da.ts \
 	translations/laigter_es.ts \
 	translations/laigter_en.ts \
@@ -150,13 +151,11 @@ defineReplace(prependAll) {
 		return($$result)
 }
 
-unix{
 TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 
 TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
-message($$LRELEASE)
 for(tsfile, TRANSLATIONS) {
         qmfile = $$tsfile
         qmfile ~= s,.ts$,.qm,
