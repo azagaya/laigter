@@ -6,7 +6,7 @@
     <message>
         <location filename="../gui/aboutdialog.ui" line="14"/>
         <source>About</source>
-        <translation>について</translation>
+        <translation>概要</translation>
     </message>
     <message>
         <location filename="../gui/aboutdialog.ui" line="27"/>
@@ -26,7 +26,7 @@
     <message>
         <location filename="../gui/aboutdialog.ui" line="199"/>
         <source>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</source>
-        <translation>パトリック &quot;Ffyhlkain&quot; ヘンシェル (!)</translation>
+        <translation>パトリック &quot;Ffyhlkain&quot; ヘンシェル (プロヂューサー!)</translation>
     </message>
     <message>
         <location filename="../gui/aboutdialog.ui" line="204"/>
@@ -61,12 +61,12 @@
     <message>
         <location filename="../gui/aboutdialog.ui" line="242"/>
         <source>George Marques (vnen) - Translation load</source>
-        <translation>ジョージ・マルケー (vmen) - 翻訳の読み込みの処理を実装</translation>
+        <translation>ジョージ・マルケー (vmen) - 翻訳の読み込み処理を実装</translation>
     </message>
     <message>
         <location filename="../gui/aboutdialog.ui" line="247"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
-        <translation>ブランドんブランカー Lim-it - イメージ変更の際　自動読み込みの処理を実装</translation>
+        <translation>ブランドんブランカー Lim-it - イメージ変更の際　自動読み込み処理を実装</translation>
     </message>
     <message>
         <location filename="../gui/aboutdialog.ui" line="256"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../gui/aboutdialog.ui" line="288"/>
         <source>Azagaya - English and Spanish</source>
-        <translation>アザガヤ - 英語とスペイン語</translation>
+        <translation>アザガヤ - 英語、スペイン語</translation>
     </message>
     <message>
         <location filename="../gui/aboutdialog.ui" line="297"/>
@@ -1197,7 +1197,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="856"/>
         <source>Quantization:</source>
-        <translation></translation>
+        <translation>量子化</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="869"/>
@@ -1300,7 +1300,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="1506"/>
         <source>Export to...</source>
-        <translation>...にエクスポート</translation>
+        <translation>...としてエクスポート</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1534"/>
@@ -1317,7 +1317,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow.ui" line="1568"/>
         <location filename="../mainwindow.ui" line="1571"/>
         <source>Fit Zoom</source>
-        <translation></translation>
+        <translation>ズームを合わせる</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1580"/>
@@ -1327,12 +1327,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="1589"/>
         <source>Zoom +</source>
-        <translation>ズーム +</translation>
+        <translation>ズーム+</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1598"/>
         <source>Zoom -</source>
-        <translation></translation>
+        <translation>ズーム-</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1619"/>
@@ -1343,13 +1343,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow.ui" line="1628"/>
         <location filename="../mainwindow.ui" line="1631"/>
         <source>Export Preview</source>
-        <translation>エクスポートプレビュー</translation>
+        <translation>プレビューをエクスポート</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1640"/>
         <location filename="../mainwindow.ui" line="1643"/>
         <source>About</source>
-        <translation>について</translation>
+        <translation>概要</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1655"/>
@@ -1382,7 +1382,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow.cpp" line="187"/>
         <location filename="../mainwindow.cpp" line="257"/>
         <source>Reset heightmap</source>
-        <translation>ハイとマップをリセット</translation>
+        <translation>ハイトマップをリセット</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="189"/>
@@ -1424,13 +1424,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow.cpp" line="201"/>
         <location filename="../mainwindow.cpp" line="299"/>
         <source>Stop Animation</source>
-        <translation>アニメーションを停止</translation>
+        <translation>アニメーションの停止</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="206"/>
         <location filename="../mainwindow.cpp" line="301"/>
         <source>Start Animation</source>
-        <translation>アニメーションを開始</translation>
+        <translation>アニメーションの開始</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="245"/>
@@ -1456,7 +1456,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.cpp" line="420"/>
         <source>Unsupported or incorrect format.</source>
-        <translation>非対応の形式</translation>
+        <translation>非対応のフォーマット</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1435"/>
@@ -1580,7 +1580,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/nbselector.ui" line="462"/>
         <source>Empty Neighbours</source>
-        <translation>ネイバーを空にする</translation>
+        <translation>ネイバーをクリアする</translation>
     </message>
     <message>
         <location filename="../gui/nbselector.cpp" line="61"/>
@@ -1608,7 +1608,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/nbselector.cpp" line="165"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
         <oldsource>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</oldsource>
-        <translation></translation>
+        <translation>イメージファイル (*.png *.jpg *.bmp *.tga)</translation>
     </message>
 </context>
 <context>
@@ -1617,12 +1617,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presetsmanager.ui" line="33"/>
         <source>Apply preset:</source>
         <oldsource>Aplicar Preset:</oldsource>
-        <translation></translation>
+        <translation>プリセットを適用:</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.ui" line="45"/>
         <source>Preset:</source>
-        <translation></translation>
+        <translation>プリセット:</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.ui" line="74"/>
@@ -1719,7 +1719,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presetsmanager.ui" line="342"/>
         <source>8</source>
-        <translation></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.ui" line="355"/>
@@ -1778,7 +1778,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presetsmanager.ui" line="448"/>
         <source>12</source>
-        <translation></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.ui" line="14"/>
@@ -1932,7 +1932,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presetsmanager.ui" line="595"/>
         <source>23</source>
-        <translation></translation>
+        <translation>23</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.ui" line="606"/>
@@ -1999,7 +1999,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presetsmanager.cpp" line="209"/>
         <source>Cannot open the specified preset.</source>
-        <translation>選択されたプリセットを開くことが出来ません。</translation>
+        <translation>選択されたプリセットを開くことができません。</translation>
     </message>
     <message>
         <location filename="../gui/presetsmanager.cpp" line="216"/>
@@ -2020,7 +2020,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presetsmanager.cpp" line="284"/>
         <source>There is already a preset with that name.</source>
-        <translation>同じ名を持つプリセットは既に存在しています.</translation>
+        <translation>同じ名を持つプリセットは既に存在しています。</translation>
     </message>
 </context>
 <context>
