@@ -150,23 +150,23 @@ defineReplace(prependAll) {
 		return($$result)
 }
 
-TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
+#TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 
-TRANSLATIONS_FILES =
+#TRANSLATIONS_FILES =
 
-qtPrepareTool(LRELEASE, lrelease)
-message($$LRELEASE)
-for(tsfile, TRANSLATIONS) {
-	qmfile = $$tsfile
-	qmfile ~= s,.ts$,.qm,
-	qmdir = $$dirname(qmfile)
-	!exists($$qmdir) {
-		mkpath($$qmdir)|error("Aborting.")
-	}
-	command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
-	system($$command)|error("Failed to run: $$command")
-	TRANSLATIONS_FILES += $$qmfile
-}
+#qtPrepareTool(LRELEASE, lrelease)
+#message($$LRELEASE)
+#for(tsfile, TRANSLATIONS) {
+#	qmfile = $$tsfile
+#	qmfile ~= s,.ts$,.qm,
+#	qmdir = $$dirname(qmfile)
+#	!exists($$qmdir) {
+#		mkpath($$qmdir)|error("Aborting.")
+#	}
+#	command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
+#	system($$command)|error("Failed to run: $$command")
+#	TRANSLATIONS_FILES += $$qmfile
+#}
 
 RESOURCES += \
 	shaders.qrc \
