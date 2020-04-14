@@ -14,6 +14,7 @@ configuration: Release
 
 install:
   - choco install -y InnoSetup
+  - choco install opencv
   - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
 
 build_script:
