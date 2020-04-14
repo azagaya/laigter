@@ -126,7 +126,6 @@ DISTFILES += \
 	ACKNOWLEDGEMETS \
 	LICENSE
 
-unix{
 TRANSLATIONS = translations/laigter_da.ts \
 	translations/laigter_es.ts \
 	translations/laigter_en.ts \
@@ -167,7 +166,7 @@ for(tsfile, TRANSLATIONS) {
         system($$command)|error("Failed to run: $$command")
         TRANSLATIONS_FILES += $$qmfile
 }
-}
+
 RESOURCES += \
 	shaders.qrc \
 	images.qrc \
