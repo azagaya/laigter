@@ -155,6 +155,9 @@ TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
+win32 {
+  replace($$LRELEASE, "/", "\\")
+}
 for(tsfile, TRANSLATIONS) {
         qmfile = $$tsfile
         qmfile ~= s,.ts$,.qm,
@@ -162,7 +165,11 @@ for(tsfile, TRANSLATIONS) {
         !exists($$qmdir) {
                 mkpath($$qmdir)|error("Aborting.")
         }
+
         command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
+        win32 {
+          replace($$command, "/", "\\")
+        }
         system($$command)|error("Failed to run: $$command")
         TRANSLATIONS_FILES += $$qmfile
 }
