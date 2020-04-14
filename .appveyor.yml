@@ -1,6 +1,10 @@
 clone_depth: 200
 version: '1.9.{build}'
 
+branches:
+  only:
+    - master
+
 environment:
   matrix:
     - QTDIR: C:\Qt\5.12\mingw73_64
