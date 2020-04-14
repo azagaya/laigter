@@ -188,7 +188,7 @@ win32: LIBS += C:\tools\opencv\install\x64\mingw\bin\libopencv_imgcodecs320.dll
 
 win32: INCLUDEPATH += C:\tools\opencv\build\include
 
-win32: RC_ICONS = icons\laigter-icon.ico
+win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter-icon.icns
 
 
