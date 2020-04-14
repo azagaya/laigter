@@ -1279,7 +1279,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../main_window.ui" line="1740"/>
-        <location filename="../main_window.cpp" line="1554"/>
+        <location filename="../main_window.cpp" line="1555"/>
         <source>Load Plugins</source>
         <translation>Cargar Plugins</translation>
     </message>
@@ -1291,20 +1291,20 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1755"/>
         <location filename="../main_window.ui" line="1758"/>
-        <location filename="../main_window.cpp" line="1554"/>
+        <location filename="../main_window.cpp" line="1555"/>
         <source>Install Plugin</source>
         <translation>Instalar Plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1770"/>
         <location filename="../main_window.ui" line="1773"/>
-        <location filename="../main_window.cpp" line="1554"/>
+        <location filename="../main_window.cpp" line="1555"/>
         <source>Delete Plugin</source>
         <translation>Eliminar Plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1778"/>
-        <location filename="../main_window.cpp" line="1712"/>
+        <location filename="../main_window.cpp" line="1713"/>
         <source>Languages</source>
         <translation>Lenguajes</translation>
     </message>
@@ -1427,126 +1427,126 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Clic izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Clic derecho para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="211"/>
+        <location filename="../main_window.cpp" line="212"/>
         <source>Context menu</source>
         <translation>Menú Contextual</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="212"/>
-        <location filename="../main_window.cpp" line="292"/>
+        <location filename="../main_window.cpp" line="213"/>
+        <location filename="../main_window.cpp" line="293"/>
         <source>Remove</source>
         <translation>Quitar</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="214"/>
-        <location filename="../main_window.cpp" line="310"/>
+        <location filename="../main_window.cpp" line="215"/>
+        <location filename="../main_window.cpp" line="311"/>
         <source>Load heightmap</source>
         <translation>Cargar mapa de altura</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="215"/>
-        <location filename="../main_window.cpp" line="328"/>
+        <location filename="../main_window.cpp" line="216"/>
+        <location filename="../main_window.cpp" line="329"/>
         <source>Reset heightmap</source>
         <translation>Reiniciar mapa de altura</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="217"/>
-        <location filename="../main_window.cpp" line="336"/>
+        <location filename="../main_window.cpp" line="218"/>
+        <location filename="../main_window.cpp" line="337"/>
         <source>Load specular map</source>
         <translation>Cargar mapa especular</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="218"/>
-        <location filename="../main_window.cpp" line="353"/>
+        <location filename="../main_window.cpp" line="219"/>
+        <location filename="../main_window.cpp" line="354"/>
         <source>Reset specular map</source>
         <translation>Reiniciar mapa especular</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="220"/>
-        <location filename="../main_window.cpp" line="362"/>
+        <location filename="../main_window.cpp" line="221"/>
+        <location filename="../main_window.cpp" line="363"/>
         <source>Add new frames</source>
         <translation>Agregar nuevos fotogramas</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="225"/>
-        <location filename="../main_window.cpp" line="391"/>
+        <location filename="../main_window.cpp" line="226"/>
+        <location filename="../main_window.cpp" line="392"/>
         <source>Remove current frame</source>
         <translation>Quitar fotograma actual</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="226"/>
-        <location filename="../main_window.cpp" line="387"/>
+        <location filename="../main_window.cpp" line="227"/>
+        <location filename="../main_window.cpp" line="388"/>
         <source>Next Frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="227"/>
-        <location filename="../main_window.cpp" line="389"/>
+        <location filename="../main_window.cpp" line="228"/>
+        <location filename="../main_window.cpp" line="390"/>
         <source>Previous Frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="231"/>
-        <location filename="../main_window.cpp" line="383"/>
+        <location filename="../main_window.cpp" line="232"/>
+        <location filename="../main_window.cpp" line="384"/>
         <source>Stop Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="237"/>
-        <location filename="../main_window.cpp" line="385"/>
+        <location filename="../main_window.cpp" line="238"/>
+        <location filename="../main_window.cpp" line="386"/>
         <source>Start Animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="247"/>
-        <location filename="../main_window.cpp" line="396"/>
+        <location filename="../main_window.cpp" line="248"/>
+        <location filename="../main_window.cpp" line="397"/>
         <source>Split in frames</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="313"/>
-        <location filename="../main_window.cpp" line="339"/>
-        <location filename="../main_window.cpp" line="365"/>
-        <location filename="../main_window.cpp" line="432"/>
-        <source>Open Image</source>
-        <translation>Abrir Imagen</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="314"/>
         <location filename="../main_window.cpp" line="340"/>
         <location filename="../main_window.cpp" line="366"/>
-        <location filename="../main_window.cpp" line="432"/>
+        <location filename="../main_window.cpp" line="433"/>
+        <source>Open Image</source>
+        <translation>Abrir Imagen</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="315"/>
+        <location filename="../main_window.cpp" line="341"/>
+        <location filename="../main_window.cpp" line="367"/>
+        <location filename="../main_window.cpp" line="433"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
         <translation>Archivo de Imagen (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="541"/>
+        <location filename="../main_window.cpp" line="542"/>
         <source>Cannot open </source>
         <translation>No se puede abrir </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="542"/>
+        <location filename="../main_window.cpp" line="543"/>
         <source>Unsupported or incorrect format.</source>
         <translation>Formato incorrecto o no soportado.</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="974"/>
+        <location filename="../main_window.cpp" line="975"/>
         <source>All selected maps were exported.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1738"/>
+        <location filename="../main_window.cpp" line="1739"/>
         <source>Open Laigter Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1739"/>
+        <location filename="../main_window.cpp" line="1740"/>
         <source>Project File (*.laigter)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1854"/>
+        <location filename="../main_window.cpp" line="1855"/>
         <source>Image File (*.laigter)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1555,83 +1555,83 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">La imagen ya se encuentra abierta en Laigter.</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="582"/>
-        <location filename="../main_window.cpp" line="1326"/>
-        <location filename="../main_window.cpp" line="1854"/>
+        <location filename="../main_window.cpp" line="583"/>
+        <location filename="../main_window.cpp" line="1327"/>
+        <location filename="../main_window.cpp" line="1855"/>
         <source>Save Image</source>
         <translation>Guardar Imagen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="582"/>
-        <location filename="../main_window.cpp" line="1326"/>
+        <location filename="../main_window.cpp" line="583"/>
+        <location filename="../main_window.cpp" line="1327"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
         <translation>Archivo de Imagen (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="603"/>
+        <location filename="../main_window.cpp" line="604"/>
         <source>Normal map was exported.
 </source>
         <translation>Se exportó el mapa normal.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="611"/>
+        <location filename="../main_window.cpp" line="612"/>
         <source>Parallax map was exported.
 </source>
         <translation>Se exportó el mapa de paralaje.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="619"/>
+        <location filename="../main_window.cpp" line="620"/>
         <source>Specular map was exported.
 </source>
         <translation>Se exportó el mapa especular.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="628"/>
+        <location filename="../main_window.cpp" line="629"/>
         <source>Occlussion map was exported.
 </source>
         <translation>Se exportó el mapa de oclusión.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="637"/>
+        <location filename="../main_window.cpp" line="638"/>
         <source>Preview was exported.
 </source>
         <translation>Se exportó la vista previa.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1118"/>
+        <location filename="../main_window.cpp" line="1119"/>
         <source>All normal maps were exported.
 </source>
         <translation>Todos los mapas normales fueron exportados.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1136"/>
+        <location filename="../main_window.cpp" line="1137"/>
         <source>All parallax maps were exported.
 </source>
         <translation>Todos los mapas de paralaje fueron exportados.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1154"/>
+        <location filename="../main_window.cpp" line="1155"/>
         <source>All specular maps were exported.
 </source>
         <translation>Todos los mapas especulares fueron exportados.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1172"/>
+        <location filename="../main_window.cpp" line="1173"/>
         <source>All occlussion maps were exported.
 </source>
         <translation>Todos los mapas de oclusión fueron exportados.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1178"/>
+        <location filename="../main_window.cpp" line="1179"/>
         <source>All previews were exported.
 </source>
         <translation>Todas las vistas previas fueron exportadas.
@@ -1662,24 +1662,24 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Un mapa de altura personalizado ha sido modificado</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1629"/>
-        <location filename="../main_window.cpp" line="1632"/>
-        <location filename="../main_window.cpp" line="1635"/>
+        <location filename="../main_window.cpp" line="1630"/>
+        <location filename="../main_window.cpp" line="1633"/>
+        <location filename="../main_window.cpp" line="1636"/>
         <source>Open Plugin</source>
         <translation>Abrir Plugin</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1629"/>
+        <location filename="../main_window.cpp" line="1630"/>
         <source>Shared Library (*.so)</source>
         <translation>Biblioteca Compartida (*.so)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1632"/>
+        <location filename="../main_window.cpp" line="1633"/>
         <source>Shared Library (*.dll)</source>
         <translation>Biblioteca Compartida (*.dll)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1635"/>
+        <location filename="../main_window.cpp" line="1636"/>
         <source>Shared Library (*.dylib)</source>
         <translation>Biblioteca Compartida (*.dylib)</translation>
     </message>
