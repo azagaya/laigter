@@ -22,7 +22,7 @@ install:
   - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
 
 build_script:
-  - dir C:\tools\ /s
+  - dir C:\tools\opencv /s /b
   - qmake laigter.pro
   - mingw32-make
 
