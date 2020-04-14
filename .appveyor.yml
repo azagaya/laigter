@@ -22,6 +22,7 @@ install:
   - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
 
 build_script:
+  - dir C:\tools\ /s
   - qmake laigter.pro
   - mingw32-make
 
