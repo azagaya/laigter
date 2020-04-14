@@ -156,7 +156,7 @@ TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
 win32 {
-  LRELEASE=($$replace(LRELEASE, /, \\))
+  LRELEASE=$$replace(LRELEASE, /, \\)
 }
 for(tsfile, TRANSLATIONS) {
         qmfile = $$tsfile
@@ -168,7 +168,7 @@ for(tsfile, TRANSLATIONS) {
 
         command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
         win32 {
-          command = ($$replace(command, /, \\))
+          command = $$replace(command, /, \\)
         }
         system($$command)|error("Failed to run: $$command")
         TRANSLATIONS_FILES += $$qmfile
