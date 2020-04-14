@@ -1,9 +1,10 @@
+image: Visual Studio 2019
 branches:
   only:
     - master
 
 install:
-  - set QTDIR=C:\Qt\5.13.2\mingw73_64
+  - set QTDIR=C:\Qt\5.14.1\mingw73_64
   - choco install -y InnoSetup
   - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
 build_script:
