@@ -150,24 +150,25 @@ defineReplace(prependAll) {
 		return($$result)
 }
 
-#TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
+unix{
+TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 
-#TRANSLATIONS_FILES =
+TRANSLATIONS_FILES =
 
-#qtPrepareTool(LRELEASE, lrelease)
-#message($$LRELEASE)
-#for(tsfile, TRANSLATIONS) {
-#	qmfile = $$tsfile
-#	qmfile ~= s,.ts$,.qm,
-#	qmdir = $$dirname(qmfile)
-#	!exists($$qmdir) {
-#		mkpath($$qmdir)|error("Aborting.")
-#	}
-#	command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
-#	system($$command)|error("Failed to run: $$command")
-#	TRANSLATIONS_FILES += $$qmfile
-#}
-
+qtPrepareTool(LRELEASE, lrelease)
+message($$LRELEASE)
+for(tsfile, TRANSLATIONS) {
+        qmfile = $$tsfile
+        qmfile ~= s,.ts$,.qm,
+        qmdir = $$dirname(qmfile)
+        !exists($$qmdir) {
+                mkpath($$qmdir)|error("Aborting.")
+        }
+        command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
+        system($$command)|error("Failed to run: $$command")
+        TRANSLATIONS_FILES += $$qmfile
+}
+}
 RESOURCES += \
 	shaders.qrc \
 	images.qrc \
@@ -175,11 +176,11 @@ RESOURCES += \
 	translations.qrc \
 	icons.qrc
 
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_core320.dll
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgproc320.dll
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgcodecs320.dll
+win32: LIBS += C:\tools\opencv\install\x64\mingw\bin\libopencv_core320.dll
+win32: LIBS += C:\tools\opencv\install\x64\mingw\bin\libopencv_imgproc320.dll
+win32: LIBS += C:\tools\opencv\install\x64\mingw\bin\libopencv_imgcodecs320.dll
 
-win32: INCLUDEPATH += C:\opencv\build\include
+win32: INCLUDEPATH += C:\tools\opencv\build\include
 
 win32: RC_ICONS = icons\laigter-icon.ico
 mac: ICON = icons/laigter-icon.icns
