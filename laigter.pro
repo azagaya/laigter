@@ -142,7 +142,8 @@ LANGUAGES = da\
 	pt_BR \
 	ca_ES \
         el \
-        tr
+        tr \
+        jp
 
 # parameters: var, prepend, append
 defineReplace(prependAll) {

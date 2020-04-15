@@ -25,5 +25,8 @@
         <file>translations/laigter_tr.ts</file>
         <file>translations/flags/TR.png</file>
         <file>translations/laigter_tr.qm</file>
+        <file>translations/laigter_jp.ts</file>
+        <file>translations/flags/JP.png</file>
+        <file>translations/laigter_jp.qm</file>
     </qresource>
 </RCC>
