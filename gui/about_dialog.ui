@@ -185,7 +185,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -258,6 +258,11 @@
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
         <widget class="QListWidget" name="listWidget_3">
+         <item>
+          <property name="text">
+           <string>kusogaki77 (Japanese)</string>
+          </property>
+         </item>
          <item>
           <property name="text">
            <string>Muhammed Altaş - Turkish</string>
