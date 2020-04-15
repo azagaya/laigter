@@ -51,11 +51,15 @@ class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 
 public:
+  OpenGlWidget(QWidget *parent = nullptr);
   BrushInterface *currentBrush;
   ImageProcessor *processor;
   QList<LightSource *> *sampleLightList;
   bool need_to_update;
   int blend_factor = 0;
+  /* Public methods */
+  QPointF LocalToWorld(QPointF local);
+  QPointF LocalToView(QPointF local);
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;
@@ -88,9 +92,9 @@ private:
   float sx, sy, parallax_height;
   int pixelsX, pixelsY, pixelSize;
   int viewmode;
-
-public:
-  OpenGlWidget(QWidget *parent = nullptr);
+  void apply_light_params();
+  void select_current_light_list();
+  void select_light(LightSource *light);
 
 public slots:
   float getZoom();
@@ -162,10 +166,6 @@ protected:
   void resizeGL(int width, int height) override;
   void wheelEvent(QWheelEvent *event) override;
 
-private:
-  void apply_light_params();
-  void select_current_light_list();
-  void select_light(LightSource *light);
 };
 
 #endif // OPENGLWIDGET_H

@@ -134,10 +134,7 @@ void main()
   {
     blend = 0;
     vec3 normal =
-        normalize(
-          vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) *
-          rotationZ(rotation_angle))
-        .xyz;
+        normalize(vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) * rotationZ(rotation_angle)).xyz;
     vec3 specMap = texture2D(specularMap, texCoords).xyz;
     vec4 l_color = vec4(0.0);
     float occlusion = texture2D(occlussionMap, texCoords).x;
