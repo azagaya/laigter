@@ -82,6 +82,12 @@ private:
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;
   QVector3D origin = QVector3D(0,0,0);
+  QVector3D origin_offset = QVector3D(0,0,0);
+  QMatrix4x4 transform;
+  QMatrix4x4 model;
+  QMatrix4x4 view;
+  QMatrix4x4 projection;
+
   bool export_render, exportFullView, addLight;
   bool lightSelected;
   bool m_fullPreview, m_autosave;
