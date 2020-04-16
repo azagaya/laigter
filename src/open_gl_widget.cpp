@@ -199,7 +199,7 @@ void OpenGlWidget::update_scene()
   color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
   m_program.setUniformValue("outlineColor", color);
   m_program.setUniformValue("toon", m_toon);
-  m_program.setUniformValue("viewPos", QVector3D(-origin));
+  m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
 
@@ -435,7 +435,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 void OpenGlWidget::setZoom(float zoom)
 {
   m_global_zoom = zoom;
-  need_to_update = true;
+  updateView();
 }
 
 void OpenGlWidget::setTileX(bool x)
@@ -463,7 +463,7 @@ void OpenGlWidget::setParallax(bool p)
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
-//  QPointF mouse_position = LocalToWorld(event->position());
+  //  QPointF mouse_position = LocalToWorld(event->position());
   QPoint degree = event->angleDelta() / 8;
 
   if (!degree.isNull() && degree.y() != 0)
@@ -471,100 +471,120 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
     QPoint step = degree / qAbs(degree.y());
     double zoom = step.y() > 0 ?  1.1 * step.y() :  -0.9 * step.y();
     setZoom(zoom*m_global_zoom);
-/* TODO fixe zoom to mouse */
+    /* TODO fixe zoom to mouse */
 
-//    origin = QVector3D(mouse_position);
+    //    origin = QVector3D(mouse_position);
 
-//    qDebug() << "origin: " << origin;
+    //    qDebug() << "origin: " << origin;
   }
 
   updateView();
 }
 
 void OpenGlWidget::resetZoom()
-{
-  setZoom(1.0);
+{  
   origin = QVector3D(0,0,0);
+  setZoom(1.0);
 }
 
 void OpenGlWidget::fitZoom()
 {
-  QList<LightSource *> currentLightList;
-  if (sample_light_list_used)
-    currentLightList = *sampleLightList;
+  float x_min, x_max, y_min, y_max;
+
+  /* Only take into account lights if in preview mode */
+
+  if (viewmode == ViewMode::Preview)
+  {
+    QList<LightSource *> currentLightList;
+    if (sample_light_list_used)
+      currentLightList = *sampleLightList;
+    else
+    {
+      foreach (ImageProcessor *processor, processorList)
+      {
+        foreach (LightSource *l, *processor->get_light_list_ptr())
+          currentLightList.append(l);
+      }
+    }
+
+    x_min = currentLightList.at(0)->get_light_position().x();
+    x_max = x_min;
+    y_min = currentLightList.at(0)->get_light_position().y();
+    y_max = y_min;
+    /* Get min and max from lights positions */
+    foreach(LightSource *s, currentLightList)
+    {
+      float x = s->get_light_position().x();
+      float y = s->get_light_position().y();
+      if (x < x_min)
+      {
+        x_min = x;
+      }
+      if (x > x_max)
+      {
+        x_max = x;
+      }
+      if (y < y_min)
+      {
+        y_min = y;
+      }
+      if (y > y_max)
+      {
+        y_max = y;
+      }
+    }
+
+    /*
+   * Change the 0.125 if we change light icon size.
+   * It comes from the 0.25 texture scale times 0.5 for each side
+   */
+    x_min -= laigter.width()*0.125;
+    x_max += laigter.width()*0.125;
+    y_min -= laigter.height()*0.125;
+    y_max += laigter.height()*0.125;
+  }
   else
   {
-    foreach (ImageProcessor *processor, processorList)
-    {
-      foreach (LightSource *l, *processor->get_light_list_ptr())
-        currentLightList.append(l);
-    }
+    x_min = get_current_processor()->get_position()->x();
+    x_max = x_min;
+    y_min = get_current_processor()->get_position()->y();
+    y_max = y_min;
   }
-
-  float x_min, x_max, y_min, y_max;
-  x_min = currentLightList.at(0)->get_light_position().x();
-  x_max = x_min;
-  y_min = currentLightList.at(0)->get_light_position().y();
-  y_max = y_min;
-  /* Get min and max from lights positions */
-  foreach(LightSource *s, currentLightList)
-  {
-    float x = s->get_light_position().x();
-    float y = s->get_light_position().y();
-    if (x < x_min)
-    {
-      x_min = x;
-    }
-    else if (x > x_max)
-    {
-      x_max = x;
-    }
-    if (y < y_min)
-    {
-      y_min = y;
-    }
-    else if (y > y_max)
-    {
-      y_max = y;
-    }
-  }
-
-  x_min -= laigter.width();
-  x_max += laigter.width();
-  y_min -= laigter.height();
-  y_max += laigter.height();
-
   foreach(ImageProcessor *p, processorList)
   {
-    if (x_min > p->get_position()->x() - p->get_texture()->width())
+    float w = p->get_texture()->width()/2.0;
+    float h = p->get_texture()->height()/2.0;
+    if (x_min > p->get_position()->x() - w)
     {
-      x_min = p->get_position()->x() - p->get_texture()->width();
+      x_min = p->get_position()->x() - w;
     }
-    else if (x_max < p->get_position()->x() + p->get_texture()->width() )
+    if (x_max < p->get_position()->x() + w)
     {
-      x_max = p->get_position()->x() + p->get_texture()->width();
+      x_max = p->get_position()->x() + w;
     }
-    if (y_min > p->get_position()->y() - p->get_texture()->height())
+    if (y_min > p->get_position()->y() - h)
     {
-      y_min = p->get_position()->y() - p->get_texture()->height();
+      y_min = p->get_position()->y() - h;
     }
-    else if (y_max < p->get_position()->y() + p->get_texture()->height() )
+    if (y_max < p->get_position()->y() + h )
     {
-      y_max = p->get_position()->y() + p->get_texture()->height();
+      y_max = p->get_position()->y() + h;
     }
   }
 
   float dx = x_max - x_min;
   float dy = y_max - y_min;
-  float zoom = 2*width()/dx;
-  if (2*height()/dy < zoom)
+  float zoom = width()/dx;
+  if (height()/dy < zoom)
   {
-    zoom = 2*height()/dy;
+    zoom = height()/dy;
   }
   setZoom(zoom);
 
-  origin.setX(0.5*(x_max + x_min));
-  origin.setY(0.5*(y_max + y_min));
+  origin.setX(-0.5*(x_max + x_min));
+  origin.setY(-0.5*(y_max + y_min));
+
+  updateView();
 
 }
 
