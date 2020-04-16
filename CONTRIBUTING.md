@@ -149,6 +149,8 @@ The following should be use:
 	}
 	```
 
+## NOTE: The stated guidelines are not applicable with files with extension of `.pro`
+
 Others are not yet defined. If you need to define them, open an issue
 and lets discuss about that!
 
