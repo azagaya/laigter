@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 #define DIFFUSE 0
 
 struct lightSource
@@ -60,6 +60,7 @@ uniform float height_scale;
 uniform float rotation_angle;
 uniform int pixelsX, pixelsY;
 uniform int view_mode;
+uniform float blend_factor;
 
 uniform vec3 outlineColor;
 
@@ -104,9 +105,14 @@ void main()
 
   texCoords *= ratio;
 
+  vec4 tex = texture2D(diffuse, texCoords);
+
+  bool blend = true;
+
   if (view_mode == 0)
   {
     gl_FragColor = texture2D(diffuse, texCoords);
+    blend = false;
   }
   else if (view_mode == 1)
   {
@@ -126,16 +132,14 @@ void main()
   }
   else if (view_mode == 5)
   {
-
+    blend = false;
     vec3 normal =
         normalize(
-            vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) *
-            rotationZ(rotation_angle))
-            .xyz;
+          vec4(texture2D(normalMap, texCoords).xyz * 2.0 - 1.0, 0.0) *
+          rotationZ(rotation_angle))
+        .xyz;
     vec3 specMap = texture2D(specularMap, texCoords).xyz;
     vec4 l_color = vec4(0.0);
-    vec4 tex = texture2D(diffuse, texCoords);
-
     float occlusion = texture2D(occlussionMap, texCoords).x;
 
     for (int i = 0; i < lightNum; i++)
@@ -166,9 +170,15 @@ void main()
       l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
     }
     l_color = tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity *
-                                   occlusion);
+                     occlusion);
     l_color.a = tex.a;
     gl_FragColor = l_color;
+  }
+
+  if (blend)
+  {
+    float src_a = tex.a * blend_factor;
+    gl_FragColor = (tex*src_a + gl_FragColor*(1.0-src_a));
   }
 }
 
@@ -218,7 +228,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
   // get depth after and before collision for linear interpolation
   float afterDepth = currentDepthMapValue - currentLayerDepth;
   float beforeDepth = texture2D(parallaxMap, prevTexCoords * ratio).r -
-                      currentLayerDepth + layerDepth;
+      currentLayerDepth + layerDepth;
 
   // interpolation of texture coordinates
   float weight = afterDepth / (afterDepth - beforeDepth);

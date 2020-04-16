@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2019 Pablo Ivan Fonovich <azagaya.games@gmail.com> -->
 <component type="desktop">
-  <id>io.itch.azagaya.Laigter</id>
+  <id>laigter</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Laigter</name>
-  <summary>Tool to generate normal, specular and parallax maps for 2D textures</summary>
-  ​<launchable type="desktop-id">io.itch.azagaya.Laigter</launchable>
+  <summary>Tool to generate normal, specular, occlussion and parallax maps for 2D textures</summary>
+  ​<launchable type="desktop-id">laigter</launchable>
   <description>
     <p>
       Laigter is a tool that automatically generates maps for dynamic lighting effects

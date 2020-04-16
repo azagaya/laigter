@@ -171,7 +171,6 @@ void OpenGlWidget::force_update()
 
 void OpenGlWidget::update_scene()
 {
-  static float rotation = 0;
   glClearColor(
       backgroundColor.redF() * ambientColor.redF() * ambientIntensity,
       backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
@@ -197,30 +196,31 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("toon", m_toon);
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
+  m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
 
   apply_light_params();
   foreach (ImageProcessor *processor, processorList)
   {
-    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse,
-                                                  &m_image))
+    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+    {
       setImage(&m_image);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                  &normalMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+    {
       setNormalMap(&normalMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Specular,
-                                                  &specularMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+    {
       setSpecularMap(&specularMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Parallax,
-                                                  &parallaxMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+    {
       setParallaxMap(&parallaxMap);
-
-    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion,
-                                                  &occlusionMap))
+    }
+    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+    {
       setOcclusionMap(&occlusionMap);
-
+    }
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
     if (processor->get_tile_x())
@@ -237,7 +237,7 @@ void OpenGlWidget::update_scene()
     float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
     transform.scale(zoomX, zoomY, 1);
 
-    transform.rotate(180.0 * rotation / 3.1415, QVector3D(0, 0, 1));
+    transform.rotate(180.0 * processor->get_rotation() / 3.1415, QVector3D(0, 0, 1));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -266,7 +266,7 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
-    m_program.setUniformValue("rotation_angle", rotation);
+    m_program.setUniformValue("rotation_angle", processor->get_rotation());
     scaleX = processor->get_tile_x() ? sx : 1;
     scaleY = processor->get_tile_y() ? sy : 1;
     zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
@@ -496,6 +496,7 @@ float OpenGlWidget::getZoom() { return processor->get_zoom(); }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
+  old_position = event->localPos();
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
@@ -536,7 +537,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       return;
     }
     /* Loops for selecting textues */
-    if (QApplication::keyboardModifiers() != Qt::CTRL)
+    if (QApplication::keyboardModifiers() != Qt::CTRL && QApplication::keyboardModifiers() != Qt::SHIFT)
       set_all_processors_selected(false);
 
     bool selected = false;
@@ -716,13 +717,40 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         {
           if (processor->get_selected())
           {
-            if (!processor->get_tile_x())
-              processor->get_position()->setX(
-                  (mouseX - processor->get_offset()->x()));
+            /* Rotate */
+            if (QApplication::keyboardModifiers() == Qt::SHIFT)
+            {
+              if (!processor->get_tile_x() && !processor->get_tile_y())
+              {
+                QVector3D newpoint(mouseX, mouseY, 0);
+                newpoint -= *processor->get_position();
+                float rotation = atan(newpoint.y()/newpoint.x());
+                if (newpoint.x() < 0)
+                {
+                  rotation += M_PI;
+                }
+                for (float i = 0; i < 2*M_PI; i += M_PI/4)
+                {
+                  if (abs(rotation - i) < 5*M_PI/180.0)
+                  {
+                    rotation = i;
+                    break;
+                  }
+                }
+                processor->set_rotation(rotation);
+              }
+            }
+            /* Move */
+            else
+            {
+              if (!processor->get_tile_x())
+                processor->get_position()->setX(
+                    (mouseX - processor->get_offset()->x()));
 
-            if (!processor->get_tile_y())
-              processor->get_position()->setY(
-                  (mouseY - processor->get_offset()->y()));
+              if (!processor->get_tile_y())
+                processor->get_position()->setY(
+                    (mouseY - processor->get_offset()->y()));
+            }
           }
         }
       }
@@ -860,10 +888,27 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QFileInfo info;
     foreach (ImageProcessor *processor, processorList)
     {
-      setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                    &normalMap))
+
+      if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+      {
+        setImage(&m_image);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+      {
         setNormalMap(&normalMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+      {
+        setSpecularMap(&specularMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+      {
+        setParallaxMap(&parallaxMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+      {
+        setOcclusionMap(&occlusionMap);
+      }
 
       setSpecularMap(processor->get_specular());
       setParallaxMap(processor->get_parallax());
@@ -1042,14 +1087,27 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
           ymax = yf;
       }
 
-      setImage(&processor->texture);
-      if (processor->get_current_frame()->get_image(TextureTypes::Normal,
-                                                    &normalMap))
+      if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+      {
+        setImage(&m_image);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+      {
         setNormalMap(&normalMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+      {
+        setSpecularMap(&specularMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+      {
+        setParallaxMap(&parallaxMap);
+      }
+      if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+      {
+        setOcclusionMap(&occlusionMap);
+      }
 
-      setSpecularMap(processor->get_specular());
-      setParallaxMap(processor->get_parallax());
-      setOcclusionMap(processor->get_occlusion());
       transform.setToIdentity();
 
       QVector3D texPos = *processor->get_position();
@@ -1261,6 +1319,10 @@ QList<LightSource *> *OpenGlWidget::get_current_light_list_ptr()
 void OpenGlWidget::set_processor_list(QList<ImageProcessor *> list)
 {
   processorList = list;
+}
+
+QList<ImageProcessor *> *OpenGlWidget::get_processor_list(){
+  return &processorList;
 }
 
 void OpenGlWidget::clear_processor_list()

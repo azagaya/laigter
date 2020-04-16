@@ -105,14 +105,19 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   customSpecularMap = false;
   customHeightMap = false;
   active = true;
-  normal_counter = parallax_counter = specular_counter = occlussion_counter =
-      0;
+  normal_counter = parallax_counter = specular_counter = occlussion_counter =  0;
 
   connect(&animation, SIGNAL(timeout()), this, SLOT(next_frame()));
+  connect(&recalculate_timer, SIGNAL(timeout()), this, SLOT(recalculate()));
 
   animation.setInterval(80);
   animation.setSingleShot(false);
   animation.start();
+
+  recalculate_timer.setInterval(100);
+  recalculate_timer.setSingleShot(false);
+  recalculate_timer.start();
+
 }
 
 ImageProcessor::~ImageProcessor()
@@ -120,12 +125,17 @@ ImageProcessor::~ImageProcessor()
   active = false;
   while (normal_counter > 0)
     QThread::msleep(10);
+  while (parallax_counter > 0)
+    QThread::msleep(10);
+  while (specular_counter > 0)
+    QThread::msleep(10);
+  while (occlussion_counter > 0)
+    QThread::msleep(10);
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image)
 {
   m_fileName = fileName;
-  m_name = fileName;
   texture = image;
   Sprite s;
   s.set_image(TextureTypes::Diffuse, image);
@@ -161,8 +171,9 @@ int ImageProcessor::loadImage(QString fileName, QImage image)
   return 0;
 }
 
-void ImageProcessor::set_current_heightmap()
+void ImageProcessor::set_current_heightmap(int id)
 {
+  Sprite *current_frame = &frames[id];
   if (tileable)
     current_frame->get_image(TextureTypes::Neighbours, &heightmap);
   else
@@ -176,7 +187,7 @@ void ImageProcessor::set_current_heightmap()
 
 void ImageProcessor::calculate()
 {
-  set_current_heightmap();
+  set_current_heightmap(current_frame_id);
   calculate_distance();
   calculate_heightmap();
   generate_normal_map();
@@ -185,13 +196,37 @@ void ImageProcessor::calculate()
   calculate_occlusion();
 }
 
+void ImageProcessor::recalculate(){
+  if (normal_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
+                      false, QRect(0, 0, 0, 0));
+    normal_counter = 0;
+  }
+  if (specular_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_specular);
+    specular_counter = 0;
+  }
+  if (parallax_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_parallax);
+    parallax_counter = 0;
+  }
+  if (occlussion_counter > 0)
+  {
+    QtConcurrent::run(this, &ImageProcessor::calculate_occlusion);
+    occlussion_counter = 0;
+  }
+}
+
 void ImageProcessor::calculate_parallax()
 {
-  if (parallax_counter > 2)
+  if (!parallax_mutex.tryLock())
+  {
+    parallax_counter = 1;
     return;
-
-  parallax_counter++;
-  QMutexLocker locker(&parallax_mutex);
+  }
   int frame = current_frame_id;
 
   for (int i = 0; i < frames.count(); i++)
@@ -243,16 +278,16 @@ void ImageProcessor::calculate_parallax()
 
   set_current_frame_id(frame);
   processed();
-  parallax_counter--;
+  parallax_mutex.unlock();
 }
 
 void ImageProcessor::calculate_specular()
 {
-  if (specular_counter > 2)
+  if (!specular_mutex.tryLock())
+  {
+    specular_counter = 1;
     return;
-
-  specular_counter++;
-  QMutexLocker locker(&specular_mutex);
+  }
   int frame = current_frame_id;
 
   for (int i = 0; i < frames.count(); i++)
@@ -302,17 +337,17 @@ void ImageProcessor::calculate_specular()
 
   set_current_frame_id(frame);
   processed();
-  specular_counter--;
+  specular_mutex.unlock();
 }
 
 void ImageProcessor::calculate_occlusion()
 {
-  if (occlussion_counter > 2)
+  if (!occlusion_mutex.tryLock())
+  {
+    occlussion_counter = 1;
     return;
-
-  occlussion_counter++;
+  }
   int frame = current_frame_id;
-  QMutexLocker locker(&occlusion_mutex);
 
   for (int i = 0; i < frames.count(); i++)
   {
@@ -364,7 +399,7 @@ void ImageProcessor::calculate_occlusion()
 
   set_current_frame_id(frame);
   processed();
-  occlussion_counter--;
+  occlusion_mutex.unlock();
 }
 
 void ImageProcessor::calculate_heightmap()
@@ -450,7 +485,7 @@ QString ImageProcessor::get_heightmap_path()
 
 int ImageProcessor::loadSpecularMap(QString fileName, QImage specular)
 {
-  if (fileName == get_name())
+  if (fileName == m_fileName)
   {
     current_frame->specularPath = "";
     customSpecularMap = false;
@@ -471,7 +506,7 @@ int ImageProcessor::loadSpecularMap(QString fileName, QImage specular)
 
 int ImageProcessor::loadHeightMap(QString fileName, QImage height)
 {
-  if (fileName == get_name())
+  if (fileName == m_fileName)
   {
     current_frame->heightmapPath = "";
     customHeightMap = false;
@@ -498,6 +533,7 @@ void ImageProcessor::calculate_gradient() {}
 
 void ImageProcessor::calculate_distance()
 {
+
   if (!current_heightmap.ptr<int>(0))
     return;
 
@@ -632,7 +668,9 @@ Mat ImageProcessor::modify_distance()
 Mat ImageProcessor::modify_occlusion()
 {
   Mat m;
-  set_current_heightmap();
+
+  QMutexLocker locker(&heightmap_mutex);
+  set_current_heightmap(current_frame_id);
   m_occlusion.copyTo(m);
 
   if (occlusion_invert)
@@ -681,7 +719,9 @@ Mat ImageProcessor::modify_parallax()
 {
   Mat m;
   Mat d;
-  set_current_heightmap();
+
+  QMutexLocker locker(&heightmap_mutex);
+  set_current_heightmap(current_frame_id);
   int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
   Mat shape = getStructuringElement(MORPH_RECT,
                                     Size(abs(parallax_erode_dilate) * 2 + 1,
@@ -777,11 +817,13 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius)
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                                          bool updateDistance, QRect rect)
 {
-  if (normal_counter > 2 || !active)
-    return;
 
-  normal_counter++;
-  QMutexLocker locker(&normal_mutex);
+  if (!normal_mutex.tryLock()){
+    normal_counter = 1;
+    return;
+  }
+
+  QMutexLocker hlocker(&heightmap_mutex);
   /* Calculate rects to update */
   QList<QRect> rlist;
   bool diagonal = true;
@@ -819,26 +861,23 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                              CV_8UC4, heightOverlay.scanLine(0));
   cvtColor(heightmapOverlay, heightmapOverlay, CV_RGBA2GRAY);
   heightmapOverlay.convertTo(heightmapOverlay, CV_32FC1, 255);
-  // add(heightmapOverlay,aux_height_ov,aux_height_ov);
-  //
   for (int i = 0; i < rlist.count(); i++)
+  {
     calculate_normal(heightmapOverlay, m_height_ov, 1, 1, rlist.at(i));
+  }
 
   if (updateEnhance)
-    enhance_requested++;
+    enhance_requested=1;
   if (updateBump)
-    bump_requested++;
+    bump_requested=1;
   if (updateDistance)
-    distance_requested++;
-
-  int frame = current_frame_id;
+    distance_requested=1;
 
   for (int i = 0; i < frames.count(); i++)
   {
-    if (update_tileable || (animation.isActive() && frames.count() > 1))
+    if (update_tileable || frames.count() > 1 )
     {
-      set_current_frame_id(i);
-      set_current_heightmap();
+      set_current_heightmap(i);
       calculate_heightmap();
       calculate_distance();
     }
@@ -849,19 +888,19 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
       distance_requested = true;
     }
 
-    if (enhance_requested || animation.isActive())
+    if (enhance_requested || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
         calculate_normal(m_gray, m_emboss_normal, normal_depth,
                          normal_blur_radius);
     }
 
-    if (distance_requested || animation.isActive())
+    if (distance_requested || frames.count() > 1)
     {
       new_distance = modify_distance();
     }
 
-    if (bump_requested || animation.isActive())
+    if (bump_requested || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
       {
@@ -909,7 +948,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
 
           if (!active)
           {
-            normal_counter--;
+            normal_mutex.unlock();
             return;
           }
         }
@@ -921,7 +960,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
                         QImage(static_cast<unsigned char *>(m_normal.data),
                                m_normal.cols, m_normal.rows, m_normal.step,
                                QImage::Format_RGB888));
-    //    frames[i].get_image(TextureTypes::Normal, &normal);
     normal_ready.unlock();
   }
 
@@ -934,9 +972,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   if (bump_requested)
     bump_requested--;
 
-  set_current_frame_id(frame);
   processed();
-  normal_counter--;
+  normal_mutex.unlock();
 }
 
 void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth,
@@ -1385,6 +1422,8 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 QImage ImageProcessor::get_heightmap()
 {
   Mat m;
+
+  QMutexLocker locker(&heightmap_mutex);
   cvtColor(current_heightmap, m, CV_RGBA2GRAY);
   cvtColor(m, m, CV_GRAY2RGB);
   m.convertTo(m, CV_8UC3, 1);
@@ -1446,6 +1485,8 @@ float ImageProcessor::get_sy() { return sy; }
 void ImageProcessor::set_tile_x(bool tx)
 {
   tileX = tx;
+  /* TODO remove this when properly handling tile feature */
+  set_rotation(0);
   processed();
 }
 
@@ -1454,6 +1495,8 @@ bool ImageProcessor::get_tile_x() { return tileX; }
 void ImageProcessor::set_tile_y(bool ty)
 {
   tileY = ty;
+  /* TODO remove this when properly handling tile feature */
+  set_rotation(0);
   processed();
 }
 
@@ -1491,13 +1534,18 @@ void ImageProcessor::set_current_frame_id(int id)
   current_frame = &frames[id];
   current_frame_id = id;
   current_frame->get_image(TextureTypes::Diffuse, &texture);
+
+
+  frameChanged(id);
+  processed();
+
 }
 
 Sprite *ImageProcessor::get_current_frame() { return current_frame; }
 
 void ImageProcessor::next_frame()
 {
-  if (frames.count() == 1)
+  if (frames.count() <= 1)
   {
     animation.stop();
     return;
@@ -1511,9 +1559,8 @@ void ImageProcessor::next_frame()
       {
         if (occlusion_mutex.tryLock())
         {
-          set_current_frame_id((current_frame_id + 1) %
-                               frames.count());
-          processed();
+          int id = (current_frame_id + 1) % frames.count();
+          set_current_frame_id(id);
           occlusion_mutex.unlock();
         }
         parallax_mutex.unlock();
@@ -1531,3 +1578,13 @@ void ImageProcessor::remove_frame(int id)
 }
 
 void ImageProcessor::remove_current_frame() { remove_frame(current_frame_id); }
+
+void ImageProcessor::setAnimationRate(int fps)
+{
+  animation.setInterval(1000.0/fps);
+}
+
+void ImageProcessor::playAnimation(bool play)
+{
+  play ? animation.start() : animation.stop();
+}

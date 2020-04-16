@@ -1,120 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca_ES">
+<TS version="2.1" language="jp_JP">
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../gui/about_dialog.ui" line="14"/>
+        <location filename="../gui/aboutdialog.ui" line="14"/>
         <source>About</source>
-        <translation>Quan a</translation>
+        <translation>概要</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="27"/>
+        <location filename="../gui/aboutdialog.ui" line="27"/>
         <source>Follow and Support me on:</source>
-        <translation>Segueix-me i dona&apos;m suport a:</translation>
+        <translation>フォローやサポートには:</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="181"/>
+        <location filename="../gui/aboutdialog.ui" line="181"/>
         <source>Laigter, by Azagaya</source>
-        <translation>Laigter, per Azagaya</translation>
+        <translation>Laigter, by Azagaya</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="192"/>
+        <location filename="../gui/aboutdialog.ui" line="192"/>
         <source>Contributions</source>
-        <translation>Contribucions</translation>
+        <translation>投稿者</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="199"/>
+        <location filename="../gui/aboutdialog.ui" line="199"/>
         <source>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</source>
-        <translation>Patrick &quot;Ffyhlkain&quot; Henschel (Productor!)</translation>
+        <translation>パトリック &quot;Ffyhlkain&quot; ヘンシェル (プロヂューサー!)</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="204"/>
+        <location filename="../gui/aboutdialog.ui" line="204"/>
         <source>Christine Garner (Friend of Laigter!)</source>
-        <translation type="unfinished"></translation>
+        <translation>クリスティーン・ガドなー (Laigterの友達!)</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="209"/>
+        <location filename="../gui/aboutdialog.ui" line="209"/>
         <source>Lodugh (Participant!)</source>
-        <translation type="unfinished"></translation>
+        <translation>ローダグ (参加者!)</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="214"/>
+        <location filename="../gui/aboutdialog.ui" line="214"/>
         <source>Christoffer Sundbom (Supporter!)</source>
-        <translation type="unfinished"></translation>
+        <translation>クリストファー・スントボム　（サポーター!）</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="222"/>
+        <location filename="../gui/aboutdialog.ui" line="222"/>
         <source>Patreon:</source>
-        <translation>Patreon:</translation>
+        <translation>パトリオン:</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="230"/>
+        <location filename="../gui/aboutdialog.ui" line="230"/>
         <source>Programmers</source>
-        <translation>Programadors</translation>
+        <translation>プログラマー達</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="237"/>
+        <location filename="../gui/aboutdialog.ui" line="237"/>
         <source>Gnumaru - Experimental CLI Interface</source>
-        <translation>Gnumaru - Interfície CLI experimental</translation>
+        <translation>Gnumaru - Experimental CLI Interface</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="242"/>
+        <location filename="../gui/aboutdialog.ui" line="242"/>
         <source>George Marques (vnen) - Translation load</source>
-        <translation type="unfinished"></translation>
+        <translation>ジョージ・マルケー (vmen) - 翻訳の読み込み処理を実装</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="247"/>
+        <location filename="../gui/aboutdialog.ui" line="247"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
-        <translation>Brandon Blanker Lim-it - Recàrrega automàtica de la imatge quan el fitxer canvia</translation>
+        <translation>ブランドんブランカー Lim-it - イメージ変更の際　自動読み込み処理を実装</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="256"/>
+        <location filename="../gui/aboutdialog.ui" line="256"/>
         <source>Translations</source>
-        <translation>Traduccions</translation>
+        <translation>翻訳</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="263"/>
-        <source>Muhammed Altaş - Turkish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/about_dialog.ui" line="268"/>
+        <location filename="../gui/aboutdialog.ui" line="263"/>
         <source>Manolis Papadeas (Overloaded) - Greek</source>
-        <translation type="unfinished"></translation>
+        <translation>マノリ・パパデアス (Overloaded) - ギリシア語</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="273"/>
+        <location filename="../gui/aboutdialog.ui" line="268"/>
         <source>Hugo Locurcio (Calinou) - French</source>
-        <translation>Hugo Locurcio (Calinou) - Francès</translation>
+        <translation>ヒューゴ・ロクルシオ (Calinou) - フランス語</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="278"/>
+        <location filename="../gui/aboutdialog.ui" line="273"/>
         <source>George Marques (vnen) - Brazilian Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation>ジョージ・マルケー (vnen) - ブラジルポルトガル語</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="283"/>
+        <location filename="../gui/aboutdialog.ui" line="278"/>
         <source>Xavier Gómez (hiulit) - Catalán</source>
-        <translation type="unfinished"></translation>
+        <translation>ハヴィエル・ゴメズ (hiulit) - カタルーニャ語</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="288"/>
+        <location filename="../gui/aboutdialog.ui" line="283"/>
         <source>Lars Pontoppidan (Larpon) - Danish</source>
-        <translation type="unfinished"></translation>
+        <translation>ラーズ・ポントッピダン (Larpon) - デンマーク語.</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="293"/>
+        <location filename="../gui/aboutdialog.ui" line="288"/>
         <source>Azagaya - English and Spanish</source>
-        <translation>Azagaya - Anglès i Espanyol</translation>
+        <translation>アザガヤ - 英語、スペイン語</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="302"/>
+        <location filename="../gui/aboutdialog.ui" line="297"/>
         <source>Acknowledgements</source>
-        <translation>Agraïments</translation>
+        <translation>謝辞</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="308"/>
+        <location filename="../gui/aboutdialog.ui" line="303"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -953,1208 +948,1092 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>AnimationDock</name>
-    <message>
-        <location filename="../gui/widgets/animation_dock.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/widgets/animation_dock.ui" line="46"/>
-        <source>FPS:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>FrameSplitter</name>
-    <message>
-        <location filename="../gui/frame_splitter.ui" line="14"/>
-        <source>Frame Splitter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/frame_splitter.ui" line="20"/>
-        <source>Horizontal Frames:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/frame_splitter.ui" line="34"/>
-        <source>Vertical Frames:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/frame_splitter.ui" line="48"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/frame_splitter.ui" line="55"/>
-        <source>Ok</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>LanguageSelector</name>
     <message>
-        <location filename="../gui/language_selector.ui" line="14"/>
+        <location filename="../gui/languageselector.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>形状</translation>
     </message>
     <message>
-        <location filename="../gui/language_selector.ui" line="36"/>
+        <location filename="../gui/languageselector.ui" line="36"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main_window.ui" line="14"/>
+        <location filename="../mainwindow.ui" line="14"/>
         <source>Laigter</source>
         <translation>Laigter</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="93"/>
-        <location filename="../main_window.ui" line="1525"/>
+        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="1452"/>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation>ノーマル</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="109"/>
+        <location filename="../mainwindow.ui" line="107"/>
         <source>Enhance:</source>
-        <translation>Realçar:</translation>
+        <translation>エンハンス</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="117"/>
-        <location filename="../main_window.ui" line="214"/>
-        <location filename="../main_window.ui" line="564"/>
+        <location filename="../mainwindow.ui" line="115"/>
+        <location filename="../mainwindow.ui" line="212"/>
+        <location filename="../mainwindow.ui" line="547"/>
         <source>Height:</source>
-        <translation>Alçada:</translation>
+        <translation>高さ:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="140"/>
-        <location filename="../main_window.ui" line="254"/>
-        <location filename="../main_window.ui" line="953"/>
-        <location filename="../main_window.ui" line="1236"/>
-        <location filename="../main_window.ui" line="1290"/>
+        <location filename="../mainwindow.ui" line="138"/>
+        <location filename="../mainwindow.ui" line="252"/>
+        <location filename="../mainwindow.ui" line="895"/>
+        <location filename="../mainwindow.ui" line="1178"/>
+        <location filename="../mainwindow.ui" line="1232"/>
         <source>Soft:</source>
-        <translation>Suavitzat:</translation>
+        <translation>ソフト:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="177"/>
+        <location filename="../mainwindow.ui" line="175"/>
         <source>Axis:</source>
-        <translation>Eixos:</translation>
+        <translation>軸:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="183"/>
+        <location filename="../mainwindow.ui" line="181"/>
         <source>Invert x</source>
-        <translation>Invertir x</translation>
+        <translation>x インバート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="190"/>
+        <location filename="../mainwindow.ui" line="188"/>
         <source>Invert y</source>
-        <translation>Invertir y</translation>
+        <translation>y インバート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="206"/>
+        <location filename="../mainwindow.ui" line="204"/>
         <source>Bump:</source>
-        <translation>Bisell:</translation>
+        <translation>バンプ:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="234"/>
-        <location filename="../main_window.ui" line="1392"/>
+        <location filename="../mainwindow.ui" line="232"/>
+        <location filename="../mainwindow.ui" line="1334"/>
         <source>Distance:</source>
-        <translation>Distància:</translation>
+        <translation>距離:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="280"/>
+        <location filename="../mainwindow.ui" line="278"/>
         <source>Soft</source>
-        <translation>Suau</translation>
+        <translation>ソフト</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="293"/>
+        <location filename="../mainwindow.ui" line="291"/>
         <source>Abrupt</source>
-        <translation>Abrupte</translation>
+        <translation>急激</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="316"/>
+        <location filename="../mainwindow.ui" line="314"/>
         <source>Visualization</source>
-        <translation>Visualització</translation>
+        <translation>視覚化</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="332"/>
+        <location filename="../mainwindow.ui" line="330"/>
         <source>Light</source>
-        <translation>Llum</translation>
+        <translation>ライト</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="381"/>
+        <location filename="../mainwindow.ui" line="364"/>
         <source>Diffuse</source>
-        <translation>Difusa</translation>
+        <translation>ディフューズ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="387"/>
-        <location filename="../main_window.ui" line="432"/>
-        <location filename="../main_window.ui" line="482"/>
+        <location filename="../mainwindow.ui" line="370"/>
+        <location filename="../mainwindow.ui" line="415"/>
+        <location filename="../mainwindow.ui" line="465"/>
         <source>Intensity:</source>
-        <translation>Intensitat:</translation>
+        <translation>強さ:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="408"/>
-        <location filename="../main_window.ui" line="1137"/>
-        <location filename="../main_window.ui" line="1535"/>
+        <location filename="../mainwindow.ui" line="391"/>
+        <location filename="../mainwindow.ui" line="1079"/>
+        <location filename="../mainwindow.ui" line="1462"/>
         <source>Specular</source>
-        <translation>Especular</translation>
+        <translation>スペキュラー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="439"/>
+        <location filename="../mainwindow.ui" line="422"/>
         <source>Scatter:</source>
-        <translation>Dispersió:</translation>
+        <translation>スキャター:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="476"/>
+        <location filename="../mainwindow.ui" line="459"/>
         <source>Ambient</source>
-        <translation>Ambient</translation>
+        <translation>アンビエント</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="502"/>
-        <location filename="../main_window.ui" line="593"/>
+        <location filename="../mainwindow.ui" line="485"/>
+        <location filename="../mainwindow.ui" line="576"/>
         <source>Color:</source>
-        <translation>Color:</translation>
+        <translation>色:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="528"/>
+        <location filename="../mainwindow.ui" line="511"/>
         <source>Background:</source>
-        <translation>Fons:</translation>
+        <translation>背景:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="619"/>
+        <location filename="../mainwindow.ui" line="602"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si s&apos;activa, cada textura tindrà les seves pròpies llums, amb la seva pròpia configuració.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;有効の場合、 それぞれのテクスチャに独自の設定を持つ特有のライトが適用されます。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="622"/>
+        <location filename="../mainwindow.ui" line="605"/>
         <source>Lights per texture</source>
-        <translation>Llums per textura</translation>
+        <translation>テクスチャ毎のライト数</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="708"/>
+        <location filename="../mainwindow.ui" line="624"/>
         <source>View</source>
-        <translation>Vista</translation>
+        <translation>ビュー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="735"/>
+        <location filename="../mainwindow.ui" line="636"/>
         <source>Mode:</source>
-        <translation>Mode:</translation>
+        <translation>モード:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="743"/>
+        <location filename="../mainwindow.ui" line="644"/>
         <source>Texture</source>
-        <translation>Textura</translation>
+        <translation>テクスチャ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="748"/>
+        <location filename="../mainwindow.ui" line="649"/>
         <source>Normal Map</source>
-        <translation>Mapa Normal</translation>
+        <translation>ノーマルマップ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="753"/>
+        <location filename="../mainwindow.ui" line="654"/>
         <source>Specular Map</source>
-        <translation>Mapa Especular</translation>
+        <translation>スペキュラーマップ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="758"/>
+        <location filename="../mainwindow.ui" line="659"/>
         <source>Parallax Map</source>
-        <translation>Mapa de Paral·laxi</translation>
+        <translation>視差マップ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="763"/>
+        <location filename="../mainwindow.ui" line="664"/>
         <source>Occlussion Map</source>
-        <translation>Mapa d&apos;Oclusió</translation>
+        <translation>オクルージョンマップ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="768"/>
-        <location filename="../main_window.ui" line="1565"/>
+        <location filename="../mainwindow.ui" line="669"/>
+        <location filename="../mainwindow.ui" line="1492"/>
         <source>Preview</source>
-        <translation>Vista Prèvia</translation>
+        <translation>プレビュー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="789"/>
+        <location filename="../mainwindow.ui" line="690"/>
         <source>Pixelated</source>
-        <translation>Pixelat</translation>
+        <translation>ピクセル化</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="802"/>
+        <location filename="../mainwindow.ui" line="703"/>
         <source>Toon</source>
-        <translation type="unfinished"></translation>
+        <translation>トゥーン</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1787"/>
-        <source>Save Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.ui" line="1796"/>
-        <source>Load Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.ui" line="1805"/>
-        <source>Save Project As</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.ui" line="641"/>
-        <location filename="../main_window.ui" line="1423"/>
-        <location filename="../main_window.ui" line="1470"/>
+        <location filename="../mainwindow.ui" line="719"/>
+        <location filename="../mainwindow.ui" line="1365"/>
+        <location filename="../mainwindow.ui" line="1412"/>
         <source>Tile</source>
-        <translation>Mosaic</translation>
+        <translation>タイル</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="665"/>
+        <location filename="../mainwindow.ui" line="734"/>
         <source>Tile y</source>
-        <translation>Mosaic y</translation>
+        <translation>y タイル</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="672"/>
+        <location filename="../mainwindow.ui" line="741"/>
         <source>Tile x</source>
-        <translation>Mosaic x</translation>
+        <translation>x タイル</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="679"/>
-        <location filename="../main_window.ui" line="855"/>
-        <location filename="../main_window.ui" line="1555"/>
+        <location filename="../mainwindow.ui" line="748"/>
+        <location filename="../mainwindow.ui" line="797"/>
+        <location filename="../mainwindow.ui" line="1482"/>
         <source>Parallax</source>
-        <translation>Paral·laxi</translation>
+        <translation>視差</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="809"/>
-        <source>Blending:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.ui" line="834"/>
+        <location filename="../mainwindow.ui" line="776"/>
         <source>Textures</source>
-        <translation>Textures</translation>
+        <translation>テクスチャ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="865"/>
+        <location filename="../mainwindow.ui" line="807"/>
         <source>Type</source>
-        <translation>Tipus</translation>
+        <translation>タイプ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="873"/>
+        <location filename="../mainwindow.ui" line="815"/>
         <source>Binary</source>
-        <translation>Binari</translation>
+        <translation>バイナリー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="878"/>
+        <location filename="../mainwindow.ui" line="820"/>
         <source>Height Map</source>
-        <translation>Mapa d&apos;Alçada</translation>
+        <translation>ハイトマップ</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="886"/>
-        <location filename="../main_window.ui" line="1147"/>
-        <location filename="../main_window.ui" line="1277"/>
-        <location filename="../main_window.ui" line="1439"/>
+        <location filename="../mainwindow.ui" line="828"/>
+        <location filename="../mainwindow.ui" line="1089"/>
+        <location filename="../mainwindow.ui" line="1219"/>
+        <location filename="../mainwindow.ui" line="1381"/>
         <source>Controls:</source>
-        <translation>Controls:</translation>
+        <translation>コントロール:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="914"/>
+        <location filename="../mainwindow.ui" line="856"/>
         <source>Quantization:</source>
-        <translation>Quantificació:</translation>
+        <translation>量子化</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="927"/>
-        <location filename="../main_window.ui" line="1166"/>
-        <location filename="../main_window.ui" line="1385"/>
+        <location filename="../mainwindow.ui" line="869"/>
+        <location filename="../mainwindow.ui" line="1108"/>
+        <location filename="../mainwindow.ui" line="1327"/>
         <source>Threshold:</source>
-        <translation>Llindar:</translation>
+        <translation>限界:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="940"/>
+        <location filename="../mainwindow.ui" line="882"/>
         <source>Min Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>最小の高さ:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1740"/>
-        <location filename="../main_window.cpp" line="1555"/>
+        <location filename="../mainwindow.ui" line="1667"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Load Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを読み込む</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1743"/>
+        <location filename="../mainwindow.ui" line="1670"/>
         <source>Reload Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを再読み込む</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1755"/>
-        <location filename="../main_window.ui" line="1758"/>
-        <location filename="../main_window.cpp" line="1555"/>
+        <location filename="../mainwindow.ui" line="1682"/>
+        <location filename="../mainwindow.ui" line="1685"/>
+        <location filename="../mainwindow.cpp" line="1275"/>
         <source>Install Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインをインストール</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1770"/>
-        <location filename="../main_window.ui" line="1773"/>
-        <location filename="../main_window.cpp" line="1555"/>
+        <location filename="../mainwindow.ui" line="1697"/>
+        <location filename="../mainwindow.ui" line="1700"/>
+        <location filename="../mainwindow.cpp" line="1276"/>
         <source>Delete Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを削除</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1778"/>
-        <location filename="../main_window.cpp" line="1713"/>
+        <location filename="../mainwindow.ui" line="1705"/>
+        <location filename="../mainwindow.cpp" line="1421"/>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>言語</translation>
     </message>
     <message>
-        <source>Minimum Height:</source>
-        <translation type="vanished">Alçada Mínima:</translation>
+        <location filename="../mainwindow.ui" line="1710"/>
+        <source>SaveProject</source>
+        <translation>プロジェクトを保存</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="979"/>
-        <location filename="../main_window.ui" line="1173"/>
-        <location filename="../main_window.ui" line="1339"/>
+        <location filename="../mainwindow.ui" line="921"/>
+        <location filename="../mainwindow.ui" line="1115"/>
+        <location filename="../mainwindow.ui" line="1281"/>
         <source>Contrast:</source>
-        <translation>Contrast:</translation>
+        <translation>コントラスト:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1002"/>
-        <location filename="../main_window.ui" line="1229"/>
-        <location filename="../main_window.ui" line="1283"/>
+        <location filename="../mainwindow.ui" line="944"/>
+        <location filename="../mainwindow.ui" line="1171"/>
+        <location filename="../mainwindow.ui" line="1225"/>
         <source>Invert</source>
-        <translation>Invertir</translation>
+        <translation>インバート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1015"/>
+        <location filename="../mainwindow.ui" line="957"/>
         <source>Focus:</source>
-        <translation>Enfocament:</translation>
+        <translation>フォーカス:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1028"/>
-        <location filename="../main_window.ui" line="1222"/>
-        <location filename="../main_window.ui" line="1378"/>
+        <location filename="../mainwindow.ui" line="970"/>
+        <location filename="../mainwindow.ui" line="1164"/>
+        <location filename="../mainwindow.ui" line="1320"/>
         <source>Brightness:</source>
-        <translation>Brillantor:</translation>
+        <translation>明るさ:</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1109"/>
+        <location filename="../mainwindow.ui" line="1051"/>
         <source>Erode / Dilate:</source>
-        <translation>Erosió / Dilatació:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1267"/>
-        <location filename="../main_window.ui" line="1545"/>
+        <location filename="../mainwindow.ui" line="1209"/>
+        <location filename="../mainwindow.ui" line="1472"/>
         <source>Occlussion</source>
-        <translation>Oclusió</translation>
+        <translation>オクルージョン</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1460"/>
+        <location filename="../mainwindow.ui" line="1402"/>
         <source>Neighbours</source>
-        <translation>Veïns</translation>
+        <translation>ネイバー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1485"/>
-        <location filename="../main_window.ui" line="1598"/>
-        <location filename="../main_window.ui" line="1680"/>
-        <location filename="../main_window.ui" line="1683"/>
+        <location filename="../mainwindow.ui" line="1427"/>
+        <location filename="../mainwindow.ui" line="1525"/>
+        <location filename="../mainwindow.ui" line="1607"/>
+        <location filename="../mainwindow.ui" line="1610"/>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation>エクスポート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1579"/>
+        <location filename="../mainwindow.ui" line="1506"/>
         <source>Export to...</source>
-        <translation>Exportar a...</translation>
+        <translation>...としてエクスポート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1607"/>
+        <location filename="../mainwindow.ui" line="1534"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>ツールバー</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1626"/>
-        <location filename="../main_window.ui" line="1629"/>
+        <location filename="../mainwindow.ui" line="1553"/>
+        <location filename="../mainwindow.ui" line="1556"/>
         <source>Open</source>
-        <translation>Obrir</translation>
+        <translation>開く</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1641"/>
-        <location filename="../main_window.ui" line="1644"/>
+        <location filename="../mainwindow.ui" line="1568"/>
+        <location filename="../mainwindow.ui" line="1571"/>
         <source>Fit Zoom</source>
-        <translation>Ajustar Zoom</translation>
+        <translation>ズームを合わせる</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1653"/>
+        <location filename="../mainwindow.ui" line="1580"/>
         <source>Zoom 100%</source>
-        <translation>Zoom 100%</translation>
+        <translation>ズーム100%</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1662"/>
+        <location filename="../mainwindow.ui" line="1589"/>
         <source>Zoom +</source>
-        <translation>Zoom +</translation>
+        <translation>ズーム+</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1671"/>
+        <location filename="../mainwindow.ui" line="1598"/>
         <source>Zoom -</source>
-        <translation>Zoom -</translation>
+        <translation>ズーム-</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1692"/>
+        <location filename="../mainwindow.ui" line="1619"/>
         <source>Presets</source>
-        <translation>Configuracions predefinides</translation>
+        <translation>プリセット</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1701"/>
-        <location filename="../main_window.ui" line="1704"/>
+        <location filename="../mainwindow.ui" line="1628"/>
+        <location filename="../mainwindow.ui" line="1631"/>
         <source>Export Preview</source>
-        <translation>Exportar Vista Prèvia</translation>
+        <translation>プレビューをエクスポート</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1713"/>
-        <location filename="../main_window.ui" line="1716"/>
+        <location filename="../mainwindow.ui" line="1640"/>
+        <location filename="../mainwindow.ui" line="1643"/>
         <source>About</source>
-        <translation>Quan a</translation>
+        <translation>概要</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1728"/>
+        <location filename="../mainwindow.ui" line="1655"/>
         <source>Add Light</source>
-        <translation>Afegir Llum</translation>
+        <translation>ライトを追加</translation>
     </message>
     <message>
-        <location filename="../main_window.ui" line="1731"/>
+        <location filename="../mainwindow.ui" line="1658"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Afegir Font de Llum:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Feu clic amb el botó esquerre per afegir la font de llum.&lt;/p&gt;&lt;p&gt;Feu clic amb el botó dret per eliminar la font de llum o cancel·lar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;頭/&gt;&lt;体&gt;&lt;p&gt;&lt;スパンスタイル=&quot; フォント-weight:600; text-デコレーション: 下線;&quot;&gt;ライトソースを追加:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;ライトソースを追加するには　左クリック。&lt;/p&gt;&lt;p&gt;ライトソースを外す、またはキャンセルするには　右クリック。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="183"/>
         <source>Context menu</source>
-        <translation>Menú de context</translation>
+        <translation>コンテキストメニュー</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="213"/>
-        <location filename="../main_window.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="184"/>
+        <location filename="../mainwindow.cpp" line="228"/>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation>外す</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="215"/>
-        <location filename="../main_window.cpp" line="311"/>
+        <location filename="../mainwindow.cpp" line="186"/>
+        <location filename="../mainwindow.cpp" line="243"/>
         <source>Load heightmap</source>
-        <translation>Carregar mapa d&apos;alçada</translation>
+        <translation>ハイトマップを読み込む</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="216"/>
-        <location filename="../main_window.cpp" line="329"/>
+        <location filename="../mainwindow.cpp" line="187"/>
+        <location filename="../mainwindow.cpp" line="257"/>
         <source>Reset heightmap</source>
-        <translation>Restablir mapa d&apos;alçada</translation>
+        <translation>ハイトマップをリセット</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="218"/>
-        <location filename="../main_window.cpp" line="337"/>
+        <location filename="../mainwindow.cpp" line="189"/>
+        <location filename="../mainwindow.cpp" line="263"/>
         <source>Load specular map</source>
-        <translation>Carregar mapa especular</translation>
+        <translation>スペキュラーマップを読み込む</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="219"/>
-        <location filename="../main_window.cpp" line="354"/>
+        <location filename="../mainwindow.cpp" line="190"/>
+        <location filename="../mainwindow.cpp" line="278"/>
         <source>Reset specular map</source>
-        <translation>Restablir mapa especular</translation>
+        <translation>スペキュラーマップをリセット</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="221"/>
-        <location filename="../main_window.cpp" line="363"/>
+        <location filename="../mainwindow.cpp" line="192"/>
+        <location filename="../mainwindow.cpp" line="284"/>
         <source>Add new frames</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいフレームを追加</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="226"/>
-        <location filename="../main_window.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="196"/>
+        <location filename="../mainwindow.cpp" line="303"/>
         <source>Remove current frame</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のフレームを外す</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="227"/>
-        <location filename="../main_window.cpp" line="388"/>
+        <location filename="../mainwindow.cpp" line="197"/>
+        <location filename="../mainwindow.cpp" line="306"/>
         <source>Next Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>次のフレーム</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="228"/>
-        <location filename="../main_window.cpp" line="390"/>
+        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="308"/>
         <source>Previous Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>前のフレーム</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="232"/>
-        <location filename="../main_window.cpp" line="384"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="299"/>
         <source>Stop Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>アニメーションの停止</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="238"/>
-        <location filename="../main_window.cpp" line="386"/>
+        <location filename="../mainwindow.cpp" line="206"/>
+        <location filename="../mainwindow.cpp" line="301"/>
         <source>Start Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>アニメーションの開始</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="248"/>
-        <location filename="../main_window.cpp" line="397"/>
-        <source>Split in frames</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="314"/>
-        <location filename="../main_window.cpp" line="340"/>
-        <location filename="../main_window.cpp" line="366"/>
-        <location filename="../main_window.cpp" line="433"/>
+        <location filename="../mainwindow.cpp" line="245"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="286"/>
+        <location filename="../mainwindow.cpp" line="326"/>
         <source>Open Image</source>
-        <translation>Obrir Imatge</translation>
+        <translation>イメージを開く</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="315"/>
-        <location filename="../main_window.cpp" line="341"/>
-        <location filename="../main_window.cpp" line="367"/>
-        <location filename="../main_window.cpp" line="433"/>
+        <location filename="../mainwindow.cpp" line="245"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="286"/>
+        <location filename="../mainwindow.cpp" line="326"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
-        <translation>Fitxer d&apos;Imatge (*.png *.jpg *.bmp *.tga)</translation>
+        <translation>イメージファイル (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="542"/>
+        <location filename="../mainwindow.cpp" line="419"/>
         <source>Cannot open </source>
-        <translation>No s&apos;ha pogut obrir </translation>
+        <translation>開くことができません</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="543"/>
+        <location filename="../mainwindow.cpp" line="420"/>
         <source>Unsupported or incorrect format.</source>
-        <translation>Format no admès o incorrecte.</translation>
+        <translation>非対応のフォーマット</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="975"/>
-        <source>All selected maps were exported.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="1739"/>
-        <source>Open Laigter Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="1740"/>
-        <source>Project File (*.laigter)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="1855"/>
+        <location filename="../mainwindow.cpp" line="1435"/>
         <source>Image File (*.laigter)</source>
-        <translation type="unfinished"></translation>
+        <translation>イメージファイル (*.laigter)</translation>
     </message>
     <message>
-        <source>The image is already opened in Laigter.</source>
-        <translation type="vanished">La imatge ja està oberta a Laigter.</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="583"/>
-        <location filename="../main_window.cpp" line="1327"/>
-        <location filename="../main_window.cpp" line="1855"/>
+        <location filename="../mainwindow.cpp" line="459"/>
+        <location filename="../mainwindow.cpp" line="1086"/>
+        <location filename="../mainwindow.cpp" line="1435"/>
         <source>Save Image</source>
-        <translation>Desar Imatge</translation>
+        <translation>イメージを保存</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="583"/>
-        <location filename="../main_window.cpp" line="1327"/>
+        <location filename="../mainwindow.cpp" line="459"/>
+        <location filename="../mainwindow.cpp" line="1086"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
-        <translation>Fitxer d&apos;Imatge (*.png *.jpg *.bmp)</translation>
+        <translation>イメージファイル (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="604"/>
+        <location filename="../mainwindow.cpp" line="480"/>
         <source>Normal map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa normal.
-</translation>
+        <translation>ノーマルマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="612"/>
+        <location filename="../mainwindow.cpp" line="486"/>
         <source>Parallax map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa de paral·laxi.
-</translation>
+        <translation>視差マップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="620"/>
+        <location filename="../mainwindow.cpp" line="492"/>
         <source>Specular map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa especular.
-</translation>
+        <translation>スペキュラーマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="629"/>
+        <location filename="../mainwindow.cpp" line="498"/>
         <source>Occlussion map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa d&apos;oclusió.
-</translation>
+        <translation>オクルージョンマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="638"/>
+        <location filename="../mainwindow.cpp" line="504"/>
         <source>Preview was exported.
 </source>
-        <translation>S&apos;ha exportat la vista prèvia.
-</translation>
+        <translation>プレビューのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1119"/>
+        <location filename="../mainwindow.cpp" line="777"/>
+        <location filename="../mainwindow.cpp" line="944"/>
         <source>All normal maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes normals.
-</translation>
+        <translation>全てのノーマルマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1137"/>
+        <location filename="../mainwindow.cpp" line="787"/>
+        <location filename="../mainwindow.cpp" line="958"/>
         <source>All parallax maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes de paral·laxi.
-</translation>
+        <translation>全ての視差マップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1155"/>
+        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="972"/>
         <source>All specular maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes especulars.
-</translation>
+        <translation>全てのスペキュラーマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1173"/>
+        <location filename="../mainwindow.cpp" line="807"/>
+        <location filename="../mainwindow.cpp" line="986"/>
         <source>All occlussion maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes d&apos;oclusió.
-</translation>
+        <translation>全てのオクルージョンマップのエクスポート完了!</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1179"/>
+        <location filename="../mainwindow.cpp" line="811"/>
+        <location filename="../mainwindow.cpp" line="990"/>
         <source>All previews were exported.
 </source>
-        <translation>S&apos;han exportat totes les vistes prèvies.
-</translation>
+        <translation>全てのプレビューのエクスポート完了!</translation>
     </message>
     <message>
-        <source>Image modified</source>
-        <translation type="vanished">Imatge modificada</translation>
-    </message>
-    <message>
-        <source>An image was modified</source>
-        <translation type="vanished">S&apos;ha modificat una imatge</translation>
-    </message>
-    <message>
-        <source>Specular map modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa especular</translation>
-    </message>
-    <message>
-        <source>A custom specular map was modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa especular personalitzat</translation>
-    </message>
-    <message>
-        <source>Height map modified</source>
-        <translation type="vanished">S&apos;ha modificat el mapa d&apos;alçada</translation>
-    </message>
-    <message>
-        <source>A custom height map was modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa d&apos;alçada personalitzat</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="1630"/>
-        <location filename="../main_window.cpp" line="1633"/>
-        <location filename="../main_window.cpp" line="1636"/>
+        <location filename="../mainwindow.cpp" line="1336"/>
+        <location filename="../mainwindow.cpp" line="1339"/>
+        <location filename="../mainwindow.cpp" line="1342"/>
         <source>Open Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを開く</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1630"/>
+        <location filename="../mainwindow.cpp" line="1336"/>
         <source>Shared Library (*.so)</source>
-        <translation type="unfinished"></translation>
+        <translation>共有ライブラリ (*.so)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1633"/>
+        <location filename="../mainwindow.cpp" line="1339"/>
         <source>Shared Library (*.dll)</source>
-        <translation type="unfinished"></translation>
+        <translation>共有ライブラリ (*.dll)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1636"/>
+        <location filename="../mainwindow.cpp" line="1342"/>
         <source>Shared Library (*.dylib)</source>
-        <translation type="unfinished"></translation>
+        <translation>共有ライブラリ (*.dylib)</translation>
     </message>
 </context>
 <context>
     <name>NBSelector</name>
     <message>
-        <location filename="../gui/nb_selector.ui" line="26"/>
+        <location filename="../gui/nbselector.ui" line="26"/>
         <source>Neighbours selector</source>
         <oldsource>Selector de vecinos</oldsource>
-        <translation>Selector de veïns</translation>
+        <translation>ネイバーの選択</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="455"/>
+        <location filename="../gui/nbselector.ui" line="455"/>
         <source>Reset Neighbours</source>
-        <translation>Restablir Veïns</translation>
+        <translation>ネイバーをリセット</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="462"/>
+        <location filename="../gui/nbselector.ui" line="462"/>
         <source>Empty Neighbours</source>
-        <translation>Buidar Veïns</translation>
+        <translation>ネイバーをクリアする</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.cpp" line="66"/>
-        <location filename="../gui/nb_selector.cpp" line="82"/>
-        <location filename="../gui/nb_selector.cpp" line="98"/>
-        <location filename="../gui/nb_selector.cpp" line="114"/>
-        <location filename="../gui/nb_selector.cpp" line="130"/>
-        <location filename="../gui/nb_selector.cpp" line="146"/>
-        <location filename="../gui/nb_selector.cpp" line="162"/>
-        <location filename="../gui/nb_selector.cpp" line="178"/>
-        <location filename="../gui/nb_selector.cpp" line="194"/>
+        <location filename="../gui/nbselector.cpp" line="61"/>
+        <location filename="../gui/nbselector.cpp" line="74"/>
+        <location filename="../gui/nbselector.cpp" line="87"/>
+        <location filename="../gui/nbselector.cpp" line="100"/>
+        <location filename="../gui/nbselector.cpp" line="113"/>
+        <location filename="../gui/nbselector.cpp" line="126"/>
+        <location filename="../gui/nbselector.cpp" line="139"/>
+        <location filename="../gui/nbselector.cpp" line="152"/>
+        <location filename="../gui/nbselector.cpp" line="165"/>
         <source>Open Image</source>
         <oldsource>Abrir Imagen</oldsource>
-        <translation>Obrir Imatge</translation>
+        <translation>イメージを開く</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.cpp" line="67"/>
-        <location filename="../gui/nb_selector.cpp" line="83"/>
-        <location filename="../gui/nb_selector.cpp" line="99"/>
-        <location filename="../gui/nb_selector.cpp" line="115"/>
-        <location filename="../gui/nb_selector.cpp" line="131"/>
-        <location filename="../gui/nb_selector.cpp" line="147"/>
-        <location filename="../gui/nb_selector.cpp" line="163"/>
-        <location filename="../gui/nb_selector.cpp" line="179"/>
-        <location filename="../gui/nb_selector.cpp" line="195"/>
+        <location filename="../gui/nbselector.cpp" line="61"/>
+        <location filename="../gui/nbselector.cpp" line="74"/>
+        <location filename="../gui/nbselector.cpp" line="87"/>
+        <location filename="../gui/nbselector.cpp" line="100"/>
+        <location filename="../gui/nbselector.cpp" line="113"/>
+        <location filename="../gui/nbselector.cpp" line="126"/>
+        <location filename="../gui/nbselector.cpp" line="139"/>
+        <location filename="../gui/nbselector.cpp" line="152"/>
+        <location filename="../gui/nbselector.cpp" line="165"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
         <oldsource>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</oldsource>
-        <translation>Fitxers d&apos;Imatge (*.png *.jpg *.bmp *.tga)</translation>
+        <translation>イメージファイル (*.png *.jpg *.bmp *.tga)</translation>
     </message>
 </context>
 <context>
     <name>PresetsManager</name>
     <message>
-        <location filename="../gui/presets_manager.ui" line="33"/>
+        <location filename="../gui/presetsmanager.ui" line="33"/>
         <source>Apply preset:</source>
         <oldsource>Aplicar Preset:</oldsource>
-        <translation>Aplicar configuració predefinida:</translation>
+        <translation>プリセットを適用:</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="45"/>
+        <location filename="../gui/presetsmanager.ui" line="45"/>
         <source>Preset:</source>
-        <translation>Configuració predefinida:</translation>
+        <translation>プリセット:</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="74"/>
+        <location filename="../gui/presetsmanager.ui" line="74"/>
         <source>Export</source>
         <oldsource>Exportar</oldsource>
-        <translation>Exportar</translation>
+        <translation>エクスポート</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="100"/>
+        <location filename="../gui/presetsmanager.ui" line="100"/>
         <source>Import</source>
         <oldsource>Importar</oldsource>
-        <translation>Importar</translation>
+        <translation>インポート</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="159"/>
+        <location filename="../gui/presetsmanager.ui" line="159"/>
         <source>Apply</source>
         <oldsource>Aplicar</oldsource>
-        <translation>Aplicar</translation>
+        <translation>適用</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="175"/>
+        <location filename="../gui/presetsmanager.ui" line="175"/>
         <source>Save current preset:</source>
         <oldsource>Guardar Preset Actual:</oldsource>
-        <translation>Desar configuració predefinida actual:</translation>
+        <translation>現在プリセットを保存する:</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="187"/>
+        <location filename="../gui/presetsmanager.ui" line="187"/>
         <source>Name:</source>
         <oldsource>Nombre:</oldsource>
-        <translation>Nom:</translation>
+        <translation>名:</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="198"/>
+        <location filename="../gui/presetsmanager.ui" line="198"/>
         <source>Controls</source>
         <oldsource>Controles</oldsource>
-        <translation>Controls</translation>
+        <translation>コントロール</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="208"/>
+        <location filename="../gui/presetsmanager.ui" line="208"/>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation>ノーマル</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="237"/>
+        <location filename="../gui/presetsmanager.ui" line="237"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="248"/>
+        <location filename="../gui/presetsmanager.ui" line="248"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="273"/>
+        <location filename="../gui/presetsmanager.ui" line="273"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="278"/>
-        <location filename="../gui/presets_manager.ui" line="644"/>
+        <location filename="../gui/presetsmanager.ui" line="278"/>
+        <location filename="../gui/presetsmanager.ui" line="644"/>
         <source>Distance</source>
         <oldsource>Distancia</oldsource>
-        <translation>Distància</translation>
+        <translation>距離</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="284"/>
+        <location filename="../gui/presetsmanager.ui" line="284"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="295"/>
+        <location filename="../gui/presetsmanager.ui" line="295"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="306"/>
+        <location filename="../gui/presetsmanager.ui" line="306"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="312"/>
-        <location filename="../gui/presets_manager.ui" line="486"/>
-        <location filename="../gui/presets_manager.ui" line="564"/>
-        <location filename="../gui/presets_manager.ui" line="611"/>
+        <location filename="../gui/presetsmanager.ui" line="312"/>
+        <location filename="../gui/presetsmanager.ui" line="486"/>
+        <location filename="../gui/presetsmanager.ui" line="564"/>
+        <location filename="../gui/presetsmanager.ui" line="611"/>
         <source>Invert</source>
         <oldsource>Invertir</oldsource>
-        <translatorcomment>Invertir</translatorcomment>
-        <translation>Invertir</translation>
+        <translation>インバート</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="331"/>
+        <location filename="../gui/presetsmanager.ui" line="331"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="342"/>
+        <location filename="../gui/presetsmanager.ui" line="342"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="355"/>
+        <location filename="../gui/presetsmanager.ui" line="355"/>
         <source>6</source>
-        <translation>6</translation>
+        <translation>8</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="363"/>
+        <location filename="../gui/presetsmanager.ui" line="363"/>
         <source>Parallax</source>
         <oldsource>Paralaje</oldsource>
-        <translation>Paral·laxi</translation>
+        <translation>視差</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="373"/>
+        <location filename="../gui/presetsmanager.ui" line="373"/>
         <source>Type</source>
         <oldsource>Tipo</oldsource>
-        <translation>Tipus</translation>
+        <translation>タイプ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="379"/>
+        <location filename="../gui/presetsmanager.ui" line="379"/>
         <source>9</source>
         <translation>9</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="384"/>
+        <location filename="../gui/presetsmanager.ui" line="384"/>
         <source>Binary</source>
         <oldsource>Binario</oldsource>
-        <translation>Binari</translation>
+        <translation>バイナリー</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="403"/>
+        <location filename="../gui/presetsmanager.ui" line="403"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="414"/>
+        <location filename="../gui/presetsmanager.ui" line="414"/>
         <source>11</source>
         <translation>11</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="425"/>
+        <location filename="../gui/presetsmanager.ui" line="425"/>
         <source>13</source>
         <translation>13</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="430"/>
+        <location filename="../gui/presetsmanager.ui" line="430"/>
         <source>Erode / Dilate</source>
         <oldsource>Erosión / Dilatación</oldsource>
-        <translation>Erosió / Dilatació</translation>
+        <translation>浸食する / 膨張する</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="436"/>
+        <location filename="../gui/presetsmanager.ui" line="436"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="448"/>
+        <location filename="../gui/presetsmanager.ui" line="448"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="14"/>
+        <location filename="../gui/presetsmanager.ui" line="14"/>
         <source>Presets Manager</source>
-        <translation>Administrador de Configuracions Predefinides</translation>
+        <translation>プリセットマネジャー</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="120"/>
+        <location filename="../gui/presetsmanager.ui" line="120"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>削除</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="203"/>
+        <location filename="../gui/presetsmanager.ui" line="203"/>
         <source>Code</source>
-        <translation>Codi</translation>
+        <translation>コード</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="218"/>
+        <location filename="../gui/presetsmanager.ui" line="218"/>
         <source>Enhance</source>
-        <translation>Realçar</translation>
+        <translation>エンハンス</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="231"/>
-        <location filename="../gui/presets_manager.ui" line="267"/>
+        <location filename="../gui/presetsmanager.ui" line="231"/>
+        <location filename="../gui/presetsmanager.ui" line="267"/>
         <source>Height</source>
-        <translation>Alçada</translation>
+        <translation>高さ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="242"/>
-        <location filename="../gui/presets_manager.ui" line="289"/>
-        <location filename="../gui/presets_manager.ui" line="442"/>
-        <location filename="../gui/presets_manager.ui" line="508"/>
-        <location filename="../gui/presets_manager.ui" line="589"/>
+        <location filename="../gui/presetsmanager.ui" line="242"/>
+        <location filename="../gui/presetsmanager.ui" line="289"/>
+        <location filename="../gui/presetsmanager.ui" line="442"/>
+        <location filename="../gui/presetsmanager.ui" line="508"/>
+        <location filename="../gui/presetsmanager.ui" line="589"/>
         <source>Soft</source>
-        <translation>Suavitzat</translation>
+        <translation>ソフト</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="254"/>
+        <location filename="../gui/presetsmanager.ui" line="254"/>
         <source>Bump</source>
-        <translation>Bisell</translation>
+        <translation>バンプ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="300"/>
+        <location filename="../gui/presetsmanager.ui" line="300"/>
         <source>Cut</source>
-        <translation>Tall</translation>
+        <translation>切断</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="325"/>
+        <location filename="../gui/presetsmanager.ui" line="325"/>
         <source>X Axis</source>
-        <translation>Eix X</translation>
+        <translation>X 軸</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="336"/>
+        <location filename="../gui/presetsmanager.ui" line="336"/>
         <source>Y Axis</source>
-        <translation>Eix Y</translation>
+        <translation>Y 軸</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="349"/>
+        <location filename="../gui/presetsmanager.ui" line="349"/>
         <source>Tile</source>
-        <translation>Mosaic</translation>
+        <translation>タイル</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="397"/>
-        <location filename="../gui/presets_manager.ui" line="550"/>
-        <location filename="../gui/presets_manager.ui" line="622"/>
+        <location filename="../gui/presetsmanager.ui" line="397"/>
+        <location filename="../gui/presetsmanager.ui" line="550"/>
+        <location filename="../gui/presetsmanager.ui" line="622"/>
         <source>Threshold</source>
-        <translation>Llindar</translation>
+        <translation>限界</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="408"/>
+        <location filename="../gui/presetsmanager.ui" line="408"/>
         <source>Focus</source>
-        <translation>Enfocament</translation>
+        <translation>フォーカス</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="419"/>
+        <location filename="../gui/presetsmanager.ui" line="419"/>
         <source>Minimum Height</source>
-        <translation>Alçada Mínima</translation>
+        <translation>最小の高さ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="453"/>
+        <location filename="../gui/presetsmanager.ui" line="453"/>
         <source>Height Map</source>
-        <translation>Mapa d&apos;Alçada</translation>
+        <translation>ハイトマップ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="463"/>
-        <location filename="../gui/presets_manager.ui" line="522"/>
-        <location filename="../gui/presets_manager.ui" line="600"/>
+        <location filename="../gui/presetsmanager.ui" line="463"/>
+        <location filename="../gui/presetsmanager.ui" line="522"/>
+        <location filename="../gui/presetsmanager.ui" line="600"/>
         <source>Brightness</source>
-        <translation>Brillantor</translation>
+        <translation>明るさ</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="469"/>
+        <location filename="../gui/presetsmanager.ui" line="469"/>
         <source>15</source>
         <translation>15</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="474"/>
-        <location filename="../gui/presets_manager.ui" line="536"/>
-        <location filename="../gui/presets_manager.ui" line="633"/>
+        <location filename="../gui/presetsmanager.ui" line="474"/>
+        <location filename="../gui/presetsmanager.ui" line="536"/>
+        <location filename="../gui/presetsmanager.ui" line="633"/>
         <source>Contrast</source>
         <oldsource>Contraste</oldsource>
-        <translation>Contrast</translation>
+        <translation>コントラスト</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="480"/>
+        <location filename="../gui/presetsmanager.ui" line="480"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="492"/>
+        <location filename="../gui/presetsmanager.ui" line="492"/>
         <source>17</source>
         <translation>17</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="498"/>
+        <location filename="../gui/presetsmanager.ui" line="498"/>
         <source>Specular</source>
         <oldsource>Especular</oldsource>
-        <translation>Especular</translation>
+        <translation>スペキュラー</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="514"/>
+        <location filename="../gui/presetsmanager.ui" line="514"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="528"/>
+        <location filename="../gui/presetsmanager.ui" line="528"/>
         <source>19</source>
         <translation>19</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="542"/>
+        <location filename="../gui/presetsmanager.ui" line="542"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="556"/>
+        <location filename="../gui/presetsmanager.ui" line="556"/>
         <source>21</source>
         <translation>21</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="570"/>
+        <location filename="../gui/presetsmanager.ui" line="570"/>
         <source>22</source>
         <translation>22</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="579"/>
+        <location filename="../gui/presetsmanager.ui" line="579"/>
         <source>Occlussion</source>
         <oldsource>Oclusión</oldsource>
-        <translation>Oclusió</translation>
+        <translation>オクルージョン</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="595"/>
+        <location filename="../gui/presetsmanager.ui" line="595"/>
         <source>23</source>
         <translation>23</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="606"/>
+        <location filename="../gui/presetsmanager.ui" line="606"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="617"/>
+        <location filename="../gui/presetsmanager.ui" line="617"/>
         <source>25</source>
         <translation>25</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="628"/>
+        <location filename="../gui/presetsmanager.ui" line="628"/>
         <source>26</source>
         <translation>26</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="639"/>
+        <location filename="../gui/presetsmanager.ui" line="639"/>
         <source>27</source>
         <translation>27</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="650"/>
+        <location filename="../gui/presetsmanager.ui" line="650"/>
         <source>28</source>
         <translation>28</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="655"/>
+        <location filename="../gui/presetsmanager.ui" line="655"/>
         <source>Distance Mode</source>
         <oldsource>Modo distancia</oldsource>
-        <translation>Mode Distància</translation>
+        <translation>距離モード</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="661"/>
+        <location filename="../gui/presetsmanager.ui" line="661"/>
         <source>29</source>
         <translation>29</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="687"/>
+        <location filename="../gui/presetsmanager.ui" line="687"/>
         <source>Save</source>
-        <translation>Desar</translation>
+        <translation>保存</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="673"/>
+        <location filename="../gui/presetsmanager.ui" line="673"/>
         <source>30</source>
         <translation>30</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="149"/>
+        <location filename="../gui/presetsmanager.cpp" line="141"/>
         <source>You must input a name for the preset!</source>
-        <translation>Heu d&apos;introduir un nom per a la configuració predefinida!</translation>
+        <translation>プリセットの名を入力しなければなりません!</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="157"/>
+        <location filename="../gui/presetsmanager.cpp" line="148"/>
         <source>There is already a preset with that name!</source>
-        <translation>Ja hi ha una configuració predefinida amb aquest nom!</translation>
+        <translation>同じ名を持つプリセットは既に存在しています!</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.ui" line="667"/>
-        <location filename="../gui/presets_manager.cpp" line="174"/>
+        <location filename="../gui/presetsmanager.ui" line="667"/>
+        <location filename="../gui/presetsmanager.cpp" line="164"/>
         <source>Lights</source>
-        <translation>Llums</translation>
+        <translation>ライト</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="229"/>
+        <location filename="../gui/presetsmanager.cpp" line="209"/>
         <source>Cannot open the specified preset.</source>
-        <translation>No s&apos;ha pogut obrir la configuració predefinida especificada.</translation>
+        <translation>選択されたプリセットを開くことができません。</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="237"/>
-        <location filename="../gui/presets_manager.cpp" line="306"/>
+        <location filename="../gui/presetsmanager.cpp" line="216"/>
+        <location filename="../gui/presetsmanager.cpp" line="278"/>
         <source>Incorrect format.</source>
-        <translation>Format incorrecte.</translation>
+        <translation>不正確なフォーマット</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="259"/>
+        <location filename="../gui/presetsmanager.cpp" line="238"/>
         <source>Applying </source>
-        <translation>S&apos;està aplicant </translation>
+        <translation>適用中</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="259"/>
+        <location filename="../gui/presetsmanager.cpp" line="238"/>
         <source> to </source>
-        <translation> a </translation>
+        <translation>に</translation>
     </message>
     <message>
-        <location filename="../gui/presets_manager.cpp" line="314"/>
+        <location filename="../gui/presetsmanager.cpp" line="284"/>
         <source>There is already a preset with that name.</source>
-        <translation>Ja hi ha una configuració predefinida amb aquest nom.</translation>
+        <translation>同じ名を持つプリセットは既に存在しています。</translation>
     </message>
 </context>
 <context>
     <name>RemovePluginDialog</name>
     <message>
-        <location filename="../gui/remove_plugin_dialog.ui" line="14"/>
+        <location filename="../gui/removeplugindialog.ui" line="14"/>
         <source>Remove Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグインを外す</translation>
     </message>
     <message>
-        <location filename="../gui/remove_plugin_dialog.ui" line="20"/>
+        <location filename="../gui/removeplugindialog.ui" line="20"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>プラグイン</translation>
     </message>
 </context>
 </TS>

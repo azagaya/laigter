@@ -55,3 +55,7 @@ void Sprite::set_texture(TextureTypes type, Texture t)
 }
 
 QSize Sprite::size() { return textures[0].size(); }
+
+QString Sprite::get_file_name(){
+  return fileName;
+}

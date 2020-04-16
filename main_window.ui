@@ -59,7 +59,9 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionLoadProject"/>
    <addaction name="actionSaveProject"/>
+   <addaction name="actionSave_Project_As"/>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
    <addaction name="actionFitZoom"/>
@@ -318,7 +320,7 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="maximumSize">
         <size>
@@ -330,6 +332,21 @@
         <string>Light</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>5</number>
+        </property>
         <item row="0" column="0" colspan="3">
          <widget class="QTabWidget" name="tabWidgetLight">
           <property name="sizePolicy">
@@ -612,102 +629,7 @@
        </layout>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>View</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_24">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Mode:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2">
-         <widget class="QComboBox" name="comboBoxView">
-          <item>
-           <property name="text">
-            <string>Texture</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Normal Map</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Specular Map</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Parallax Map</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Occlussion Map</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Preview</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QCheckBox" name="checkBoxPixelated">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Pixelated</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QCheckBox" name="checkBoxToon">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Toon</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="QGroupBox" name="groupBox_Tile_Preview">
        <property name="maximumSize">
         <size>
@@ -719,10 +641,19 @@
         <string>Tile</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_12">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
         <property name="topMargin">
          <number>5</number>
         </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
         <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="horizontalSpacing">
          <number>5</number>
         </property>
         <property name="verticalSpacing">
@@ -756,6 +687,133 @@
           </property>
           <property name="value">
            <number>30</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>View</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_24">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Mode:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <widget class="QComboBox" name="comboBoxView">
+          <item>
+           <property name="text">
+            <string>Texture</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Normal Map</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Specular Map</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Parallax Map</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Occlussion Map</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Preview</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="4">
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QCheckBox" name="checkBoxPixelated">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Pixelated</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QCheckBox" name="checkBoxToon">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Toon</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Blending:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2" colspan="2">
+         <widget class="QSlider" name="blendSlider">
+          <property name="maximum">
+           <number>100</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1431,6 +1489,21 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_9">
     <layout class="QGridLayout" name="gridLayout_23">
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <property name="spacing">
+      <number>5</number>
+     </property>
      <item row="0" column="0" colspan="2">
       <widget class="QScrollArea" name="scrollArea">
        <property name="widgetResizable">
@@ -1441,7 +1514,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>254</width>
+          <width>262</width>
           <height>326</height>
          </rect>
         </property>
@@ -1547,7 +1620,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+     <normaloff>:/icons/import.png</normaloff>:/icons/import.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -1706,8 +1779,30 @@
    </property>
   </action>
   <action name="actionSaveProject">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
    <property name="text">
-    <string>SaveProject</string>
+    <string>Save Project</string>
+   </property>
+  </action>
+  <action name="actionLoadProject">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load Project</string>
+   </property>
+  </action>
+  <action name="actionSave_Project_As">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Project As</string>
    </property>
   </action>
  </widget>

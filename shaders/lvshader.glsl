@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 attribute vec3 aPos;
 attribute vec2 aTexCoord;
 varying vec2 texCoord;

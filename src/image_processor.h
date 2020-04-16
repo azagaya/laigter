@@ -31,6 +31,7 @@
 #include <QObject>
 #include <QPainter>
 #include <QPixmap>
+#include <QSemaphore>
 #include <QTimer>
 #include <QVector2D>
 
@@ -123,7 +124,7 @@ public:
   QMutex specular_overlay_mutex;
   QMutex texture_overlay_mutex;
   QString m_fileName;
-  QTimer animation;
+  QTimer animation, recalculate_timer;
   QVector<Sprite> frames;
   bool busy, active;
   bool updated = false;
@@ -134,7 +135,7 @@ private:
   QBrush normal_brush;
   QFuture<void> normal_future;
   QList<LightSource *> lightList;
-  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex,
+  QMutex normal_mutex, parallax_mutex, specular_mutex, occlusion_mutex, heightmap_mutex,
       normal_ready, specular_ready, parallax_ready, occlussion_ready;
   QPainter normal_painter;
   QString m_name, m_heightmapPath, m_specularPath;
@@ -239,6 +240,9 @@ public:
   void set_texture_overlay(QImage to);
 
 public slots:
+  void playAnimation(bool play);
+  void recalculate();
+  void setAnimationRate(int fps);
   ParallaxType get_parallax_type();
   ProcessorSettings get_settings();
   QImage get_neighbour(int x, int y);
@@ -297,7 +301,7 @@ public slots:
   void reset_neighbours();
   void set_connected(bool c);
   void set_current_frame_id(int id);
-  void set_current_heightmap();
+  void set_current_heightmap(int id);
   void set_is_parallax(bool p);
   void set_light_list(QList<LightSource *> &list);
   void set_normal_bisel_blur_radius(int radius);
@@ -345,6 +349,7 @@ public slots:
 
 signals:
   void processed();
+  void frameChanged(int index);
   void on_idle();
 };
 

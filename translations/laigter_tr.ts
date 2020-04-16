@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca_ES">
+<TS version="2.1" language="en_US">
 <context>
     <name>AboutDialog</name>
     <message>
         <location filename="../gui/about_dialog.ui" line="14"/>
         <source>About</source>
-        <translation>Quan a</translation>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="27"/>
         <source>Follow and Support me on:</source>
-        <translation>Segueix-me i dona&apos;m suport a:</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="181"/>
         <source>Laigter, by Azagaya</source>
-        <translation>Laigter, per Azagaya</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="192"/>
         <source>Contributions</source>
-        <translation>Contribucions</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="199"/>
         <source>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</source>
-        <translation>Patrick &quot;Ffyhlkain&quot; Henschel (Productor!)</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="204"/>
         <source>Christine Garner (Friend of Laigter!)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="209"/>
         <source>Lodugh (Participant!)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="214"/>
         <source>Christoffer Sundbom (Supporter!)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="222"/>
         <source>Patreon:</source>
-        <translation>Patreon:</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="230"/>
         <source>Programmers</source>
-        <translation>Programadors</translation>
+        <translation>Programcılar</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="237"/>
         <source>Gnumaru - Experimental CLI Interface</source>
-        <translation>Gnumaru - Interfície CLI experimental</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="242"/>
         <source>George Marques (vnen) - Translation load</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="247"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
-        <translation>Brandon Blanker Lim-it - Recàrrega automàtica de la imatge quan el fitxer canvia</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="256"/>
         <source>Translations</source>
-        <translation>Traduccions</translation>
+        <translation>Çeviriler</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="263"/>
@@ -81,37 +81,37 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="268"/>
         <source>Manolis Papadeas (Overloaded) - Greek</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="273"/>
         <source>Hugo Locurcio (Calinou) - French</source>
-        <translation>Hugo Locurcio (Calinou) - Francès</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="278"/>
         <source>George Marques (vnen) - Brazilian Portuguese</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="283"/>
         <source>Xavier Gómez (hiulit) - Catalán</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="288"/>
         <source>Lars Pontoppidan (Larpon) - Danish</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="293"/>
         <source>Azagaya - English and Spanish</source>
-        <translation>Azagaya - Anglès i Espanyol</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="302"/>
         <source>Acknowledgements</source>
-        <translation>Agraïments</translation>
+        <translation>Teşekkürler</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="308"/>
@@ -990,7 +990,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/frame_splitter.ui" line="55"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tamam</translation>
     </message>
 </context>
 <context>
@@ -998,12 +998,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/language_selector.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/language_selector.ui" line="36"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamam</translation>
     </message>
 </context>
 <context>
@@ -1011,25 +1011,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="14"/>
         <source>Laigter</source>
-        <translation>Laigter</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="93"/>
         <location filename="../main_window.ui" line="1525"/>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="109"/>
         <source>Enhance:</source>
-        <translation>Realçar:</translation>
+        <translation>İyileştirme:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="117"/>
         <location filename="../main_window.ui" line="214"/>
         <location filename="../main_window.ui" line="564"/>
         <source>Height:</source>
-        <translation>Alçada:</translation>
+        <translation>Yükseklik:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="140"/>
@@ -1038,155 +1038,155 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1236"/>
         <location filename="../main_window.ui" line="1290"/>
         <source>Soft:</source>
-        <translation>Suavitzat:</translation>
+        <translation>Yumuşaklık:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="177"/>
         <source>Axis:</source>
-        <translation>Eixos:</translation>
+        <translation>Axis:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="183"/>
         <source>Invert x</source>
-        <translation>Invertir x</translation>
+        <translation>X Eksenini çevir</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="190"/>
         <source>Invert y</source>
-        <translation>Invertir y</translation>
+        <translation>Y Eksenini çevir</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="206"/>
         <source>Bump:</source>
-        <translation>Bisell:</translation>
+        <translation>Şişkinlik:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="234"/>
         <location filename="../main_window.ui" line="1392"/>
         <source>Distance:</source>
-        <translation>Distància:</translation>
+        <translation>Uzaklık:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="280"/>
         <source>Soft</source>
-        <translation>Suau</translation>
+        <translation>Yumuşak geçişler</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="293"/>
         <source>Abrupt</source>
-        <translation>Abrupte</translation>
+        <translation>Keskin geçişler</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="316"/>
         <source>Visualization</source>
-        <translation>Visualització</translation>
+        <translation>Görselleştirme</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="332"/>
         <source>Light</source>
-        <translation>Llum</translation>
+        <translation>Işık</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="381"/>
         <source>Diffuse</source>
-        <translation>Difusa</translation>
+        <translation>Nüfuz</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="387"/>
         <location filename="../main_window.ui" line="432"/>
         <location filename="../main_window.ui" line="482"/>
         <source>Intensity:</source>
-        <translation>Intensitat:</translation>
+        <translation>Yoğunluk:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="408"/>
         <location filename="../main_window.ui" line="1137"/>
         <location filename="../main_window.ui" line="1535"/>
         <source>Specular</source>
-        <translation>Especular</translation>
+        <translation>Speküler</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="439"/>
         <source>Scatter:</source>
-        <translation>Dispersió:</translation>
+        <translation>Dağılım:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="476"/>
         <source>Ambient</source>
-        <translation>Ambient</translation>
+        <translation>Ortam</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="502"/>
         <location filename="../main_window.ui" line="593"/>
         <source>Color:</source>
-        <translation>Color:</translation>
+        <translation>Renk:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="528"/>
         <source>Background:</source>
-        <translation>Fons:</translation>
+        <translation>Arkaplan:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="619"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si s&apos;activa, cada textura tindrà les seves pròpies llums, amb la seva pròpia configuració.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="622"/>
         <source>Lights per texture</source>
-        <translation>Llums per textura</translation>
+        <translation>Doku başına ışık</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="708"/>
         <source>View</source>
-        <translation>Vista</translation>
+        <translation>Görünüm</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="735"/>
         <source>Mode:</source>
-        <translation>Mode:</translation>
+        <translation>Mod:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="743"/>
         <source>Texture</source>
-        <translation>Textura</translation>
+        <translation>Doku</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="748"/>
         <source>Normal Map</source>
-        <translation>Mapa Normal</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="753"/>
         <source>Specular Map</source>
-        <translation>Mapa Especular</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="758"/>
         <source>Parallax Map</source>
-        <translation>Mapa de Paral·laxi</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="763"/>
         <source>Occlussion Map</source>
-        <translation>Mapa d&apos;Oclusió</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="768"/>
         <location filename="../main_window.ui" line="1565"/>
         <source>Preview</source>
-        <translation>Vista Prèvia</translation>
+        <translation>Önizleme</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="789"/>
         <source>Pixelated</source>
-        <translation>Pixelat</translation>
+        <translation>Pixelli</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="802"/>
         <source>Toon</source>
-        <translation type="unfinished"></translation>
+        <translation>Çizgi film</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1787"/>
@@ -1208,24 +1208,24 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1423"/>
         <location filename="../main_window.ui" line="1470"/>
         <source>Tile</source>
-        <translation>Mosaic</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="665"/>
         <source>Tile y</source>
-        <translation>Mosaic y</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="672"/>
         <source>Tile x</source>
-        <translation>Mosaic x</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="679"/>
         <location filename="../main_window.ui" line="855"/>
         <location filename="../main_window.ui" line="1555"/>
         <source>Parallax</source>
-        <translation>Paral·laxi</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="809"/>
@@ -1235,22 +1235,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="834"/>
         <source>Textures</source>
-        <translation>Textures</translation>
+        <translation>Dokular</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="865"/>
         <source>Type</source>
-        <translation>Tipus</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="873"/>
         <source>Binary</source>
-        <translation>Binari</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="878"/>
         <source>Height Map</source>
-        <translation>Mapa d&apos;Alçada</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="886"/>
@@ -1258,101 +1258,101 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1277"/>
         <location filename="../main_window.ui" line="1439"/>
         <source>Controls:</source>
-        <translation>Controls:</translation>
+        <translation>Kontroller:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="914"/>
         <source>Quantization:</source>
-        <translation>Quantificació:</translation>
+        <translation>Nicelik:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="927"/>
         <location filename="../main_window.ui" line="1166"/>
         <location filename="../main_window.ui" line="1385"/>
         <source>Threshold:</source>
-        <translation>Llindar:</translation>
+        <translation>Eşik:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="940"/>
         <source>Min Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum Yükseklik:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1740"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Load Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Yükle</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1743"/>
         <source>Reload Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Pluginleri Yeniden Yükle</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1755"/>
         <location filename="../main_window.ui" line="1758"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Install Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Kur</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1770"/>
         <location filename="../main_window.ui" line="1773"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Delete Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Sil</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1778"/>
         <location filename="../main_window.cpp" line="1713"/>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Diller</translation>
     </message>
     <message>
-        <source>Minimum Height:</source>
-        <translation type="vanished">Alçada Mínima:</translation>
+        <source>SaveProject</source>
+        <translation type="vanished">Projeyi Kaydet</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="979"/>
         <location filename="../main_window.ui" line="1173"/>
         <location filename="../main_window.ui" line="1339"/>
         <source>Contrast:</source>
-        <translation>Contrast:</translation>
+        <translation>Konstrast:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1002"/>
         <location filename="../main_window.ui" line="1229"/>
         <location filename="../main_window.ui" line="1283"/>
         <source>Invert</source>
-        <translation>Invertir</translation>
+        <translation>Tersine çevir</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1015"/>
         <source>Focus:</source>
-        <translation>Enfocament:</translation>
+        <translation>Odak:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1028"/>
         <location filename="../main_window.ui" line="1222"/>
         <location filename="../main_window.ui" line="1378"/>
         <source>Brightness:</source>
-        <translation>Brillantor:</translation>
+        <translation>Parlaklık:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1109"/>
         <source>Erode / Dilate:</source>
-        <translation>Erosió / Dilatació:</translation>
+        <translation>Büyütme:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1267"/>
         <location filename="../main_window.ui" line="1545"/>
         <source>Occlussion</source>
-        <translation>Oclusió</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1460"/>
         <source>Neighbours</source>
-        <translation>Veïns</translation>
+        <translation>Komşular</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1485"/>
@@ -1360,142 +1360,142 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1680"/>
         <location filename="../main_window.ui" line="1683"/>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation>Dışa Aktar</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1579"/>
         <source>Export to...</source>
-        <translation>Exportar a...</translation>
+        <translation>Şuraya Aktar...</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1607"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>Araçlar</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1626"/>
         <location filename="../main_window.ui" line="1629"/>
         <source>Open</source>
-        <translation>Obrir</translation>
+        <translation>Aç</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1641"/>
         <location filename="../main_window.ui" line="1644"/>
         <source>Fit Zoom</source>
-        <translation>Ajustar Zoom</translation>
+        <translation>Ekrana Sığdır</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1653"/>
         <source>Zoom 100%</source>
-        <translation>Zoom 100%</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1662"/>
         <source>Zoom +</source>
-        <translation>Zoom +</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1671"/>
         <source>Zoom -</source>
-        <translation>Zoom -</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1692"/>
         <source>Presets</source>
-        <translation>Configuracions predefinides</translation>
+        <translation>Ön ayarlar</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1701"/>
         <location filename="../main_window.ui" line="1704"/>
         <source>Export Preview</source>
-        <translation>Exportar Vista Prèvia</translation>
+        <translation>Önizlemeyi Dışa Aktar</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1713"/>
         <location filename="../main_window.ui" line="1716"/>
         <source>About</source>
-        <translation>Quan a</translation>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1728"/>
         <source>Add Light</source>
-        <translation>Afegir Llum</translation>
+        <translation>Işık kaynağı ekle</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1731"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Afegir Font de Llum:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Feu clic amb el botó esquerre per afegir la font de llum.&lt;/p&gt;&lt;p&gt;Feu clic amb el botó dret per eliminar la font de llum o cancel·lar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="212"/>
         <source>Context menu</source>
-        <translation>Menú de context</translation>
+        <translation>İçerik Menüsü</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="213"/>
         <location filename="../main_window.cpp" line="293"/>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="215"/>
         <location filename="../main_window.cpp" line="311"/>
         <source>Load heightmap</source>
-        <translation>Carregar mapa d&apos;alçada</translation>
+        <translation>Heightmap yükle</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="216"/>
         <location filename="../main_window.cpp" line="329"/>
         <source>Reset heightmap</source>
-        <translation>Restablir mapa d&apos;alçada</translation>
+        <translation>Heightmap:sıfırla</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="218"/>
         <location filename="../main_window.cpp" line="337"/>
         <source>Load specular map</source>
-        <translation>Carregar mapa especular</translation>
+        <translation>Specularmap yükle</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="219"/>
         <location filename="../main_window.cpp" line="354"/>
         <source>Reset specular map</source>
-        <translation>Restablir mapa especular</translation>
+        <translation>Speculermap sıfırla</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="221"/>
         <location filename="../main_window.cpp" line="363"/>
         <source>Add new frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Yeni kare ekle</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="226"/>
         <location filename="../main_window.cpp" line="392"/>
         <source>Remove current frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Seçili kareyi kaldır</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="227"/>
         <location filename="../main_window.cpp" line="388"/>
         <source>Next Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Sonraki kare</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="228"/>
         <location filename="../main_window.cpp" line="390"/>
         <source>Previous Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Önceki kare</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="232"/>
         <location filename="../main_window.cpp" line="384"/>
         <source>Stop Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animasyonu Durdur</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="238"/>
         <location filename="../main_window.cpp" line="386"/>
         <source>Start Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Animasyonu Başlat</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="248"/>
@@ -1509,7 +1509,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="366"/>
         <location filename="../main_window.cpp" line="433"/>
         <source>Open Image</source>
-        <translation>Obrir Imatge</translation>
+        <translation>Görüntü Aç</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="315"/>
@@ -1517,17 +1517,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="367"/>
         <location filename="../main_window.cpp" line="433"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
-        <translation>Fitxer d&apos;Imatge (*.png *.jpg *.bmp *.tga)</translation>
+        <translation>Görüntü Dosyası (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="542"/>
         <source>Cannot open </source>
-        <translation>No s&apos;ha pogut obrir </translation>
+        <translation>Açılamadı</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="543"/>
         <source>Unsupported or incorrect format.</source>
-        <translation>Format no admès o incorrecte.</translation>
+        <translation>Desteklenmeyen veya hatalı format.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="975"/>
@@ -1548,140 +1548,102 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.cpp" line="1855"/>
         <source>Image File (*.laigter)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The image is already opened in Laigter.</source>
-        <translation type="vanished">La imatge ja està oberta a Laigter.</translation>
+        <translation>Görüntü Dosyası (*.laigter)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="583"/>
         <location filename="../main_window.cpp" line="1327"/>
         <location filename="../main_window.cpp" line="1855"/>
         <source>Save Image</source>
-        <translation>Desar Imatge</translation>
+        <translation>Görüntüyü kaydet</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="583"/>
         <location filename="../main_window.cpp" line="1327"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
-        <translation>Fitxer d&apos;Imatge (*.png *.jpg *.bmp)</translation>
+        <translation>Görüntü Dosyası (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="604"/>
         <source>Normal map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa normal.
-</translation>
+        <translation>Normal map dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="612"/>
         <source>Parallax map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa de paral·laxi.
-</translation>
+        <translation>Parallax map dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="620"/>
         <source>Specular map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa especular.
-</translation>
+        <translation>Specular map dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="629"/>
         <source>Occlussion map was exported.
 </source>
-        <translation>S&apos;ha exportat el mapa d&apos;oclusió.
-</translation>
+        <translation>Occlussion map dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="638"/>
         <source>Preview was exported.
 </source>
-        <translation>S&apos;ha exportat la vista prèvia.
-</translation>
+        <translation>Önizleme dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1119"/>
         <source>All normal maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes normals.
-</translation>
+        <translation>Tüm normal mapler dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1137"/>
         <source>All parallax maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes de paral·laxi.
-</translation>
+        <translation>Tüm parallax mapler dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1155"/>
         <source>All specular maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes especulars.
-</translation>
+        <translation>Tüm specularl mapler dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1173"/>
         <source>All occlussion maps were exported.
 </source>
-        <translation>S&apos;han exportat tots els mapes d&apos;oclusió.
-</translation>
+        <translation>Tüm occlussion mapler dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1179"/>
         <source>All previews were exported.
 </source>
-        <translation>S&apos;han exportat totes les vistes prèvies.
-</translation>
-    </message>
-    <message>
-        <source>Image modified</source>
-        <translation type="vanished">Imatge modificada</translation>
-    </message>
-    <message>
-        <source>An image was modified</source>
-        <translation type="vanished">S&apos;ha modificat una imatge</translation>
-    </message>
-    <message>
-        <source>Specular map modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa especular</translation>
-    </message>
-    <message>
-        <source>A custom specular map was modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa especular personalitzat</translation>
-    </message>
-    <message>
-        <source>Height map modified</source>
-        <translation type="vanished">S&apos;ha modificat el mapa d&apos;alçada</translation>
-    </message>
-    <message>
-        <source>A custom height map was modified</source>
-        <translation type="vanished">S&apos;ha modificat un mapa d&apos;alçada personalitzat</translation>
+        <translation>Tüm önizlemeler dışa aktarıldı.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1630"/>
         <location filename="../main_window.cpp" line="1633"/>
         <location filename="../main_window.cpp" line="1636"/>
         <source>Open Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Aç</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1630"/>
         <source>Shared Library (*.so)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1633"/>
         <source>Shared Library (*.dll)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1636"/>
         <source>Shared Library (*.dylib)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1690,17 +1652,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/nb_selector.ui" line="26"/>
         <source>Neighbours selector</source>
         <oldsource>Selector de vecinos</oldsource>
-        <translation>Selector de veïns</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="455"/>
         <source>Reset Neighbours</source>
-        <translation>Restablir Veïns</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="462"/>
         <source>Empty Neighbours</source>
-        <translation>Buidar Veïns</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.cpp" line="66"/>
@@ -1714,7 +1676,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/nb_selector.cpp" line="194"/>
         <source>Open Image</source>
         <oldsource>Abrir Imagen</oldsource>
-        <translation>Obrir Imatge</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.cpp" line="67"/>
@@ -1728,7 +1690,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/nb_selector.cpp" line="195"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
         <oldsource>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</oldsource>
-        <translation>Fitxers d&apos;Imatge (*.png *.jpg *.bmp *.tga)</translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1737,90 +1699,90 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="33"/>
         <source>Apply preset:</source>
         <oldsource>Aplicar Preset:</oldsource>
-        <translation>Aplicar configuració predefinida:</translation>
+        <translation>Önayarı uygula:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="45"/>
         <source>Preset:</source>
-        <translation>Configuració predefinida:</translation>
+        <translation>Önayarlar:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="74"/>
         <source>Export</source>
         <oldsource>Exportar</oldsource>
-        <translation>Exportar</translation>
+        <translation>Dışa aktar</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="100"/>
         <source>Import</source>
         <oldsource>Importar</oldsource>
-        <translation>Importar</translation>
+        <translation>İçe aktar</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="159"/>
         <source>Apply</source>
         <oldsource>Aplicar</oldsource>
-        <translation>Aplicar</translation>
+        <translation>Uygula</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="175"/>
         <source>Save current preset:</source>
         <oldsource>Guardar Preset Actual:</oldsource>
-        <translation>Desar configuració predefinida actual:</translation>
+        <translation>Şu anki önayarı kaydet:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="187"/>
         <source>Name:</source>
         <oldsource>Nombre:</oldsource>
-        <translation>Nom:</translation>
+        <translation>İsim:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="198"/>
         <source>Controls</source>
         <oldsource>Controles</oldsource>
-        <translation>Controls</translation>
+        <translation>Kontroller</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="208"/>
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="237"/>
         <source>0</source>
-        <translation>0</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="248"/>
         <source>1</source>
-        <translation>1</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="273"/>
         <source>2</source>
-        <translation>2</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="278"/>
         <location filename="../gui/presets_manager.ui" line="644"/>
         <source>Distance</source>
         <oldsource>Distancia</oldsource>
-        <translation>Distància</translation>
+        <translation>Uzaklık</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="284"/>
         <source>3</source>
-        <translation>3</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="295"/>
         <source>4</source>
-        <translation>4</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="306"/>
         <source>5</source>
-        <translation>5</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="312"/>
@@ -1829,103 +1791,102 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="611"/>
         <source>Invert</source>
         <oldsource>Invertir</oldsource>
-        <translatorcomment>Invertir</translatorcomment>
-        <translation>Invertir</translation>
+        <translation>Çevir</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="331"/>
         <source>7</source>
-        <translation>7</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="342"/>
         <source>8</source>
-        <translation>8</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="355"/>
         <source>6</source>
-        <translation>6</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="363"/>
         <source>Parallax</source>
         <oldsource>Paralaje</oldsource>
-        <translation>Paral·laxi</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="373"/>
         <source>Type</source>
         <oldsource>Tipo</oldsource>
-        <translation>Tipus</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="379"/>
         <source>9</source>
-        <translation>9</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="384"/>
         <source>Binary</source>
         <oldsource>Binario</oldsource>
-        <translation>Binari</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="403"/>
         <source>10</source>
-        <translation>10</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="414"/>
         <source>11</source>
-        <translation>11</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="425"/>
         <source>13</source>
-        <translation>13</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="430"/>
         <source>Erode / Dilate</source>
         <oldsource>Erosión / Dilatación</oldsource>
-        <translation>Erosió / Dilatació</translation>
+        <translation>Büyütme</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="436"/>
         <source>14</source>
-        <translation>14</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="448"/>
         <source>12</source>
-        <translation>12</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="14"/>
         <source>Presets Manager</source>
-        <translation>Administrador de Configuracions Predefinides</translation>
+        <translation>Önayar yöneticisi</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="120"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="203"/>
         <source>Code</source>
-        <translation>Codi</translation>
+        <translation>Kod</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="218"/>
         <source>Enhance</source>
-        <translation>Realçar</translation>
+        <translation>İyileştir</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="231"/>
         <location filename="../gui/presets_manager.ui" line="267"/>
         <source>Height</source>
-        <translation>Alçada</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="242"/>
@@ -1934,66 +1895,66 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="508"/>
         <location filename="../gui/presets_manager.ui" line="589"/>
         <source>Soft</source>
-        <translation>Suavitzat</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="254"/>
         <source>Bump</source>
-        <translation>Bisell</translation>
+        <translation>Şişkinlik</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="300"/>
         <source>Cut</source>
-        <translation>Tall</translation>
+        <translation>Kes</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="325"/>
         <source>X Axis</source>
-        <translation>Eix X</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="336"/>
         <source>Y Axis</source>
-        <translation>Eix Y</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="349"/>
         <source>Tile</source>
-        <translation>Mosaic</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="397"/>
         <location filename="../gui/presets_manager.ui" line="550"/>
         <location filename="../gui/presets_manager.ui" line="622"/>
         <source>Threshold</source>
-        <translation>Llindar</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="408"/>
         <source>Focus</source>
-        <translation>Enfocament</translation>
+        <translation>Odak</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="419"/>
         <source>Minimum Height</source>
-        <translation>Alçada Mínima</translation>
+        <translation>Minimum Yükseklik</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="453"/>
         <source>Height Map</source>
-        <translation>Mapa d&apos;Alçada</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="463"/>
         <location filename="../gui/presets_manager.ui" line="522"/>
         <location filename="../gui/presets_manager.ui" line="600"/>
         <source>Brightness</source>
-        <translation>Brillantor</translation>
+        <translation>Parlaklık</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="469"/>
         <source>15</source>
-        <translation>15</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="474"/>
@@ -2001,147 +1962,147 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="633"/>
         <source>Contrast</source>
         <oldsource>Contraste</oldsource>
-        <translation>Contrast</translation>
+        <translation>Konstrast</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="480"/>
         <source>16</source>
-        <translation>16</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="492"/>
         <source>17</source>
-        <translation>17</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="498"/>
         <source>Specular</source>
         <oldsource>Especular</oldsource>
-        <translation>Especular</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="514"/>
         <source>18</source>
-        <translation>18</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="528"/>
         <source>19</source>
-        <translation>19</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="542"/>
         <source>20</source>
-        <translation>20</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="556"/>
         <source>21</source>
-        <translation>21</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="570"/>
         <source>22</source>
-        <translation>22</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="579"/>
         <source>Occlussion</source>
         <oldsource>Oclusión</oldsource>
-        <translation>Oclusió</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="595"/>
         <source>23</source>
-        <translation>23</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="606"/>
         <source>24</source>
-        <translation>24</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="617"/>
         <source>25</source>
-        <translation>25</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="628"/>
         <source>26</source>
-        <translation>26</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="639"/>
         <source>27</source>
-        <translation>27</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="650"/>
         <source>28</source>
-        <translation>28</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="655"/>
         <source>Distance Mode</source>
         <oldsource>Modo distancia</oldsource>
-        <translation>Mode Distància</translation>
+        <translation>Uzaklık modu</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="661"/>
         <source>29</source>
-        <translation>29</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="687"/>
         <source>Save</source>
-        <translation>Desar</translation>
+        <translation>Kaydet</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="673"/>
         <source>30</source>
-        <translation>30</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="149"/>
         <source>You must input a name for the preset!</source>
-        <translation>Heu d&apos;introduir un nom per a la configuració predefinida!</translation>
+        <translation>Ön ayara bir isim vermelisin!</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="157"/>
         <source>There is already a preset with that name!</source>
-        <translation>Ja hi ha una configuració predefinida amb aquest nom!</translation>
+        <translation>Aynı isimde bir önayar var!</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="667"/>
         <location filename="../gui/presets_manager.cpp" line="174"/>
         <source>Lights</source>
-        <translation>Llums</translation>
+        <translation>Işıklar</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="229"/>
         <source>Cannot open the specified preset.</source>
-        <translation>No s&apos;ha pogut obrir la configuració predefinida especificada.</translation>
+        <translation>Seçili önayar yüklenemedi.</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="237"/>
         <location filename="../gui/presets_manager.cpp" line="306"/>
         <source>Incorrect format.</source>
-        <translation>Format incorrecte.</translation>
+        <translation>Hatalı format.</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="259"/>
         <source>Applying </source>
-        <translation>S&apos;està aplicant </translation>
+        <translation>Uygulanıyor </translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="259"/>
         <source> to </source>
-        <translation> a </translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="314"/>
         <source>There is already a preset with that name.</source>
-        <translation>Ja hi ha una configuració predefinida amb aquest nom.</translation>
+        <translation>Aynı isimde bir önayar var.</translation>
     </message>
 </context>
 <context>
@@ -2149,12 +2110,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="14"/>
         <source>Remove Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Pluginleri kaldır</translation>
     </message>
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="20"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Pluginler</translation>
     </message>
 </context>
 </TS>

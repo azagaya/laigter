@@ -55,6 +55,7 @@ public:
   ImageProcessor *processor;
   QList<LightSource *> *sampleLightList;
   bool need_to_update;
+  int blend_factor = 0;
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;
@@ -72,6 +73,7 @@ private:
   QOpenGLVertexArrayObject VAO, VAO3D;
   QOpenGLVertexArrayObject lightVAO;
   QPoint oldPos;
+  QPointF old_position;
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;
@@ -126,6 +128,7 @@ public slots:
   void set_current_light_list(QList<LightSource *> *list);
   void set_current_processor(ImageProcessor *p);
   void set_processor_list(QList<ImageProcessor *> list);
+  QList<ImageProcessor *> * get_processor_list();
   void set_processor_selected(ImageProcessor *processor, bool selected);
   void set_view_mode(int mode);
   void update();

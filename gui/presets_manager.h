@@ -55,6 +55,8 @@ public:
   static Ui::preset_codes_array &get_preset_codes();
   static void applyPresetSettings(QByteArray &setting, ImageProcessor &p);
   static void applyPresets(QString &preset, ImageProcessor &p);
+  static void applyPresetsString(QString preset, ImageProcessor *p);
+  static void SaveAllPresets(ImageProcessor *p, QString path);
 
 private slots:
   QStringList scan_presets();

@@ -25,6 +25,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QThread>
+#include <QTextCodec>
 
 static QString presetCodes[30] = {"EnhanceHeight ",
                                   "EnhanceSoft ",
@@ -160,6 +162,7 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
   if (preset.open(QIODevice::WriteOnly))
   {
     QTextStream in(&preset);
+    in.setCodec( QTextCodec::codecForName( "UTF-8" ) );
     in << "[Laigter Preset]";
     bool saveLights = false;
     QTreeWidgetItemIterator it(ui->treeWidget);
@@ -441,4 +444,105 @@ void PresetsManager::applyPresets(QString &preset, ImageProcessor &p)
     QByteArray setting = settings_list.at(i);
     applyPresetSettings(setting, p);
   }
+}
+
+void PresetsManager::applyPresetsString(QString presets, ImageProcessor *p)
+{
+
+  QByteArray settings = presets.toUtf8();
+  if (settings.contains("LightSource"))
+    p->get_light_list_ptr()->clear();
+
+  QList<QByteArray> settings_list = settings.split('\n');
+  for (int i = 0; i < settings_list.count(); i++)
+  {
+    QByteArray setting = settings_list.at(i);
+    applyPresetSettings(setting, *p);
+  }
+}
+
+void PresetsManager::SaveAllPresets(ImageProcessor *p, QString path)
+{
+  QString currentValues[30];
+
+  QList<LightSource *> pLightList;
+  pLightList.clear();
+
+
+  ProcessorSettings settings = p->get_settings();
+  foreach (LightSource *light, *(settings.lightList))
+  {
+    LightSource *l = new LightSource();
+    l->copy_settings(light);
+    pLightList.append(l);
+  }
+
+  currentValues[0] = QString::number(*settings.normal_depth);
+  currentValues[1] = QString::number(*settings.normal_blur_radius);
+  currentValues[2] = QString::number(*settings.normal_bisel_depth);
+  currentValues[3] = QString::number(*settings.normal_bisel_distance);
+  currentValues[4] = QString::number(*settings.normal_bisel_blur_radius);
+  currentValues[5] = *settings.normal_bisel_soft ? "1" : "0";
+  currentValues[6] = *settings.tileable ? "1" : "0";
+  currentValues[7] = *settings.normalInvertX == -1 ? "1" : "0";
+  currentValues[8] = *settings.normalInvertY == -1 ? "1" : "0";
+  currentValues[9] = QString::number((int)*settings.parallax_type);
+  currentValues[10] = QString::number(*settings.parallax_max);
+  currentValues[11] = QString::number(*settings.parallax_focus);
+  currentValues[12] = QString::number(*settings.parallax_soft);
+  currentValues[13] = QString::number(*settings.parallax_min);
+  currentValues[14] = QString::number(*settings.parallax_erode_dilate);
+  currentValues[15] = QString::number(*settings.parallax_brightness);
+  currentValues[16] = QString::number(*settings.parallax_contrast * 1000);
+  currentValues[17] = QString::number(*settings.parallax_invert);
+  currentValues[18] = QString::number(*settings.specular_blur);
+  currentValues[19] = QString::number(*settings.specular_bright);
+  currentValues[20] = QString::number(*settings.specular_contrast * 1000);
+  currentValues[21] = QString::number(*settings.specular_thresh);
+  currentValues[22] = *settings.specular_invert ? "1" : "0";
+  currentValues[23] = QString::number(*settings.occlusion_blur);
+  currentValues[24] = QString::number(*settings.occlusion_bright);
+  currentValues[25] = *settings.occlusion_invert ? "1" : "0";
+  currentValues[26] = QString::number(*settings.occlusion_thresh);
+  currentValues[27] = QString::number(*settings.occlusion_contrast * 1000);
+  currentValues[28] = QString::number(*settings.occlusion_distance);
+  currentValues[29] = *settings.occlusion_distance_mode ? "1" : "0";
+
+  QFile preset(path);
+
+  if (preset.open(QIODevice::WriteOnly))
+  {
+    QTextStream in(&preset);
+    in << "[Laigter Preset]";
+    in.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    for (int i = 0; i < 30; i++)
+    {
+      in << "\n" << presetCodes[i] << "\t" << currentValues[i];
+    }
+
+    foreach (LightSource *light, pLightList)
+    {
+      QColor diffuseColor = light->get_diffuse_color();
+      QColor specularColor = light->get_specular_color();
+      QVector3D position = light->get_light_position();
+      in << "\nLightSource\n";
+      in << "DiffuseColor \t" << diffuseColor.red() << "\t"
+         << diffuseColor.green() << "\t" << diffuseColor.blue()
+         << "\n";
+      in << "DiffuseIntensity \t" << light->get_diffuse_intensity()
+         << "\n";
+      in << "SpecularColor \t" << specularColor.red() << "\t"
+         << specularColor.green() << "\t" << specularColor.blue()
+         << "\n";
+      in << "SpecularScatter \t" << light->get_specular_scatter()
+         << "\n";
+      in << "SpecularIntensity \t" << light->get_specular_intesity()
+         << "\n";
+      in << "Position \t" << position.x() << "\t" << position.y()
+         << "\t" << position.z() << "\t";
+    }
+
+    preset.close();
+  }
+
 }

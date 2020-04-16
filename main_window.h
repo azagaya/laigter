@@ -27,6 +27,8 @@
 #include "src/light_source.h"
 #include "src/project.h"
 
+#include "gui/widgets/animation_dock.h"
+
 #include <QColor>
 #include <QFileSystemWatcher>
 #include <QGraphicsScene>
@@ -69,6 +71,8 @@ private:
   QOpenGLWidget *gl;
   QThread *processingThread;
   Ui::MainWindow *ui;
+  QDockWidget *animation_dock;
+  AnimationDock *animation_widget;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -76,11 +80,16 @@ public:
   void dropEvent(QDropEvent *event);
   void dragEnterEvent(QDragEnterEvent *e);
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
+  void SaveProject(QString path);
+  void LoadProject(QString path);
+  void ExportMap(TextureTypes type, ImageProcessor *p, QString postfix);
 
 public slots:
   ImageProcessor *find_processor(QString name);
+  void setCurrentItem(QListWidgetItem *i);
   void update_scene();
   void add_processor(ImageProcessor *p);
+  void remove_processor(ImageProcessor *p);
   void selectedLightChanged(LightSource *light);
   void stopAddingLight();
   void set_light_color(const QColor &color);
@@ -135,6 +144,11 @@ private slots:
   void on_actionLanguages_triggered();
   void on_listWidget_itemClicked(QListWidgetItem *item);
   void on_actionSaveProject_triggered();
+  void on_blendSlider_valueChanged(int value);
+
+  void on_actionLoadProject_triggered();
+
+  void on_actionSave_Project_As_triggered();
 
 protected slots:
   virtual void changeEvent(QEvent *event);
