@@ -463,7 +463,7 @@ void OpenGlWidget::setParallax(bool p)
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
-  //  QPointF mouse_position = LocalToWorld(event->position());
+//    QPointF mouse_position = LocalToWorld(event->position());
   QPoint degree = event->angleDelta() / 8;
 
   if (!degree.isNull() && degree.y() != 0)
@@ -856,7 +856,6 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 void OpenGlWidget::updateView(){
   view.setToIdentity();
   origin.setZ(0);
-  //  view.translate(-origin);
   view.scale(m_global_zoom);
   view.translate(origin);
   need_to_update = true;
