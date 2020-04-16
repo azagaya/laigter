@@ -192,12 +192,6 @@ void OpenGlWidget::update_scene()
   projection.setToIdentity();
   projection.ortho(-0.5*width(),0.5*width(), -0.5*height(),0.5*height(),-1,1);
 
-  view.setToIdentity();
-  origin.setZ(0);
-//  view.translate(-origin);
-  view.scale(m_global_zoom);
-  view.translate(origin);
-
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
   m_program.setUniformValue("pixelated", m_pixelated);
@@ -205,7 +199,7 @@ void OpenGlWidget::update_scene()
   color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
   m_program.setUniformValue("outlineColor", color);
   m_program.setUniformValue("toon", m_toon);
-  m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
+  m_program.setUniformValue("viewPos", QVector3D(-origin));
   m_program.setUniformValue("height_scale", parallax_height);
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
 
@@ -318,11 +312,11 @@ void OpenGlWidget::update_scene()
   {
     foreach (LightSource *light, currentLightList)
     {
-      float x = static_cast<float>(laigter.width()) / m_global_zoom;
-      float y = static_cast<float>(laigter.height()) / m_global_zoom;
+      float x = static_cast<float>(laigter.width())*0.125 / m_global_zoom;
+      float y = static_cast<float>(laigter.height())*0.125 / m_global_zoom;
       transform.setToIdentity();
       transform.translate(light->get_light_position());
-      transform.scale(static_cast<float>(0.25) * x, static_cast<float>(0.25) * y, 1);
+      transform.scale(x, y, 1);
       lightProgram.bind();
       lightVAO.bind();
       lightProgram.setUniformValue("transform", projection*view*transform);
@@ -469,7 +463,7 @@ void OpenGlWidget::setParallax(bool p)
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
-  QPointF mouse_position = LocalToWorld(event->position());
+//  QPointF mouse_position = LocalToWorld(event->position());
   QPoint degree = event->angleDelta() / 8;
 
   if (!degree.isNull() && degree.y() != 0)
@@ -479,12 +473,12 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
     setZoom(zoom*m_global_zoom);
 /* TODO fixe zoom to mouse */
 
-//    origin = QVector3D(-mouse_position);
+//    origin = QVector3D(mouse_position);
 
 //    qDebug() << "origin: " << origin;
   }
 
-  need_to_update = true;
+  updateView();
 }
 
 void OpenGlWidget::resetZoom()
@@ -582,6 +576,7 @@ float OpenGlWidget::getZoom()
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
   old_position = event->localPos();
+  mouse_press_position = LocalToWorld(event->localPos());
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
@@ -645,8 +640,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
         foreach (LightSource *light, *currentLightList)
         {
           lightPosition = light->get_light_position();
-          if (qAbs(mouse_position.x() - lightPosition.x()) <  0.5 * lightWidth / m_global_zoom &&
-              qAbs(mouse_position.y() - lightPosition.y()) <  0.5 * lightHeight / m_global_zoom &&
+          if (qAbs(mouse_position.x() - lightPosition.x()) <  0.5 * lightWidth  &&
+              qAbs(mouse_position.y() - lightPosition.y()) <  0.5 * lightHeight &&
               m_light)
           {
             lightSelected = true;
@@ -683,7 +678,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   else if (event->buttons() & Qt::RightButton)
   {
     int count;
-    origin_offset = QVector3D(mouse_position.x(), mouse_position.y(), 0)-origin;
     if (sample_light_list_used)
     {
       count = sampleLightList->count();
@@ -828,7 +822,9 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
   }
   else if (event->buttons() & Qt::RightButton)
   {
-    origin = -origin_offset-QVector3D(mouse_position);
+    origin += QVector3D(mouse_position - mouse_press_position);
+    updateView();
+
     need_to_update = true;
   }
 
@@ -837,12 +833,22 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     need_to_update = true;
 }
 
+void OpenGlWidget::updateView(){
+  view.setToIdentity();
+  origin.setZ(0);
+  //  view.translate(-origin);
+  view.scale(m_global_zoom);
+  view.translate(origin);
+  need_to_update = true;
+}
+
 void OpenGlWidget::update_light_position(QVector3D new_pos)
 {
-//  lightPosition.setX(new_pos.x());
-//  lightPosition.setY(new_pos.y());
+  lightPosition.setX(new_pos.x());
+  lightPosition.setY(new_pos.y());
+  lightPosition.setZ(new_pos.z());
 
-//  currentLight->set_light_position(lightPosition);
+  currentLight->set_light_position(lightPosition);
 }
 
 void OpenGlWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -1299,8 +1305,10 @@ void OpenGlWidget::apply_light_params()
     light->get_diffuse_color().getRgbF(&r, &g, &b, nullptr);
     color = QVector3D(r, g, b);
     QString Light = "Light[" + QString::number(i) + "]";
+    QVector3D light_position = light->get_light_position();
+    light_position.setZ(-light_position.z());
     m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(),
-                              light->get_light_position()*QVector3D(1/1366.0,1/768.0,1.0));
+                              projection*view*light_position);
     m_program.setUniformValue((Light + ".lightColor").toUtf8().constData(),
                               color);
     light->get_specular_color().getRgbF(&r, &g, &b, nullptr);
@@ -1447,6 +1455,5 @@ QPointF OpenGlWidget::LocalToWorld(QPointF local)
 {
   QVector3D local_position = QVector3D(local.x()-0.5*width(), -local.y()+0.5*height(), 0);
   QVector3D world_position = view.inverted()*local_position;
-  qDebug() << "world" << world_position;
   return QPointF(world_position.x(), world_position.y());
 }

@@ -78,6 +78,7 @@ private:
   QOpenGLVertexArrayObject lightVAO;
   QPoint oldPos;
   QPointF old_position;
+  QPointF mouse_press_position;
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;
@@ -153,6 +154,8 @@ public slots:
   QImage renderBuffer();
   QList<ImageProcessor *> get_all_selected_processors();
   QList<LightSource *> *get_current_light_list_ptr();
+
+  void updateView();
 
 signals:
   void initialized();
