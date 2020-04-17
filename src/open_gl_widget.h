@@ -60,6 +60,7 @@ public:
   /* Public methods */
   QPointF LocalToWorld(QPointF local);
   QPointF LocalToView(QPointF local);
+  float UnwrapAndFixAngle(float angle, QVector3D point);
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;
@@ -76,9 +77,16 @@ private:
       *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
   QOpenGLVertexArrayObject VAO, VAO3D;
   QOpenGLVertexArrayObject lightVAO;
+
   QPoint oldPos;
   QPointF old_position;
-  QPointF mouse_press_position;
+  QPointF global_mouse_press_position;
+  QPointF global_mouse_last_position;
+  QPointF local_mouse_press_position;
+  QPointF local_mouse_last_position;
+  float global_rotation, global_prev_rotation;
+
+
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;

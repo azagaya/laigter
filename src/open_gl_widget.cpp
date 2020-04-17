@@ -463,7 +463,7 @@ void OpenGlWidget::setParallax(bool p)
 
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
-//    QPointF mouse_position = LocalToWorld(event->position());
+  //    QPointF mouse_position = LocalToWorld(event->position());
   QPoint degree = event->angleDelta() / 8;
 
   if (!degree.isNull() && degree.y() != 0)
@@ -596,34 +596,20 @@ float OpenGlWidget::getZoom()
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
   old_position = event->localPos();
-  mouse_press_position = LocalToWorld(event->localPos());
+  global_mouse_press_position = LocalToWorld(event->localPos());
+  local_mouse_press_position = LocalToView(event->localPos());
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
-    if (!processor->get_tile_x())
-      tpos.setX((event->localPos().x() - ((processor->get_position()->x() + 1) *
-                                              width() - processor->get_texture()->size().width()
-                                              * processor->get_zoom()) * 0.5) / processor->get_zoom());
-    else
-      tpos.setX((event->localPos().x()) / processor->get_zoom());
-    if (!processor->get_tile_y())
-      tpos.setY((event->localPos().y() -
-                 ((-processor->get_position()->y() + 1) * height() -
-                  processor->get_texture()->size().height() *
-                      processor->get_zoom()) *
-                     0.5) /
-                processor->get_zoom());
-    else
-      tpos.setY((event->localPos().y()) / processor->get_zoom());
-
+    tpos = global_mouse_press_position.toPoint();
     oldPos = tpos;
     currentBrush->mousePress(tpos);
   }
 
-  float lightWidth = (float)laigter.width() * 0.25; // en paintgl la imagen la escalamos por 0.25
+  /* In rendering, we are reducing the size of the light by 0.25 */
+  float lightWidth = (float)laigter.width() * 0.25;
   float lightHeight = (float)laigter.height() * 0.25;
 
-  QPointF mouse_position = LocalToWorld(event->localPos());
   if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
   {
     if (addLight)
@@ -643,8 +629,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       foreach (LightSource *light, *sampleLightList)
       {
         lightPosition = light->get_light_position();
-        if (qAbs(mouse_position.x() - lightPosition.x()) < 0.5 * lightWidth / m_global_zoom &&
-            qAbs(mouse_position.y() - lightPosition.y()) < 0.5 * lightHeight / m_global_zoom && m_light)
+        if (qAbs(global_mouse_press_position.x() - lightPosition.x()) < 0.5 * lightWidth / m_global_zoom &&
+            qAbs(global_mouse_press_position.y() - lightPosition.y()) < 0.5 * lightHeight / m_global_zoom && m_light)
         {
           lightSelected = true;
           select_light(light);
@@ -660,8 +646,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
         foreach (LightSource *light, *currentLightList)
         {
           lightPosition = light->get_light_position();
-          if (qAbs(mouse_position.x() - lightPosition.x()) <  0.5 * lightWidth  &&
-              qAbs(mouse_position.y() - lightPosition.y()) <  0.5 * lightHeight &&
+          if (qAbs(global_mouse_press_position.x() - lightPosition.x()) <  0.5 * lightWidth  &&
+              qAbs(global_mouse_press_position.y() - lightPosition.y()) <  0.5 * lightHeight &&
               m_light)
           {
             lightSelected = true;
@@ -677,19 +663,27 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     if (!lightSelected)
     {
       set_enabled_light_controls(false);
+      bool processor_selected = false;
       for (int i = processorList.count() - 1; i >= 0; i--)
       {
         ImageProcessor *processor = processorList.at(i);
-        processor->set_offset(QVector3D(mouse_position.x(), mouse_position.y(), 0) - *processor->get_position());
+        processor->set_offset(QVector3D(global_mouse_press_position) - *processor->get_position());
         float w = processor->get_tile_x() ? 1.5*processor->texture.width() : 0.5*processor->texture.width();
         float h = processor->get_tile_y() ? 1.5*processor->texture.height() : 0.5*processor->texture.height();
-        if (qAbs(mouse_position.x() - processor->get_position()->x()) < w &&
-            qAbs(mouse_position.y() - processor->get_position()->y()) < h &&
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h &&
             not selected)
         {
+          processor_selected = true;
           set_processor_selected(processor, true);
           selected = true;
         }
+      }
+      if (!processor_selected)
+      {
+        QVector3D press_point = QVector3D(local_mouse_press_position).normalized();
+        global_prev_rotation = atan(press_point.y()/press_point.x());
+        global_prev_rotation = UnwrapAndFixAngle(global_prev_rotation, press_point);
       }
     }
     else
@@ -709,8 +703,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
             continue;
 
           lightPosition = light->get_light_position();
-          if (qAbs(mouse_position.x() - lightPosition.x()) < lightWidth &&
-              qAbs(mouse_position.y() - lightPosition.y()) < lightHeight &&
+          if (qAbs(global_mouse_press_position.x() - lightPosition.x()) < lightWidth &&
+              qAbs(global_mouse_press_position.y() - lightPosition.y()) < lightHeight &&
               m_light)
           {
             remove_light(light);
@@ -734,8 +728,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
             continue;
 
           lightPosition = light->get_light_position();
-          if (qAbs(mouse_position.x() - lightPosition.x()) < lightWidth &&
-              qAbs(mouse_position.y() - lightPosition.y()) < lightHeight &&
+          if (qAbs(global_mouse_press_position.x() - lightPosition.x()) < lightWidth &&
+              qAbs(global_mouse_press_position.y() - lightPosition.y()) < lightHeight &&
               m_light)
           {
             remove_light(light);
@@ -755,8 +749,9 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
-  QPointF mouse_position = LocalToWorld(event->localPos());
-  QVector3D newLightPos(mouse_position.x(), mouse_position.y(), currentLight->get_height());
+  global_mouse_last_position = LocalToWorld(event->localPos());
+  local_mouse_last_position = LocalToView(event->localPos());
+  QVector3D newLightPos(global_mouse_last_position.x(), global_mouse_last_position.y(), currentLight->get_height());
 
   if (addLight)
   {
@@ -770,71 +765,40 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
     {
       QPoint tpos;
-      if (!processor->get_tile_x())
-        tpos.setX((event->localPos().x() -
-                   ((processor->get_position()->x() + 1) * width() -
-                    processor->get_texture()->size().width() *
-                        processor->get_zoom()) *
-                       0.5) /
-                  processor->get_zoom());
-      else
-        tpos.setX((event->localPos().x()) / processor->get_zoom());
-
-      if (!processor->get_tile_y())
-        tpos.setY((event->localPos().y() -
-                   ((-processor->get_position()->y() + 1) * height() -
-                    processor->get_texture()->size().height() *
-                        processor->get_zoom()) *
-                       0.5) /
-                  processor->get_zoom());
-      else
-        tpos.setY((event->localPos().y()) / processor->get_zoom());
-
+      tpos = global_mouse_last_position.toPoint();
       currentBrush->mouseMove(oldPos, tpos);
       oldPos = tpos;
     }
     else
     {
+      bool processor_selected = false;
       foreach (ImageProcessor *processor, processorList)
       {
+        /* This check is to move ligths instead of processor if light is above processor */
         if (lightSelected)
         {
           update_light_position(newLightPos);
+          break;
         }
-        else
+        else if (processor->get_selected())
         {
-          if (processor->get_selected())
-          {
-            /* Rotate */
-            if (QApplication::keyboardModifiers() == Qt::SHIFT)
-            {
-              if (!processor->get_tile_x() && !processor->get_tile_y())
-              {
-                QVector3D newpoint(mouse_position.x(), mouse_position.y(), 0);
-                newpoint -= *processor->get_position();
-                float rotation = atan(newpoint.y()/newpoint.x());
-                if (newpoint.x() < 0)
-                {
-                  rotation += M_PI;
-                }
-                for (float i = 0; i < 2*M_PI; i += M_PI/4)
-                {
-                  if (abs(rotation - i) < 5*M_PI/180.0)
-                  {
-                    rotation = i;
-                    break;
-                  }
-                }
-                processor->set_rotation(rotation);
-              }
-            }
-            /* Move */
-            else
-            {
-              processor->get_position()->setX((mouse_position.x() - processor->get_offset()->x()));
-              processor->get_position()->setY((mouse_position.y() - processor->get_offset()->y()));
-            }
-          }
+          /* Move */
+          processor_selected = true;
+          processor->get_position()->setX((global_mouse_last_position.x() - processor->get_offset()->x()));
+          processor->get_position()->setY((global_mouse_last_position.y() - processor->get_offset()->y()));
+
+        }
+      }
+      /* If no light or processor is selected, operate over canvas */
+      if (!lightSelected && !processor_selected)
+      {
+        if (QApplication::keyboardModifiers() == Qt::SHIFT)
+        {
+          QVector3D new_point = QVector3D(local_mouse_last_position).normalized();
+          global_rotation += acos(QVector3D::dotProduct(new_point,QVector3D(local_mouse_press_position).normalized()));
+//          qDebug() << 180/M_PI*(UnwrapAndFixAngle(atan(new_point.y()/new_point.x()),new_point) - global_prev_rotation) << global_prev_rotation*180/M_PI;
+          local_mouse_press_position = local_mouse_last_position;
+          updateView();
         }
       }
     }
@@ -842,7 +806,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
   }
   else if (event->buttons() & Qt::RightButton)
   {
-    origin += QVector3D(mouse_position - mouse_press_position);
+    origin += QVector3D(global_mouse_last_position - global_mouse_press_position);
     updateView();
 
     need_to_update = true;
@@ -853,10 +817,28 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     need_to_update = true;
 }
 
+float OpenGlWidget::UnwrapAndFixAngle(float angle, QVector3D point)
+{
+  if (point.x() < 0)
+  {
+    angle += M_PI;
+  }
+  for (float i = 0; i < 2*M_PI; i += M_PI/4)
+  {
+    if (abs(angle - i) < 5*M_PI/180.0)
+    {
+      angle = i;
+      break;
+    }
+  }
+  return fmod(angle,2*M_PI);
+}
+
 void OpenGlWidget::updateView(){
   view.setToIdentity();
   origin.setZ(0);
   view.scale(m_global_zoom);
+  view.rotate(global_rotation*180/M_PI, 0,0,1);
   view.translate(origin);
   need_to_update = true;
 }
@@ -1465,14 +1447,14 @@ void OpenGlWidget::set_current_light_list(QList<LightSource *> *list)
 QPointF OpenGlWidget::LocalToView(QPointF local)
 {
   QPointF view;
-  view.setX( (local.x() - width()/2.0)/m_global_zoom);
-  view.setY( (-local.y() + height()/2.0)/m_global_zoom);
+  view.setX( local.x()-0.5*width());
+  view.setY( -local.y()+0.5*height());
   return view;
 }
 
 QPointF OpenGlWidget::LocalToWorld(QPointF local)
 {
-  QVector3D local_position = QVector3D(local.x()-0.5*width(), -local.y()+0.5*height(), 0);
+  QVector3D local_position = QVector3D(LocalToView(local));
   QVector3D world_position = view.inverted()*local_position;
   return QPointF(world_position.x(), world_position.y());
 }
