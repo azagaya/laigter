@@ -60,7 +60,8 @@ public:
   /* Public methods */
   QPointF LocalToWorld(QPointF local);
   QPointF LocalToView(QPointF local);
-  float UnwrapAndFixAngle(float angle, QVector3D point);
+  float UnwrapAngle(float angle);
+  float FixAngle(float angle, int step = 4, float tol = 5);
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;
@@ -84,7 +85,7 @@ private:
   QPointF global_mouse_last_position;
   QPointF local_mouse_press_position;
   QPointF local_mouse_last_position;
-  float global_rotation, global_prev_rotation;
+  float global_rotation = 0;
 
 
   QString exportBasePath;

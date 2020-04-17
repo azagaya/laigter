@@ -679,12 +679,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           selected = true;
         }
       }
-      if (!processor_selected)
-      {
-        QVector3D press_point = QVector3D(local_mouse_press_position).normalized();
-        global_prev_rotation = atan(press_point.y()/press_point.x());
-        global_prev_rotation = UnwrapAndFixAngle(global_prev_rotation, press_point);
-      }
     }
     else
       set_enabled_light_controls(true);
@@ -806,7 +800,13 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
             delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
           }
           global_rotation += delta_rotation;
-          local_mouse_press_position = local_mouse_last_position;
+          global_rotation = (UnwrapAngle(global_rotation));
+          float fixed_angle = FixAngle(global_rotation);
+          if (fixed_angle == global_rotation)
+          {
+            local_mouse_press_position = local_mouse_last_position;
+          }
+          global_rotation = fixed_angle;
           updateView();
         }
       }
@@ -826,21 +826,26 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     need_to_update = true;
 }
 
-float OpenGlWidget::UnwrapAndFixAngle(float angle, QVector3D point)
+float OpenGlWidget::UnwrapAngle(float angle)
 {
-  if (point.x() < 0)
+  if (angle < 0)
   {
-    angle += M_PI;
+    angle += 2*M_PI;
   }
-  for (float i = 0; i < 2*M_PI; i += M_PI/4)
+  return fmod(angle,2*M_PI);
+}
+
+float OpenGlWidget::FixAngle(float angle, int step, float tol)
+{
+  for (float i = 0; i < 2*M_PI; i += M_PI/step)
   {
-    if (abs(angle - i) < 5*M_PI/180.0)
+    if (abs(angle - i) < tol*M_PI/180.0)
     {
       angle = i;
       break;
     }
   }
-  return fmod(angle,2*M_PI);
+  return angle;
 }
 
 void OpenGlWidget::updateView(){
