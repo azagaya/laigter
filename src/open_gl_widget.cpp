@@ -799,15 +799,18 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
           {
             delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
           }
-          global_rotation += delta_rotation;
-          global_rotation = (UnwrapAngle(global_rotation));
-          float fixed_angle = FixAngle(global_rotation);
-          if (fixed_angle == global_rotation)
+          if (!isnan(delta_rotation))
           {
-            local_mouse_press_position = local_mouse_last_position;
+            global_rotation += delta_rotation;
+            global_rotation = (UnwrapAngle(global_rotation));
+            float fixed_angle = FixAngle(global_rotation);
+            if (fixed_angle == global_rotation)
+            {
+              local_mouse_press_position = local_mouse_last_position;
+            }
+            global_rotation = fixed_angle;
+            updateView();
           }
-          global_rotation = fixed_angle;
-          updateView();
         }
       }
     }
