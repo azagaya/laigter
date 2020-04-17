@@ -795,8 +795,17 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         if (QApplication::keyboardModifiers() == Qt::SHIFT)
         {
           QVector3D new_point = QVector3D(local_mouse_last_position).normalized();
-          global_rotation += acos(QVector3D::dotProduct(new_point,QVector3D(local_mouse_press_position).normalized()));
-//          qDebug() << 180/M_PI*(UnwrapAndFixAngle(atan(new_point.y()/new_point.x()),new_point) - global_prev_rotation) << global_prev_rotation*180/M_PI;
+          QVector3D prev_point = QVector3D(local_mouse_press_position).normalized();
+          float delta_rotation = acos(QVector3D::dotProduct(new_point,prev_point));
+          if (prev_point.x() > 0)
+          {
+            delta_rotation *= prev_point.y() < new_point.y() ? 1 : -1;
+          }
+          else
+          {
+            delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
+          }
+          global_rotation += delta_rotation;
           local_mouse_press_position = local_mouse_last_position;
           updateView();
         }
