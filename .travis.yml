@@ -1,20 +1,26 @@
+os: linux
+dist: xenial
 language: cpp
 compiler: gcc
-sudo: require
-dist: xenial
 
-before_install:
-  - sudo add-apt-repository ppa:beineri/opt-qt-5.14.1-xenial -y
-  - sudo apt-get update -qq
+addons:
+  apt:
+    sources:
+      - sourceline: ppa:beineri/opt-qt-5.14.1-xenial
+    packages:
+      - qt514base
+      - qt514x11extras
+      - qt514tools
+      - libgl1-mesa-dev
+      - libopencv-dev
 
 install:
-  - sudo apt-get -y install qt514base qt514x11extras qt514tools libgl1-mesa-dev libopencv-dev 
   - source /opt/qt*/bin/qt*-env.sh
 
 script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
-  - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+  - make INSTALL_ROOT=appdir install
   - find appdir/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
@@ -23,9 +29,8 @@ script:
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh Laigter*.AppImage*
-  
+
 branches:
   except:
     - # Do not build tags that we create when we upload to GitHub Releases
     - /^(?i:continuous)/
-
