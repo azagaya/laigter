@@ -328,9 +328,9 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Reset heightmap"))
   {
-    bool succes;
+    bool success;
     fs_watcher.removePath(p->get_heightmap_path());
-    QImage height = il.loadImage(p->get_name(), &succes);
+    QImage height = il.loadImage(p->get_name(), &success);
     height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadHeightMap(p->get_name(), height);
   }
@@ -353,9 +353,9 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Reset specular map"))
   {
-    bool succes;
+    bool success;
     fs_watcher.removePath(p->get_specular_path());
-    QImage specular = il.loadImage(p->get_name(), &succes);
+    QImage specular = il.loadImage(p->get_name(), &success);
     specular =
         specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadSpecularMap(p->get_name(), specular);
@@ -533,10 +533,10 @@ void MainWindow::open_files(QStringList fileNames)
       if (fileName != nullptr)
       {
         ImageLoader il;
-        bool succes;
-        auximage = il.loadImage(fileName, &succes);
-        loaded = loaded || succes;
-        if (!succes || auximage.isNull())
+        bool success;
+        auximage = il.loadImage(fileName, &success);
+        loaded = loaded || success;
+        if (!success || auximage.isNull())
         {
           QMessageBox msgBox;
           msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
