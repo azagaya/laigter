@@ -1031,14 +1031,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="109"/>
         <source>Enhance:</source>
-        <translation>Netteté&#xa0;:</translation>
+        <translation>Netteté:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="117"/>
         <location filename="../main_window.ui" line="214"/>
         <location filename="../main_window.ui" line="564"/>
         <source>Height:</source>
-        <translation>Hauteur&#xa0;:</translation>
+        <translation>Hauteur:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="140"/>
@@ -1047,7 +1047,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1236"/>
         <location filename="../main_window.ui" line="1290"/>
         <source>Soft:</source>
-        <translation>Lissage&#xa0;:</translation>
+        <translation>Lissage:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="177"/>
@@ -1073,7 +1073,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="234"/>
         <location filename="../main_window.ui" line="1392"/>
         <source>Distance:</source>
-        <translation>Distance&#xa0;:</translation>
+        <translation>Distance:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="280"/>
@@ -1105,7 +1105,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="432"/>
         <location filename="../main_window.ui" line="482"/>
         <source>Intensity:</source>
-        <translation>Intensité&#xa0;:</translation>
+        <translation>Intensité:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="408"/>
@@ -1117,23 +1117,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="439"/>
         <source>Scatter:</source>
-        <translation>Dispersion&#xa0;:</translation>
+        <translation>Dispersion:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="476"/>
         <source>Ambient</source>
-        <translation>Ambient</translation>
+        <translation>Ambiant</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="502"/>
         <location filename="../main_window.ui" line="593"/>
         <source>Color:</source>
-        <translation>Couleur&#xa0;:</translation>
+        <translation>Couleur:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="528"/>
         <source>Background:</source>
-        <translation>Arrière-plan&#xa0;:</translation>
+        <translation>Arrière-plan:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="619"/>
@@ -1153,7 +1153,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="735"/>
         <source>Mode:</source>
-        <translation>Mode&#xa0;:</translation>
+        <translation>Mode:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="743"/>
@@ -1194,7 +1194,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="802"/>
         <source>Toon</source>
-        <translation type="unfinished"></translation>
+        <translation>Cell-Shading</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1787"/>
@@ -1266,59 +1266,63 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1277"/>
         <location filename="../main_window.ui" line="1439"/>
         <source>Controls:</source>
-        <translation>Contrôles&#xa0;:</translation>
+        <translation>Contrôles:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="914"/>
         <source>Quantization:</source>
-        <translation>Quantification&#xa0;:</translation>
+        <translation>Quantification:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="927"/>
         <location filename="../main_window.ui" line="1166"/>
         <location filename="../main_window.ui" line="1385"/>
         <source>Threshold:</source>
-        <translation>Seuil&#xa0;:</translation>
+        <translation>Seuil:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="940"/>
         <source>Min Height:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hauteur Minimum</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1740"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Load Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Charger les plugins</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1743"/>
         <source>Reload Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Recharger le plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1755"/>
         <location filename="../main_window.ui" line="1758"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Install Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Installer le plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1770"/>
         <location filename="../main_window.ui" line="1773"/>
         <location filename="../main_window.cpp" line="1555"/>
         <source>Delete Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1778"/>
         <location filename="../main_window.cpp" line="1713"/>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Langues</translation>
+    </message>
+    <message>
+        <source>SaveProject</source>
+        <translation type="vanished">Sauvegarder le projet</translation>
     </message>
     <message>
         <source>Minimum Height:</source>
-        <translation type="vanished">Hauteur minimale&#xa0;:</translation>
+        <translation type="vanished">Hauteur minimale :</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="979"/>
@@ -1337,7 +1341,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1015"/>
         <source>Focus:</source>
-        <translation>Focus&#xa0;:</translation>
+        <translation>Focus:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1028"/>
@@ -1349,7 +1353,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1109"/>
         <source>Erode / Dilate:</source>
-        <translation>Éroder / Dilater&#xa0;:</translation>
+        <translation>Éroder / Dilater:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1267"/>
@@ -1473,37 +1477,37 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="221"/>
         <location filename="../main_window.cpp" line="363"/>
         <source>Add new frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une nouvelle image</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="226"/>
         <location filename="../main_window.cpp" line="392"/>
         <source>Remove current frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer l&apos;image actuelle</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="227"/>
         <location filename="../main_window.cpp" line="388"/>
         <source>Next Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Image suivante</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="228"/>
         <location filename="../main_window.cpp" line="390"/>
         <source>Previous Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Image précédente</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="232"/>
         <location filename="../main_window.cpp" line="384"/>
         <source>Stop Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter l&apos;animation</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="238"/>
         <location filename="../main_window.cpp" line="386"/>
         <source>Start Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Lancer l&apos;animation</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="248"/>
@@ -1556,7 +1560,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.cpp" line="1855"/>
         <source>Image File (*.laigter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier image</translation>
     </message>
     <message>
         <source>The image is already opened in Laigter.</source>
@@ -1674,22 +1678,22 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="1633"/>
         <location filename="../main_window.cpp" line="1636"/>
         <source>Open Plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir Plugin</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1630"/>
         <source>Shared Library (*.so)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bibliothèque partagée</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1633"/>
         <source>Shared Library (*.dll)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bibliothèque partagée</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1636"/>
         <source>Shared Library (*.dylib)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bibliothèque partagée</translation>
     </message>
 </context>
 <context>
@@ -1741,12 +1745,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="33"/>
         <source>Apply preset:</source>
-        <translation>Appliquer le préréglage&#xa0;:</translation>
+        <translation>Appliquer le préréglage:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="45"/>
         <source>Preset:</source>
-        <translation>Préréglage&#xa0;:</translation>
+        <translation>Préréglage:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="74"/>
@@ -1766,12 +1770,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="175"/>
         <source>Save current preset:</source>
-        <translation>Enregistrer le préréglage actuel&#xa0;:</translation>
+        <translation>Enregistrer le préréglage actuel:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="187"/>
         <source>Name:</source>
-        <translation>Nom&#xa0;:</translation>
+        <translation>Nom:</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="198"/>
@@ -2136,12 +2140,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="14"/>
         <source>Remove Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlever le plugin</translation>
     </message>
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="20"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugins</translation>
     </message>
 </context>
 </TS>
