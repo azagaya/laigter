@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 varying vec2 texCoord;
 uniform vec3 lightColor;
 uniform sampler2D tex;

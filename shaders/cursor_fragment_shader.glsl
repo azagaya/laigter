@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 varying vec2 texCoord;
 uniform vec3 lightColor;
 uniform sampler2D tex;
@@ -35,7 +35,7 @@ void main()
     vec2 d = vec2(float(1.0 / pixelSize.x), float(1.0 / pixelSize.y));
     vec2 coords = texCoords * d;
 
-    texCoords = (round(coords) + 0.5 / d) / d;
+    texCoords = (floor(coords+0.5) + 0.5 / d) / d;
   }
 
   vec4 color = texture2D(tex, texCoords);

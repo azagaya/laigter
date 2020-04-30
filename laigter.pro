@@ -23,8 +23,6 @@
 
 QT       += core gui widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = laigter
 TEMPLATE = app
 
@@ -95,10 +93,25 @@ FORMS += \
 	main_window.ui \
 	gui/nb_selector.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+unix{
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+
+    target.path = $$PREFIX/bin
+
+    shortcutfiles.files = dist/laigter.desktop
+    shortcutfiles.path = $$PREFIX/share/applications/
+    iconfiles.files = dist/laigter.png
+    iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/
+    appdatafiles.files = dist/laigter.appdata.xlm
+    appdatafiles.path = $$PREFIX/share/metainfo
+
+    INSTALLS += target
+    INSTALLS += shortcutfiles
+    INSTALLS += iconfiles
+    INSTALLS += appdatafiles
+}
 
 unix {
 	CONFIG += link_pkgconfig
@@ -119,7 +132,8 @@ TRANSLATIONS = translations/laigter_da.ts \
 	translations/laigter_fr.ts \
 	translations/laigter_pt_BR.ts \
 	translations/laigter_ca_ES.ts \
-	translations/laigter_el.ts
+        translations/laigter_el.ts \
+        translations/laigter_tr.ts
 
 LANGUAGES = da\
 	en \
@@ -127,7 +141,9 @@ LANGUAGES = da\
 	fr \
 	pt_BR \
 	ca_ES \
-	el
+        el \
+        tr \
+        jp
 
 # parameters: var, prepend, append
 defineReplace(prependAll) {
@@ -140,16 +156,24 @@ TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/laigter_, .ts)
 TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
+win32 {
+  LRELEASE=$$replace(LRELEASE, \, /)
+  LRELEASE=$$replace(LRELEASE, \', )
+}
 for(tsfile, TRANSLATIONS) {
-	qmfile = $$tsfile
-	qmfile ~= s,.ts$,.qm,
-	qmdir = $$dirname(qmfile)
-	!exists($$qmdir) {
-		mkpath($$qmdir)|error("Aborting.")
-	}
-	command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
-	system($$command)|error("Failed to run: $$command")
-	TRANSLATIONS_FILES += $$qmfile
+        qmfile = $$tsfile
+        qmfile ~= s,.ts$,.qm,
+        qmdir = $$dirname(qmfile)
+        !exists($$qmdir) {
+                mkpath($$qmdir)|error("Aborting.")
+        }
+
+        command = $$LRELEASE -removeidentical $$tsfile -qm $$qmfile
+        win32 {
+#          command = $$replace(command, /, \\))
+        }
+        system($$command)|error("Failed to run: $$command")
+        TRANSLATIONS_FILES += $$qmfile
 }
 
 RESOURCES += \
@@ -163,9 +187,9 @@ win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_core320.dll
 win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgproc320.dll
 win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgcodecs320.dll
 
-win32: INCLUDEPATH += C:\opencv\build\include
+win32: INCLUDEPATH += C:\tools\opencv\build\include
 
-win32: RC_ICONS = icons\laigter-icon.ico
+win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter-icon.icns
 
 
