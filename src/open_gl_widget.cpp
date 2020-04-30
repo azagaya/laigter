@@ -801,7 +801,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
           {
             delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
           }
-          if (!isnan(delta_rotation))
+          if (!std::isnan(delta_rotation))
           {
             global_rotation += delta_rotation;
             global_rotation = (UnwrapAngle(global_rotation));
