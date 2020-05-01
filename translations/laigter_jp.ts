@@ -76,12 +76,12 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="263"/>
         <source>Hans Wakelin (Japanese)</source>
-        <translation type="unfinished"></translation>
+        <translation>ハンズ・ウェイクリン (日本語)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="268"/>
         <source>Muhammed Altaş - Turkish</source>
-        <translation type="unfinished"></translation>
+        <translation>ムハマドアルタス - トルコ語</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="273"/>
@@ -91,11 +91,11 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="278"/>
         <source>Hugo Locurcio (Calinou) &amp; Danton Slip - French</source>
-        <translation type="unfinished"></translation>
+        <translation>ヒューゴ・ロクルチオ (Calinou) &amp; ダントン・スリップ - フランス語</translation>
     </message>
     <message>
         <source>Hugo Locurcio (Calinou) - French</source>
-        <translation type="vanished">ヒューゴ・ロクルシオ (Calinou) - フランス語</translation>
+        <translation>ヒューゴ・ロクルシオ (Calinou) - フランス語</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="283"/>
@@ -1210,7 +1210,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1805"/>
         <source>Save Project As</source>
-        <translation type="unfinished"></translation>
+        <translation>としてプロジェクトを保存</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="641"/>
@@ -1350,7 +1350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1109"/>
         <source>Erode / Dilate:</source>
-        <translation></translation>
+        <translation>浸食する / 膨張する</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1267"/>
@@ -1510,7 +1510,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="248"/>
         <location filename="../main_window.cpp" line="397"/>
         <source>Split in frames</source>
-        <translation type="unfinished"></translation>
+        <translation>フレームに割る</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="314"/>
@@ -1542,17 +1542,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="975"/>
         <source>All selected maps were exported.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>全ての選択されたマップのエクスポート完了!</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1739"/>
         <source>Open Laigter Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Laigterプロジェクトを開く</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1740"/>
         <source>Project File (*.laigter)</source>
-        <translation type="unfinished"></translation>
+        <translation>プロジェクトファイル (*.laigter)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1855"/>

@@ -92,7 +92,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       }
 
-      /* restore postion of processor */
+      /* restore position of processor */
       QVector3D position;
       position.setX(p_json.value("position").toObject().value("x").toDouble());
       position.setY(p_json.value("position").toObject().value("y").toDouble());
