@@ -62,7 +62,6 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       p->set_name(processor_name);
       /* Read Diffuse image. Maps are calculated when settings applied */
 
-
       QJsonArray frames = p_json.value("frames").toArray();
       for (int j = 0; j < frames.count(); j++)
       {
@@ -92,6 +91,8 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       p->set_tile_x(p_json.value("tile x").toBool());
       p->set_tile_y(p_json.value("tile y").toBool());
+
+      /* Restore neighbours */
 
       /* restore individual zoom */
 
@@ -137,11 +138,11 @@ bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObje
       Sprite s;
       s = p->frames[i];
       QString name;
-      bool save = true;
       for (int i = 0; i < types.count(); i++)
       {
         QImage texture;
         s.get_image((TextureTypes)i, &texture);
+        bool save = true;
         switch ((TextureTypes)i)
         {
           case TextureTypes::Heightmap:
