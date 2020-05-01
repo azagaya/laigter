@@ -68,15 +68,28 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         data.clear();
         QImage diffuse;
         QJsonObject frame = frames.at(j).toObject();
-        QString diffuse_path = frame.value("diffuse").toString();
-        zip_entry_open(zip, diffuse_path.toUtf8());
+        QString path = frame.value("diffuse").toString();
+        zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
           data.append((char*)buf, bufsize);
           diffuse = QImage::fromData(data);
-          p->loadImage(diffuse_path, diffuse);
+          p->loadImage(path, diffuse);
         }
         zip_entry_close(zip);
+
+        /* Restore Neighbours */
+        data.clear();
+        path = frame.value("neighbours").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->get_current_frame()->set_image(TextureTypes::Neighbours, QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+
       }
 
       /* restore postion of processor */
@@ -91,8 +104,6 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       p->set_tile_x(p_json.value("tile x").toBool());
       p->set_tile_y(p_json.value("tile y").toBool());
-
-      /* Restore neighbours */
 
       /* restore individual zoom */
 
