@@ -151,6 +151,8 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         }
         zip_entry_close(zip);
 
+        /* Load custom heightmaps and specular maps */
+
       }
 
       /* restore position of processor */
