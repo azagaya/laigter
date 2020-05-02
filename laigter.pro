@@ -114,12 +114,12 @@ unix{
 }
 
 unix {
-	CONFIG += link_pkgconfig
-	packagesExist(opencv4) {
-		PKGCONFIG += opencv4
-	} else {
-		PKGCONFIG += opencv
-	}
+        CONFIG += link_pkgconfig
+        packagesExist(opencv) {
+                PKGCONFIG += opencv
+        } else {
+                PKGCONFIG += opencv4
+        }
 }
 
 DISTFILES += \

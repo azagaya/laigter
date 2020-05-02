@@ -89,6 +89,67 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         }
         zip_entry_close(zip);
 
+        /* Restore Overlays */
+        data.clear();
+        path = frame.value("heightmapOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->get_current_frame()->set_image(TextureTypes::HeightmapOverlay, QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+        data.clear();
+        path = frame.value("normalOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          QImage image = QImage::fromData(data);
+          p->set_normal_overlay(QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+        data.clear();
+        path = frame.value("occlussionOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->set_occlussion_overlay(QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+        data.clear();
+        path = frame.value("parallaxOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->set_parallax_overlay(QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+        data.clear();
+        path = frame.value("specularOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->set_parallax_overlay(QImage::fromData(data));
+        }
+        zip_entry_close(zip);
+
+        data.clear();
+        path = frame.value("textureOverlay").toString();
+        zip_entry_open(zip, path.toUtf8());
+        {
+          zip_entry_read(zip, &buf, &bufsize);
+          data.append((char*)buf, bufsize);
+          p->set_texture_overlay(QImage::fromData(data));
+        }
+        zip_entry_close(zip);
 
       }
 

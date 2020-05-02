@@ -474,8 +474,6 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
     double dx = (1-1.0/zoom)*(mouse_position.x()+origin.x());
     double dy = (1-1.0/zoom)*(mouse_position.y()+origin.y());
 
-    qDebug() << mouse_position.x() << dx;
-
     origin -= QVector3D(dx,dy,0);
 
     setZoom(zoom*m_global_zoom);
