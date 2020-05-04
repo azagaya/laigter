@@ -199,6 +199,12 @@ int main(int argc, char *argv[])
     else
       delete processor;
 
+    /* Load Project if dropped. Only supports one project */
+    if (argsParser.positionalArguments().count() > 0){
+      QString project_path = argsParser.positionalArguments().at(0);
+      w.LoadProject(project_path);
+    }
+
     returnCode = app->exec();
   }
   else

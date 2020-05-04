@@ -18,13 +18,10 @@ AnimationDock::~AnimationDock()
 
 void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
- // if (m_current_processor != nullptr)
-  {
-    disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
-    disconnect(ui->listWidget, SIGNAL(currentRowChanged(int)), m_current_processor, SLOT(set_current_frame_id(int)));
-  }
+  this->disconnect();
 
   m_current_processor = p;
+
   ui->playButton->setChecked(p->animation.isActive());
   for (int i = 0; i < ui->listWidget->count(); i++) {
     delete ui->listWidget->item(i);
