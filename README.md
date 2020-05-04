@@ -2,14 +2,14 @@
 
 ## Overview
 
-- [Download](https://github.com/flamendless/laigter#download)
-- [Contributing](https://github.com/flamendless/laigter#contributing)
-- [Screenshots](https://github.com/flamendless/laigter#screenshots)
-- [Compiling](https://github.com/flamendless/laigter#compiling)
-	- [Linux](https://github.com/flamendless/laigter#compiling-on-linux)
-	- [Windows](https://github.com/flamendless/laigter#compiling-on-windows)
-	- [MacOS](https://github.com/flamendless/laigter#compiling-on-macos)
-- [License](https://github.com/flamendless/laigter#license)
+- [Download](https://github.com/azagaya/laigter#download)
+- [Contributing](https://github.com/azagaya/laigter#contributing)
+- [Screenshots](https://github.com/azagaya/laigter#screenshots)
+- [Compiling](https://github.com/azagaya/laigter#compiling)
+	- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
+	- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
+	- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
+- [License](https://github.com/azagaya/laigter#license)
 
 ![Epic_MegaGrants_Recipient_logo_horizontal](https://user-images.githubusercontent.com/46932830/77976528-a0395800-72d3-11ea-8c3c-4c049350e247.png)
 
@@ -59,18 +59,18 @@ work together! Many things are needed. Also, please read the
 
 ## Compiling
 
-- [Linux](https://github.com/flamendless/laigter#compiling-on-linux)
-- [Windows](https://github.com/flamendless/laigter#compiling-on-windows)
-- [MacOS](https://github.com/flamendless/laigter#compiling-on-macos)
+- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
+- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
+- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
 
 ### Compiling on Linux
 
-- [Dependencies](https://github.com/flamendless/laigter#getting-the-dependencies)
-	- [Debian/Ubuntu](https://github.com/flamendless/laigter#debianubuntu)
-	- [Fedora](https://github.com/flamendless/laigter#fedora)
-	- [Arch Linux/Manjaro](https://github.com/flamendless/laigter#arch-linuxmanjaro)
+- [Dependencies](https://github.com/azagaya/laigter#getting-the-dependencies)
+	- [Debian/Ubuntu](https://github.com/azagaya/laigter#debianubuntu)
+	- [Fedora](https://github.com/azagaya/laigter#fedora)
+	- [Arch Linux/Manjaro](https://github.com/azagaya/laigter#arch-linuxmanjaro)
 
-- [Compiling and Building](https://github.com/flamendless/laigter#building)
+- [Compiling and Building](https://github.com/azagaya/laigter#building)
 
 #### Getting the Dependencies
 
