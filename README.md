@@ -128,7 +128,6 @@ That's it, you can now open `laigter.pro` with Qt Creator and build or debug Lai
 After installing dependencies, you can also build from the terminal with:
 
 ```bash
-cd laigter
 mkdir build
 cd build
 qmake ../
