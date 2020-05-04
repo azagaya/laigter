@@ -48,6 +48,8 @@ work together! Many things are needed. Also, please read the
 
 ### Compiling on Linux
 
+#### Getting the Dependencies
+
 Compiling on Linux is pretty straightforward. The following dependencies are required:
 
 - Qt 5 (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
@@ -57,35 +59,40 @@ Compiling on Linux is pretty straightforward. The following dependencies are req
 Install prerequisites by entering the following command in a terminal (depending
 on your distribution):
 
-#### Debian/Ubuntu
+##### Debian/Ubuntu
 
 ```bash
 sudo apt install qt5-default qt5-qmake libopencv-dev libgl1-mesa-dev
 ```
 
-#### Fedora
+##### Fedora
 
 ```bash
 sudo dnf install qt5-devel opencv-devel mesa-libGL-devel
 ```
 
-### Arch Linux/Manjaro
+#### Arch Linux/Manjaro
 
 ```bash
 sudo pacman -Sy opencv hd5 vtk qt5-base
 ```
 
-That's it, you can now open `laigter.pro` with Qt Creator and build or debug
-Laigter.
+#### Building
 
-After installing dependencies, you can also build from the terminal with:
+Using QT Creator:
 
-```bash
-mkdir build
-cd build
-qmake ../
-make -j$(nproc)
-```
+	That's it, you can now open `laigter.pro` with Qt Creator and build or debug Laigter.
+
+Using the terminal:
+
+	After installing dependencies, you can also build from the terminal with:
+
+	```bash
+	mkdir build
+	cd build
+	qmake ../
+	make -j$(nproc)
+	```
 
 ### Compiling on Windows
 
