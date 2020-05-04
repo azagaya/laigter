@@ -1446,7 +1446,11 @@ QList<ImageProcessor *> OpenGlWidget::get_all_selected_processors()
   return list;
 }
 
-void OpenGlWidget::set_view_mode(int mode) { viewmode = mode; }
+void OpenGlWidget::set_view_mode(int mode)
+{
+  viewmode = mode;
+  need_to_update = true;
+}
 
 void OpenGlWidget::use_sample_light_list(bool l)
 {

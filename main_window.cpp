@@ -907,7 +907,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
 }
 
 
-void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix){
+void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination){
   QImage n;
   QString suffix;
   QString name;
@@ -921,9 +921,16 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
       info = QFileInfo(project.GetCurrentPath());
       file_name = info.dir().path() + "/" + file_name.split("/").last();
     }
-    info = QFileInfo(file_name);
+    info = QFileInfo(file_name);    
     suffix = info.completeSuffix();
-    name = info.absoluteFilePath().remove("." + suffix) + postfix + "." + suffix;
+    if (destination == "")
+    {
+      name = info.absoluteFilePath().remove("." + suffix) + postfix + "." + suffix;
+    }
+    else
+    {
+      name = destination + "/" + info.fileName().remove("."+suffix) + postfix + "." + suffix;
+    }
     n.save(name);
 
   }
@@ -934,25 +941,25 @@ void MainWindow::on_pushButton_clicked()
 
   QString message = "";
 
-    foreach (ImageProcessor *p, processorList)
+  foreach (ImageProcessor *p, processorList)
+  {
+    if (ui->checkBoxExportNormal->isChecked())
     {
-      if (ui->checkBoxExportNormal->isChecked())
-      {
-        ExportMap(TextureTypes::Normal, p, "_n");
-      }
-      if (ui->checkBoxExportParallax->isChecked())
-      {
-        ExportMap(TextureTypes::Parallax, p, "_p");
-      }
-      if (ui->checkBoxExportSpecular->isChecked())
-      {
-        ExportMap(TextureTypes::Specular, p, "_s");
-      }
-      if (ui->checkBoxExportOcclusion->isChecked())
-      {
-        ExportMap(TextureTypes::Occlussion, p, "_o");
-      }
+      ExportMap(TextureTypes::Normal, p, "_n");
     }
+    if (ui->checkBoxExportParallax->isChecked())
+    {
+      ExportMap(TextureTypes::Parallax, p, "_p");
+    }
+    if (ui->checkBoxExportSpecular->isChecked())
+    {
+      ExportMap(TextureTypes::Specular, p, "_s");
+    }
+    if (ui->checkBoxExportOcclusion->isChecked())
+    {
+      ExportMap(TextureTypes::Occlussion, p, "_o");
+    }
+  }
   if (ui->checkBoxExportPreview->isChecked())
   {
     QImage n;
@@ -1101,83 +1108,46 @@ void MainWindow::on_pushButtonExportTo_clicked()
 
   if (path != nullptr)
   {
-    if (ui->checkBoxExportNormal->isChecked())
+    foreach (ImageProcessor *p, processorList)
     {
-      foreach (ImageProcessor *p, processorList)
+      if (ui->checkBoxExportNormal->isChecked())
       {
-        n = *p->get_normal();
-        info = QFileInfo(p->get_name());
-        suffix = info.completeSuffix();
-        name = path + "/" + info.baseName() + "_n." + suffix;
-        int i = 1;
-        while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" +
-                 QString::number(++i) + ")" + "_n." + suffix;
-
-        n.save(name);
+        ExportMap(TextureTypes::Normal, p, "_n", path);
       }
-      message += tr("All normal maps were exported.\n");
-    }
-
-    if (ui->checkBoxExportParallax->isChecked())
-    {
-      foreach (ImageProcessor *p, processorList)
+      if (ui->checkBoxExportParallax->isChecked())
       {
-        n = *p->get_parallax();
-        info = QFileInfo(p->get_name());
-        suffix = info.completeSuffix();
-        name = path + "/" + info.baseName() + "_p." + suffix;
-        int i = 1;
-        while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" +
-                 QString::number(++i) + ")" + "_p." + suffix;
-
-        n.save(name);
+        ExportMap(TextureTypes::Parallax, p, "_p", path);
       }
-      message += tr("All parallax maps were exported.\n");
-    }
-
-    if (ui->checkBoxExportSpecular->isChecked())
-    {
-      foreach (ImageProcessor *p, processorList)
+      if (ui->checkBoxExportSpecular->isChecked())
       {
-        n = *p->get_specular();
-        info = QFileInfo(p->get_name());
-        suffix = info.completeSuffix();
-        name = path + "/" + info.baseName() + "_s." + suffix;
-        int i = 1;
-        while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" +
-                 QString::number(++i) + ")" + "_s." + suffix;
-
-        n.save(name);
+        ExportMap(TextureTypes::Specular, p, "_s", path);
       }
-      message += tr("All specular maps were exported.\n");
-    }
-
-    if (ui->checkBoxExportOcclusion->isChecked())
-    {
-      foreach (ImageProcessor *p, processorList)
+      if (ui->checkBoxExportOcclusion->isChecked())
       {
-        n = *p->get_occlusion();
-        info = QFileInfo(p->get_name());
-        suffix = info.completeSuffix();
-        name = path + "/" + info.baseName() + "_o." + suffix;
-        int i = 1;
-        while (QFileInfo::exists(name))
-          name = path + "/" + info.baseName() + "(" +
-                 QString::number(++i) + ")" + "_o." + suffix;
-
-        n.save(name);
+        ExportMap(TextureTypes::Occlussion, p, "_o", path);
       }
-      message += tr("All occlussion maps were exported.\n");
     }
 
     if (ui->checkBoxExportPreview->isChecked())
     {
-      ui->openGLPreviewWidget->get_preview(false, true, path);
-      message += tr("All previews were exported.\n");
+      QImage n;
+      QString suffix;
+      QString name;
+      QFileInfo info;
+      foreach (ImageProcessor *p, processorList)
+      {
+        for (int i=0; i< p->frames.count(); i++)
+        {
+          n = ui->openGLPreviewWidget->get_preview(false, false);
+          info = QFileInfo(p->frames[i].get_file_name());
+          suffix = info.completeSuffix();
+          name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
+          n.save(name);
+        }
+      }
     }
+
+    message = tr("All selected maps were exported.\n");
 
     if (message != "")
     {
@@ -1563,50 +1533,50 @@ void MainWindow::on_actionLoadPlugins_triggered()
     {
       QFile(tmp.absoluteFilePath(fileName)).remove();
     }
-      QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
-      QPluginLoader *pl =
-          new QPluginLoader(tmp.absoluteFilePath(fileName));
-      if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.9)
-      {
-        qDebug() << "incorrect plugin version.";
-        pl->unload();
-        delete pl;
-        QFile plugin(dir.absoluteFilePath(fileName));
-        plugin.remove();
-        return;
-      }
-
-      BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());
-      if (pl->errorString() != "Unknown error")
-      {
-        qDebug() << pl->errorString();
-      }
-      if (b != nullptr)
-      {
-        ui->openGLPreviewWidget->currentBrush = b;
-        b->setProcessor(&processor);
-        QAction *action = new QAction(b->getIcon(), b->getName());
-        action->setCheckable(true);
-        QDockWidget *pluginDock = new QDockWidget(b->getName(), this);
-        QWidget *pluginGui = b->loadGUI();
-
-        addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
-        pluginDock->setFloating(true);
-        pluginDock->setFeatures(QDockWidget::DockWidgetMovable |
-                                QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-        pluginDock->setWidget(pluginGui);
-        pluginDock->setVisible(false);
-        connect(action, SIGNAL(toggled(bool)), pluginDock,
-                SLOT(setVisible(bool)));
-        connect(b->getObject(), SIGNAL(selected_changed(BrushInterface *)), this, SLOT(select_plugin(BrushInterface *)));
-        connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
-        ui->pluginToolBar->addAction(action);
-        b->set_selected(false);
-        plugin_docks_list.append(pluginDock);
-        plugin_list.append(pl);
-        brush_list.append(b);
-      }
+    QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
+    QPluginLoader *pl =
+        new QPluginLoader(tmp.absoluteFilePath(fileName));
+    if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.9)
+    {
+      qDebug() << "incorrect plugin version.";
+      pl->unload();
+      delete pl;
+      QFile plugin(dir.absoluteFilePath(fileName));
+      plugin.remove();
+      return;
     }
+
+    BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());
+    if (pl->errorString() != "Unknown error")
+    {
+      qDebug() << pl->errorString();
+    }
+    if (b != nullptr)
+    {
+      ui->openGLPreviewWidget->currentBrush = b;
+      b->setProcessor(&processor);
+      QAction *action = new QAction(b->getIcon(), b->getName());
+      action->setCheckable(true);
+      QDockWidget *pluginDock = new QDockWidget(b->getName(), this);
+      QWidget *pluginGui = b->loadGUI();
+
+      addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
+      pluginDock->setFloating(true);
+      pluginDock->setFeatures(QDockWidget::DockWidgetMovable |
+                              QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+      pluginDock->setWidget(pluginGui);
+      pluginDock->setVisible(false);
+      connect(action, SIGNAL(toggled(bool)), pluginDock,
+              SLOT(setVisible(bool)));
+      connect(b->getObject(), SIGNAL(selected_changed(BrushInterface *)), this, SLOT(select_plugin(BrushInterface *)));
+      connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+      ui->pluginToolBar->addAction(action);
+      b->set_selected(false);
+      plugin_docks_list.append(pluginDock);
+      plugin_list.append(pl);
+      brush_list.append(b);
+    }
+  }
 
 }
 
