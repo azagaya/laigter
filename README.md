@@ -71,7 +71,7 @@ sudo apt install qt5-default qt5-qmake libopencv-dev libgl1-mesa-dev
 sudo dnf install qt5-devel opencv-devel mesa-libGL-devel
 ```
 
-#### Arch Linux/Manjaro
+##### Arch Linux/Manjaro
 
 ```bash
 sudo pacman -Sy opencv hd5 vtk qt5-base
@@ -81,18 +81,18 @@ sudo pacman -Sy opencv hd5 vtk qt5-base
 
 Using QT Creator:
 
-	That's it, you can now open `laigter.pro` with Qt Creator and build or debug Laigter.
+That's it, you can now open `laigter.pro` with Qt Creator and build or debug Laigter.
 
 Using the terminal:
 
-	After installing dependencies, you can also build from the terminal with:
+After installing dependencies, you can also build from the terminal with:
 
-	```bash
-	mkdir build
-	cd build
-	qmake ../
-	make -j$(nproc)
-	```
+```bash
+mkdir build
+cd build
+qmake ../
+make -j$(nproc)
+```
 
 ### Compiling on Windows
 
