@@ -1,5 +1,16 @@
 # Laigter [![Build Status](https://travis-ci.com/azagaya/laigter.svg?branch=master)](https://travis-ci.com/azagaya/laigter)
 
+## Overview
+
+- [Download](https://github.com/flamendless/laigter#download)
+- [Contributing](https://github.com/flamendless/laigter#contributing)
+- [Screenshots](https://github.com/flamendless/laigter#screenshots)
+- [Compiling](https://github.com/flamendless/laigter#compiling)
+	- [Linux](https://github.com/flamendless/laigter#compiling-on-linux)
+	- [Windows](https://github.com/flamendless/laigter#compiling-on-windows)
+	- [MacOS](https://github.com/flamendless/laigter#compiling-on-macos)
+- [License](https://github.com/flamendless/laigter#license)
+
 ![Epic_MegaGrants_Recipient_logo_horizontal](https://user-images.githubusercontent.com/46932830/77976528-a0395800-72d3-11ea-8c3c-4c049350e247.png)
 
 Laigter is a tool that automatically generates maps for dynamic lighting effects
@@ -14,6 +25,8 @@ Danish and Greek. It should automatically detect your PC language.
 ## Download
 
 [**Download from itch.io**](https://azagaya.itch.io/laigter)
+
+[**Download from the Release page**](https://github.com/azagaya/laigter/releases)
 
 ## Contributing
 
@@ -46,7 +59,18 @@ work together! Many things are needed. Also, please read the
 
 ## Compiling
 
+- [Linux](https://github.com/flamendless/laigter#compiling-on-linux)
+- [Windows](https://github.com/flamendless/laigter#compiling-on-windows)
+- [MacOS](https://github.com/flamendless/laigter#compiling-on-macos)
+
 ### Compiling on Linux
+
+- [Dependencies](https://github.com/flamendless/laigter#getting-the-dependencies)
+	- [Debian/Ubuntu](https://github.com/flamendless/laigter#debianubuntu)
+	- [Fedora](https://github.com/flamendless/laigter#fedora)
+	- [Arch Linux/Manjaro](https://github.com/flamendless/laigter#arch-linuxmanjaro)
+
+- [Compiling and Building](https://github.com/flamendless/laigter#building)
 
 #### Getting the Dependencies
 
@@ -55,6 +79,7 @@ Compiling on Linux is pretty straightforward. The following dependencies are req
 - Qt 5 (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
 - OpenCV.
 - OpenGL development libraries.
+- (For Arch Linux/Manjaro: you will also need the VTK and HDF packages)
   
 Install prerequisites by entering the following command in a terminal (depending
 on your distribution):
@@ -77,17 +102,33 @@ sudo dnf install qt5-devel opencv-devel mesa-libGL-devel
 sudo pacman -Sy opencv hd5 vtk qt5-base
 ```
 
+#### Get the source
+
+Then get the source either via `git clone`:
+
+```bash
+git clone https://github.com/azagaya/laigter
+```
+
+or download the package via:
+
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
+
+Then finally `cd` into the laigter directory: `cd laigter`
+
 #### Building
 
-Using QT Creator:
+##### Using QT Creator:
 
 That's it, you can now open `laigter.pro` with Qt Creator and build or debug Laigter.
 
-Using the terminal:
+##### Using the terminal:
 
 After installing dependencies, you can also build from the terminal with:
 
 ```bash
+cd laigter
 mkdir build
 cd build
 qmake ../
