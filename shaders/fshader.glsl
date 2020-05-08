@@ -62,6 +62,7 @@ uniform int pixelsX, pixelsY;
 uniform int view_mode;
 uniform float blend_factor;
 
+uniform vec2 coordOffset;
 uniform vec3 outlineColor;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
@@ -84,7 +85,7 @@ void main()
   vec2 dis;
   vec3 viewDir = normalize(viewPos - FragPos);
 
-  vec2 texCoords = texCoord;
+  vec2 texCoords = texCoord + coordOffset;
 
   if (pixelated)
   {

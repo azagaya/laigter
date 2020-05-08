@@ -231,8 +231,11 @@ void OpenGlWidget::update_scene()
 
     transform.translate(texPos);
 
+
+
     float scaleX = !processor->get_tile_x() ? 0.5*m_image.width() : 1.5*m_image.width();
-    float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.width();
+    float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.height();
+
     transform.scale(scaleX, scaleY, 1);
     float zoomX =  processor->get_zoom() ;
     float zoomY = processor->get_zoom() ;
@@ -268,8 +271,6 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
     m_program.setUniformValue("rotation_angle", processor->get_rotation());
-    scaleX = processor->get_tile_x() ? sx : 1;
-    scaleY = processor->get_tile_y() ? sy : 1;
     zoomX = processor->get_tile_x() ? 1.0/3 : 1;
     zoomY = processor->get_tile_y() ? 1.0/3 : 1;
     m_program.setUniformValue("ratio", QVector2D(1  / zoomX, 1  / zoomY));
@@ -756,7 +757,35 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 
   if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
   {
-    if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
+    /* If shift pressed, rotate canvas*/
+
+    if (QApplication::keyboardModifiers() == Qt::SHIFT)
+    {
+      QVector3D new_point = QVector3D(local_mouse_last_position).normalized();
+      QVector3D prev_point = QVector3D(local_mouse_press_position).normalized();
+      float delta_rotation = acos(QVector3D::dotProduct(new_point,prev_point));
+      if (prev_point.x() > 0)
+      {
+        delta_rotation *= prev_point.y() < new_point.y() ? 1 : -1;
+      }
+      else
+      {
+        delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
+      }
+      if (!std::isnan(delta_rotation))
+      {
+        global_rotation += delta_rotation;
+        global_rotation = (UnwrapAngle(global_rotation));
+        float fixed_angle = FixAngle(global_rotation);
+        if (fixed_angle == global_rotation)
+        {
+          local_mouse_press_position = local_mouse_last_position;
+        }
+        global_rotation = fixed_angle;
+        updateView();
+      }
+    }
+    else if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
     {
       QPoint tpos;
       tpos = global_mouse_last_position.toPoint();
@@ -783,36 +812,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 
         }
       }
-      /* If no light or processor is selected, operate over canvas */
-      if (!lightSelected && !processor_selected)
-      {
-        if (QApplication::keyboardModifiers() == Qt::SHIFT)
-        {
-          QVector3D new_point = QVector3D(local_mouse_last_position).normalized();
-          QVector3D prev_point = QVector3D(local_mouse_press_position).normalized();
-          float delta_rotation = acos(QVector3D::dotProduct(new_point,prev_point));
-          if (prev_point.x() > 0)
-          {
-            delta_rotation *= prev_point.y() < new_point.y() ? 1 : -1;
-          }
-          else
-          {
-            delta_rotation *= prev_point.y() < new_point.y() ? -1 : 1;
-          }
-          if (!std::isnan(delta_rotation))
-          {
-            global_rotation += delta_rotation;
-            global_rotation = (UnwrapAngle(global_rotation));
-            float fixed_angle = FixAngle(global_rotation);
-            if (fixed_angle == global_rotation)
-            {
-              local_mouse_press_position = local_mouse_last_position;
-            }
-            global_rotation = fixed_angle;
-            updateView();
-          }
-        }
-      }
+
+
     }
     need_to_update = true;
   }
