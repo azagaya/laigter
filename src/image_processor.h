@@ -238,6 +238,7 @@ public:
   void set_parallax_overlay(QImage po);
   void set_specular_overlay(QImage so);
   void set_texture_overlay(QImage to);
+  int WrapCoordinate(int coord, int interval);
 
 public slots:
   void playAnimation(bool play);

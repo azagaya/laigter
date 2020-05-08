@@ -824,32 +824,34 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   }
 
   QMutexLocker hlocker(&heightmap_mutex);
+
   /* Calculate rects to update */
   QList<QRect> rlist;
   bool diagonal = true;
+
   // Adjust for 1px blur
   rect.adjust(0, 0, 1, 1);
-  rect.moveTo((rect.left() % texture.width()) - 1,
-              (rect.top() % texture.height()) - 1);
+  rect.moveTo(WrapCoordinate(rect.left(), texture.width()) - 1,
+              WrapCoordinate(rect.top(), texture.height()) - 1);
   rlist.append(rect.intersected(texture.rect()));
 
   if (rect.right() > texture.rect().right() && tileX)
     rlist.prepend(
-        QRect(0, rect.top(), rect.right() % texture.width(), rect.height())
+        QRect(0, rect.top(), WrapCoordinate(rect.right(), texture.width()), rect.height())
             .intersected(texture.rect()));
   else
     diagonal = false;
 
   if (rect.bottom() > texture.rect().bottom() && tileY)
     rlist.append(QRect(rect.left(), 0, rect.width(),
-                       rect.bottom() % texture.height())
+                       WrapCoordinate(rect.bottom(), texture.height()))
                      .intersected(texture.rect()));
   else
     diagonal = false;
 
   if (diagonal)
-    rlist.append(QRect(0, 0, rect.right() % texture.width(),
-                       rect.bottom() % texture.height())
+    rlist.append(QRect(0, 0, WrapCoordinate(rect.right(), texture.width()),
+                       WrapCoordinate(rect.bottom(), texture.height()))
                      .intersected(texture.rect()));
 
   rlist.removeAll(QRect(0, 0, 0, 0));
@@ -1587,4 +1589,9 @@ void ImageProcessor::setAnimationRate(int fps)
 void ImageProcessor::playAnimation(bool play)
 {
   play ? animation.start() : animation.stop();
+}
+
+int ImageProcessor::WrapCoordinate(int coord, int interval)
+{
+  return coord % interval + interval * (coord < 0 ? 1 : 0);
 }
