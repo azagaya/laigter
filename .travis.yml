@@ -22,6 +22,7 @@ before_install:
         brew update > /dev/null
       && brew install qt5
       && chmod -R 755 /usr/local/opt/qt5/*
+      && brew link qt5 --force
       ;
     fi
 
