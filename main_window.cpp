@@ -1562,14 +1562,13 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
       addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
       pluginDock->setFloating(true);
-      pluginDock->setFeatures(QDockWidget::DockWidgetMovable |
-                              QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+
       pluginDock->setWidget(pluginGui);
       pluginDock->setVisible(false);
       connect(action, SIGNAL(toggled(bool)), pluginDock,
               SLOT(setVisible(bool)));
       connect(b->getObject(), SIGNAL(selected_changed(BrushInterface *)), this, SLOT(select_plugin(BrushInterface *)));
-      connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+//      connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
       ui->pluginToolBar->addAction(action);
       b->set_selected(false);
       plugin_docks_list.append(pluginDock);
