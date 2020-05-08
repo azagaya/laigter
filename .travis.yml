@@ -20,7 +20,7 @@ addons:
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         brew update > /dev/null
-      && brew install qt5
+      && brew upgrade qt5
       && chmod -R 755 /usr/local/opt/qt5/*
       && brew link qt5 --force
       && brew install opencv
