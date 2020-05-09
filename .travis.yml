@@ -40,7 +40,7 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage; fi
 
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt appdir/usr/bin/laigter.app -dmg; fi 
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; cthen zip -r laigter.zip laigter.dmg; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r laigter.zip laigter.dmg; fi
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then bash upload.sh Laigter*.AppImage*; fi
