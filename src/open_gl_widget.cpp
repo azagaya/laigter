@@ -31,14 +31,15 @@
 
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
+  Q_UNUSED(parent)
   m_zoom = 1.0;
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
-  ambientIntensity = 0.8;
-  lightPosition = QVector3D(500.0, 300.0, 0.3);
+  ambientIntensity = 0.8f;
+  lightPosition = QVector3D(0.8f*width(), 0.8f*height(), 0.3f);
   m_light = true;
   m_parallax = false;
-  parallax_height = 0.03;
+  parallax_height = 0.03f;
   // processor->set_tile_x(false);
   // processor->set_tile_y(false);
   m_pixelated = false;
@@ -51,8 +52,8 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   currentLight->set_diffuse_color(c);
   currentLight->set_specular_color(c);
   currentLight->set_specular_scatter(32);
-  currentLight->set_diffuse_intensity(0.6);
-  currentLight->set_specular_intensity(0.6);
+  currentLight->set_diffuse_intensity(0.6f);
+  currentLight->set_specular_intensity(0.6f);
   lightList.append(currentLight);
   currentLightList = &lightList;
   backgroundColor.setRgbF(0.2, 0.2, 0.3);
