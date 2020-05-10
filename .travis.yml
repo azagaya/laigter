@@ -1,7 +1,10 @@
-os: linux
+os:
+  - linux
+  - osx
+
 dist: xenial
 language: cpp
-compiler: gcc
+compiler: clang
 
 addons:
   apt:
@@ -14,21 +17,33 @@ addons:
       - libgl1-mesa-dev
       - libopencv-dev
 
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+        brew update > /dev/null
+      && brew upgrade qt5
+      && chmod -R 755 /usr/local/opt/qt5/*
+      && brew link qt5 --force
+      && brew install opencv
+      ;
+    fi
+
 install:
-  - source /opt/qt*/bin/qt*-env.sh
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then source /opt/qt*/bin/qt*-env.sh; fi
 
 script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install
   - find appdir/
-  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app -dmg; fi
 
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh Laigter*.AppImage*
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then bash upload.sh Laigter*.AppImage*; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then bash upload.sh laigter.dmg; fi
 
 branches:
   except:
