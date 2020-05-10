@@ -36,7 +36,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8f;
-  lightPosition = QVector3D(0.8f*width(), 0.8f*height(), 0.3f);
+  lightPosition = QVector3D(0.5f*width(), 0.5f*height(), 0.3f);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03f;
