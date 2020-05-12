@@ -167,6 +167,10 @@ void main()
 
       l_color += vec4(diffuse, 1.0) + vec4(specular, 1.0);
     }
+//    if (toon)
+//    {
+//      occlusion = smoothstep(0.495, 0.505, occlusion);
+//    }
     l_color = tex * (l_color + vec4(ambientColor, 1.0) * ambientIntensity *
                      occlusion);
     l_color.a = tex.a;

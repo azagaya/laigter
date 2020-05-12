@@ -115,10 +115,10 @@ unix{
 
 unix {
         CONFIG += link_pkgconfig
-        packagesExist(opencv) {
-                PKGCONFIG += opencv
-        } else {
+        packagesExist(opencv4) {
                 PKGCONFIG += opencv4
+        } else {
+                PKGCONFIG += opencv
         }
 }
 

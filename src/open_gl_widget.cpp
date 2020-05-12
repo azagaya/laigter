@@ -36,7 +36,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8f;
-  lightPosition = QVector3D(0.5f*width(), 0.5f*height(), 0.3f);
+  lightPosition = QVector3D(0.5f*m_width, 0.5f*m_height, 0.3f);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03f;
@@ -178,7 +178,9 @@ void OpenGlWidget::update_scene()
       backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
       backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
   glClear(GL_COLOR_BUFFER_BIT);
-  glViewport(0,0,width(),height());
+
+  defaultFramebufferObject();
+  glViewport(0,0,m_width,m_height);
 
   QVector3D color;
   double r, g, b;
@@ -188,10 +190,10 @@ void OpenGlWidget::update_scene()
   int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
   int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
-  QVector3D viewport_size(width(), height(),1.0);
+  QVector3D viewport_size(m_width,m_height,1.0);
 
   projection.setToIdentity();
-  projection.ortho(-0.5*width(),0.5*width(), -0.5*height(),0.5*height(),-1,1);
+  projection.ortho(-0.5*m_width,0.5*m_width, -0.5*m_height,0.5*m_height,-1,1);
 
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
@@ -389,6 +391,8 @@ void OpenGlWidget::resizeGL(int w, int h)
   sx = (float)m_image.width() / w;
   sy = (float)m_image.height() / h;
   need_to_update = true;
+  m_width = w;
+  m_height = h;
 }
 
 void OpenGlWidget::setImage(QImage *image)
@@ -398,8 +402,8 @@ void OpenGlWidget::setImage(QImage *image)
 
   m_texture->create();
   m_texture->setData(*image);
-  sx = (float)image->width() / width();
-  sy = (float)image->height() / height();
+  sx = (float)image->width() /m_width;
+  sy = (float)image->height() /m_height;
   pixelsX = image->width();
   pixelsY = image->height();
 }
@@ -574,10 +578,10 @@ void OpenGlWidget::fitZoom()
 
   float dx = x_max - x_min;
   float dy = y_max - y_min;
-  float zoom = width()/dx;
+  float zoom =m_width/dx;
   if (height()/dy < zoom)
   {
-    zoom = height()/dy;
+    zoom =m_height/dy;
   }
   setZoom(zoom);
 
@@ -1111,7 +1115,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
   }
   else
   {
-    QOpenGLFramebufferObject frameBuffer(width(), height());
+    QOpenGLFramebufferObject frameBuffer(m_width,m_height);
     frameBuffer.bind();
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -1124,28 +1128,28 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     int i1 =
         m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-    int xmin = width(), xmax = 0, ymin = height(), ymax = 0;
+    int xmin =m_width, xmax = 0, ymin =m_height, ymax = 0;
 
     QMatrix4x4 transform;
     foreach (ImageProcessor *processor, processorList)
     {
       /* Calculate positions for cropping after rendering */
       int xi =
-          0.5 * (processor->get_position()->x() + 1) * width() -
+          0.5 * (processor->get_position()->x() + 1) *m_width -
           processor->get_texture()->width() / 2.0 * processor->get_zoom();
       int xf =
-          0.5 * (processor->get_position()->x() + 1) * width() +
+          0.5 * (processor->get_position()->x() + 1) *m_width +
           processor->get_texture()->width() / 2.0 * processor->get_zoom();
-      int yi = 0.5 * (-processor->get_position()->y() + 1) * height() -
+      int yi = 0.5 * (-processor->get_position()->y() + 1) *m_height -
                processor->get_texture()->height() / 2.0 *
                    processor->get_zoom();
-      int yf = 0.5 * (-processor->get_position()->y() + 1) * height() +
+      int yf = 0.5 * (-processor->get_position()->y() + 1) *m_height +
                processor->get_texture()->height() / 2.0 *
                    processor->get_zoom();
       if (processor->get_tile_x())
       {
         xmin = 0;
-        xmax = width() - 1;
+        xmax =m_width - 1;
       }
       else
       {
@@ -1158,7 +1162,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       if (processor->get_tile_y())
       {
         ymin = 0;
-        ymax = height() - 1;
+        ymax =m_height - 1;
       }
       else
       {
@@ -1468,7 +1472,7 @@ void OpenGlWidget::set_current_light_list(QList<LightSource *> *list)
 QPointF OpenGlWidget::LocalToView(QPointF local)
 {
   QPointF view;
-  view.setX( local.x()-0.5*width());
+  view.setX( local.x()-0.5*m_width);
   view.setY( -local.y()+0.5*height());
   return view;
 }

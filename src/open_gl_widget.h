@@ -108,6 +108,7 @@ private:
   float sx, sy, parallax_height;
   int pixelsX, pixelsY, pixelSize;
   int viewmode;
+  int m_width=0, m_height=0;
   void apply_light_params();
   void select_current_light_list();
   void select_light(LightSource *light);
