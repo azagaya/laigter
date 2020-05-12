@@ -239,6 +239,10 @@ void OpenGlWidget::update_scene()
     float scaleX = !processor->get_tile_x() ? 0.5*m_image.width() : 1.5*m_image.width();
     float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.height();
 
+    /* Adjust for retina */
+    scaleX *= devicePixelRatioF();
+    scaleY *= devicePixelRatioF();
+
     transform.scale(scaleX, scaleY, 1);
     float zoomX =  processor->get_zoom() ;
     float zoomY = processor->get_zoom() ;
@@ -318,6 +322,10 @@ void OpenGlWidget::update_scene()
     {
       float x = static_cast<float>(laigter.width())*0.125 / m_global_zoom;
       float y = static_cast<float>(laigter.height())*0.125 / m_global_zoom;
+      /* Fix for retina */
+      x *= devicePixelRatioF();
+      y *= devicePixelRatioF();
+
       transform.setToIdentity();
       transform.translate(light->get_light_position());
       transform.scale(x, y, 1);
@@ -358,6 +366,11 @@ void OpenGlWidget::update_scene()
     brushTexture->setData(currentBrush->getBrushSprite());
     float x = static_cast<float>(brushTexture->width()) * 0.5f * m_global_zoom;
     float y = static_cast<float>(brushTexture->height()) * 0.5f * m_global_zoom;
+
+    /* Fix for retina */
+    x *= devicePixelRatioF();
+    y *= devicePixelRatioF();
+
     QPointF cursor = mapFromGlobal(QCursor::pos());
     cursor = LocalToView(cursor);
     transform.setToIdentity();
@@ -1475,7 +1488,7 @@ QPointF OpenGlWidget::LocalToView(QPointF local)
 {
   QPointF view;
   view.setX( local.x()-0.5*m_width);
-  view.setY( -local.y()+0.5*height());
+  view.setY( -local.y()+0.5*m_height);
   return view;
 }
 
