@@ -388,6 +388,8 @@ void OpenGlWidget::update_scene()
 
 void OpenGlWidget::resizeGL(int w, int h)
 {
+  w *= devicePixelRatio();
+  h *= devicePixelRatio();
   sx = (float)m_image.width() / w;
   sy = (float)m_image.height() / h;
   need_to_update = true;
