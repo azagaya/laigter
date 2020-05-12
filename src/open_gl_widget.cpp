@@ -29,6 +29,10 @@
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
 
+float devicePixelRatioF(){
+  return 0.5;
+}
+
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
   Q_UNUSED(parent)
@@ -133,7 +137,6 @@ void OpenGlWidget::initializeGL()
   lightVAO.release();
   VBO.release();
   initialized();
-
 }
 
 void OpenGlWidget::loadTextures()
@@ -401,8 +404,8 @@ void OpenGlWidget::update_scene()
 
 void OpenGlWidget::resizeGL(int w, int h)
 {
-  w *= devicePixelRatio();
-  h *= devicePixelRatio();
+  w *= devicePixelRatioF();
+  h *= devicePixelRatioF();
   sx = (float)m_image.width() / w;
   sy = (float)m_image.height() / h;
   need_to_update = true;
@@ -453,7 +456,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 
 void OpenGlWidget::setZoom(float zoom)
 {
-  m_global_zoom = zoom;
+  m_global_zoom = zoom*devicePixelRatioF();
   updateView();
 }
 
@@ -1382,7 +1385,9 @@ void OpenGlWidget::set_add_light(bool add)
     need_to_update = true;
   }
   else if (addLight)
+  {
     remove_light(currentLight);
+  }
 
   addLight = add;
 }
@@ -1487,8 +1492,8 @@ void OpenGlWidget::set_current_light_list(QList<LightSource *> *list)
 QPointF OpenGlWidget::LocalToView(QPointF local)
 {
   QPointF view;
-  view.setX( local.x()-0.5*m_width);
-  view.setY( -local.y()+0.5*m_height);
+  view.setX( local.x()*devicePixelRatioF()-0.5*m_width);
+  view.setY( -local.y()*devicePixelRatioF()+0.5*m_height);
   return view;
 }
 
