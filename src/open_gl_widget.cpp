@@ -490,8 +490,8 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 
   if (!degree.isNull() && degree.y() != 0)
   {
-    QPoint step = degree / qAbs(degree.y());
-    double zoom = step.y() > 0 ?  1.1 * step.y() :  -0.9 * step.y();
+
+    double zoom = degree.y() > 0 ?  1.1 :  0.9 ;
 
     double dx = (1-1.0/zoom)*(mouse_position.x()+origin.x());
     double dy = (1-1.0/zoom)*(mouse_position.y()+origin.y());
