@@ -596,6 +596,8 @@ void OpenGlWidget::fitZoom()
 
   float dx = x_max - x_min;
   float dy = y_max - y_min;
+  dx *= devicePixelRatioF();
+  dy *= devicePixelRatioF();
   float zoom =m_width/dx;
   if (height()/dy < zoom)
   {
