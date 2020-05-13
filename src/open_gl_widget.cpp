@@ -614,7 +614,7 @@ void OpenGlWidget::fitZoom()
 
 float OpenGlWidget::getZoom()
 {
-  return processor->get_zoom();
+  return m_global_zoom;
 }
 
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
