@@ -24,6 +24,7 @@ uniform vec2 pixelSize;
 uniform bool selected;
 uniform float scale;
 uniform bool pixelated;
+uniform float zoom;
 
 void main()
 {
@@ -43,10 +44,10 @@ void main()
 
   float l = length(texCoord - 0.5);
 
-  if (l < 0.5 && l > 0.5 - 1.0 * (pixelSize.x / scale))
+  if (l < 0.5 && l > 0.5 - 1.0 * (pixelSize.x / scale / zoom))
     color = vec4(0.6, 0.6, 1.0, 1.0);
-  if (l < 0.5 - 2.0 * (pixelSize.x / scale) &&
-      l > 0.5 - 3.0 * (pixelSize.x / scale))
+  if (l < 0.5 - 2.0 * (pixelSize.x / scale / zoom) &&
+      l > 0.5 - 3.0 * (pixelSize.x / scale / zoom))
     color = vec4(0.0, 0.0, 0.4, 1.0);
 
   gl_FragColor = vec4(color);

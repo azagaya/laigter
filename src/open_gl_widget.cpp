@@ -208,7 +208,7 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
-
+  m_program.setUniformValue("zoom",m_global_zoom);
   apply_light_params();
   foreach (ImageProcessor *processor, processorList)
   {
@@ -391,9 +391,9 @@ void OpenGlWidget::update_scene()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     cursorProgram.setUniformValue("texture", 0);
     cursorProgram.setUniformValue("scale", processor->get_zoom());
-    cursorProgram.setUniformValue("pixelSize", 1.0 / brushTexture->width(),
-                                  1.0 / brushTexture->height());
+    cursorProgram.setUniformValue("pixelSize", 1.0 / brushTexture->width(), 1.0 / brushTexture->height());
     cursorProgram.setUniformValue("pixelated", m_pixelated);
+    cursorProgram.setUniformValue("zoom", m_global_zoom);
     color = QVector3D(0.2, 0.2, 0.2);
     glDrawArrays(GL_QUADS, 0, 4);
     cursorProgram.release();

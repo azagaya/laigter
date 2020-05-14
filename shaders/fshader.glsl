@@ -29,6 +29,8 @@ struct lightSource
   float specScatter;
 };
 
+uniform float zoom;
+
 uniform lightSource Light[32];
 uniform int lightNum;
 
@@ -72,10 +74,10 @@ void main()
 {
 
   if (selected &&
-      (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x ||
-       texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x ||
-       texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y ||
-       texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y))
+      (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x / zoom||
+       texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x / zoom ||
+       texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y / zoom ||
+       texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y / zoom))
   {
     gl_FragColor.xyz = 1.0 - outlineColor;
     gl_FragColor.a = 0.5;
