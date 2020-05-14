@@ -830,8 +830,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         {
           /* Move */
           processor_selected = true;
-          processor->get_position()->setX((global_mouse_last_position.x() - processor->get_offset()->x()));
-          processor->get_position()->setY((global_mouse_last_position.y() - processor->get_offset()->y()));
+          processor->get_position()->setX((int)(global_mouse_last_position.x() - processor->get_offset()->x()));
+          processor->get_position()->setY((int)(global_mouse_last_position.y() - processor->get_offset()->y()));
 
         }
       }
