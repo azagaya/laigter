@@ -38,12 +38,15 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app -dmg; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget https://raw.githubusercontent.com/arl/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./macdeployqtfix.py laigter.app /usr/local/Cellar/qt/*/; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then zip -r laigter.zip laigter.app; fi
 
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then bash upload.sh Laigter*.AppImage*; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then bash upload.sh laigter.dmg; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then bash upload.sh laigter.zip; fi
 
 branches:
   except:
