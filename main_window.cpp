@@ -558,16 +558,33 @@ void MainWindow::open_files(QStringList fileNames)
           QList<QImage> image_list;
           bool animation;
           image_list = il.loadImages(fileName, &animation);
-          loaded = image_list.count() > 0;
-          for(int i=0; i< image_list.count(); i++)
+
+
+          if (!animation)
           {
-            QImage image = image_list.at(i);
-            image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+            for(int i=0; i< image_list.count(); i++)
+            {
+              QImage image = image_list.at(i);
+              image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+              ImageProcessor *p = new ImageProcessor();
+              p->set_name(name+QString::number(i));
+              p->copy_settings(processor->get_settings());
+              p->loadImage(fileName, image);
+              add_processor(p);
+            }
+          }
+          else
+          {
             ImageProcessor *p = new ImageProcessor();
             p->set_name(name+QString::number(i));
             p->copy_settings(processor->get_settings());
-            p->loadImage(fileName, image);
-            add_processor(p);
+            for(int i=0; i< image_list.count(); i++)
+            {
+              QImage image = image_list.at(i);
+              image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+              p->loadImage(fileName, image);
+              add_processor(p);
+            }
           }
         }
         fs_watcher.addPath(fileName);
@@ -1588,7 +1605,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
       connect(action, SIGNAL(toggled(bool)), pluginDock,
               SLOT(setVisible(bool)));
       connect(b->getObject(), SIGNAL(selected_changed(BrushInterface *)), this, SLOT(select_plugin(BrushInterface *)));
-//      connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
+      //      connect(pluginDock, SIGNAL(visibilityChanged(bool)), action, SLOT(setChecked(bool)));
       ui->pluginToolBar->addAction(action);
       b->set_selected(false);
       plugin_docks_list.append(pluginDock);
