@@ -16,6 +16,7 @@ addons:
       - qt514tools
       - libgl1-mesa-dev
       - libopencv-dev
+      - qt514imageformats
 
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
