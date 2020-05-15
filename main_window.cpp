@@ -583,8 +583,8 @@ void MainWindow::open_files(QStringList fileNames)
               QImage image = image_list.at(i);
               image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
               p->loadImage(fileName, image);
-              add_processor(p);
-            }
+            }            
+            add_processor(p);
           }
         }
         fs_watcher.addPath(fileName);
