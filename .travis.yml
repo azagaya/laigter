@@ -36,11 +36,11 @@ script:
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install
   - find appdir/
+
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then qmake -v; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ls /opt/qt514/plugins/imageformats/; fi
+
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget https://raw.githubusercontent.com/arl/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./macdeployqtfix.py laigter.app /usr/local/Cellar/qt/*/; fi
