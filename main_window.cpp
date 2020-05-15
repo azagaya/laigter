@@ -43,6 +43,7 @@
 #include <QPluginLoader>
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
+#include <QImageReader>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -519,13 +520,10 @@ void MainWindow::open_files(QStringList fileNames)
       }
     }
 
-    ImageProcessor *p = new ImageProcessor();
+
     int i = 1;
     while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
       name = info.baseName() + " (" + QString::number(++i) + ")";
-
-    p->set_name(name);
-    p->copy_settings(processor->get_settings());
 
     bool loaded = false;
     foreach (fileName, similarList)
@@ -534,26 +532,47 @@ void MainWindow::open_files(QStringList fileNames)
       {
         ImageLoader il;
         bool success;
-        auximage = il.loadImage(fileName, &success);
-        loaded = loaded || success;
-        if (!success || auximage.isNull())
+        QImageReader reader(fileName);
+        if (fileName.endsWith("tga") || reader.imageCount() == 1)
         {
-          QMessageBox msgBox;
-          msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
-                         tr("Unsupported or incorrect format."));
-          msgBox.exec();
-          continue;
+          auximage = il.loadImage(fileName, &success);
+          if (!success || auximage.isNull())
+          {
+            QMessageBox msgBox;
+            msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                           tr("Unsupported or incorrect format."));
+            msgBox.exec();
+            continue;
+          }
+          else
+          {
+            ImageProcessor *p = new ImageProcessor();
+            p->set_name(name);
+            p->copy_settings(processor->get_settings());
+            p->loadImage(fileName,auximage);
+            add_processor(p);
+          }
         }
-        auximage = auximage.convertToFormat(
-            QImage::Format_RGBA8888_Premultiplied);
-        p->loadImage(fileName, auximage);
+        else if (reader.imageCount() > 1)
+        {
+          QList<QImage> image_list;
+          bool animation;
+          image_list = il.loadImages(fileName, &animation);
+          loaded = image_list.count() > 0;
+          for(int i=0; i< image_list.count(); i++)
+          {
+            QImage image = image_list.at(i);
+            image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+            ImageProcessor *p = new ImageProcessor();
+            p->set_name(name+QString::number(i));
+            p->copy_settings(processor->get_settings());
+            p->loadImage(fileName, image);
+            add_processor(p);
+          }
+        }
         fs_watcher.addPath(fileName);
       }
     }
-    if (loaded)
-      add_processor(p);
-    else
-      delete p;
   }
 }
 

@@ -31,6 +31,7 @@ public:
   explicit ImageLoader(QObject *parent = nullptr);
   QImage loadTga(const char *filePath, bool *success);
   QImage loadImage(QString fileName, bool *success);
+  QList<QImage> loadImages(QString fileName, bool *animation_support = nullptr);
 };
 
 #endif // IMAGELOADER_H

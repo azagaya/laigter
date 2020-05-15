@@ -20,10 +20,24 @@
 #include "image_loader.h"
 
 #include <fstream>
-
+#include <QImageReader>
 #include <QFileInfo>
+#include <QDebug>
 
 ImageLoader::ImageLoader(QObject *parent) : QObject(parent) {}
+
+QList<QImage> ImageLoader::loadImages(QString fileName, bool *animation_support)
+{
+  QList<QImage> image_list;
+  QImageReader reader(fileName);
+  *animation_support = reader.supportsAnimation();
+  for (int i = 0; i < reader.imageCount(); i++)
+  {
+    reader.jumpToImage(i);
+    image_list.append(reader.read());
+  }
+  return image_list;
+}
 
 QImage ImageLoader::loadImage(QString fileName, bool *success)
 {
@@ -41,8 +55,11 @@ QImage ImageLoader::loadImage(QString fileName, bool *success)
     *success = loaded;
   }
   else
+  {
+    QImageReader reader(fileName);
+    qDebug() << reader.imageCount();
     image = QImage(fileName);
-
+  }
   if (image.isNull())
     *success = false;
 
