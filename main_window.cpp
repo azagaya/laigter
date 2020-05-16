@@ -44,6 +44,7 @@
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
 #include <QImageReader>
+#include <QImageWriter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -583,11 +584,11 @@ void MainWindow::open_files(QStringList fileNames)
 
         p->set_name(name);
         p->copy_settings(processor->get_settings());
-
+        i = 1;
         foreach(QImage image, image_list)
         {
           image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-          p->loadImage(fileName, image);
+          p->loadImage(info.absolutePath()+"/"+name+"_"+QString::number(i++)+"."+info.suffix(), image);
         }
         add_processor(p);
       }
@@ -978,6 +979,10 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
       info = QFileInfo(file_name);
     }
     suffix = info.completeSuffix();
+    if (!QImageWriter::supportedImageFormats().contains(suffix.toUtf8()))
+    {
+      suffix = "png";
+    }
     if (destination == "")
     {
       name = p->m_absolute_path + "/" + info.baseName() + postfix + "." + suffix;
@@ -1030,10 +1035,6 @@ void MainWindow::on_pushButton_clicked()
         p->animation.stop();
         p->set_current_frame_id(i);
         n = ui->openGLPreviewWidget->get_preview(false, true);
-        info = QFileInfo(p->frames[i].get_file_name());
-        suffix = info.completeSuffix();
-        name = info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
-        n.save(name);
       }
     }
   }
@@ -1195,6 +1196,8 @@ void MainWindow::on_pushButtonExportTo_clicked()
       QFileInfo info;
       foreach (ImageProcessor *p, processorList)
       {
+        ui->openGLPreviewWidget->set_current_processor(p);
+        p->animation.stop();
         for (int i=0; i< p->frames.count(); i++)
         {
           n = ui->openGLPreviewWidget->get_preview(false, false);

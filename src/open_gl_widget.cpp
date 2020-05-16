@@ -28,6 +28,7 @@
 #include <QOpenGLVersionProfile>
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
+#include <QImageWriter>
 
 float devicePixelRatioF(){
   return 0.5;
@@ -1103,16 +1104,18 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       {
         if (exportBasePath == "")
         {
-          info = QFileInfo(processor->get_name());
+          info = QFileInfo(processor->get_current_frame()->get_file_name());
           suffix = info.completeSuffix();
-          if (suffix == "")
+          if (!QImageWriter::supportedImageFormats().contains(suffix.toUtf8()))
+          {
             suffix = "png";
-          aux = info.absoluteFilePath().remove("." + suffix) + "_v." +
+          }
+          aux = processor->m_absolute_path + "/" + info.baseName() + "_v." +
                 suffix;
         }
         else
         {
-          info = QFileInfo(processor->get_name());
+          info = QFileInfo(processor->get_current_frame()->get_file_name());
           suffix = info.completeSuffix();
           aux =
               exportBasePath + "/" + info.baseName() + "_v." + suffix;
