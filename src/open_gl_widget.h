@@ -111,7 +111,7 @@ private:
   int pixelsX, pixelsY, pixelSize;
   int viewmode;
   int m_width=0, m_height=0;
-  void apply_light_params();
+  void apply_light_params(QMatrix4x4 projection, QMatrix4x4 view);
   void select_current_light_list();
   void select_light(LightSource *light);
 
