@@ -136,6 +136,8 @@ ImageProcessor::~ImageProcessor()
 int ImageProcessor::loadImage(QString fileName, QImage image)
 {
   m_fileName = fileName;
+  QFileInfo info(fileName);
+  m_absolute_path = info.absolutePath();
   texture = image;
   Sprite s;
   s.set_image(TextureTypes::Diffuse, image);

@@ -18,6 +18,7 @@
  */
 
 #include "image_loader.h"
+#include "thirdparty/tinytiffwriter.h"
 
 #include <fstream>
 #include <QImageReader>
@@ -26,11 +27,10 @@
 
 ImageLoader::ImageLoader(QObject *parent) : QObject(parent) {}
 
-QList<QImage> ImageLoader::loadImages(QString fileName, bool *animation_support)
+QList<QImage> ImageLoader::loadImages(QString fileName)
 {
   QList<QImage> image_list;
   QImageReader reader(fileName);
-  *animation_support = reader.supportsAnimation();
   for (int i = 0; i < reader.imageCount(); i++)
   {
     reader.jumpToImage(i);

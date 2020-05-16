@@ -123,7 +123,7 @@ public:
   QMutex parallax_overlay_mutex;
   QMutex specular_overlay_mutex;
   QMutex texture_overlay_mutex;
-  QString m_fileName;
+  QString m_fileName, m_absolute_path;
   QTimer animation, recalculate_timer;
   QVector<Sprite> frames;
   bool busy, active;

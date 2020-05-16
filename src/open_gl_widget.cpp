@@ -232,12 +232,10 @@ void OpenGlWidget::update_scene()
     {
       setOcclusionMap(&occlusionMap);
     }
+
     transform.setToIdentity();
     QVector3D texPos = *processor->get_position();
-
     transform.translate(texPos);
-
-
 
     float scaleX = !processor->get_tile_x() ? 0.5*m_image.width() : 1.5*m_image.width();
     float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.height();
@@ -991,8 +989,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QImage n;
     QString suffix;
     QFileInfo info;
-    foreach (ImageProcessor *processor, processorList)
-    {
+
 
       if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
       {
@@ -1015,11 +1012,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
         setOcclusionMap(&occlusionMap);
       }
 
-      setSpecularMap(processor->get_specular());
-      setParallaxMap(processor->get_parallax());
-      setOcclusionMap(processor->get_occlusion());
-      QOpenGLFramebufferObject frameBuffer(m_image.width(),
-                                           m_image.height());
+      QOpenGLFramebufferObject frameBuffer(m_image.width(), m_image.height());
       QMatrix4x4 transform;
       transform.setToIdentity();
 
@@ -1087,9 +1080,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       float zoomX = !processor->get_tile_x() ? processor->get_zoom() : 1;
       float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
 
-      m_program.setUniformValue(
-          "viewPos", QVector3D(-processor->get_position()->x(),
-                               -processor->get_position()->y(), 1));
+      m_program.setUniformValue("viewPos", QVector3D(-processor->get_position()->x(),
+                                                     -processor->get_position()->y(), 1));
       m_program.setUniformValue("parallax", processor->get_is_parallax());
       m_program.setUniformValue("height_scale", parallax_height);
 
@@ -1126,12 +1118,13 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
               exportBasePath + "/" + info.baseName() + "_v." + suffix;
           int i = 1;
           while (QFileInfo::exists(aux))
-            aux = exportBasePath + "/" + info.baseName() + "(" +
-                  QString::number(++i) + ")" + "_v." + suffix;
+          {
+            aux = exportBasePath + "/" + info.baseName() + "(" + QString::number(++i) + ")" + "_v." + suffix;
+          }
         }
         renderedPreview.save(aux);
       }
-    }
+
   }
   else
   {
@@ -1151,21 +1144,31 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     int xmin =m_width, xmax = 0, ymin =m_height, ymax = 0;
 
     QMatrix4x4 transform;
+
+
+    m_program.setUniformValue("view_mode", Preview);
+    m_program.setUniformValue("pixelated", m_pixelated);
+    m_program.setUniformValue("toon", m_toon);
+    backgroundColor.getRgbF(&r, &g, &b, nullptr);
+    color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
+    m_program.setUniformValue("outlineColor", color);
+    m_program.setUniformValue("selected", false);
+    m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
+    m_program.setUniformValue("height_scale", parallax_height);
+    m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
+    m_program.setUniformValue("zoom",m_global_zoom);
+
     foreach (ImageProcessor *processor, processorList)
     {
+      QPointF tex_position(processor->get_position()->x(), processor->get_position()->y());
+      QPointF local_tex_position = WorldToLocal(tex_position);
+      QSize tex_size(processor->get_texture()->size());
       /* Calculate positions for cropping after rendering */
-      int xi =
-          0.5 * (processor->get_position()->x() + 1) *m_width -
-          processor->get_texture()->width() / 2.0 * processor->get_zoom();
-      int xf =
-          0.5 * (processor->get_position()->x() + 1) *m_width +
-          processor->get_texture()->width() / 2.0 * processor->get_zoom();
-      int yi = 0.5 * (-processor->get_position()->y() + 1) *m_height -
-               processor->get_texture()->height() / 2.0 *
-                   processor->get_zoom();
-      int yf = 0.5 * (-processor->get_position()->y() + 1) *m_height +
-               processor->get_texture()->height() / 2.0 *
-                   processor->get_zoom();
+      int xi = local_tex_position.x() - tex_size.width()/2;
+      int xf = local_tex_position.x() + tex_size.width()/2;
+      int yi = local_tex_position.y() - tex_size.height()/2;
+      int yf = local_tex_position.y() + tex_size.height()/2;
+
       if (processor->get_tile_x())
       {
         xmin = 0;
@@ -1250,23 +1253,17 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       }
 
       glActiveTexture(GL_TEXTURE0);
-      m_program.setUniformValue("view_mode", Preview);
       m_program.setUniformValue("transform", transform);
       m_program.setUniformValue("pixelsX", pixelsX);
       m_program.setUniformValue("pixelsY", pixelsY);
       m_program.setUniformValue("pixelSize", pixelSize);
-      m_program.setUniformValue("pixelated", m_pixelated);
-      m_program.setUniformValue("toon", m_toon);
-      backgroundColor.getRgbF(&r, &g, &b, nullptr);
-      color = QVector3D(bkColor[0], bkColor[1], bkColor[2]);
-      m_program.setUniformValue("outlineColor", color);
-      m_program.setUniformValue("selected", false);
+
       scaleX = processor->get_tile_x() ? sx : 1;
       scaleY = processor->get_tile_y() ? sy : 1;
       zoomX = processor->get_tile_x() ? processor->get_zoom() : 1;
       zoomY = processor->get_tile_y() ? processor->get_zoom() : 1;
-      m_program.setUniformValue(
-          "ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
+
+      m_program.setUniformValue("ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -1286,11 +1283,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       m_occlusionTexture->bind(4);
       m_program.setUniformValue("occlusionMap", 4);
 
-      m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
       m_program.setUniformValue("parallax",
                                 processor->get_is_parallax() &&
                                     viewmode == Preview);
-      m_program.setUniformValue("height_scale", parallax_height);
 
       apply_light_params();
       glDrawArrays(GL_QUADS, 0, 4);
@@ -1504,4 +1499,14 @@ QPointF OpenGlWidget::LocalToWorld(QPointF local)
   QVector3D local_position = QVector3D(LocalToView(local));
   QVector3D world_position = view.inverted()*local_position;
   return QPointF(world_position.x(), world_position.y());
+}
+
+QPointF OpenGlWidget::WorldToLocal(QPointF world)
+{
+  QVector3D world_position(world);
+  QVector3D view_position = view*world_position;
+  QVector3D local_position;
+  local_position.setX((view_position.x()+0.5*m_width)/devicePixelRatioF());
+  local_position.setY((view_position.y()+0.5*m_height)/devicePixelRatioF());
+  return QPointF(local_position.x(), local_position.y());
 }

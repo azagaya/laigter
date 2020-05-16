@@ -81,6 +81,7 @@ HEADERS += \
 	src/sprite.h \
 	src/texture.h \
 	thirdparty/miniz.h \
+	thirdparty/tinytiffwriter.h \
 	thirdparty/zip.h
 
 FORMS += \

@@ -70,7 +70,6 @@
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
    <addaction name="actionExport"/>
-   <addaction name="actionExportPreview"/>
    <addaction name="actionAdd_Light"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>
@@ -1514,7 +1513,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>262</width>
+          <width>265</width>
           <height>326</height>
          </rect>
         </property>

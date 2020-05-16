@@ -457,85 +457,103 @@ ImageProcessor *MainWindow::find_processor(QString name)
   return nullptr;
 }
 
+QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedFiles, QString *prefix)
+{
+  /* Check for auto loading of frames */
+
+  QStringList similarList;
+  QString postfix;
+  QFileInfo info(file_name);
+  if (!checkedFiles.contains(file_name))
+  {
+    QRegularExpression rx("((\\d+)(?!.*\\d))");
+    QRegularExpressionMatch match = rx.match(info.fileName());
+    QStringList parts = file_name.split("/").last().split(match.captured(0));
+    *prefix = parts.first();
+    postfix = parts.last();
+    QDir dir = info.absoluteDir();
+    if (*prefix != "")
+    {
+      foreach (QString file, dir.entryList())
+      {
+        match = rx.match(file);
+
+        QStringList parts = file.split("/").last().split(match.captured(0));
+        if (parts.first() == prefix && parts.last() == postfix)
+        {
+          similarList.append(dir.path() + "/" + file);
+        }
+      }
+    }
+  }
+  return similarList;
+}
+
 void MainWindow::open_files(QStringList fileNames)
 {
   QImage auximage;
-  QStringList similarFiles;
-  QStringList checkedFiles;
+  QStringList similarFiles, checkedFiles, similarList;
+  QString prefix;
   foreach (QString fileName, fileNames)
   {
     if (similarFiles.contains(fileName))
       continue;
+    /* Only load similar files as animation if the image doesnt already have multiple frames */
 
-    /* Check for auto loading of frames */
-    QStringList similarList;
-    QString prefix, postfix;
+    QImageReader reader(fileName);
     QFileInfo info(fileName);
-    if (!checkedFiles.contains(fileName))
-    {
-      QRegularExpression rx("((\\d+)(?!.*\\d))");
-      QRegularExpressionMatch match = rx.match(info.fileName());
-      QStringList parts = fileName.split("/").last().split(match.captured(0));
-      prefix = parts.first();
-      postfix = parts.last();
-      QDir dir = info.absoluteDir();
-      if (prefix != "")
-      {
-        foreach (QString file, dir.entryList())
-        {
-          match = rx.match(file);
-
-          QStringList parts = file.split("/").last().split(match.captured(0));
-          if (parts.first() == prefix && parts.last() == postfix)
-          {
-            similarList.append(dir.path() + "/" + file);
-          }
-        }
-      }
-    }
-
     QString name = info.baseName();
-    if (similarList.count() == 0)
-      similarList.append(fileName);
 
-    if (similarList.count() > 1)
+    if (reader.imageCount() <= 1)
     {
-      QMessageBox::StandardButton reply;
-      reply = QMessageBox::question(
-          this, "Load as Animation?",
-          "Images with similar names where detected in the same folder. "
-          "Load as Animation?",
-          QMessageBox::Yes | QMessageBox::No);
+      similarList = FindSimilarFiles(fileName, checkedFiles, &prefix);
 
-      if (reply == QMessageBox::No)
+      if (similarList.count() == 0)
       {
-        checkedFiles = similarList;
-        similarList.clear();
         similarList.append(fileName);
       }
-      else
+
+      if (similarList.count() > 1)
       {
-        similarFiles = similarList;
-        name = prefix;
-      }
-    }
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(
+            this, "Load as Animation?",
+            "Images with similar names where detected in the same folder. "
+            "Load as Animation?",
+            QMessageBox::Yes | QMessageBox::No);
 
-
-    int i = 1;
-    while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
-      name = info.baseName() + " (" + QString::number(++i) + ")";
-
-    bool loaded = false;
-    foreach (fileName, similarList)
-    {
-      if (fileName != nullptr)
-      {
-        ImageLoader il;
-        bool success;
-        QImageReader reader(fileName);
-        if (fileName.endsWith("tga") || reader.imageCount() == 1)
+        if (reply == QMessageBox::No)
         {
+          checkedFiles = similarList;
+          similarList.clear();
+          similarList.append(fileName);
+        }
+        else
+        {
+          similarFiles = similarList;
+          name = prefix;
+        }
+      }
+
+
+      ImageProcessor *p = new ImageProcessor();
+      int i = 1;
+      while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
+        name = info.baseName() + " (" + QString::number(++i) + ")";
+
+      p->set_name(name);
+      p->copy_settings(processor->get_settings());
+
+      bool loaded = false;
+
+      foreach (fileName, similarList)
+      {
+        if (fileName != nullptr)
+        {
+          ImageLoader il;
+          bool success;
           auximage = il.loadImage(fileName, &success);
+          loaded = loaded || success;
           if (!success || auximage.isNull())
           {
             QMessageBox msgBox;
@@ -544,50 +562,50 @@ void MainWindow::open_files(QStringList fileNames)
             msgBox.exec();
             continue;
           }
-          else
-          {
-            ImageProcessor *p = new ImageProcessor();
-            p->set_name(name);
-            p->copy_settings(processor->get_settings());
-            p->loadImage(fileName,auximage);
-            add_processor(p);
-          }
+          auximage = auximage.convertToFormat(
+              QImage::Format_RGBA8888_Premultiplied);
+          p->loadImage(fileName, auximage);
+          fs_watcher.addPath(fileName);
         }
-        else if (reader.imageCount() > 1)
+      }
+
+      loaded ? add_processor(p) : delete p;
+    }
+    else
+    {
+      QList<QImage> image_list = il.loadImages(fileName);
+      if (reader.supportsAnimation())
+      {
+        ImageProcessor *p = new ImageProcessor();
+        int i = 1;
+        while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
+          name = info.baseName() + " (" + QString::number(++i) + ")";
+
+        p->set_name(name);
+        p->copy_settings(processor->get_settings());
+
+        foreach(QImage image, image_list)
         {
-          QList<QImage> image_list;
-          bool animation;
-          image_list = il.loadImages(fileName, &animation);
-
-
-          if (!animation)
-          {
-            for(int i=0; i< image_list.count(); i++)
-            {
-              QImage image = image_list.at(i);
-              image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-              ImageProcessor *p = new ImageProcessor();
-              p->set_name(name+QString::number(i));
-              p->copy_settings(processor->get_settings());
-              p->loadImage(fileName, image);
-              add_processor(p);
-            }
-          }
-          else
-          {
-            ImageProcessor *p = new ImageProcessor();
-            p->set_name(name+QString::number(i));
-            p->copy_settings(processor->get_settings());
-            for(int i=0; i< image_list.count(); i++)
-            {
-              QImage image = image_list.at(i);
-              image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-              p->loadImage(fileName, image);
-            }            
-            add_processor(p);
-          }
+          image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+          p->loadImage(fileName, image);
         }
-        fs_watcher.addPath(fileName);
+        add_processor(p);
+      }
+      else
+      {
+        foreach(QImage image, image_list)
+        {
+          ImageProcessor *p = new ImageProcessor();
+          int i = 1;
+          while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
+            name = info.baseName() + " (" + QString::number(++i) + ")";
+
+          p->set_name(name);
+          p->copy_settings(processor->get_settings());
+          image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+          p->loadImage(info.absolutePath()+"/"+name+"."+info.suffix(), image);
+          add_processor(p);
+        }
       }
     }
   }
@@ -962,12 +980,13 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
     suffix = info.completeSuffix();
     if (destination == "")
     {
-      name = info.absoluteFilePath().remove("." + suffix) + postfix + "." + suffix;
+      name = p->m_absolute_path + "/" + info.baseName() + postfix + "." + suffix;
     }
     else
     {
-      name = destination + "/" + info.fileName().remove("."+suffix) + postfix + "." + suffix;
+      name = destination + "/" +  info.baseName() + postfix + "." + suffix;
     }
+
     n.save(name);
 
   }
@@ -1005,9 +1024,12 @@ void MainWindow::on_pushButton_clicked()
     QFileInfo info;
     foreach (ImageProcessor *p, processorList)
     {
+      ui->openGLPreviewWidget->set_current_processor(p);
       for (int i=0; i< p->frames.count(); i++)
       {
-        n = ui->openGLPreviewWidget->get_preview(false, false);
+        p->animation.stop();
+        p->set_current_frame_id(i);
+        n = ui->openGLPreviewWidget->get_preview(false, true);
         info = QFileInfo(p->frames[i].get_file_name());
         suffix = info.completeSuffix();
         name = info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
@@ -1461,11 +1483,10 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
   {
     foreach (ImageProcessor *p, processorList)
     {
-      if (p->get_name() == ui->listWidget->selectedItems()
-                               .at(0)
-                               ->data(Qt::UserRole)
-                               .toString())
+      if (p->get_name() == ui->listWidget->selectedItems().at(0)->data(Qt::UserRole).toString())
+      {
         p->set_selected(true);
+      }
     }
   }
 
@@ -1475,8 +1496,9 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     {
       connect_processor(p);
       if (p->get_light_list_ptr()->count() > 0)
-        ui->openGLPreviewWidget->set_current_light_list(
-            p->get_light_list_ptr());
+      {
+        ui->openGLPreviewWidget->set_current_light_list(p->get_light_list_ptr());
+      }
       set_enabled_map_controls(true);
     }
   }

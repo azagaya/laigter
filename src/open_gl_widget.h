@@ -59,6 +59,8 @@ public:
   int blend_factor = 0;
   /* Public methods */
   QPointF LocalToWorld(QPointF local);
+  QPointF WorldToLocal(QPointF world);
+
   QPointF LocalToView(QPointF local);
   float UnwrapAngle(float angle);
   float FixAngle(float angle, int step = 4, float tol = 5);
