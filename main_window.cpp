@@ -199,7 +199,7 @@ void MainWindow::setCurrentItem(QListWidgetItem *i)
 
 
   animation_dock->setVisible(p->frames.count() > 1);
-  if (p->frames.count() > 1)
+//  if (p->frames.count() > 1)
   {
     animation_widget->setCurrentProcessor(p);
   }
@@ -283,6 +283,10 @@ void MainWindow::remove_processor(ImageProcessor *p){
     }
   }
 
+  if (ui->listWidget->count() == 0)
+  {
+    on_listWidget_itemSelectionChanged();
+  }
   processorList.removeOne(p);
   p->deleteLater();
 
@@ -932,7 +936,10 @@ void MainWindow::on_listWidget_itemSelectionChanged()
 {
   ImageProcessor *p = nullptr;
   if (ui->listWidget->count() == 0)
+  {
     processor_selected(sample_processor, true);
+    animation_widget->setCurrentProcessor(sample_processor);
+  }
   else if (ui->listWidget->selectedItems().count() > 0)
   {
     processor_selected(sample_processor, false);
@@ -956,8 +963,9 @@ void MainWindow::on_listWidget_itemSelectionChanged()
     }
   }
   else
+  {
     ui->listWidget->setCurrentRow(0);
-
+  }
   ui->openGLPreviewWidget->need_to_update = true;
 }
 

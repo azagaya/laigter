@@ -20,6 +20,9 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
   this->disconnect();
 
+  disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+
+
   m_current_processor = p;
 
   ui->playButton->setChecked(p->animation.isActive());
