@@ -333,6 +333,7 @@ void OpenGlWidget::update_scene()
       transform.scale(x, y, 1);
       lightProgram.bind();
       lightVAO.bind();
+
       lightProgram.setUniformValue("transform", projection*view*transform);
       laigterTexture->bind(0);
 
