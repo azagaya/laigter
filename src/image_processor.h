@@ -154,8 +154,8 @@ private:
   bool specular_invert;
   char gradient_end;
   cv::Mat current_heightmap;
-  cv::Mat current_occlusion;
-  cv::Mat current_parallax;
+  cimg_library::CImg<float> current_occlusion;
+  cimg_library::CImg<float> current_parallax;
   cimg_library::CImg<float> current_specular;
   cv::Mat m_distance;
   cv::Mat m_distance_normal;
@@ -211,8 +211,8 @@ public:
   QString get_name();
   QString get_specular_path();
   cv::Mat modify_distance();
-  cv::Mat modify_occlusion();
-  cv::Mat modify_parallax();
+  cimg_library::CImg<float> modify_occlusion();
+  cimg_library::CImg<float> modify_parallax();
   cimg_library::CImg<float> modify_specular();
   int loadHeightMap(QString fileName, QImage height);
   int loadImage(QString fileName, QImage image);

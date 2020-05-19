@@ -56,7 +56,6 @@ QImage ImageLoader::loadImage(QString fileName, bool *success)
   else
   {
     QImageReader reader(fileName);
-    qDebug() << reader.imageCount();
     image = QImage(fileName);
   }
   if (image.isNull())
