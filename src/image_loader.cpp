@@ -18,7 +18,6 @@
  */
 
 #include "image_loader.h"
-#include "thirdparty/tinytiffwriter.h"
 
 #include <fstream>
 #include <QImageReader>

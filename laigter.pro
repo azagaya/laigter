@@ -80,8 +80,8 @@ HEADERS += \
 	src/project.h \
 	src/sprite.h \
 	src/texture.h \
+	thirdparty/CImg.h \
 	thirdparty/miniz.h \
-	thirdparty/tinytiffwriter.h \
 	thirdparty/zip.h
 
 FORMS += \

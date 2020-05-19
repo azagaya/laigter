@@ -23,6 +23,7 @@
 #include "src/light_source.h"
 #include "src/sprite.h"
 
+
 #include <QBrush>
 #include <QFuture>
 #include <QImage>
@@ -43,6 +44,9 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #endif
+
+#define cimg_display 0
+#include "thirdparty/CImg.h"
 
 enum class ProcessedImage
 {
@@ -152,7 +156,7 @@ private:
   cv::Mat current_heightmap;
   cv::Mat current_occlusion;
   cv::Mat current_parallax;
-  cv::Mat current_specular;
+  cimg_library::CImg<float> current_specular;
   cv::Mat m_distance;
   cv::Mat m_distance_normal;
   cv::Mat m_emboss_normal;
@@ -209,7 +213,7 @@ public:
   cv::Mat modify_distance();
   cv::Mat modify_occlusion();
   cv::Mat modify_parallax();
-  cv::Mat modify_specular();
+  cimg_library::CImg<float> modify_specular();
   int loadHeightMap(QString fileName, QImage height);
   int loadImage(QString fileName, QImage image);
   int loadSpecularMap(QString fileName, QImage specular);
@@ -239,6 +243,8 @@ public:
   void set_specular_overlay(QImage so);
   void set_texture_overlay(QImage to);
   int WrapCoordinate(int coord, int interval);
+  QImage CImg2QImage(cimg_library::CImg<uchar> in, QImage::Format format);
+  cimg_library::CImg<uchar> QImage2CImg(QImage in);
 
 public slots:
   void playAnimation(bool play);

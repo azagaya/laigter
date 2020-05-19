@@ -297,43 +297,23 @@ void ImageProcessor::calculate_specular()
     set_current_frame_id(i);
     current_specular = modify_specular();
     QImage ovi = get_specular_overlay();
-    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-    Mat channels[4];
-    split(ov, channels);
-    Mat alpha = channels[3];
-    ov = channels[0];
-    alpha.convertTo(alpha, CV_32FC1, 1.0 / 255);
-    ov.convertTo(ov, CV_32FC1, 1.0 / 255);
-    // multiply(alpha,ov,ov);
+
+    cimg_library::CImg<float> ov(QImage2CImg(ovi));
+    cimg_library::CImg<float> alpha = ov.get_channel(3)/255.0;
+
     QSize s = current_frame->size();
-    Rect rect(s.width(), s.height(), s.width(), s.height());
-    if (tileable && current_specular.rows == s.height() * 3)
-      current_specular(rect).copyTo(current_specular);
 
-    switch (current_specular.channels())
-    {
-      case 3:
-      {
-        cvtColor(current_specular, current_specular, COLOR_RGB2GRAY);
-        break;
-      }
-      case 4:
-      {
-        cvtColor(current_specular, current_specular, COLOR_RGBA2GRAY);
-        break;
-      }
-    }
+    /* TODO: IMPORTANT make specular tileable again */
 
-    current_specular.convertTo(current_specular, CV_32FC1, 1.0 / 255);
-    multiply(Scalar::all(1.0) - alpha, current_specular, current_specular);
-    add(ov, current_specular, current_specular);
-    current_specular.convertTo(current_specular, CV_8UC1, 255);
+//    if (tileable && current_specular.height() == s.height() * 3)
+//    {
+//      current_specular = current_specular.crop();
+//    }
+
+    current_specular = (current_specular.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
+
     specular_ready.lock();
-    frames[i].set_image(
-        TextureTypes::Specular,
-        QImage(static_cast<unsigned char *>(current_specular.data),
-               current_specular.cols, current_specular.rows,
-               current_specular.step, QImage::Format_Grayscale8));
+    frames[i].set_image(TextureTypes::Specular, CImg2QImage(current_specular, QImage::Format_Grayscale8));
     specular_ready.unlock();
   }
 
@@ -790,23 +770,25 @@ Mat ImageProcessor::modify_parallax()
   return m;
 }
 
-Mat ImageProcessor::modify_specular()
+cimg_library::CImg<float> ImageProcessor::modify_specular()
 {
   Mat m;
   current_frame->get_image(TextureTypes::SpecularBase, &specular);
-  m = Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
-  m.convertTo(m, CV_32F, 1 / 255.0);
-  cvtColor(m, m, CV_RGBA2GRAY);
-  m.convertTo(m, -1, 1, -specular_thresh / 255.0);
-  m.convertTo(m, -1, specular_contrast, specular_thresh / 255.0);
-  m.convertTo(m, CV_8U, 255, specular_bright);
-  GaussianBlur(m, m, Size(specular_blur * 2 + 1, specular_blur * 2 + 1), 0,
-               0);
+  specular = specular.convertToFormat(QImage::Format_Grayscale8);
+  cimg_library::CImg<uchar> img = QImage2CImg(specular);
+  cimg_library::CImg<float> img_float(img);
+  img_float = specular_contrast*img_float + specular_thresh*(1-specular_contrast);
+  img_float += specular_bright;
+  img_float.cut(0,255);
+
+  img_float = img_float.blur(specular_blur);
 
   if (specular_invert)
-    subtract(Scalar::all(255), m, m);
+  {
+    img_float = 255.0 - img_float;
+  }
 
-  return m;
+  return img_float;
 }
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius)
@@ -1600,4 +1582,33 @@ int ImageProcessor::WrapCoordinate(int coord, int interval)
     coord += interval;
   }
   return coord;
+}
+
+QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in, QImage::Format format)
+{
+  in.permute_axes("cxyz");
+  return QImage(in.data(), in.height(), in.depth(), format);
+}
+
+cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
+{
+  int channels;
+  switch (in.format()) {
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+      channels = 4;
+      break;
+    case QImage::Format_RGB888:
+      channels = 3;
+      break;
+    case QImage::Format_Grayscale8:
+      channels = 1;
+      break;
+    default:
+      channels = 0;
+
+  }
+  cimg_library::CImg<uchar> srt(in.bits(), channels, in.width(), in.height(), 1, false);
+  srt.permute_axes("yzcx");
+  return srt;
 }
