@@ -468,36 +468,12 @@ void ImageProcessor::calculate_distance()
   if (!current_heightmap.ptr<int>(0))
     return;
 
-  cvtColor(current_heightmap, m_distance, COLOR_RGBA2GRAY, 1);
-  for (int x = 0; x < m_distance.rows; ++x)
-  {
-    uchar *pixel = m_distance.ptr<uchar>(x);
-    for (int y = 0; y < m_distance.cols; ++y)
-    {
-      if (!tileable && (x == 0 || y == 0 || x == m_distance.rows - 1 ||
-                        y == m_distance.cols - 1))
-      {
-        // m_distance.at<unsigned char>(x,y) = 0;
-        *pixel = 0;
-      }
-      else if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0)
-      {
-        // m_distance.at<unsigned char>(x,y) = 0;
-        *pixel = 0;
-      }
-      else
-      {
-        m_distance.at<unsigned char>(x, y) = 255;
-        *pixel = 255;
-      }
-      pixel++;
-    }
-  }
+  m_distance = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
+  m_distance.channel(3).threshold(0.1)*255.0;
+  /* Todo fix for not tileable full opaque */
+  cimg_for_borderXY(m_distance,x,y,1) m_distance(x,y) = 0.0;
+  m_distance.distance(0.0f);
 
-  threshold(m_distance, m_distance, 0, 255, THRESH_BINARY);
-  distanceTransform(m_distance, m_distance, CV_DIST_L2, 5);
-  m_distance.convertTo(m_distance, CV_32FC1, 1.0 / 255);
-  m_distance.copyTo(new_distance);
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert)
@@ -566,34 +542,26 @@ void ImageProcessor::set_tileable(bool t)
 
 bool ImageProcessor::get_tileable() { return tileable; }
 
-Mat ImageProcessor::modify_distance()
+cimg_library::CImg<float> ImageProcessor::modify_distance()
 {
-  Mat m;
-  m_distance.copyTo(m);
-  for (int x = 0; x < m.rows; ++x)
-  {
-    float *pixel = m.ptr<float>(x);
-    for (int y = 0; y < m.cols; ++y)
-    {
-      if (normal_bisel_distance == 0)
-        *pixel = 0;
-      else
-      {
-        *pixel *= 255.0 / normal_bisel_distance;
-        if (*pixel > 1)
-          *pixel = 1;
+  cimg_library::CImg<float> dist(m_distance);
 
-        if (normal_bisel_soft)
-        {
-          double d = *pixel;
-          *pixel = sqrt(1 - pow((d - 1), 2));
-        }
-      }
-      pixel++;
-    }
+  if (normal_bisel_distance != 0)
+  {
+    dist *= 255.0/normal_bisel_distance;
+  }
+  else
+  {
+    dist.threshold(0.1f)*255.0;
   }
 
-  return m;
+  dist.cut(0,255);
+  if (normal_bisel_soft)
+  {
+    dist = (1.0 - (dist/255.0 - 1).pow(2)).sqrt()*255.0;
+  }
+  QImage aux(CImg2QImage(dist, QImage::Format_Grayscale8));
+  return dist;
 }
 
 cimg_library::CImg<float> ImageProcessor::modify_occlusion()
@@ -639,6 +607,7 @@ cimg_library::CImg<float> ImageProcessor::modify_parallax()
   set_current_heightmap(current_frame_id);
 
   cimg_library::CImg<float> par(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
+  cimg_library::CImg<float> dist = modify_distance();
   switch (parallax_type)
   {
     case ParallaxType::Binary:
@@ -666,6 +635,14 @@ cimg_library::CImg<float> ImageProcessor::modify_parallax()
     }
     case ParallaxType::HeightMap:
     {
+      par = (par+dist-1)/2.0+0.5;
+      par = parallax_contrast*par + parallax_max*(1-parallax_contrast);
+      par += parallax_brightness;
+      par.blur(parallax_soft);
+      if (parallax_invert)
+      {
+        par = 255.0 - par;
+      }
 //      current_heightmap.copyTo(m);
 //      new_distance.copyTo(d);
 //      cvtColor(m, m, CV_RGBA2GRAY);
@@ -703,7 +680,7 @@ cimg_library::CImg<float> ImageProcessor::modify_parallax()
       break;
     }
   }
-
+  par.cut(0,255);
   return par;
 }
 
@@ -826,9 +803,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
     {
       for (int i = 0; i < rlist.count(); i++)
       {
-        calculate_normal(new_distance, m_distance_normal,
-                         normal_bisel_depth * normal_bisel_distance,
-                         normal_bisel_blur_radius);
+//        calculate_normal(new_distance, m_distance_normal,
+//                         normal_bisel_depth * normal_bisel_distance,
+//                         normal_bisel_blur_radius);
       }
     }
 
@@ -1358,7 +1335,7 @@ QImage ImageProcessor::get_heightmap()
 QImage ImageProcessor::get_distance_map()
 {
   Mat m;
-  cvtColor(new_distance, m, CV_GRAY2RGBA);
+//  cvtColor(new_distance, m, CV_GRAY2RGBA);
   m.convertTo(m, CV_8UC4, 255);
   return QImage(static_cast<unsigned char *>(m.data), m.cols, m.rows, m.step,
                 QImage::Format_RGBA8888_Premultiplied);
@@ -1442,9 +1419,13 @@ void ImageProcessor::set_rotation(float r)
   processed();
 }
 
-float ImageProcessor::get_rotation() { return rotation; }
+float ImageProcessor::get_rotation() {
+  return rotation;
+}
 
-int ImageProcessor::get_current_frame_id() { return current_frame_id; }
+int ImageProcessor::get_current_frame_id() {
+  return current_frame_id;
+}
 
 void ImageProcessor::set_current_frame_id(int id)
 {
@@ -1463,7 +1444,10 @@ void ImageProcessor::set_current_frame_id(int id)
 
 }
 
-Sprite *ImageProcessor::get_current_frame() { return current_frame; }
+Sprite *ImageProcessor::get_current_frame()
+{
+  return current_frame;
+}
 
 void ImageProcessor::next_frame()
 {
