@@ -567,8 +567,8 @@ cimg_library::CImg<float> ImageProcessor::modify_occlusion()
 
     if (occlusion_distance != 0)
     {
-       occ.distance(0.0);
-       occ *= 255.0/occlusion_distance;
+      occ.distance(0.0);
+      occ *= 255.0/occlusion_distance;
     }
     occ.cut(0,255);
     occ = (1.0 - (occ/255.0 - 1).pow(2)).sqrt()*255.0;
@@ -711,12 +711,14 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (rlist.count() == 0)
     rlist.append(QRect(0, 0, 0, 0));
 
-  QImage heightOverlay = get_heightmap_overlay();
-  cimg_library::CImg<float> heightOv = QImage2CImg(heightOverlay.convertToFormat(QImage::Format_Grayscale8));
-  for (int i = 0; i < rlist.count(); i++)
-  {
-    m_height_ov =  calculate_normal(heightOv, 1, 0, rlist.at(i));
-  }
+
+    QImage heightOverlay = get_heightmap_overlay();
+    cimg_library::CImg<float> heightOv = QImage2CImg(heightOverlay);
+    heightOv = heightOv.mul(heightOv.get_channel(3)/255.0);
+    for (int i = 0; i < rlist.count(); i++)
+    {
+      m_height_ov =  calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
+    }
 
   if (updateEnhance)
     enhance_requested=1;
@@ -761,28 +763,15 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       }
     }
 
-
-    normal_ready.lock();
-    normals = (m_emboss_normal * 3 / 2.0 + m_distance_normal * 3 / 2.0 + m_height_ov);
-
-    cimg_library::CImg<float> ov(QImage2CImg(normalOverlay));
-    ov /= 255.0;
-    cimg_library::CImg<float> alpha(ov.get_channel(3));
-    ov.channels(0,2);
-
-
-
-    normals.normalize();
-
-//    normals = normals*0.5+0.5;
-//    normals.mul(1.0-alpha);
-//    normals += ov.get_channels(0,2).get_mul(alpha);
-//    normals *= 255.0;
+    if (m_normal.width() == 0 || m_normal.height() == 0)
+    {
+      m_normal = m_emboss_normal;
+    }
 
     foreach (QRect rect, rlist)
     {
-      int xmin = 0, xmax = normals.width() - 1;
-      int ymin = 0, ymax = normals.height() - 1;
+      int xmin = 0, xmax = texture.width() - 1;
+      int ymin = 0, ymax = texture.height() - 1;
 
       if (rect != QRect(0, 0, 0, 0))
       {
@@ -792,21 +781,35 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       {
         for (int y = ymin; y <= ymax; ++y)
         {
-          ov(x,y) = (ov(x,y)*2-1)*alpha(x,y);
-          normals(x,y) = normals(x,y)*(1-alpha(x,y)) + ov(x,y);
+          float nr, ng, nb, norm, r, g, b, a;
+          QColor ov = normalOverlay.pixelColor(x,y);
+          r = ov.redF()*2-1;
+          g = ov.greenF()*2-1;
+          b = ov.blueF()*2-1;
+          a = ov.alphaF();
+          nr = m_emboss_normal(x,y,0,0) * 3 / 2.0 + m_distance_normal(x,y,0,0) * 3 / 2.0 + m_height_ov(x,y,0,0);
+          ng = m_emboss_normal(x,y,0,1) * 3 / 2.0 + m_distance_normal(x,y,0,1) * 3 / 2.0 + m_height_ov(x,y,0,1);
+          nb = m_emboss_normal(x,y,0,2) * 3 / 2.0 + m_distance_normal(x,y,0,2) * 3 / 2.0 + m_height_ov(x,y,0,2);
 
-//          if (!active)
-//          {
-//            normal_mutex.unlock();
-//            return;
-//          }
+          nr = nr*(1-a)+(r)*a;
+          ng = ng*(1-a)+(g)*a;
+          nb = nb*(1-a)+(b)*a;
+          norm = sqrtf(nr*nr + ng*ng + nb*nb);
+
+          m_normal(x,y,0,0) = 255.0*(nr/norm*0.5+0.5);
+          m_normal(x,y,0,1) = 255.0*(ng/norm*0.5+0.5);
+          m_normal(x,y,0,2) = 255.0*(nb/norm*0.5+0.5);
+
+          //          if (!active)
+          //          {
+          //            normal_mutex.unlock();
+          //            return;
+          //          }
         }
       }
     }
-    normals.normalize();
-    normals = normals*0.5+0.5;
-    normals *= 255;
-    frames[i].set_image(TextureTypes::Normal, CImg2QImage(normals));
+    normal_ready.lock();
+    frames[i].set_image(TextureTypes::Normal, CImg2QImage(m_normal));
     normal_ready.unlock();
 
   }
@@ -904,7 +907,7 @@ cimg_library::CImg<float> ImageProcessor::calculate_normal(cimg_library::CImg<fl
       normals(x, y, 0, 2) = 1.0;
     }
   }
-  normals *= 255.0;
+  //  normals *= 255.0;
   if (tileable)
   {
     normals.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
@@ -1268,7 +1271,7 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 
 QImage ImageProcessor::get_heightmap()
 {
- /* TODO Implement this */
+  /* TODO Implement this */
 }
 
 QImage ImageProcessor::get_distance_map()
@@ -1458,7 +1461,6 @@ QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in)
   }
 
   QImage out(w,h,format);
-  qDebug() << out.sizeInBytes() << w*h*channels;
 
   for (int y = 0; y < h; y++)
   {
@@ -1472,8 +1474,8 @@ QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in)
       }
     }
   }
-//  in.permute_axes("cxyz");
-//  return QImage(in.data(), in.height(), in.depth(), format);
+  //  in.permute_axes("cxyz");
+  //  return QImage(in.data(), in.height(), in.depth(), format);
 
   return out;
 }
@@ -1498,8 +1500,8 @@ cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
 
   int w = in.width(), h = in.height();
 
-//  cimg_library::CImg<uchar> srt(in.bits(), channels, w, h, 1);
-//  srt.permute_axes("yzcx");
+  //  cimg_library::CImg<uchar> srt(in.bits(), channels, w, h, 1);
+  //  srt.permute_axes("yzcx");
 
   cimg_library::CImg<uchar> srt(w,h,1,channels);
   cimg_forY(srt,y)

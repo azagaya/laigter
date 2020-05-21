@@ -152,7 +152,7 @@ private:
   cimg_library::CImg<float> new_distance;
   cimg_library::CImg<float> m_distance_normal;
   cimg_library::CImg<float> m_emboss_normal;
-  cimg_library::CImg<float> normals;
+  cimg_library::CImg<float> m_normal;
   cimg_library::CImg<float> m_gray;
   cimg_library::CImg<float> m_height_ov, aux_height_ov;
 
