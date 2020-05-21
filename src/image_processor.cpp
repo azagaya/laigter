@@ -242,7 +242,7 @@ void ImageProcessor::calculate_parallax()
     current_parallax = (current_parallax.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
 
     parallax_ready.lock();
-    frames[i].set_image(TextureTypes::Parallax, CImg2QImage(current_parallax, QImage::Format_Grayscale8));
+    frames[i].set_image(TextureTypes::Parallax, CImg2QImage(current_parallax));
 
     parallax_ready.unlock();
   }
@@ -279,7 +279,7 @@ void ImageProcessor::calculate_specular()
     current_specular = (current_specular.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
 
     specular_ready.lock();
-    frames[i].set_image(TextureTypes::Specular, CImg2QImage(current_specular, QImage::Format_Grayscale8));
+    frames[i].set_image(TextureTypes::Specular, CImg2QImage(current_specular));
     specular_ready.unlock();
   }
 
@@ -310,12 +310,12 @@ void ImageProcessor::calculate_occlusion()
     QSize s = current_frame->size();
     if (tileable)
     {
-      current_occlusion.crop(0,0,s.width()-1, s.height()-1);
+      current_occlusion.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
     }
 
     current_occlusion = (current_occlusion.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
     occlussion_ready.lock();
-    frames[i].set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion, QImage::Format_Grayscale8));
+    frames[i].set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
     occlussion_ready.unlock();
   }
 
@@ -455,10 +455,11 @@ void ImageProcessor::calculate_distance()
 {
 
   m_distance = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
-  m_distance.channel(3).threshold(0.1)*255.0;
+  m_distance.channel(3).threshold(0.1)*255.0f;
   cimg_for_borderXY(m_distance,x,y,1) m_distance(x,y) = 0.0;
   m_distance.distance(0.0f);
 
+  m_distance*=1;
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert)
@@ -545,7 +546,6 @@ cimg_library::CImg<float> ImageProcessor::modify_distance()
   {
     dist = (1.0 - (dist/255.0 - 1).pow(2)).sqrt()*255.0;
   }
-  QImage aux(CImg2QImage(dist, QImage::Format_Grayscale8));
   return dist;
 }
 
@@ -668,8 +668,7 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius)
                     false, QRect(0, 0, 0, 0));
 }
 
-void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
-                                         bool updateDistance, QRect rect)
+void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect)
 {
 
   if (!normal_mutex.tryLock()){
@@ -716,7 +715,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   cimg_library::CImg<float> heightOv = QImage2CImg(heightOverlay.convertToFormat(QImage::Format_Grayscale8));
   for (int i = 0; i < rlist.count(); i++)
   {
-    m_height_ov =  calculate_normal(heightOv, 1, 1, rlist.at(i));
+    m_height_ov =  calculate_normal(heightOv, 1, 0, rlist.at(i));
   }
 
   if (updateEnhance)
@@ -762,28 +761,54 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
       }
     }
 
-    cimg_library::CImg<float> normals = (m_emboss_normal * 3 / 2.0 + m_distance_normal * 3 / 2.0 +
-               m_height_ov);
 
-    cimg_library::CImg<float> ov = QImage2CImg(normalOverlay.convertToFormat(QImage::Format_RGBA8888));
-    cimg_library::CImg<float> alpha(ov.get_channel(3)/255.0);
+    normal_ready.lock();
+    normals = (m_emboss_normal * 3 / 2.0 + m_distance_normal * 3 / 2.0 + m_height_ov);
+
+    cimg_library::CImg<float> ov(QImage2CImg(normalOverlay));
+    ov /= 255.0;
+    cimg_library::CImg<float> alpha(ov.get_channel(3));
     ov.channels(0,2);
 
-    normals.normalize();
-    normals.mul(1.0-alpha);
-    normals += ov.mul(alpha);
-    normals = normals*0.5+0.5;
-    normals *= 255.0;
-    QImage aux = CImg2QImage(normals, QImage::Format_RGB888);
 
-    if (!active)
+
+    normals.normalize();
+
+//    normals = normals*0.5+0.5;
+//    normals.mul(1.0-alpha);
+//    normals += ov.get_channels(0,2).get_mul(alpha);
+//    normals *= 255.0;
+
+    foreach (QRect rect, rlist)
     {
-      normal_mutex.unlock();
-      return;
+      int xmin = 0, xmax = normals.width() - 1;
+      int ymin = 0, ymax = normals.height() - 1;
+
+      if (rect != QRect(0, 0, 0, 0))
+      {
+        rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+      }
+      for (int x = xmin; x <= xmax; ++x)
+      {
+        for (int y = ymin; y <= ymax; ++y)
+        {
+          ov(x,y) = (ov(x,y)*2-1)*alpha(x,y);
+          normals(x,y) = normals(x,y)*(1-alpha(x,y)) + ov(x,y);
+
+//          if (!active)
+//          {
+//            normal_mutex.unlock();
+//            return;
+//          }
+        }
+      }
     }
-    normal_ready.lock();
-    frames[i].set_image(TextureTypes::Normal, CImg2QImage(normals, QImage::Format_RGB888));
+    normals.normalize();
+    normals = normals*0.5+0.5;
+    normals *= 255;
+    frames[i].set_image(TextureTypes::Normal, CImg2QImage(normals));
     normal_ready.unlock();
+
   }
 
   if (enhance_requested)
@@ -816,7 +841,6 @@ cimg_library::CImg<float> ImageProcessor::calculate_normal(cimg_library::CImg<fl
     img.blur(blur_radius/3.0);
     img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
   }
-  QImage aux = CImg2QImage(img,QImage::Format_RGBA8888);
   int xs, xe, ys, ye;
   if (r == QRect(0, 0, 0, 0))
   {
@@ -885,7 +909,6 @@ cimg_library::CImg<float> ImageProcessor::calculate_normal(cimg_library::CImg<fl
   {
     normals.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
   }
-aux = CImg2QImage(normals,QImage::Format_RGB888);
   return normals;
 }
 
@@ -1416,10 +1439,43 @@ int ImageProcessor::WrapCoordinate(int coord, int interval)
   return coord;
 }
 
-QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in, QImage::Format format)
+QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in)
 {
-  in.permute_axes("cxyz");
-  return QImage(in.data(), in.height(), in.depth(), format);
+  int w = in.width(), h = in.height(), channels = in.spectrum();
+
+  QImage::Format format;
+
+  switch (channels) {
+    case 1:
+      format = QImage::Format_Grayscale8;
+      break;
+    case 3:
+      format = QImage::Format_RGB888;
+      break;
+    case 4:
+      format = QImage::Format_RGBA8888;
+      break;
+  }
+
+  QImage out(w,h,format);
+  qDebug() << out.sizeInBytes() << w*h*channels;
+
+  for (int y = 0; y < h; y++)
+  {
+    unsigned char *dst = out.scanLine(y);
+    for (int x = 0; x < w; x++)
+    {
+      for (int c = 0; c < channels; c++)
+      {
+        *dst = in(x,y,0,c);
+        dst++;
+      }
+    }
+  }
+//  in.permute_axes("cxyz");
+//  return QImage(in.data(), in.height(), in.depth(), format);
+
+  return out;
 }
 
 cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
@@ -1438,9 +1494,25 @@ cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
       break;
     default:
       channels = 0;
-
   }
-  cimg_library::CImg<uchar> srt(in.bits(), channels, in.width(), in.height(), 1, false);
-  srt.permute_axes("yzcx");
+
+  int w = in.width(), h = in.height();
+
+//  cimg_library::CImg<uchar> srt(in.bits(), channels, w, h, 1);
+//  srt.permute_axes("yzcx");
+
+  cimg_library::CImg<uchar> srt(w,h,1,channels);
+  cimg_forY(srt,y)
+  {
+    unsigned char *src = in.scanLine(y);
+    cimg_forX(srt,x)
+    {
+      for (int c = 0; c < channels; c++)
+      {
+        srt(x,y,0,c) = *src;
+        src++;
+      }
+    }
+  }
   return srt;
 }

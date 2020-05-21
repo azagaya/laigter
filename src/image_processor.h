@@ -152,6 +152,7 @@ private:
   cimg_library::CImg<float> new_distance;
   cimg_library::CImg<float> m_distance_normal;
   cimg_library::CImg<float> m_emboss_normal;
+  cimg_library::CImg<float> normals;
   cimg_library::CImg<float> m_gray;
   cimg_library::CImg<float> m_height_ov, aux_height_ov;
 
@@ -230,7 +231,7 @@ public:
   void set_specular_overlay(QImage so);
   void set_texture_overlay(QImage to);
   int WrapCoordinate(int coord, int interval);
-  QImage CImg2QImage(cimg_library::CImg<uchar> in, QImage::Format format);
+  QImage CImg2QImage(cimg_library::CImg<uchar> in);
   cimg_library::CImg<uchar> QImage2CImg(QImage in);
 
 public slots:

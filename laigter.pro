@@ -39,6 +39,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += core ui c++11
 
+QMAKE_CXXFLAGS_RELEASE *= -O3
+
 SOURCES += \
 	gui/about_dialog.cpp \
 	gui/frame_splitter.cpp \

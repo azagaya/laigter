@@ -1429,6 +1429,7 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
 {
   foreach (ImageProcessor *p, processorList)
     disconnect_processor(p);
+  disconnect_processor(sample_processor);
 
   processor->set_selected(selected);
   QList <QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
