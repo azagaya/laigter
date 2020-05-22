@@ -25,6 +25,8 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
+using namespace cimg_library;
+
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
   position = offset = QVector2D(0, 0);
@@ -227,8 +229,8 @@ void ImageProcessor::calculate_parallax()
     set_current_frame_id(i);
     QImage ovi = get_parallax_overlay();
 
-    cimg_library::CImg<float> ov(QImage2CImg(ovi));
-    cimg_library::CImg<float> alpha = ov.get_channel(3)/255.0;
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
 
     current_parallax = modify_parallax();
 
@@ -267,8 +269,8 @@ void ImageProcessor::calculate_specular()
     current_specular = modify_specular();
     QImage ovi = get_specular_overlay();
 
-    cimg_library::CImg<float> ov(QImage2CImg(ovi));
-    cimg_library::CImg<float> alpha = ov.get_channel(3)/255.0;
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
 
     if (tileable)
     {
@@ -303,8 +305,8 @@ void ImageProcessor::calculate_occlusion()
     current_occlusion = modify_occlusion();
     QImage ovi = get_occlusion_overlay();
 
-    cimg_library::CImg<float> ov(QImage2CImg(ovi));
-    cimg_library::CImg<float> alpha = ov.get_channel(3)/255.0;
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
 
     /* TODO IMPORTANT make occlussion tileable */
     QSize s = current_frame->size();
@@ -528,9 +530,9 @@ void ImageProcessor::set_tileable(bool t)
 
 bool ImageProcessor::get_tileable() { return tileable; }
 
-cimg_library::CImg<float> ImageProcessor::modify_distance()
+CImg<float> ImageProcessor::modify_distance()
 {
-  cimg_library::CImg<float> dist(m_distance);
+  CImg<float> dist(m_distance);
 
   if (normal_bisel_distance != 0)
   {
@@ -549,12 +551,12 @@ cimg_library::CImg<float> ImageProcessor::modify_distance()
   return dist;
 }
 
-cimg_library::CImg<float> ImageProcessor::modify_occlusion()
+CImg<float> ImageProcessor::modify_occlusion()
 {
   QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap(current_frame_id);
 
-  cimg_library::CImg<float> occ(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
+  CImg<float> occ(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
 
   if (occlusion_invert)
   {
@@ -583,13 +585,13 @@ cimg_library::CImg<float> ImageProcessor::modify_occlusion()
   return occ;
 }
 
-cimg_library::CImg<float> ImageProcessor::modify_parallax()
+CImg<float> ImageProcessor::modify_parallax()
 {
   QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap(current_frame_id);
 
-  cimg_library::CImg<float> par(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
-  cimg_library::CImg<float> dist = modify_distance();
+  CImg<float> par(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
+  CImg<float> dist = modify_distance();
   switch (parallax_type)
   {
     case ParallaxType::Binary:
@@ -641,12 +643,12 @@ cimg_library::CImg<float> ImageProcessor::modify_parallax()
   return par;
 }
 
-cimg_library::CImg<float> ImageProcessor::modify_specular()
+CImg<float> ImageProcessor::modify_specular()
 {
   current_frame->get_image(TextureTypes::SpecularBase, &specular);
   specular = specular.convertToFormat(QImage::Format_Grayscale8);
-  cimg_library::CImg<uchar> img = QImage2CImg(specular);
-  cimg_library::CImg<float> img_float(img);
+  CImg<uchar> img = QImage2CImg(specular);
+  CImg<float> img_float(img);
   img_float = specular_contrast*img_float + specular_thresh*(1-specular_contrast);
   img_float += specular_bright;
   img_float.cut(0,255);
@@ -713,7 +715,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
 
     QImage heightOverlay = get_heightmap_overlay();
-    cimg_library::CImg<float> heightOv = QImage2CImg(heightOverlay);
+    CImg<float> heightOv = QImage2CImg(heightOverlay);
     heightOv = heightOv.mul(heightOv.get_channel(3)/255.0);
     for (int i = 0; i < rlist.count(); i++)
     {
@@ -827,12 +829,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   normal_mutex.unlock();
 }
 
-cimg_library::CImg<float> ImageProcessor::calculate_normal(cimg_library::CImg<float> in, int depth, int blur_radius, QRect r)
+CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
   QSize s = current_frame->size();
   float dx, dy;
 
-  cimg_library::CImg<float> img(in);
+  CImg<float> img(in);
 
   if (img.width() == s.width() * 3)
   {
@@ -860,7 +862,7 @@ cimg_library::CImg<float> ImageProcessor::calculate_normal(cimg_library::CImg<fl
     ye = r.bottom();
   }
 
-  cimg_library::CImg<float> normals(img.width(),img.height(),1,3);
+  CImg<float> normals(img.width(),img.height(),1,3);
 
   img /= 255.0;
 
@@ -1442,7 +1444,7 @@ int ImageProcessor::WrapCoordinate(int coord, int interval)
   return coord;
 }
 
-QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in)
+QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
 {
   int w = in.width(), h = in.height(), channels = in.spectrum();
 
@@ -1480,7 +1482,7 @@ QImage ImageProcessor::CImg2QImage(cimg_library::CImg<uchar> in)
   return out;
 }
 
-cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
+CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
 {
   int channels;
   switch (in.format()) {
@@ -1500,10 +1502,10 @@ cimg_library::CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
 
   int w = in.width(), h = in.height();
 
-  //  cimg_library::CImg<uchar> srt(in.bits(), channels, w, h, 1);
+  //  CImg<uchar> srt(in.bits(), channels, w, h, 1);
   //  srt.permute_axes("yzcx");
 
-  cimg_library::CImg<uchar> srt(w,h,1,channels);
+  CImg<uchar> srt(w,h,1,channels);
   cimg_forY(srt,y)
   {
     unsigned char *src = in.scanLine(y);
