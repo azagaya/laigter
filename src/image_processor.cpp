@@ -47,19 +47,19 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   parallax_max = 140;
   parallax_min = 0;
   parallax_invert = false;
-  parallax_focus = 3;
-  parallax_soft = 5;
+  parallax_focus = 2;
+  parallax_soft = 3;
   parallax_quantization = 1;
   parallax_type = ParallaxType::Binary;
   parallax_brightness = 0;
   parallax_contrast = 1;
   parallax_erode_dilate = 1;
-  specular_blur = 5;
+  specular_blur = 3;
   specular_bright = 0;
   specular_contrast = 1;
   specular_thresh = 127;
   specular_invert = false;
-  occlusion_blur = 5;
+  occlusion_blur = 3;
   occlusion_bright = 16;
   occlusion_contrast = 1;
   occlusion_thresh = 1;
@@ -565,7 +565,7 @@ CImg<float> ImageProcessor::modify_occlusion()
 
   if (occlusion_distance_mode)
   {
-    occ.threshold(occlusion_thresh).normalize(0.0,255.0);
+    occ.threshold(occlusion_thresh)*255.0;
 
     if (occlusion_distance != 0)
     {
@@ -600,7 +600,7 @@ CImg<float> ImageProcessor::modify_parallax()
       par.threshold(parallax_max).normalize(0,255);
       par -= parallax_min;
 
-      if (parallax_invert)
+      if (!parallax_invert)
       {
         par = 255.0 - par;
       }
