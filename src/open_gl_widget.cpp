@@ -367,21 +367,21 @@ void OpenGlWidget::update_scene()
     brushTexture->destroy();
     brushTexture->create();
     brushTexture->setData(currentBrush->getBrushSprite());
-    float x = static_cast<float>(brushTexture->width()) * 0.5f * m_global_zoom;
-    float y = static_cast<float>(brushTexture->height()) * 0.5f * m_global_zoom;
+    float x = static_cast<float>(brushTexture->width()) * 0.5f;
+    float y = static_cast<float>(brushTexture->height()) * 0.5f;
 
     /* Fix for retina */
     x *= devicePixelRatioF();
     y *= devicePixelRatioF();
 
     QPointF cursor = mapFromGlobal(QCursor::pos());
-    cursor = LocalToView(cursor);
+    cursor = LocalToWorld(cursor);
     transform.setToIdentity();
-    transform.translate(cursor.x(), cursor.y());
+    transform.translate(floor(cursor.x())+0.5, floor(cursor.y())-0.5);
     transform.scale(x, y, 1);
     cursorProgram.bind();
     lightVAO.bind();
-    cursorProgram.setUniformValue("transform", projection*transform);
+    cursorProgram.setUniformValue("transform", projection*view*transform);
     brushTexture->bind(0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                     GL_LINEAR_MIPMAP_LINEAR);
