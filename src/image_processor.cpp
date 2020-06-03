@@ -25,17 +25,17 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
-using namespace cv;
+using namespace cimg_library;
 
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
   position = offset = QVector2D(0, 0);
   zoom = 1.0;
   selected = false;
-  normal_bisel_depth = 1000;
+  normal_bisel_depth = 100;
   normal_bisel_distance = 60;
-  normal_depth = 100;
-  normal_blur_radius = 5;
+  normal_depth = 250;
+  normal_blur_radius = 6;
   normal_bisel_blur_radius = 10;
   gradient_end = 1;
   normal_bisel_soft = true;
@@ -47,19 +47,19 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   parallax_max = 140;
   parallax_min = 0;
   parallax_invert = false;
-  parallax_focus = 3;
-  parallax_soft = 10;
+  parallax_focus = 2;
+  parallax_soft = 3;
   parallax_quantization = 1;
   parallax_type = ParallaxType::Binary;
   parallax_brightness = 0;
   parallax_contrast = 1;
   parallax_erode_dilate = 1;
-  specular_blur = 10;
+  specular_blur = 3;
   specular_bright = 0;
   specular_contrast = 1;
   specular_thresh = 127;
   specular_invert = false;
-  occlusion_blur = 10;
+  occlusion_blur = 3;
   occlusion_bright = 16;
   occlusion_contrast = 1;
   occlusion_thresh = 1;
@@ -162,11 +162,6 @@ int ImageProcessor::loadImage(QString fileName, QImage image)
 
   if (!customHeightMap)
   {
-    m_height_ov = Mat(image.height(), image.width(), CV_32FC3);
-    aux_height_ov = Mat(image.height(), image.width(), CV_32FC1);
-    aux_height_ov = Scalar::all(0.0);
-    m_emboss_normal = Mat(image.height(), image.width(), CV_32FC3);
-    m_distance_normal = Mat(image.height(), image.width(), CV_32FC3);
     fill_neighbours(fileName, image);
   }
 
@@ -181,10 +176,8 @@ void ImageProcessor::set_current_heightmap(int id)
   else
     current_frame->get_image(TextureTypes::Heightmap, &heightmap);
 
-  current_heightmap = Mat(heightmap.height(), heightmap.width(), CV_8UC4,
-                          heightmap.scanLine(0));
-  cvtColor(current_heightmap, m_parallax, CV_RGBA2GRAY);
-  cvtColor(current_heightmap, m_occlusion, COLOR_RGBA2GRAY, 1);
+  current_heightmap = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
+  m_gray = QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8));
 }
 
 void ImageProcessor::calculate()
@@ -235,46 +228,24 @@ void ImageProcessor::calculate_parallax()
   {
     set_current_frame_id(i);
     QImage ovi = get_parallax_overlay();
-    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-    Mat channels[4];
-    split(ov, channels);
-    Mat alpha = channels[3];
-    ov = channels[0];
-    alpha.convertTo(alpha, CV_32FC1, 1.0 / 255);
-    ov.convertTo(ov, CV_32FC1, 1.0 / 255);
+
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
+
     current_parallax = modify_parallax();
-    QSize s = current_frame->size();
-    Rect rect(s.width(), s.height(), s.width(), s.height());
 
-    if (tileable && current_parallax.rows == s.height() * 3)
-      current_parallax(rect).copyTo(current_parallax);
-
-    switch (current_parallax.channels())
+    if (tileable )
     {
-      case 3:
-      {
-        cvtColor(current_parallax, current_parallax, COLOR_RGB2GRAY);
-        break;
-      }
-      case 4:
-      {
-        cvtColor(current_parallax, current_parallax, COLOR_RGBA2GRAY);
-        break;
-      }
+
+      QSize s = current_frame->size();
+      current_parallax.crop(s.width(), s.height(), 2*s.width()-1, 2*s.height()-1);
     }
 
-    current_parallax.convertTo(current_parallax, CV_32FC1, 1.0 / 255);
-    multiply(Scalar::all(1.0) - alpha, current_parallax, current_parallax);
-    add(ov, current_parallax, current_parallax);
-    current_parallax.convertTo(current_parallax, CV_8UC1, 255);
-    parallax_ready.lock();
+    current_parallax = (current_parallax.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
 
-    frames[current_frame_id].set_image(
-        TextureTypes::Parallax,
-        QImage(static_cast<unsigned char *>(current_parallax.data),
-               current_parallax.cols, current_parallax.rows,
-               current_parallax.step, QImage::Format_Grayscale8));
-    frames[current_frame_id].get_image(TextureTypes::Parallax, &parallax);
+    parallax_ready.lock();
+    frames[i].set_image(TextureTypes::Parallax, CImg2QImage(current_parallax));
+
     parallax_ready.unlock();
   }
 
@@ -297,43 +268,20 @@ void ImageProcessor::calculate_specular()
     set_current_frame_id(i);
     current_specular = modify_specular();
     QImage ovi = get_specular_overlay();
-    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-    Mat channels[4];
-    split(ov, channels);
-    Mat alpha = channels[3];
-    ov = channels[0];
-    alpha.convertTo(alpha, CV_32FC1, 1.0 / 255);
-    ov.convertTo(ov, CV_32FC1, 1.0 / 255);
-    // multiply(alpha,ov,ov);
-    QSize s = current_frame->size();
-    Rect rect(s.width(), s.height(), s.width(), s.height());
-    if (tileable && current_specular.rows == s.height() * 3)
-      current_specular(rect).copyTo(current_specular);
 
-    switch (current_specular.channels())
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
+
+    if (tileable)
     {
-      case 3:
-      {
-        cvtColor(current_specular, current_specular, COLOR_RGB2GRAY);
-        break;
-      }
-      case 4:
-      {
-        cvtColor(current_specular, current_specular, COLOR_RGBA2GRAY);
-        break;
-      }
+      QSize s = current_frame->size();
+      current_specular.crop(s.width(), s.height(), 2*s.width()-1, 2*s.height()-1);
     }
 
-    current_specular.convertTo(current_specular, CV_32FC1, 1.0 / 255);
-    multiply(Scalar::all(1.0) - alpha, current_specular, current_specular);
-    add(ov, current_specular, current_specular);
-    current_specular.convertTo(current_specular, CV_8UC1, 255);
+    current_specular = (current_specular.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
+
     specular_ready.lock();
-    frames[i].set_image(
-        TextureTypes::Specular,
-        QImage(static_cast<unsigned char *>(current_specular.data),
-               current_specular.cols, current_specular.rows,
-               current_specular.step, QImage::Format_Grayscale8));
+    frames[i].set_image(TextureTypes::Specular, CImg2QImage(current_specular));
     specular_ready.unlock();
   }
 
@@ -356,46 +304,20 @@ void ImageProcessor::calculate_occlusion()
     set_current_frame_id(i);
     current_occlusion = modify_occlusion();
     QImage ovi = get_occlusion_overlay();
-    Mat ov = Mat(ovi.height(), ovi.width(), CV_8UC4, ovi.scanLine(0));
-    Mat channels[4];
-    split(ov, channels);
-    Mat alpha = channels[3];
-    ov = channels[0];
-    alpha.convertTo(alpha, CV_32FC1, 1.0 / 255);
-    ov.convertTo(ov, CV_32FC1, 1.0 / 255);
+
+    CImg<float> ov(QImage2CImg(ovi));
+    CImg<float> alpha = ov.get_channel(3)/255.0;
+
+    /* TODO IMPORTANT make occlussion tileable */
     QSize s = current_frame->size();
-
-    Rect rect(s.width(), s.height(), s.width(), s.height());
-    if (tileable && current_occlusion.rows == s.height() * 3)
-      current_occlusion(rect).copyTo(current_occlusion);
-
-    switch (current_occlusion.channels())
+    if (tileable)
     {
-      case 3:
-      {
-        cvtColor(current_occlusion, current_occlusion, COLOR_RGB2GRAY);
-        break;
-      }
-      case 4:
-      {
-        cvtColor(current_occlusion, current_occlusion, COLOR_RGBA2GRAY);
-        break;
-      }
+      current_occlusion.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
     }
 
-    current_occlusion.convertTo(current_occlusion, CV_32FC1, 1.0 / 255);
-    multiply(Scalar::all(1.0) - alpha, current_occlusion,
-             current_occlusion);
-    add(ov, current_occlusion, current_occlusion);
-    current_occlusion.convertTo(current_occlusion, CV_8UC1, 255);
+    current_occlusion = (current_occlusion.mul(1.0-alpha)+ov.get_channel(0)).cut(0.0,255.0);
     occlussion_ready.lock();
-    frames[current_frame_id].set_image(
-        TextureTypes::Occlussion,
-        QImage(static_cast<unsigned char *>(current_occlusion.data),
-               current_occlusion.cols, current_occlusion.rows,
-               current_occlusion.step, QImage::Format_Grayscale8));
-    frames[current_frame_id].get_image(TextureTypes::Occlussion,
-                                       &occlussion);
+    frames[i].set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
     occlussion_ready.unlock();
   }
 
@@ -406,9 +328,7 @@ void ImageProcessor::calculate_occlusion()
 
 void ImageProcessor::calculate_heightmap()
 {
-  cvtColor(current_heightmap, m_gray, COLOR_RGBA2GRAY);
-  if (m_gray.type() != CV_32FC1)
-    m_gray.convertTo(m_gray, CV_32FC1);
+  /* Implement this ? */
 }
 
 int ImageProcessor::fill_neighbours(QString fileName, QImage image)
@@ -536,39 +456,12 @@ void ImageProcessor::calculate_gradient() {}
 void ImageProcessor::calculate_distance()
 {
 
-  if (!current_heightmap.ptr<int>(0))
-    return;
+  m_distance = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
+  m_distance.channel(3).threshold(0.1)*255.0f;
+  cimg_for_borderXY(m_distance,x,y,1) m_distance(x,y) = 0.0;
+  m_distance.distance(0.0f);
 
-  cvtColor(current_heightmap, m_distance, COLOR_RGBA2GRAY, 1);
-  for (int x = 0; x < m_distance.rows; ++x)
-  {
-    uchar *pixel = m_distance.ptr<uchar>(x);
-    for (int y = 0; y < m_distance.cols; ++y)
-    {
-      if (!tileable && (x == 0 || y == 0 || x == m_distance.rows - 1 ||
-                        y == m_distance.cols - 1))
-      {
-        // m_distance.at<unsigned char>(x,y) = 0;
-        *pixel = 0;
-      }
-      else if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0)
-      {
-        // m_distance.at<unsigned char>(x,y) = 0;
-        *pixel = 0;
-      }
-      else
-      {
-        m_distance.at<unsigned char>(x, y) = 255;
-        *pixel = 255;
-      }
-      pixel++;
-    }
-  }
-
-  threshold(m_distance, m_distance, 0, 255, THRESH_BINARY);
-  distanceTransform(m_distance, m_distance, CV_DIST_L2, 5);
-  m_distance.convertTo(m_distance, CV_32FC1, 1.0 / 255);
-  m_distance.copyTo(new_distance);
+  m_distance*=1;
 }
 
 void ImageProcessor::set_normal_invert_x(bool invert)
@@ -637,131 +530,103 @@ void ImageProcessor::set_tileable(bool t)
 
 bool ImageProcessor::get_tileable() { return tileable; }
 
-Mat ImageProcessor::modify_distance()
+CImg<float> ImageProcessor::modify_distance()
 {
-  Mat m;
-  m_distance.copyTo(m);
-  for (int x = 0; x < m.rows; ++x)
-  {
-    float *pixel = m.ptr<float>(x);
-    for (int y = 0; y < m.cols; ++y)
-    {
-      if (normal_bisel_distance == 0)
-        *pixel = 0;
-      else
-      {
-        *pixel *= 255.0 / normal_bisel_distance;
-        if (*pixel > 1)
-          *pixel = 1;
+  CImg<float> dist(m_distance);
 
-        if (normal_bisel_soft)
-        {
-          double d = *pixel;
-          *pixel = sqrt(1 - pow((d - 1), 2));
-        }
-      }
-      pixel++;
-    }
+  if (normal_bisel_distance != 0)
+  {
+    dist *= 255.0/normal_bisel_distance;
+  }
+  else
+  {
+    dist.threshold(0.1f)*255.0;
   }
 
-  return m;
+  dist.cut(0,255);
+  if (normal_bisel_soft)
+  {
+    dist = (1.0 - (dist/255.0 - 1).pow(2)).sqrt()*255.0;
+  }
+  return dist;
 }
 
-Mat ImageProcessor::modify_occlusion()
+CImg<float> ImageProcessor::modify_occlusion()
 {
-  Mat m;
-
   QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap(current_frame_id);
-  m_occlusion.copyTo(m);
+
+  CImg<float> occ(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
 
   if (occlusion_invert)
-    subtract(Scalar::all(255), m, m);
+  {
+    occ = 255.0f - occ;
+  }
 
   if (occlusion_distance_mode)
   {
-    threshold(m, m, occlusion_thresh, 255, THRESH_BINARY);
-    distanceTransform(m, m, CV_DIST_L2, 5);
-    m.convertTo(m, CV_32F, 1 / 255.0);
+    occ.threshold(occlusion_thresh)*255.0;
 
-    for (int x = 0; x < m.rows; ++x)
+    if (occlusion_distance != 0)
     {
-      float *pixel = m.ptr<float>(x);
-      for (int y = 0; y < m.cols; ++y)
-      {
-        if (occlusion_distance == 0)
-          *pixel = 1.0;
-        else
-        {
-          *pixel *= 255.0 / occlusion_distance;
-          if (*pixel > 1)
-            *pixel = 1;
-
-          double d = *pixel;
-          *pixel = sqrt(1 - pow((d - 1), 2));
-        }
-        pixel++;
-      }
+      occ.distance(0.0);
+      occ *= 255.0/occlusion_distance;
     }
-    m.convertTo(m, CV_8UC1, 255);
+    occ.cut(0,255);
+    occ = (1.0 - (occ/255.0 - 1).pow(2)).sqrt()*255.0;
+
   }
 
-  m.convertTo(m, CV_32F, 1 / 255.0);
-  m.convertTo(m, -1, 1, -occlusion_thresh / 255.0);
-  m.convertTo(m, -1, occlusion_contrast, occlusion_thresh / 255.0);
-  m.convertTo(m, CV_8U, 255, occlusion_bright);
-  GaussianBlur(m, m, Size(occlusion_blur * 2 + 1, occlusion_blur * 2 + 1), 0,
-               0);
-  m.convertTo(m, CV_GRAY2RGB, 1);
+  occ = occlusion_contrast*occ + occlusion_thresh*(1-occlusion_contrast);
+  occ += occlusion_bright;
+  occ.cut(0,255);
+  occ = occ.blur(occlusion_blur);
 
-  return m;
+  return occ;
 }
 
-Mat ImageProcessor::modify_parallax()
+CImg<float> ImageProcessor::modify_parallax()
 {
-  Mat m;
-  Mat d;
-
   QMutexLocker locker(&heightmap_mutex);
   set_current_heightmap(current_frame_id);
-  int threshType = !parallax_invert ? THRESH_BINARY_INV : THRESH_BINARY;
-  Mat shape = getStructuringElement(MORPH_RECT,
-                                    Size(abs(parallax_erode_dilate) * 2 + 1,
-                                         abs(parallax_erode_dilate) * 2 + 1));
 
+  CImg<float> par(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
+  CImg<float> dist = modify_distance();
   switch (parallax_type)
   {
     case ParallaxType::Binary:
     {
-      m_parallax.copyTo(m);
-      GaussianBlur(m, m, Size(parallax_focus * 2 + 1, parallax_focus * 2 + 1),
-                   0, 0);
-      threshold(m, m, parallax_max, 255, threshType);
-      m -= parallax_min;
+      par.blur(parallax_focus);
+      par.threshold(parallax_max).normalize(0,255);
+      par -= parallax_min;
+
+      if (!parallax_invert)
+      {
+        par = 255.0 - par;
+      }
 
       if (parallax_erode_dilate > 0)
-        dilate(m, m, shape);
+      {
+        par.dilate(parallax_erode_dilate,parallax_erode_dilate);
+      }
       else
-        erode(m, m, shape);
+      {
+        par.erode(-parallax_erode_dilate,-parallax_erode_dilate);
+      }
 
-      GaussianBlur(m, m, Size(parallax_soft * 2 + 1, parallax_soft * 2 + 1),
-                   0, 0);
+      par.blur(parallax_soft);
       break;
     }
     case ParallaxType::HeightMap:
     {
-      current_heightmap.copyTo(m);
-      new_distance.copyTo(d);
-      cvtColor(m, m, CV_RGBA2GRAY);
-      m.convertTo(m, CV_32FC1, 1 / 255.0, -0.5);
-      m = 0.5 * ((d - 0.5) + m);
-      m.convertTo(m, -1, parallax_contrast, 0.5);
-      m.convertTo(m, CV_8U, 255, parallax_brightness);
-      GaussianBlur(m, m, Size(parallax_soft * 2 + 1, parallax_soft * 2 + 1),
-                   0, 0);
-      if (threshType == THRESH_BINARY_INV)
-        subtract(Scalar::all(255), m, m);
-
+      par = (par+dist-1)/2.0+0.5;
+      par = parallax_contrast*par + parallax_max*(1-parallax_contrast);
+      par += parallax_brightness;
+      par.blur(parallax_soft);
+      if (parallax_invert)
+      {
+        par = 255.0 - par;
+      }
       break;
     }
     case ParallaxType::Intervals:
@@ -770,43 +635,32 @@ Mat ImageProcessor::modify_parallax()
     }
     case ParallaxType::Quantization:
     {
-      current_heightmap.copyTo(m);
-      GaussianBlur(m, m, Size(parallax_focus * 2 + 1, parallax_focus * 2 + 1),
-                   0, 0);
-      m /= (parallax_quantization / 255.0);
-      m *= (255.0 / parallax_quantization);
-      GaussianBlur(m, m, Size(parallax_soft * 2 + 1, parallax_soft * 2 + 1),
-                   0, 0);
-      m = -255 / (parallax_max - parallax_min + 1) * parallax_min +
-          255 / (parallax_max - parallax_min + 1) * m;
-
-      if (threshType == THRESH_BINARY_INV)
-        subtract(Scalar::all(255), m, m);
-
+      //TODO: Important, check if i can do it now with CImg
       break;
     }
   }
-
-  return m;
+  par.cut(0,255);
+  return par;
 }
 
-Mat ImageProcessor::modify_specular()
+CImg<float> ImageProcessor::modify_specular()
 {
-  Mat m;
   current_frame->get_image(TextureTypes::SpecularBase, &specular);
-  m = Mat(specular.height(), specular.width(), CV_8UC4, specular.scanLine(0));
-  m.convertTo(m, CV_32F, 1 / 255.0);
-  cvtColor(m, m, CV_RGBA2GRAY);
-  m.convertTo(m, -1, 1, -specular_thresh / 255.0);
-  m.convertTo(m, -1, specular_contrast, specular_thresh / 255.0);
-  m.convertTo(m, CV_8U, 255, specular_bright);
-  GaussianBlur(m, m, Size(specular_blur * 2 + 1, specular_blur * 2 + 1), 0,
-               0);
+  specular = specular.convertToFormat(QImage::Format_Grayscale8);
+  CImg<uchar> img = QImage2CImg(specular);
+  CImg<float> img_float(img);
+  img_float = specular_contrast*img_float + specular_thresh*(1-specular_contrast);
+  img_float += specular_bright;
+  img_float.cut(0,255);
+
+  img_float.blur(specular_blur);
 
   if (specular_invert)
-    subtract(Scalar::all(255), m, m);
+  {
+    img_float = 255.0 - img_float;
+  }
 
-  return m;
+  return img_float;
 }
 
 void ImageProcessor::set_normal_bisel_blur_radius(int radius)
@@ -816,8 +670,7 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius)
                     false, QRect(0, 0, 0, 0));
 }
 
-void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
-                                         bool updateDistance, QRect rect)
+void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect)
 {
 
   if (!normal_mutex.tryLock()){
@@ -860,15 +713,14 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   if (rlist.count() == 0)
     rlist.append(QRect(0, 0, 0, 0));
 
-  QImage heightOverlay = get_heightmap_overlay();
-  Mat heightmapOverlay = Mat(heightOverlay.height(), heightOverlay.width(),
-                             CV_8UC4, heightOverlay.scanLine(0));
-  cvtColor(heightmapOverlay, heightmapOverlay, CV_RGBA2GRAY);
-  heightmapOverlay.convertTo(heightmapOverlay, CV_32FC1, 255);
-  for (int i = 0; i < rlist.count(); i++)
-  {
-    calculate_normal(heightmapOverlay, m_height_ov, 1, 1, rlist.at(i));
-  }
+
+    QImage heightOverlay = get_heightmap_overlay();
+    CImg<float> heightOv = QImage2CImg(heightOverlay);
+    heightOv = heightOv.mul(heightOv.get_channel(3)/255.0);
+    for (int i = 0; i < rlist.count(); i++)
+    {
+      m_height_ov =  calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
+    }
 
   if (updateEnhance)
     enhance_requested=1;
@@ -895,8 +747,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
     if (enhance_requested || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
-        calculate_normal(m_gray, m_emboss_normal, normal_depth,
-                         normal_blur_radius);
+      {
+        m_emboss_normal = calculate_normal(m_gray*10.0, normal_depth, normal_blur_radius);
+      }
     }
 
     if (distance_requested || frames.count() > 1)
@@ -908,63 +761,59 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
     {
       for (int i = 0; i < rlist.count(); i++)
       {
-        calculate_normal(new_distance, m_distance_normal,
-                         normal_bisel_depth * normal_bisel_distance,
-                         normal_bisel_blur_radius);
+        m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius);
       }
     }
 
-    Mat normals;
-    if (m_normal.rows == 0 || m_normal.cols == 0)
+    if (m_normal.width() == 0 || m_normal.height() == 0)
     {
-      m_emboss_normal.copyTo(m_normal);
-      m_normal.convertTo(m_normal, CV_8UC3, 255);
+      m_normal = m_emboss_normal;
     }
-
-    normals = (m_emboss_normal * 3 / 2.0 + m_distance_normal * 3 / 2.0 +
-               m_height_ov);
 
     foreach (QRect rect, rlist)
     {
-      int xmin = 0, xmax = normals.cols - 1;
-      int ymin = 0, ymax = normals.rows - 1;
+      int xmin = 0, xmax = texture.width() - 1;
+      int ymin = 0, ymax = texture.height() - 1;
 
       if (rect != QRect(0, 0, 0, 0))
+      {
         rect.getCoords(&xmin, &ymin, &xmax, &ymax);
-
+      }
       for (int x = xmin; x <= xmax; ++x)
       {
-        int xaux = x;
         for (int y = ymin; y <= ymax; ++y)
         {
-          int yaux = y;
-          QColor oColor = normalOverlay.pixelColor(xaux, yaux);
-          Vec3f overlay(oColor.redF() * 2 - 1,
-                        oColor.greenF() * 2 - 1,
-                        oColor.blueF() * 2 - 1);
-          Vec3f n = normalize((normals.at<Vec3f>(yaux, xaux)) *
-                                  (1 - oColor.alphaF()) +
-                              overlay * oColor.alphaF());
-          n = n * 0.5 + Vec3f(0.5, 0.5, 0.5);
-          m_normal.at<Vec3b>(yaux, xaux)[0] = n[0] * 255;
-          m_normal.at<Vec3b>(yaux, xaux)[1] = n[1] * 255;
-          m_normal.at<Vec3b>(yaux, xaux)[2] = n[2] * 255;
+          float nr, ng, nb, norm, r, g, b, a;
+          QColor ov = normalOverlay.pixelColor(x,y);
+          r = ov.redF()*2-1;
+          g = ov.greenF()*2-1;
+          b = ov.blueF()*2-1;
+          a = ov.alphaF();
+          nr = m_emboss_normal(x,y,0,0) * 3 / 2.0 + m_distance_normal(x,y,0,0) * 3 / 2.0 + m_height_ov(x,y,0,0);
+          ng = m_emboss_normal(x,y,0,1) * 3 / 2.0 + m_distance_normal(x,y,0,1) * 3 / 2.0 + m_height_ov(x,y,0,1);
+          nb = m_emboss_normal(x,y,0,2) * 3 / 2.0 + m_distance_normal(x,y,0,2) * 3 / 2.0 + m_height_ov(x,y,0,2);
 
-          if (!active)
-          {
-            normal_mutex.unlock();
-            return;
-          }
+          nr = nr*(1-a)+(r)*a;
+          ng = ng*(1-a)+(g)*a;
+          nb = nb*(1-a)+(b)*a;
+          norm = sqrtf(nr*nr + ng*ng + nb*nb);
+
+          m_normal(x,y,0,0) = 255.0*(nr/norm*0.5+0.5);
+          m_normal(x,y,0,1) = 255.0*(ng/norm*0.5+0.5);
+          m_normal(x,y,0,2) = 255.0*(nb/norm*0.5+0.5);
+
+          //          if (!active)
+          //          {
+          //            normal_mutex.unlock();
+          //            return;
+          //          }
         }
       }
     }
-
     normal_ready.lock();
-    frames[i].set_image(TextureTypes::Normal,
-                        QImage(static_cast<unsigned char *>(m_normal.data),
-                               m_normal.cols, m_normal.rows, m_normal.step,
-                               QImage::Format_RGB888));
+    frames[i].set_image(TextureTypes::Normal, CImg2QImage(m_normal));
     normal_ready.unlock();
+
   }
 
   if (enhance_requested)
@@ -980,85 +829,92 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump,
   normal_mutex.unlock();
 }
 
-void ImageProcessor::calculate_normal(Mat mat, Mat src, int depth,
-                                      int blur_radius, QRect r)
+CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
-  Mat aux;
   QSize s = current_frame->size();
-  Rect rect(s.width(), s.height(), s.width(), s.height());
   float dx, dy;
-  int br = blur_radius * 2 + 1;
 
-  if (mat.cols == s.width() * 3)
-    GaussianBlur(mat, aux, Size(br, br), 0);
+  CImg<float> img(in);
+
+  if (img.width() == s.width() * 3)
+  {
+    img.blur(blur_radius/3.0,true,true);
+  }
   else
   {
-    copyMakeBorder(mat, aux, br, br, br, br, BORDER_WRAP);
-    GaussianBlur(aux, aux, Size(br, br), 0);
-    aux = aux(Rect(br, br, s.width(), s.height()));
+    img.resize(-300,-300,-100,-100,0,2);
+    img.blur(blur_radius/3.0);
+    img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
   }
-
   int xs, xe, ys, ye;
   if (r == QRect(0, 0, 0, 0))
   {
     xs = 0;
-    xe = aux.rows - 1;
+    xe = img.width() - 1;
     ys = 0;
-    ye = aux.cols - 1;
+    ye = img.height() - 1;
   }
   else
   {
-    xs = r.top();
-    xe = r.bottom();
-    ys = r.left();
-    ye = r.right();
+    xs = r.left();
+    xe = r.right();
+    ys = r.top();
+    ye = r.bottom();
   }
 
-  Mat normals(aux.size(), CV_32FC3);
-  if (tileable && normals.rows == s.height() * 3)
-    src.copyTo(normals(rect));
-  else
-    src.copyTo(normals);
+  CImg<float> normals(img.width(),img.height(),1,3);
+
+  img /= 255.0;
 
   for (int x = xs; x <= xe; ++x)
   {
     for (int y = ys; y <= ye; ++y)
     {
-      if (current_heightmap.at<Vec4b>(x, y)[3] == 0.0)
+      if (current_heightmap(x,y,0,3) == 0.0)
       {
-        normals.at<Vec3f>(x, y) = Vec3f(0, 0, 1);
+        normals(x,y,0,0) = 0;
+        normals(x,y,0,1) = 0;
+        normals(x,y,0,2) = 1;
         continue;
       }
 
       if (x == 0)
-        dx = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x + 1, y) -
-             aux.at<float>(x + 2, y);
-      else if (x == aux.rows - 1)
-        dx = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x - 1, y) +
-             aux.at<float>(x - 2, y);
+      {
+        dx = -3 * img(x, y) + 4 * img(x + 1, y) - img(x + 2, y);
+      }
+      else if (x == img.width() - 1)
+      {
+        dx = 3 * img(x, y) - 4 * img(x - 1, y) + img(x - 2, y);
+      }
       else
-        dx = -aux.at<float>(x - 1, y) + aux.at<float>(x + 1, y);
+      {
+        dx = -img(x - 1, y) + img(x + 1, y);
+      }
 
       if (y == 0)
-        dy = -3 * aux.at<float>(x, y) + 4 * aux.at<float>(x, y + 1) -
-             aux.at<float>(x, y + 2);
-      else if (y == aux.cols - 1)
-        dy = 3 * aux.at<float>(x, y) - 4 * aux.at<float>(x, y - 1) +
-             aux.at<float>(x, y - 2);
+      {
+        dy = -3 * img(x, y) + 4 * img(x, y + 1) - img(x, y + 2);
+      }
+      else if (y == img.height() - 1)
+      {
+        dy = 3 * img(x, y) - 4 * img(x, y - 1) + img(x, y - 2);
+      }
       else
-        dy = -aux.at<float>(x, y - 1) + aux.at<float>(x, y + 1);
+      {
+        dy = -img(x, y - 1) + img(x, y + 1);
+      }
 
-      Vec3f n =
-          Vec3f(-dy * (depth / 1000.0) * normalInvertX,
-                dx * (depth / 1000.0) * normalInvertY, 1 * normalInvertZ);
-      normals.at<Vec3f>(x, y) = n;
+      normals(x, y, 0, 0) = -dx * (depth / 100.0) * normalInvertX;
+      normals(x, y, 0, 1) = dy * (depth / 100.0) * normalInvertY;
+      normals(x, y, 0, 2) = 1.0;
     }
   }
-
-  if (tileable && normals.rows == s.height() * 3)
-    normals(rect).copyTo(normals);
-
-  normals.copyTo(src);
+  //  normals *= 255.0;
+  if (tileable)
+  {
+    normals.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
+  }
+  return normals;
 }
 
 void ImageProcessor::copy_settings(ProcessorSettings s) { settings = s; }
@@ -1309,14 +1165,6 @@ void ImageProcessor::set_specular_contrast(int contrast)
 
 double ImageProcessor::get_specular_contrast() { return specular_contrast; }
 
-void ImageProcessor::set_specular_base_color(Vec4b color)
-{
-  specular_base_color = color;
-  QtConcurrent::run(this, &ImageProcessor::calculate_specular);
-}
-
-Vec4b ImageProcessor::get_specular_base_color() { return specular_base_color; }
-
 void ImageProcessor::set_occlusion_blur(int blur)
 {
   occlusion_blur = blur;
@@ -1425,25 +1273,12 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 
 QImage ImageProcessor::get_heightmap()
 {
-  Mat m;
-
-  QMutexLocker locker(&heightmap_mutex);
-  cvtColor(current_heightmap, m, CV_RGBA2GRAY);
-  cvtColor(m, m, CV_GRAY2RGB);
-  m.convertTo(m, CV_8UC3, 1);
-  GaussianBlur(
-      m, m, Size(normal_blur_radius * 2 + 1, normal_blur_radius * 2 + 1), 0);
-  return QImage(static_cast<unsigned char *>(m.data), m.cols, m.rows, m.step,
-                QImage::Format_RGB888);
+  /* TODO Implement this */
 }
 
 QImage ImageProcessor::get_distance_map()
 {
-  Mat m;
-  cvtColor(new_distance, m, CV_GRAY2RGBA);
-  m.convertTo(m, CV_8UC4, 255);
-  return QImage(static_cast<unsigned char *>(m.data), m.cols, m.rows, m.step,
-                QImage::Format_RGBA8888_Premultiplied);
+  /* Implement this ? */
 }
 
 void ImageProcessor::set_light_list(QList<LightSource *> &list)
@@ -1524,9 +1359,13 @@ void ImageProcessor::set_rotation(float r)
   processed();
 }
 
-float ImageProcessor::get_rotation() { return rotation; }
+float ImageProcessor::get_rotation() {
+  return rotation;
+}
 
-int ImageProcessor::get_current_frame_id() { return current_frame_id; }
+int ImageProcessor::get_current_frame_id() {
+  return current_frame_id;
+}
 
 void ImageProcessor::set_current_frame_id(int id)
 {
@@ -1545,7 +1384,10 @@ void ImageProcessor::set_current_frame_id(int id)
 
 }
 
-Sprite *ImageProcessor::get_current_frame() { return current_frame; }
+Sprite *ImageProcessor::get_current_frame()
+{
+  return current_frame;
+}
 
 void ImageProcessor::next_frame()
 {
@@ -1600,4 +1442,81 @@ int ImageProcessor::WrapCoordinate(int coord, int interval)
     coord += interval;
   }
   return coord;
+}
+
+QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
+{
+  int w = in.width(), h = in.height(), channels = in.spectrum();
+
+  QImage::Format format;
+
+  switch (channels) {
+    case 1:
+      format = QImage::Format_Grayscale8;
+      break;
+    case 3:
+      format = QImage::Format_RGB888;
+      break;
+    case 4:
+      format = QImage::Format_RGBA8888;
+      break;
+  }
+
+  QImage out(w,h,format);
+
+  for (int y = 0; y < h; y++)
+  {
+    unsigned char *dst = out.scanLine(y);
+    for (int x = 0; x < w; x++)
+    {
+      for (int c = 0; c < channels; c++)
+      {
+        *dst = in(x,y,0,c);
+        dst++;
+      }
+    }
+  }
+  //  in.permute_axes("cxyz");
+  //  return QImage(in.data(), in.height(), in.depth(), format);
+
+  return out;
+}
+
+CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
+{
+  int channels;
+  switch (in.format()) {
+    case QImage::Format_RGBA8888:
+    case QImage::Format_RGBA8888_Premultiplied:
+      channels = 4;
+      break;
+    case QImage::Format_RGB888:
+      channels = 3;
+      break;
+    case QImage::Format_Grayscale8:
+      channels = 1;
+      break;
+    default:
+      channels = 0;
+  }
+
+  int w = in.width(), h = in.height();
+
+  //  CImg<uchar> srt(in.bits(), channels, w, h, 1);
+  //  srt.permute_axes("yzcx");
+
+  CImg<uchar> srt(w,h,1,channels);
+  cimg_forY(srt,y)
+  {
+    unsigned char *src = in.scanLine(y);
+    cimg_forX(srt,x)
+    {
+      for (int c = 0; c < channels; c++)
+      {
+        srt(x,y,0,c) = *src;
+        src++;
+      }
+    }
+  }
+  return srt;
 }

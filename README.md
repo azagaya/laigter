@@ -76,30 +76,33 @@ work together! Many things are needed. Also, please read the
 
 Compiling on Linux is pretty straightforward. The following dependencies are required:
 
-- Qt 5 (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
-- OpenCV.
+- Qt 5.14 or above (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
 - OpenGL development libraries.
 - (For Arch Linux/Manjaro: you will also need the VTK and HDF packages)
-  
+
+If you install Qt from the online installer, you don't need to install the qt related packages below.
+
 Install prerequisites by entering the following command in a terminal (depending
 on your distribution):
+
+
 
 ##### Debian/Ubuntu
 
 ```bash
-sudo apt install qt5-default qt5-qmake libopencv-dev libgl1-mesa-dev
+sudo apt install qt5-default qt5-qmake libgl1-mesa-dev
 ```
 
 ##### Fedora
 
 ```bash
-sudo dnf install qt5-devel opencv-devel mesa-libGL-devel
+sudo dnf install qt5-devel mesa-libGL-devel
 ```
 
 ##### Arch Linux/Manjaro
 
 ```bash
-sudo pacman -Sy opencv hd5 vtk qt5-base
+sudo pacman -Sy hd5 vtk qt5-base
 ```
 
 #### Get the source
@@ -121,7 +124,7 @@ Then finally `cd` into the laigter directory: `cd laigter`
 
 ##### Using QT Creator:
 
-That's it, you can now open `laigter.pro` with Qt Creator and build or debug Laigter.
+That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
 ##### Using the terminal:
 
@@ -136,33 +139,32 @@ make -j$(nproc)
 
 ### Compiling on Windows
 
-For Windows, unfortunately, there are more steps to be done.
+#### Getting Qt
 
-- Install Qt: I strongly discourage the offline installer, use the online
-  installer instead. In the components selection window, you'll need to select
-  Qt Creator under **Qt > Developer and Designer Tools** and the MinGW 64-bit or
-  32-bit toolchain under **Qt > Developer and Designer Tools > MinGW 7.3.0**
-  and **Qt > Qt 5.13.0 > MinGW 7.3.0**. Do not choose the MSVC toolchain. If you
-  choose both the 64-bit and 32-bit versions, make sure that only one version is
-  in the system path, otherwise you will have problems compiling. Tested with Qt
-  5.11, 5.12 and 5.13.
-- Install CMake: [download](https://cmake.org/download/) and install CMake.
-- Install OpenCV:
-  [download](https://github.com/opencv/opencv/releases/tag/3.2.0) and compile
-  OpenCV 3.2. It **must** be version 3.2, it cannot be any other version; be
-  warned.
+For Windows, the steps are similar:
 
-Once you have installed CMake and downloaded OpenCV 3.2, follow
-[this tutorial](https://wiki.qt.io/How_to_setup_Qt_and_openCV_on_Windows).
-But before clicking **Generate** in the CMake GUI, be sure to uncheck
-`BUILD_opencv_python3` in case you have this flag and it is checked. I could not
-compile until I unchecked this. Also change `EXECUTABLE_OUTPUT_PATH` to
-`C:\opencv-build\install\x86\mingw\bin` which is the path set on `laigter.pro`
-(or you could change the path on your `laigter.pro` to match your
-`EXECUTABLE_OUTPUT_PATH`).
+- Install Qt: I strongly discourage the offline installer, use the online installer instead. In the components selection window, you'll need to select Qt Creator under **Qt > Developer and Designer Tools** and the MinGW 64-bit or 32-bit toolchain under **Qt > Developer and Designer Tools > MinGW 7.3.0** and **Qt > Qt 5.14.0 > MinGW 7.3.0**.
 
-After several minutes, OpenCV compilation should finish. If it finished
-successfully, you can open `laigter.pro` in Qt Creator, compile and run it.
+Do not choose the MSVC toolchain. If you choose both the 64-bit and 32-bit versions, make sure that only one version is in the system path, otherwise you will have problems compiling.
+
+Tested with Qt 5.14.
+
+#### Get the source
+
+You may get the source cloning the repository. For that, I recommend using (git for windows tool)[https://gitforwindows.org/]. With it, you can clone Laigter:
+
+```bash
+git clone https://github.com/azagaya/laigter
+```
+
+You may also download the package directly if you don't want to use git:
+
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
+
+#### Building
+
+Open Laigter project in QtCreator installed with the online installer, and run the project. No extra steps should be needed.
 
 #### Deploying the application
 
@@ -172,33 +174,36 @@ like the following should be enough:
 
 ```batch
 mkdir .\deploy
-windeployqt --dir .\deploy ..\build-laigter-Desktop_Qt_5_13_0_MinGW_32_bit-Release\release\laigter.exe
-copy /Y ..\build-laigter-Desktop_Qt_5_13_0_MinGW_32_bit-Release\release\laigter.exe .\deploy\laigter.exe
-```
-
-If for some reason the OpenCV libraries weren't copied, copy them as well:
-
-```batch
-copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_core320.dll .\deploy\
-copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_imgproc320.dll .\deploy\
+windeployqt --dir .\deploy ..\build-laigter-Desktop_Qt_5_14_0_MinGW_32_bit-Release\release\laigter.exe
+copy /Y ..\build-laigter-Desktop_Qt_5_14_0_MinGW_32_bit-Release\release\laigter.exe .\deploy\laigter.exe
 ```
 
 ### Compiling on macOS
 
-I don't have a Mac, but a few tests I made on a friend's computer made me arrive
-to the following (maybe incomplete) steps:
+On Mac, is very similar than on Linux.
 
-- Install [Homebrew](https://brew.sh/), then install pkg-config using
-  `brew install pkg-config`.
-- Install Qt and Qt Creator: online installer is recommended.
-- Install OpenCV: on macOS, like on Linux, I could only install OpenCV4.
-  After installing, you should append the path to the OpenCV includes to the
-  `INCLUDEPATH` build variable in Qt Creator (or edit `laigter.pro` manually to do so).
-  I think it was: `/usr/local/Cellar/opencv/4.0.1/include/opencv4/`
-- If pkg-config can't find opencv, add a variable `PKG_CONFIG_PATH` to the
-  project environment, with the path to `opencv.pc`.
+#### Prerequisites
 
-And that's all the test I could make before I had to return the Mac.
+First, install Qt. I recommend using the online installer for Mac.
+
+#### Get the source
+
+Then get the source either via `git clone`:
+
+```bash
+git clone https://github.com/azagaya/laigter
+```
+
+or download the package via:
+
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
+
+Then finally `cd` into the laigter directory: `cd laigter`
+
+#### Building
+
+That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
 ## License
 

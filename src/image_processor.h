@@ -23,6 +23,7 @@
 #include "src/light_source.h"
 #include "src/sprite.h"
 
+
 #include <QBrush>
 #include <QFuture>
 #include <QImage>
@@ -35,14 +36,8 @@
 #include <QTimer>
 #include <QVector2D>
 
-#include <opencv2/opencv.hpp>
-#if CV_MAJOR_VERSION >= 4
-#include <opencv2/imgproc/types_c.h>
-#endif
-#if defined(Q_OS_WIN)
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-#endif
+#define cimg_display 0
+#include "thirdparty/CImg.h"
 
 enum class ProcessedImage
 {
@@ -149,20 +144,18 @@ private:
   bool selected, tileX, tileY, is_parallax, connected;
   bool specular_invert;
   char gradient_end;
-  cv::Mat current_heightmap;
-  cv::Mat current_occlusion;
-  cv::Mat current_parallax;
-  cv::Mat current_specular;
-  cv::Mat m_distance;
-  cv::Mat m_distance_normal;
-  cv::Mat m_emboss_normal;
-  cv::Mat m_gray;
-  cv::Mat m_height_ov, aux_height_ov;
-  cv::Mat m_normal;
-  cv::Mat m_occlusion;
-  cv::Mat m_parallax;
-  cv::Mat new_distance;
-  cv::Vec4b specular_base_color;
+  cimg_library::CImg<float> current_heightmap;
+  cimg_library::CImg<float> current_occlusion;
+  cimg_library::CImg<float> current_parallax;
+  cimg_library::CImg<float> current_specular;
+  cimg_library::CImg<float> m_distance;
+  cimg_library::CImg<float> new_distance;
+  cimg_library::CImg<float> m_distance_normal;
+  cimg_library::CImg<float> m_emboss_normal;
+  cimg_library::CImg<float> m_normal;
+  cimg_library::CImg<float> m_gray;
+  cimg_library::CImg<float> m_height_ov, aux_height_ov;
+
   double occlusion_contrast;
   double parallax_contrast;
   double specular_contrast;
@@ -206,18 +199,17 @@ public:
   QString get_heightmap_path();
   QString get_name();
   QString get_specular_path();
-  cv::Mat modify_distance();
-  cv::Mat modify_occlusion();
-  cv::Mat modify_parallax();
-  cv::Mat modify_specular();
+  cimg_library::CImg<float> modify_distance();
+  cimg_library::CImg<float> modify_occlusion();
+  cimg_library::CImg<float> modify_parallax();
+  cimg_library::CImg<float> modify_specular();
   int loadHeightMap(QString fileName, QImage height);
   int loadImage(QString fileName, QImage image);
   int loadSpecularMap(QString fileName, QImage specular);
   void calculate_distance();
   void calculate_gradient();
   void calculate_heightmap();
-  void calculate_normal(cv::Mat mat, cv::Mat src, int depth, int blur_radius,
-                        QRect r = QRect(0, 0, 0, 0));
+  cimg_library::CImg<float> calculate_normal(cimg_library::CImg<float> in, int depth, int blur_radius, QRect r = QRect(0,0,0,0));
   void generate_normal_map(bool updateEnhance = true, bool updateBump = true,
                            bool updateDistance = true,
                            QRect rect = QRect(0, 0, 0, 0));
@@ -239,6 +231,8 @@ public:
   void set_specular_overlay(QImage so);
   void set_texture_overlay(QImage to);
   int WrapCoordinate(int coord, int interval);
+  QImage CImg2QImage(cimg_library::CImg<uchar> in);
+  cimg_library::CImg<uchar> QImage2CImg(QImage in);
 
 public slots:
   void playAnimation(bool play);
@@ -262,7 +256,6 @@ public slots:
   bool get_tile_x();
   bool get_tile_y();
   bool get_tileable();
-  cv::Vec4b get_specular_base_color();
   double get_occlusion_contrast();
   double get_parallax_contrast();
   double get_specular_contrast();
@@ -335,7 +328,6 @@ public slots:
   void set_position(QVector3D new_pos);
   void set_rotation(float r);
   void set_selected(bool s);
-  void set_specular_base_color(cv::Vec4b color);
   void set_specular_blur(int blur);
   void set_specular_bright(int bright);
   void set_specular_contrast(int contrast);

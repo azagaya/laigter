@@ -39,6 +39,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += core ui c++11
 
+QMAKE_CXXFLAGS_RELEASE *= -O3
+
 SOURCES += \
 	gui/about_dialog.cpp \
 	gui/frame_splitter.cpp \
@@ -80,8 +82,8 @@ HEADERS += \
 	src/project.h \
 	src/sprite.h \
 	src/texture.h \
+	thirdparty/CImg.h \
 	thirdparty/miniz.h \
-	thirdparty/tinytiffwriter.h \
 	thirdparty/zip.h
 
 FORMS += \
@@ -112,15 +114,6 @@ unix{
     INSTALLS += shortcutfiles
     INSTALLS += iconfiles
     INSTALLS += appdatafiles
-}
-
-unix {
-        CONFIG += link_pkgconfig
-        packagesExist(opencv4) {
-                PKGCONFIG += opencv4
-        } else {
-                PKGCONFIG += opencv
-        }
 }
 
 DISTFILES += \
@@ -184,11 +177,6 @@ RESOURCES += \
 	translations.qrc \
 	icons.qrc
 
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_core320.dll
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgproc320.dll
-win32: LIBS += C:\opencv-build\install\x64\mingw\bin\libopencv_imgcodecs320.dll
-
-win32: INCLUDEPATH += C:\opencv\build\include
 
 win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter_icon.icns

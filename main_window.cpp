@@ -1429,6 +1429,7 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
 {
   foreach (ImageProcessor *p, processorList)
     disconnect_processor(p);
+  disconnect_processor(sample_processor);
 
   processor->set_selected(selected);
   QList <QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
@@ -1604,8 +1605,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
       QFile(tmp.absoluteFilePath(fileName)).remove();
     }
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
-    QPluginLoader *pl =
-        new QPluginLoader(tmp.absoluteFilePath(fileName));
+    QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
     if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.9)
     {
       qDebug() << "incorrect plugin version.";
