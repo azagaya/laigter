@@ -342,6 +342,7 @@ public slots:
 
 signals:
   void processed();
+  void positionChanged();
   void frameChanged(int index);
   void on_idle();
 };

@@ -28,6 +28,7 @@
 #include "src/project.h"
 
 #include "gui/widgets/animation_dock.h"
+#include "gui/widgets/sprite_properties_dock.h"
 
 #include <QColor>
 #include <QFileSystemWatcher>
@@ -71,8 +72,9 @@ private:
   QOpenGLWidget *gl;
   QThread *processingThread;
   Ui::MainWindow *ui;
-  QDockWidget *animation_dock;
+  QDockWidget *animation_dock, *sprite_dock;
   AnimationDock *animation_widget;
+  SpritePropertiesDock* sprite_widget;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -126,7 +128,10 @@ private slots:
   void on_listWidget_itemSelectionChanged();
   void on_pushButton_clicked();
   void on_pushButtonBackgroundColor_clicked();
-  void on_pushButton_2_clicked();
+  void selectNeighbours();
+  void loadHeightmap();
+  void loadSpecular();
+  void splitInFrames();
   void on_comboBox_currentIndexChanged(int index);
   void on_pushButtonExportTo_clicked();
   void open_files(QStringList fileNames);

@@ -50,6 +50,7 @@ SOURCES += \
 	gui/widgets/animation_dock.cpp \
 	gui/widgets/slider.cpp \
 	gui/widgets/slider2.cpp \
+	gui/widgets/sprite_properties_dock.cpp \
 	main.cpp \
 	main_window.cpp \
 	src/image_loader.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
 	gui/remove_plugin_dialog.h \
 	gui/widgets/slider.h \
 	gui/widgets/slider2.h \
+	gui/widgets/sprite_properties_dock.h \
 	main_window.h \
 	src/brush_interface.h \
 	src/image_loader.h \
@@ -93,6 +95,7 @@ FORMS += \
 	gui/presets_manager.ui \
 	gui/remove_plugin_dialog.ui \
 	gui/widgets/animation_dock.ui \
+	gui/widgets/sprite_properties_dock.ui \
 	main_window.ui \
 	gui/nb_selector.ui
 

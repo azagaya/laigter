@@ -370,7 +370,7 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x,
   QImage neighbours;
   current_frame->get_image(TextureTypes::Neighbours, &neighbours);
   QSize s = current_frame->size();
-  current_frame->neighours_paths[x][y] = fileName;
+  current_frame->neighbours_paths[x][y] = fileName;
   int aleft = x * s.width();
   int atop = y * s.height();
   QRect r(aleft, atop, s.width(), s.height());
@@ -1297,7 +1297,10 @@ QList<LightSource *> *ImageProcessor::get_light_list_ptr()
   return &lightList;
 }
 
-void ImageProcessor::set_position(QVector3D new_pos) { position = new_pos; }
+void ImageProcessor::set_position(QVector3D new_pos) {
+  position = new_pos;
+  positionChanged();
+}
 
 QVector3D *ImageProcessor::get_position() { return &position; }
 
@@ -1309,7 +1312,11 @@ void ImageProcessor::set_selected(bool s) { selected = s; }
 
 bool ImageProcessor::get_selected() { return selected; }
 
-void ImageProcessor::set_zoom(float new_zoom) { zoom = new_zoom; }
+void ImageProcessor::set_zoom(float new_zoom)
+{
+  zoom = new_zoom;
+  processed();
+}
 
 float ImageProcessor::get_zoom() { return zoom; }
 

@@ -163,6 +163,19 @@ MainWindow::MainWindow(QWidget *parent)
   addDockWidget(Qt::BottomDockWidgetArea, animation_dock);
   animation_dock->setVisible(false);
 
+  /* Create Sprite properties dock Widget */
+  sprite_dock = new QDockWidget("Sprite Properties Dock Widget", this);
+  sprite_widget = new SpritePropertiesDock;
+  sprite_dock->setWidget(sprite_widget);
+  sprite_dock->setFeatures(QDockWidget::DockWidgetMovable);
+  sprite_dock->setObjectName("SpriteDock");
+  addDockWidget(Qt::RightDockWidgetArea, sprite_dock);
+  tabifyDockWidget(sprite_dock,ui->visualizationDockWidget);
+  connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
+  connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
+  connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
+  connect(sprite_widget, SIGNAL(splitButtonPressed()), this, SLOT(splitInFrames()));
+
   QSettings settings("Azagaya", "Laigter");
   restoreGeometry(settings.value("geometry").toByteArray());
   restoreState(settings.value("windowState").toByteArray());
@@ -194,15 +207,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::setCurrentItem(QListWidgetItem *i)
 {
-  current_item = i;
-  ImageProcessor *p = find_processor(i->text());
-
-
+  ImageProcessor *p;
+  if (i != nullptr)
+  {
+    current_item = i;
+    p = find_processor(i->text());
+  }
+  else
+  {
+    current_item = 0;
+    p = sample_processor;
+  }
   animation_dock->setVisible(p->frames.count() > 1);
 //  if (p->frames.count() > 1)
   {
     animation_widget->setCurrentProcessor(p);
+    sprite_widget->SetCurrentProcessor(p);
+
   }
+
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos)
@@ -268,7 +291,7 @@ void MainWindow::remove_processor(ImageProcessor *p){
     paths.append(frame.specularPath);
     for (int j = 0; j < 3; j++){
       for (int k = 0; k < 3; k++){
-        paths.append(frame.neighours_paths[j][k]);
+        paths.append(frame.neighbours_paths[j][k]);
       }
     }
   }
@@ -295,6 +318,7 @@ void MainWindow::remove_processor(ImageProcessor *p){
 void MainWindow::list_menu_action_triggered(QAction *action)
 {
   ImageProcessor *p = find_processor(current_item->text());
+  processor = p;
   QString option = action->text();
   if (option == tr("Remove"))
   {
@@ -316,21 +340,7 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Load heightmap"))
   {
-    QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open Image"), "",
-        tr("Image File (*.png *.jpg *.bmp *.tga)"));
-    if (fileName != nullptr)
-    {
-      bool success;
-      QImage height = il.loadImage(fileName, &success);
-      if (!success)
-        return;
-
-      fs_watcher.addPath(fileName);
-      height =
-          height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-      p->loadHeightMap(fileName, height);
-    }
+    loadHeightmap();
   }
   else if (option == tr("Reset heightmap"))
   {
@@ -342,20 +352,7 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Load specular map"))
   {
-    QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open Image"), "",
-        tr("Image File (*.png *.jpg *.bmp *.tga)"));
-    if (fileName != nullptr)
-    {
-      bool success;
-      QImage spec = il.loadImage(fileName, &success);
-      if (!success)
-        return;
-
-      fs_watcher.addPath(fileName);
-      spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-      p->loadSpecularMap(fileName, spec);
-    }
+    loadSpecular();
   }
   else if (option == tr("Reset specular map"))
   {
@@ -402,30 +399,73 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
   else if (option == tr("Split in frames"))
   {
-    int h_frames, v_frames;
-    FrameSplitter fs(&h_frames, &v_frames);
-    fs.exec();
-    if (h_frames > 0 && v_frames > 0)
-    {
-      QImage original;
-      p->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-      ImageProcessor *n_p = new ImageProcessor;
-      n_p->set_name(p->get_name()+"(frames)");
-      QString filePath = p->get_current_frame()->get_file_name();
-      for (int i=0; i<v_frames; i++)
-      {
-        for (int j=0; j<h_frames; j++)
-        {
-          QString frame_number = QString("%1").arg(j+i*h_frames, (int)(log10(v_frames*h_frames)+1), 10, QChar('0'));
-          QString path = filePath.split(".").join("_"+frame_number+".");
-          QPoint top_left(j*original.width()/h_frames,i*original.height()/v_frames);
-          QSize size(original.width()/h_frames, original.height()/v_frames);
-          n_p->loadImage(path,original.copy(QRect(top_left,size)));
-        }
-      }
-      add_processor(n_p);
-    }
+    splitInFrames();
   }
+}
+
+void MainWindow::splitInFrames()
+{
+  int h_frames, v_frames;
+  FrameSplitter fs(&h_frames, &v_frames);
+  fs.exec();
+  if (h_frames > 0 && v_frames > 0)
+  {
+    QImage original;
+    processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
+    ImageProcessor *n_p = new ImageProcessor;
+    n_p->set_name(processor->get_name()+"(frames)");
+    QString filePath = processor->get_current_frame()->get_file_name();
+    for (int i=0; i<v_frames; i++)
+    {
+      for (int j=0; j<h_frames; j++)
+      {
+        QString frame_number = QString("%1").arg(j+i*h_frames, (int)(log10(v_frames*h_frames)+1), 10, QChar('0'));
+        QString path = filePath.split(".").join("_"+frame_number+".");
+        QPoint top_left(j*original.width()/h_frames,i*original.height()/v_frames);
+        QSize size(original.width()/h_frames, original.height()/v_frames);
+        n_p->loadImage(path,original.copy(QRect(top_left,size)));
+      }
+    }
+    add_processor(n_p);
+  }
+}
+
+void MainWindow::loadSpecular()
+{
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Image"), "",
+      tr("Image File (*.png *.jpg *.bmp *.tga)"));
+  if (fileName != nullptr)
+  {
+    bool success;
+    QImage spec = il.loadImage(fileName, &success);
+    if (!success)
+      return;
+
+    fs_watcher.addPath(fileName);
+    spec = spec.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    processor->loadSpecularMap(fileName, spec);
+  }
+}
+
+void MainWindow::loadHeightmap()
+{
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Image"), "",
+      tr("Image File (*.png *.jpg *.bmp *.tga)"));
+  if (fileName != nullptr)
+  {
+    bool success;
+    QImage height = il.loadImage(fileName, &success);
+    if (!success)
+      return;
+
+    fs_watcher.addPath(fileName);
+    height =
+        height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    processor->loadHeightMap(fileName, height);
+  }
+  ui->openGLPreviewWidget->need_to_update = true;
 }
 
 void MainWindow::update_scene()
@@ -802,8 +842,6 @@ void MainWindow::connect_processor(ImageProcessor *p)
           SLOT(set_normal_invert_x(bool)));
   connect(ui->normalInvertY, SIGNAL(toggled(bool)), p,
           SLOT(set_normal_invert_y(bool)));
-  connect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p,
-          SLOT(set_tileable(bool)));
   connect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p,
           SLOT(set_parallax_invert(bool)));
   connect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p,
@@ -879,8 +917,6 @@ void MainWindow::disconnect_processor(ImageProcessor *p)
              SLOT(set_normal_invert_y(bool)));
   disconnect(ui->openGLPreviewWidget, SIGNAL(initialized()), this,
              SLOT(openGL_initialized()));
-  disconnect(ui->checkBoxTileable, SIGNAL(toggled(bool)), p,
-             SLOT(set_tileable(bool)));
   disconnect(ui->checkBoxParallaxInvert, SIGNAL(toggled(bool)), p,
              SLOT(set_parallax_invert(bool)));
   disconnect(ui->parallaxSoftSlider, SIGNAL(valueChanged(int)), p,
@@ -1076,7 +1112,7 @@ void MainWindow::set_background_color(const QColor &color)
   }
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::selectNeighbours()
 {
   NBSelector *nb = new NBSelector(processor);
   nb->exec();
@@ -1428,14 +1464,17 @@ void MainWindow::selectedProcessorsChanged(QList<ImageProcessor *> list)
 void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
 {
   foreach (ImageProcessor *p, processorList)
+  {
     disconnect_processor(p);
-  disconnect_processor(sample_processor);
-
+  }
+  disconnect_processor(sample_processor);  
   processor->set_selected(selected);
   QList <QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
   if (itemList.count() > 0)
   {
     setCurrentItem(itemList.at(0));
+  } else {
+    setCurrentItem(nullptr);
   }
   set_enabled_map_controls(false);
   if (selected)
@@ -1452,7 +1491,6 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
         processor->get_normal_bisel_blur_radius());
     ui->normalBiselDistanceSlider->setValue(
         processor->get_normal_bisel_distance());
-    ui->checkBoxTileable->setChecked(processor->get_tileable());
     ui->parallaxSoftSlider->setValue(processor->get_parallax_soft());
     ui->parallaxFocusSlider->setValue(processor->get_parallax_focus());
     ui->parallaxThreshSlider->setValue(processor->get_parallax_thresh());
@@ -1528,7 +1566,6 @@ void MainWindow::set_enabled_map_controls(bool e)
   ui->specularDockWidget->setEnabled(e);
   ui->parallaxDockWidget->setEnabled(e);
   ui->occlusionDockWidget->setEnabled(e);
-  ui->TileDockWidget->setEnabled(e);
   ui->checkBoxMosaicoX->setEnabled(e);
   ui->checkBoxMosaicoY->setEnabled(e);
   ui->checkBoxParallax->setEnabled(e);

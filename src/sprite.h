@@ -31,7 +31,7 @@ public:
   QString fileName;
   QString specularPath = "";
   QString heightmapPath = "";
-  QVector<QVector<QString>> neighours_paths;
+  QVector<QVector<QString>> neighbours_paths;
 
 private:
   QVector<Texture> textures;

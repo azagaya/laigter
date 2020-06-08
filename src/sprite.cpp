@@ -3,10 +3,10 @@
 Sprite::Sprite()
 {
   textures.resize(16);
-  neighours_paths.resize(3);
-  neighours_paths[0].resize(3);
-  neighours_paths[1].resize(3);
-  neighours_paths[2].resize(3);
+  neighbours_paths.resize(3);
+  neighbours_paths[0].resize(3);
+  neighbours_paths[1].resize(3);
+  neighbours_paths[2].resize(3);
 }
 
 Sprite::Sprite(const Sprite &S)
@@ -15,10 +15,10 @@ Sprite::Sprite(const Sprite &S)
   fileName = S.fileName;
   heightmapPath = S.heightmapPath;
   specularPath = S.specularPath;
-  neighours_paths.resize(3);
-  neighours_paths[0].resize(3);
-  neighours_paths[1].resize(3);
-  neighours_paths[2].resize(3);
+  neighbours_paths.resize(3);
+  neighbours_paths[0].resize(3);
+  neighbours_paths[1].resize(3);
+  neighbours_paths[2].resize(3);
 }
 
 Sprite &Sprite::operator=(const Sprite &S)
@@ -27,10 +27,10 @@ Sprite &Sprite::operator=(const Sprite &S)
   fileName = S.fileName;
   heightmapPath = S.heightmapPath;
   specularPath = S.specularPath;
-  neighours_paths.resize(3);
-  neighours_paths[0].resize(3);
-  neighours_paths[1].resize(3);
-  neighours_paths[2].resize(3);
+  neighbours_paths.resize(3);
+  neighbours_paths[0].resize(3);
+  neighbours_paths[1].resize(3);
+  neighbours_paths[2].resize(3);
   return *this;
 }
 

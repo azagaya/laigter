@@ -241,16 +241,18 @@ void OpenGlWidget::update_scene()
     float scaleX = !processor->get_tile_x() ? 0.5*m_image.width() : 1.5*m_image.width();
     float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.height();
 
-    /* Adjust for retina */
+    /* Adjust for retina and apply individual zoom*/
     scaleX *= devicePixelRatioF();
     scaleY *= devicePixelRatioF();
+
+
+    transform.rotate(processor->get_rotation(), QVector3D(0, 0, 1));
 
     transform.scale(scaleX, scaleY, 1);
     float zoomX =  processor->get_zoom() ;
     float zoomY = processor->get_zoom() ;
     transform.scale(zoomX, zoomY, 1);
 
-    transform.rotate(180.0 * processor->get_rotation() / 3.1415, QVector3D(0, 0, 1));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -279,7 +281,8 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
-    m_program.setUniformValue("rotation_angle", processor->get_rotation());
+    float rotation = M_PI/180.0*processor->get_rotation();
+    m_program.setUniformValue("rotation_angle", rotation+global_rotation);
     zoomX = processor->get_tile_x() ? 1.0/3 : 1;
     zoomY = processor->get_tile_y() ? 1.0/3 : 1;
     m_program.setUniformValue("ratio", QVector2D(1  / zoomX, 1  / zoomY));
@@ -692,10 +695,10 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       {
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(global_mouse_press_position) - *processor->get_position());
-        float w = processor->get_tile_x() ? 1.5*processor->texture.width() : 0.5*processor->texture.width();
-        float h = processor->get_tile_y() ? 1.5*processor->texture.height() : 0.5*processor->texture.height();
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h &&
+        float w = processor->get_tile_x() ? 3.0*processor->texture.width() : processor->texture.width();
+        float h = processor->get_tile_y() ? 3.0*processor->texture.height() : processor->texture.height();
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w*processor->get_zoom()*0.5 &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h*processor->get_zoom()*0.5 &&
             not selected)
         {
           processor_selected = true;
@@ -830,8 +833,9 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         {
           /* Move */
           processor_selected = true;
-          processor->get_position()->setX((int)(global_mouse_last_position.x() - processor->get_offset()->x()));
-          processor->get_position()->setY((int)(global_mouse_last_position.y() - processor->get_offset()->y()));
+          QVector3D new_position((int)(global_mouse_last_position.x() - processor->get_offset()->x()),
+                                 (int)(global_mouse_last_position.y() - processor->get_offset()->y()), 0.0);
+          processor->set_position(new_position);
 
         }
       }

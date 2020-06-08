@@ -12,6 +12,10 @@ class AnimationDock : public QWidget
 {
   Q_OBJECT
 
+private:
+  Ui::AnimationDock *ui;
+  ImageProcessor *m_current_processor;
+
 public:
   explicit AnimationDock(QWidget *parent = nullptr);
   ~AnimationDock();
@@ -29,9 +33,6 @@ private slots:
 
   void on_rightButton_clicked();
 
-private:
-  Ui::AnimationDock *ui;
-  ImageProcessor *m_current_processor;
 
 };
 
