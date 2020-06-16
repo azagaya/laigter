@@ -123,21 +123,28 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 ImageProcessor::~ImageProcessor()
 {
   active = false;
-//  while (normal_counter > 0)
-//    QThread::msleep(10);
-//  while (parallax_counter > 0)
-//    QThread::msleep(10);
-//  while (specular_counter > 0)
-//    QThread::msleep(10);
-//  while (occlussion_counter > 0)
-//    QThread::msleep(10);
+  //  while (normal_counter > 0)
+  //    QThread::msleep(10);
+  //  while (parallax_counter > 0)
+  //    QThread::msleep(10);
+  //  while (specular_counter > 0)
+  //    QThread::msleep(10);
+  //  while (occlussion_counter > 0)
+  //    QThread::msleep(10);
 }
 
-int ImageProcessor::loadImage(QString fileName, QImage image)
+int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
 {
   m_fileName = fileName;
   QFileInfo info(fileName);
-  m_absolute_path = info.absolutePath();
+  if (basePath == "")
+  {
+    m_absolute_path = info.absolutePath();
+  }
+  else
+  {
+    m_absolute_path = basePath;
+  }
   texture = image;
   Sprite s;
   s.set_image(TextureTypes::Diffuse, image);
@@ -187,11 +194,11 @@ void ImageProcessor::calculate()
 {
   set_current_heightmap(current_frame_id);
   calculate_distance();
-//  calculate_heightmap();
-//  generate_normal_map();
-//  calculate_parallax();
-//  calculate_specular();
-//  calculate_occlusion();
+  //  calculate_heightmap();
+  //  generate_normal_map();
+  //  calculate_parallax();
+  //  calculate_specular();
+  //  calculate_occlusion();
 }
 
 void ImageProcessor::recalculate(){
@@ -707,13 +714,13 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     rlist.append(QRect(0, 0, 0, 0));
 
 
-    QImage heightOverlay = get_heightmap_overlay();
-    CImg<float> heightOv = QImage2CImg(heightOverlay);
-    heightOv = heightOv.mul(heightOv.get_channel(3)/255.0);
-    for (int i = 0; i < rlist.count(); i++)
-    {
-      m_height_ov =  calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
-    }
+  QImage heightOverlay = get_heightmap_overlay();
+  CImg<float> heightOv = QImage2CImg(heightOverlay);
+  heightOv = heightOv.mul(heightOv.get_channel(3)/255.0);
+  for (int i = 0; i < rlist.count(); i++)
+  {
+    m_height_ov =  calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
+  }
 
   if (updateEnhance)
     enhance_requested=1;
@@ -835,9 +842,9 @@ CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur
   }
   else
   {
-//    img.resize(-300,-300,-100,-100,0,2);
+    //    img.resize(-300,-300,-100,-100,0,2);
     img.blur(blur_radius/3.0);
-//    img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
+    //    img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
   }
   int xs, xe, ys, ye;
   if (r == QRect(0, 0, 0, 0))

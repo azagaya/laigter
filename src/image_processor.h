@@ -204,7 +204,7 @@ public:
   cimg_library::CImg<float> modify_parallax();
   cimg_library::CImg<float> modify_specular();
   int loadHeightMap(QString fileName, QImage height);
-  int loadImage(QString fileName, QImage image);
+  int loadImage(QString fileName, QImage image, QString basePath = "");
   int loadSpecularMap(QString fileName, QImage specular);
   void calculate_distance();
   void calculate_gradient();

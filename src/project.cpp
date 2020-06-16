@@ -35,6 +35,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
     return 1;
   }
 
+  QString base_path = info.path();
   m_path = project_path;
 
   struct zip_t *zip = zip_open(project_path.toUtf8(), 0, 'r');
@@ -74,7 +75,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
           zip_entry_read(zip, &buf, &bufsize);
           data.append((char*)buf, bufsize);
           diffuse = QImage::fromData(data);
-          p->loadImage(path, diffuse);
+          p->loadImage(path, diffuse, base_path);
         }
         zip_entry_close(zip);
 
