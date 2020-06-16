@@ -747,16 +747,16 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::openGL_initialized()
 {
+  ui->openGLPreviewWidget->add_processor(processor);
+  ui->openGLPreviewWidget->loadTextures();
+
   QString tmpImage = ":/images/sample.png";
   bool success;
   processor_selected(processor, false);
   processor->loadImage(tmpImage, il.loadImage(tmpImage, &success));
-  ui->openGLPreviewWidget->add_processor(processor);
-  ui->openGLPreviewWidget->loadTextures();
-  update_scene();
+
   processor_selected(processor, true);
-  processor->set_light_list(
-      *(ui->openGLPreviewWidget->get_current_light_list_ptr()));
+  processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
   on_comboBoxView_currentIndexChanged(Texture);
   on_actionLoadPlugins_triggered();
 }

@@ -666,7 +666,6 @@ void ImageProcessor::set_normal_bisel_blur_radius(int radius)
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect)
 {
 
-  qDebug() << "generate";
   if (!normal_mutex.tryLock()){
     normal_counter = 1;
     return;
@@ -825,8 +824,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
 CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
-  static int normalqty = 0;
-  qDebug() << "normal" << normalqty++;
   QSize s = current_frame->size();
   float dx, dy;
 

@@ -143,11 +143,13 @@ void OpenGlWidget::initializeGL()
 void OpenGlWidget::loadTextures()
 {
   processor = processorList.at(0);
-  m_texture = new QOpenGLTexture(m_image);
-  m_parallaxTexture = new QOpenGLTexture(parallaxMap);
-  m_specularTexture = new QOpenGLTexture(specularMap);
-  m_normalTexture = new QOpenGLTexture(normalMap);
-  m_occlusionTexture = new QOpenGLTexture(occlusionMap);
+  QImage i(processor->get_texture()->size(), QImage::Format_RGBA8888);
+  i.fill(Qt::transparent);
+  m_texture = new QOpenGLTexture(i);
+  m_parallaxTexture = new QOpenGLTexture(i);
+  m_specularTexture = new QOpenGLTexture(i);
+  m_normalTexture = new QOpenGLTexture(i);
+  m_occlusionTexture = new QOpenGLTexture(i);
   laigterTexture = new QOpenGLTexture(laigter);
   brushTexture = new QOpenGLTexture(laigter);
 }
