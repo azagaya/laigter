@@ -183,6 +183,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       PresetsManager::applyPresetsString(data,p);
       p_list->append(p);
+
     }
 
   }

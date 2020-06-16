@@ -123,14 +123,14 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 ImageProcessor::~ImageProcessor()
 {
   active = false;
-  while (normal_counter > 0)
-    QThread::msleep(10);
-  while (parallax_counter > 0)
-    QThread::msleep(10);
-  while (specular_counter > 0)
-    QThread::msleep(10);
-  while (occlussion_counter > 0)
-    QThread::msleep(10);
+//  while (normal_counter > 0)
+//    QThread::msleep(10);
+//  while (parallax_counter > 0)
+//    QThread::msleep(10);
+//  while (specular_counter > 0)
+//    QThread::msleep(10);
+//  while (occlussion_counter > 0)
+//    QThread::msleep(10);
 }
 
 int ImageProcessor::loadImage(QString fileName, QImage image)
@@ -164,7 +164,10 @@ int ImageProcessor::loadImage(QString fileName, QImage image)
   {
     fill_neighbours(fileName, image);
   }
-
+  normal_counter = 1;
+  specular_counter = 1;
+  parallax_counter = 1;
+  occlussion_counter = 1;
   return 0;
 }
 
@@ -184,18 +187,18 @@ void ImageProcessor::calculate()
 {
   set_current_heightmap(current_frame_id);
   calculate_distance();
-  calculate_heightmap();
-  generate_normal_map();
-  calculate_parallax();
-  calculate_specular();
-  calculate_occlusion();
+//  calculate_heightmap();
+//  generate_normal_map();
+//  calculate_parallax();
+//  calculate_specular();
+//  calculate_occlusion();
 }
 
 void ImageProcessor::recalculate(){
   if (normal_counter > 0)
   {
     QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                      false, QRect(0, 0, 0, 0));
+                      true, QRect(0, 0, 0, 0));
     normal_counter = 0;
   }
   if (specular_counter > 0)
@@ -467,65 +470,56 @@ void ImageProcessor::calculate_distance()
 void ImageProcessor::set_normal_invert_x(bool invert)
 {
   normalInvertX = -invert * 2 + 1;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_invert_y(bool invert)
 {
   normalInvertY = -invert * 2 + 1;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_invert_z(bool invert)
 {
   normalInvertZ = -invert * 2 + 1;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_depth(int depth)
 {
   normal_depth = depth;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, false,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_soft(bool soft)
 {
   normal_bisel_soft = soft;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, false, true,
-                    true, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_blur_radius(int radius)
 {
   normal_blur_radius = radius;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, false,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_depth(int depth)
 {
   normal_bisel_depth = depth;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, false, true,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_distance(int distance)
 {
   normal_bisel_distance = distance;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, false, true,
-                    true, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::set_tileable(bool t)
 {
   tileable = t;
   update_tileable = true;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                    true, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 bool ImageProcessor::get_tileable() { return tileable; }
@@ -666,13 +660,13 @@ CImg<float> ImageProcessor::modify_specular()
 void ImageProcessor::set_normal_bisel_blur_radius(int radius)
 {
   normal_bisel_blur_radius = radius;
-  QtConcurrent::run(this, &ImageProcessor::generate_normal_map, false, true,
-                    false, QRect(0, 0, 0, 0));
+  normal_counter = 1;
 }
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect)
 {
 
+  qDebug() << "generate";
   if (!normal_mutex.tryLock()){
     normal_counter = 1;
     return;
@@ -831,6 +825,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
 CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
+  static int normalqty = 0;
+  qDebug() << "normal" << normalqty++;
   QSize s = current_frame->size();
   float dx, dy;
 
@@ -842,9 +838,9 @@ CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur
   }
   else
   {
-    img.resize(-300,-300,-100,-100,0,2);
+//    img.resize(-300,-300,-100,-100,0,2);
     img.blur(blur_radius/3.0);
-    img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
+//    img.crop(s.width(),s.height(),2*s.width()-1, 2*s.height()-1);
   }
   int xs, xe, ys, ye;
   if (r == QRect(0, 0, 0, 0))
@@ -943,7 +939,9 @@ int ImageProcessor::get_normal_invert_x() { return normalInvertX; }
 
 int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
 
-QImage *ImageProcessor::get_texture() { return &texture; }
+QImage *ImageProcessor::get_texture() {
+  return &texture;
+}
 
 QImage *ImageProcessor::get_normal()
 {
@@ -1503,10 +1501,22 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
     case QImage::Format_Grayscale8:
       channels = 1;
       break;
+    case QImage::Format_ARGB32:
+      channels = 4;
+      in.convertTo(QImage::Format_RGBA8888);
+      break;
+    case QImage::Format_ARGB32_Premultiplied:
+      channels = 4;
+      in.convertTo(QImage::Format_RGBA8888_Premultiplied);
+      break;
     default:
       channels = 0;
   }
 
+  if (channels == 0)
+  {
+    channels = 0;
+  }
   int w = in.width(), h = in.height();
 
   //  CImg<uchar> srt(in.bits(), channels, w, h, 1);
