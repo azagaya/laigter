@@ -56,6 +56,15 @@ enum class ParallaxType
   Intervals
 };
 
+class Request
+{
+public:
+    bool needed = false;
+    ProcessedImage type;
+    QVector<int> params;
+    QRect rect = QRect(0,0,0,0);
+};
+
 class ProcessorSettings
 {
 public:
@@ -163,7 +172,8 @@ private:
   float sx, sy;
   float zoom;
   int current_frame_id = 0;
-  int enhance_requested = 0, bump_requested = 0, distance_requested = 0;
+  bool enhance_requested = false, bump_requested = false, distance_requested = false;
+  QRect rect_requested = QRect(0,0,0,0);
   int normalInvertX, normalInvertY, normalInvertZ;
   int normal_bisel_blur_radius;
   int normal_bisel_depth;

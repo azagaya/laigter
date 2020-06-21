@@ -116,7 +116,6 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 
   recalculate_timer.setInterval(100);
   recalculate_timer.setSingleShot(false);
-  recalculate_timer.start();
 
 }
 
@@ -171,10 +170,8 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   {
     fill_neighbours(fileName, image);
   }
-  normal_counter = 1;
-  specular_counter = 1;
-  parallax_counter = 1;
-  occlussion_counter = 1;
+
+  recalculate_timer.start();
   return 0;
 }
 
@@ -194,18 +191,22 @@ void ImageProcessor::calculate()
 {
   set_current_heightmap(current_frame_id);
   calculate_distance();
-  //  calculate_heightmap();
-  //  generate_normal_map();
-  //  calculate_parallax();
-  //  calculate_specular();
-  //  calculate_occlusion();
+    calculate_heightmap();
+    generate_normal_map();
+    calculate_parallax();
+    calculate_specular();
+    calculate_occlusion();
 }
 
 void ImageProcessor::recalculate(){
-  if (normal_counter > 0)
+  if (normal_counter > 0 && normal_mutex.tryLock())
   {
-    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, true, true,
-                      true, QRect(0, 0, 0, 0));
+
+      normal_mutex.unlock();
+    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, enhance_requested, bump_requested,
+                      distance_requested, rect_requested);
+    enhance_requested = bump_requested = distance_requested = false;
+    rect_requested = QRect(0,0,0,0);
     normal_counter = 0;
   }
   if (specular_counter > 0)
@@ -457,10 +458,6 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height)
   return 0;
 }
 
-void ImageProcessor::set_name(QString name) { m_name = name; }
-
-QString ImageProcessor::get_name() { return m_name; }
-
 void ImageProcessor::calculate_gradient() {}
 
 void ImageProcessor::calculate_distance()
@@ -477,55 +474,75 @@ void ImageProcessor::calculate_distance()
 void ImageProcessor::set_normal_invert_x(bool invert)
 {
   normalInvertX = -invert * 2 + 1;
+  bump_requested = enhance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
+
+void ImageProcessor::set_name(QString name) { m_name = name; }
+
+QString ImageProcessor::get_name() { return m_name; }
 
 void ImageProcessor::set_normal_invert_y(bool invert)
 {
   normalInvertY = -invert * 2 + 1;
+  bump_requested = enhance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_invert_z(bool invert)
 {
   normalInvertZ = -invert * 2 + 1;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_depth(int depth)
 {
   normal_depth = depth;
+  enhance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_soft(bool soft)
 {
   normal_bisel_soft = soft;
+  bump_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_blur_radius(int radius)
 {
   normal_blur_radius = radius;
+  enhance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_depth(int depth)
 {
   normal_bisel_depth = depth;
+  bump_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_normal_bisel_distance(int distance)
 {
   normal_bisel_distance = distance;
+  bump_requested = distance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::set_tileable(bool t)
 {
   tileable = t;
-  update_tileable = true;
+  update_tileable = bump_requested = enhance_requested = distance_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
@@ -667,14 +684,19 @@ CImg<float> ImageProcessor::modify_specular()
 void ImageProcessor::set_normal_bisel_blur_radius(int radius)
 {
   normal_bisel_blur_radius = radius;
+  bump_requested = true;
+  rect_requested = QRect(0,0,0,0);
   normal_counter = 1;
 }
 
 void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bool updateDistance, QRect rect)
 {
 
+    qDebug() << "generate";
   if (!normal_mutex.tryLock()){
     normal_counter = 1;
+    enhance_requested = bump_requested = distance_requested = true;
+    rect_requested = rect_requested.united(rect);
     return;
   }
 
@@ -722,13 +744,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     m_height_ov =  calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
   }
 
-  if (updateEnhance)
-    enhance_requested=1;
-  if (updateBump)
-    bump_requested=1;
-  if (updateDistance)
-    distance_requested=1;
-
   for (int i = 0; i < frames.count(); i++)
   {
     if (update_tileable || frames.count() > 1 )
@@ -744,7 +759,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       distance_requested = true;
     }
 
-    if (enhance_requested || frames.count() > 1 )
+    if (updateEnhance || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
       {
@@ -752,12 +767,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       }
     }
 
-    if (distance_requested || frames.count() > 1)
+    if (updateDistance || frames.count() > 1)
     {
       new_distance = modify_distance();
     }
 
-    if (bump_requested || frames.count() > 1 )
+    if (updateBump || frames.count() > 1 )
     {
       for (int i = 0; i < rlist.count(); i++)
       {
@@ -815,15 +830,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     normal_ready.unlock();
 
   }
-
-  if (enhance_requested)
-    enhance_requested--;
-
-  if (distance_requested)
-    distance_requested--;
-
-  if (bump_requested)
-    bump_requested--;
 
   processed();
   normal_mutex.unlock();
@@ -1516,7 +1522,6 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
     default:
       channels = 0;
   }
-
   if (channels == 0)
   {
     channels = 0;
