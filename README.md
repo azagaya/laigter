@@ -91,79 +91,77 @@ And thats all the test i could make before i had to return the MAC.
 
 Laigter can be used from the command line with following options:
 
-* -?, -h, --help
+``` -?, -h, --help ```
 Displays help on commandline options.
 
-* --help-all
+``` --help-all ```
 Displays help including Qt specific options.
 
-* -v, --version
+``` -v, --version ```
 Displays version information.
 
-* -s, --software-opengl
+``` -s, --software-opengl ```
 Use software opengl renderer.
 
-* -g, --no-gui
+``` -g, --no-gui ```
 Do not start graphical interface.
 
-* -d, --diffuse <diffuse texture path>
+``` -d, --diffuse <diffuse texture path> ```
 Diffuse texture to load.
 
-* -n, --normal
+``` -n, --normal ```
 Generate normals texture.
 
-* -c, --specular
+``` -c, --specular ```
 Generate specular texture.
 
-* -o, --occlusion
+``` -o, --occlusion ```
 Generate occlusion teture.
 
-* -p, --parallax
+``` -p, --parallax ```
 Generate parallax textures.
 
-* -r, --preset <preset file path>
+``` -r, --preset <preset file path> ```
 Preset file to use for texture generation.
 
-* --qmljsdebugger <value>
+``` --qmljsdebugger <value> ```
 Activcates the QML/JS debugger with the specified port. The value must be of format port:1234[block] "block" makes the application wait for a connection.
 
-* --platform <platformName[:options]> 
+``` --platform <platformName[:options]> ```
 QPA plugin. See QGuiAplication documentation for available options for eah plugin.
 
-* --platformpluginpath <path>
+``` --platformpluginpath <path> ```
 Path to the platform plugins.
 
-* --platformtheme <theme>
+``` --platformtheme <theme> ```
 Platform theme.
 
-* --plguin <plugin>
+``` --plguin <plugin> ```
 Additional plugins to load. Can be specified multiple times.
 
-* --qwindowgeometry <geometry>
+``` --qwindowgeometry <geometry> ```
 Window geometry for the main windows, using the X11-syntax, lie 100x100+50+50.
 
-* --qwindowicon <icon>
+``` --qwindowicon <icon> ```
 Default window icon.
 
-* --qwindowtitle <title>
+``` --qwindowtitle <title> ```
 Title of the first window.
 
-* --revers
+``` --revers ```
 Sets the application's layout direction to Qt:RightToLeft (debugging helper).
 
-* --session <session>
+``` --session <session> ```
 Restores the application from an earlier session.
 
 ### Examples for command line
 
 Some basic example for common usages:
 
-* <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n ```
 Exporting a normals texture of the specified diffuse texture using the default profile.
 
-* <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n -c -o -p
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n -c -o -p ```
 Exporting a normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
 
-* <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p
-
-`<path>/laigter.exe -d "<pathToDiffuse>/myDiffuse.png" -n"`
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p ```
