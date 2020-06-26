@@ -23,7 +23,6 @@
 #include "src/light_source.h"
 #include "src/sprite.h"
 
-
 #include <QBrush>
 #include <QFuture>
 #include <QImage>
@@ -59,10 +58,10 @@ enum class ParallaxType
 class Request
 {
 public:
-    bool needed = false;
-    ProcessedImage type;
-    QVector<int> params;
-    QRect rect = QRect(0,0,0,0);
+  bool needed = false;
+  ProcessedImage type;
+  QVector<int> params;
+  QRect rect = QRect(0, 0, 0, 0);
 };
 
 class ProcessorSettings
@@ -119,7 +118,7 @@ public:
   QImage specular, last_specular;
   QImage specularOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QImage specular_base;
-  QImage texture;
+  QImage texture, last_texture;
   QImage textureOverlay = QImage(0, 0, QImage::Format_RGBA8888);
   QMutex heightmap_overlay_mutex;
   QMutex normal_overlay_mutex;
@@ -173,7 +172,7 @@ private:
   float zoom;
   int current_frame_id = 0;
   bool enhance_requested = false, bump_requested = false, distance_requested = false;
-  QRect rect_requested = QRect(0,0,0,0);
+  QRect rect_requested = QRect(0, 0, 0, 0);
   int normalInvertX, normalInvertY, normalInvertZ;
   int normal_bisel_blur_radius;
   int normal_bisel_depth;
@@ -219,13 +218,14 @@ public:
   void calculate_distance();
   void calculate_gradient();
   void calculate_heightmap();
-  cimg_library::CImg<float> calculate_normal(cimg_library::CImg<float> in, int depth, int blur_radius, QRect r = QRect(0,0,0,0));
+  void calculate_texture();
+  cimg_library::CImg<float> calculate_normal(cimg_library::CImg<float> in, int depth, int blur_radius, QRect r = QRect(0, 0, 0, 0));
   void generate_normal_map(bool updateEnhance = true, bool updateBump = true,
                            bool updateDistance = true,
                            QRect rect = QRect(0, 0, 0, 0));
   void set_name(QString name);
   QImage get_normal_overlay();
-  QImage *get_texture_overlay();
+  QImage get_texture_overlay();
   QImage get_heightmap_overlay();
   QImage get_occlusion_overlay();
   QImage get_parallax_overlay();

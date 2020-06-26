@@ -144,10 +144,12 @@ int main(int argc, char *argv[])
     auximage = il.loadImage(inputDiffuseTextureOptionValue, &success);
     auximage =
         auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-    processor->loadImage(inputDiffuseTextureOptionValue, auximage);
-
     if (!pressetOptionValue.trimmed().isEmpty())
+    {
+      processor->recalculate_timer.stop();
       PresetsManager::applyPresets(pressetOptionValue, *processor);
+    }
+    processor->loadImage(inputDiffuseTextureOptionValue, auximage);
 
     QString pathWithoutExtension =
         info.absoluteFilePath().remove("." + suffix);
@@ -202,7 +204,8 @@ int main(int argc, char *argv[])
       delete processor;
 
     /* Load Project if dropped. Only supports one project */
-    if (argsParser.positionalArguments().count() > 0){
+    if (argsParser.positionalArguments().count() > 0)
+    {
       QString project_path = argsParser.positionalArguments().at(0);
       w.LoadProject(project_path);
     }

@@ -25,8 +25,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStandardPaths>
-#include <QThread>
 #include <QTextCodec>
+#include <QThread>
 
 static QString presetCodes[30] = {"EnhanceHeight ",
                                   "EnhanceSoft ",
@@ -162,7 +162,7 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
   if (preset.open(QIODevice::WriteOnly))
   {
     QTextStream in(&preset);
-    in.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    in.setCodec(QTextCodec::codecForName("UTF-8"));
     in << "[Laigter Preset]";
     bool saveLights = false;
     QTreeWidgetItemIterator it(ui->treeWidget);
@@ -468,7 +468,6 @@ void PresetsManager::SaveAllPresets(ImageProcessor *p, QString path)
   QList<LightSource *> pLightList;
   pLightList.clear();
 
-
   ProcessorSettings settings = p->get_settings();
   foreach (LightSource *light, *(settings.lightList))
   {
@@ -514,10 +513,11 @@ void PresetsManager::SaveAllPresets(ImageProcessor *p, QString path)
   {
     QTextStream in(&preset);
     in << "[Laigter Preset]";
-    in.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    in.setCodec(QTextCodec::codecForName("UTF-8"));
     for (int i = 0; i < 30; i++)
     {
-      in << "\n" << presetCodes[i] << "\t" << currentValues[i];
+      in << "\n"
+         << presetCodes[i] << "\t" << currentValues[i];
     }
 
     foreach (LightSource *light, pLightList)
@@ -544,5 +544,4 @@ void PresetsManager::SaveAllPresets(ImageProcessor *p, QString path)
 
     preset.close();
   }
-
 }

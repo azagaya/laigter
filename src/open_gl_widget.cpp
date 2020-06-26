@@ -24,13 +24,14 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
+#include <QImageWriter>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLVersionProfile>
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
-#include <QImageWriter>
 
-float devicePixelRatioF(){
+float devicePixelRatioF()
+{
   return 0.5;
 }
 
@@ -41,7 +42,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   laigter = QImage(":/images/laigter_texture.png");
   ambientColor = QColor("white");
   ambientIntensity = 0.8f;
-  lightPosition = QVector3D(0.4f*width()*devicePixelRatioF(), 0.4f*height()*devicePixelRatioF(), 0.3f);
+  lightPosition = QVector3D(0.4f * width() * devicePixelRatioF(), 0.4f * height() * devicePixelRatioF(), 0.3f);
   m_light = true;
   m_parallax = false;
   parallax_height = 0.03f;
@@ -67,7 +68,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   refreshTimer.setSingleShot(false);
   connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(force_update()));
   refreshTimer.start();
-  need_to_update = true;
+  need_to_update = false;
   export_render = false;
   exportFullView = false;
   addLight = false;
@@ -186,7 +187,7 @@ void OpenGlWidget::update_scene()
   glClear(GL_COLOR_BUFFER_BIT);
 
   defaultFramebufferObject();
-  glViewport(0,0,m_width,m_height);
+  glViewport(0, 0, m_width, m_height);
 
   QVector3D color;
   double r, g, b;
@@ -196,10 +197,10 @@ void OpenGlWidget::update_scene()
   int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
   int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
-  QVector3D viewport_size(m_width,m_height,1.0);
+  QVector3D viewport_size(m_width, m_height, 1.0);
 
   projection.setToIdentity();
-  projection.ortho(-0.5*m_width,0.5*m_width, -0.5*m_height,0.5*m_height,-1,1);
+  projection.ortho(-0.5 * m_width, 0.5 * m_width, -0.5 * m_height, 0.5 * m_height, -1, 1);
 
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
@@ -210,13 +211,14 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("toon", m_toon);
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
-  m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
-  m_program.setUniformValue("zoom",m_global_zoom);
+  m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
+  m_program.setUniformValue("zoom", m_global_zoom);
   apply_light_params(projection, view);
   foreach (ImageProcessor *processor, processorList)
   {
     if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
     {
+      m_image = *processor->get_texture();
       setImage(&m_image);
     }
     if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
@@ -240,19 +242,18 @@ void OpenGlWidget::update_scene()
     QVector3D texPos = *processor->get_position();
     transform.translate(texPos);
 
-    float scaleX = !processor->get_tile_x() ? 0.5*m_image.width() : 1.5*m_image.width();
-    float scaleY = !processor->get_tile_y() ? 0.5*m_image.height() : 1.5*m_image.height();
+    float scaleX = !processor->get_tile_x() ? 0.5 * m_image.width() : 1.5 * m_image.width();
+    float scaleY = !processor->get_tile_y() ? 0.5 * m_image.height() : 1.5 * m_image.height();
 
     /* Adjust for retina and apply individual zoom*/
     scaleX *= devicePixelRatioF();
     scaleY *= devicePixelRatioF();
 
-
     transform.rotate(processor->get_rotation(), QVector3D(0, 0, 1));
 
     transform.scale(scaleX, scaleY, 1);
-    float zoomX =  processor->get_zoom() ;
-    float zoomY = processor->get_zoom() ;
+    float zoomX = processor->get_zoom();
+    float zoomY = processor->get_zoom();
     transform.scale(zoomX, zoomY, 1);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
@@ -277,17 +278,17 @@ void OpenGlWidget::update_scene()
 
     glActiveTexture(GL_TEXTURE0);
 
-    m_program.setUniformValue("transform", projection*view*transform);
+    m_program.setUniformValue("transform", projection * view * transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
-    float rotation = M_PI/180.0*processor->get_rotation();
-    m_program.setUniformValue("rotation_angle", rotation+global_rotation);
-    zoomX = processor->get_tile_x() ? 1.0/3 : 1;
-    zoomY = processor->get_tile_y() ? 1.0/3 : 1;
-    m_program.setUniformValue("ratio", QVector2D(1  / zoomX, 1  / zoomY));
+    float rotation = M_PI / 180.0 * processor->get_rotation();
+    m_program.setUniformValue("rotation_angle", rotation + global_rotation);
+    zoomX = processor->get_tile_x() ? 1.0 / 3 : 1;
+    zoomY = processor->get_tile_y() ? 1.0 / 3 : 1;
+    m_program.setUniformValue("ratio", QVector2D(1 / zoomX, 1 / zoomY));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
@@ -327,8 +328,8 @@ void OpenGlWidget::update_scene()
   {
     foreach (LightSource *light, currentLightList)
     {
-      float x = static_cast<float>(laigter.width())*0.125 / m_global_zoom;
-      float y = static_cast<float>(laigter.height())*0.125 / m_global_zoom;
+      float x = static_cast<float>(laigter.width()) * 0.125 / m_global_zoom;
+      float y = static_cast<float>(laigter.height()) * 0.125 / m_global_zoom;
       /* Fix for retina */
       x *= devicePixelRatioF();
       y *= devicePixelRatioF();
@@ -339,7 +340,7 @@ void OpenGlWidget::update_scene()
       lightProgram.bind();
       lightVAO.bind();
 
-      lightProgram.setUniformValue("transform", projection*view*transform);
+      lightProgram.setUniformValue("transform", projection * view * transform);
       laigterTexture->bind(0);
 
       if (m_light)
@@ -382,11 +383,11 @@ void OpenGlWidget::update_scene()
     QPointF cursor = mapFromGlobal(QCursor::pos());
     cursor = LocalToWorld(cursor);
     transform.setToIdentity();
-    transform.translate(floor(cursor.x())+0.5, floor(cursor.y())-0.5);
+    transform.translate(floor(cursor.x()) + 0.5, floor(cursor.y()) - 0.5);
     transform.scale(x, y, 1);
     cursorProgram.bind();
     lightVAO.bind();
-    cursorProgram.setUniformValue("transform", projection*view*transform);
+    cursorProgram.setUniformValue("transform", projection * view * transform);
     brushTexture->bind(0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                     GL_LINEAR_MIPMAP_LINEAR);
@@ -425,8 +426,8 @@ void OpenGlWidget::setImage(QImage *image)
 
   m_texture->create();
   m_texture->setData(*image);
-  sx = (float)image->width() /m_width;
-  sy = (float)image->height() /m_height;
+  sx = (float)image->width() / m_width;
+  sy = (float)image->height() / m_height;
   pixelsX = image->width();
   pixelsY = image->height();
 }
@@ -461,7 +462,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 
 void OpenGlWidget::setZoom(float zoom)
 {
-  m_global_zoom = zoom*devicePixelRatioF();
+  m_global_zoom = zoom * devicePixelRatioF();
   updateView();
 }
 
@@ -496,21 +497,20 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
   if (!degree.isNull() && degree.y() != 0)
   {
 
-    double zoom = degree.y() > 0 ?  1.1 :  0.9 ;
+    double zoom = degree.y() > 0 ? 1.1 : 0.9;
 
-    double dx = (1-1.0/zoom)*(mouse_position.x()+origin.x());
-    double dy = (1-1.0/zoom)*(mouse_position.y()+origin.y());
+    double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
+    double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
 
-    origin -= QVector3D(dx,dy,0);
+    origin -= QVector3D(dx, dy, 0);
 
-    setZoom(zoom*m_global_zoom);
+    setZoom(zoom * m_global_zoom);
   }
-
 }
 
 void OpenGlWidget::resetZoom()
-{  
-  origin = QVector3D(0,0,0);
+{
+  origin = QVector3D(0, 0, 0);
   setZoom(1.0);
 }
 
@@ -539,7 +539,7 @@ void OpenGlWidget::fitZoom()
     y_min = currentLightList.at(0)->get_light_position().y();
     y_max = y_min;
     /* Get min and max from lights positions */
-    foreach(LightSource *s, currentLightList)
+    foreach (LightSource *s, currentLightList)
     {
       float x = s->get_light_position().x();
       float y = s->get_light_position().y();
@@ -565,10 +565,10 @@ void OpenGlWidget::fitZoom()
    * Change the 0.125 if we change light icon size.
    * It comes from the 0.25 texture scale times 0.5 for each side
    */
-    x_min -= laigter.width()*0.125;
-    x_max += laigter.width()*0.125;
-    y_min -= laigter.height()*0.125;
-    y_max += laigter.height()*0.125;
+    x_min -= laigter.width() * 0.125;
+    x_max += laigter.width() * 0.125;
+    y_min -= laigter.height() * 0.125;
+    y_max += laigter.height() * 0.125;
   }
   else
   {
@@ -577,10 +577,10 @@ void OpenGlWidget::fitZoom()
     y_min = get_current_processor()->get_position()->y();
     y_max = y_min;
   }
-  foreach(ImageProcessor *p, processorList)
+  foreach (ImageProcessor *p, processorList)
   {
-    float w = p->get_texture()->width()/2.0;
-    float h = p->get_texture()->height()/2.0;
+    float w = p->get_texture()->width() / 2.0;
+    float h = p->get_texture()->height() / 2.0;
     if (x_min > p->get_position()->x() - w)
     {
       x_min = p->get_position()->x() - w;
@@ -593,7 +593,7 @@ void OpenGlWidget::fitZoom()
     {
       y_min = p->get_position()->y() - h;
     }
-    if (y_max < p->get_position()->y() + h )
+    if (y_max < p->get_position()->y() + h)
     {
       y_max = p->get_position()->y() + h;
     }
@@ -603,18 +603,17 @@ void OpenGlWidget::fitZoom()
   float dy = y_max - y_min;
   dx *= devicePixelRatioF();
   dy *= devicePixelRatioF();
-  float zoom =m_width/dx;
-  if (height()/dy < zoom)
+  float zoom = m_width / dx;
+  if (height() / dy < zoom)
   {
-    zoom =m_height/dy;
+    zoom = m_height / dy;
   }
   setZoom(zoom);
 
-  origin.setX(-0.5*(x_max + x_min));
-  origin.setY(-0.5*(y_max + y_min));
+  origin.setX(-0.5 * (x_max + x_min));
+  origin.setY(-0.5 * (y_max + y_min));
 
   updateView();
-
 }
 
 float OpenGlWidget::getZoom()
@@ -632,6 +631,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     QPoint tpos;
     tpos = global_mouse_press_position.toPoint();
     oldPos = tpos;
+    currentBrush->setProcessor(&processor);
     currentBrush->mousePress(tpos);
   }
 
@@ -675,8 +675,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
         foreach (LightSource *light, *currentLightList)
         {
           lightPosition = light->get_light_position();
-          if (qAbs(global_mouse_press_position.x() - lightPosition.x()) <  0.5 * lightWidth  &&
-              qAbs(global_mouse_press_position.y() - lightPosition.y()) <  0.5 * lightHeight &&
+          if (qAbs(global_mouse_press_position.x() - lightPosition.x()) < 0.5 * lightWidth &&
+              qAbs(global_mouse_press_position.y() - lightPosition.y()) < 0.5 * lightHeight &&
               m_light)
           {
             lightSelected = true;
@@ -697,10 +697,10 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       {
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(global_mouse_press_position) - *processor->get_position());
-        float w = processor->get_tile_x() ? 3.0*processor->texture.width() : processor->texture.width();
-        float h = processor->get_tile_y() ? 3.0*processor->texture.height() : processor->texture.height();
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w*processor->get_zoom()*0.5 &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h*processor->get_zoom()*0.5 &&
+        float w = processor->get_tile_x() ? 3.0 * processor->texture.width() : processor->texture.width();
+        float h = processor->get_tile_y() ? 3.0 * processor->texture.height() : processor->texture.height();
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
             not selected)
         {
           processor_selected = true;
@@ -791,7 +791,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     {
       QVector3D new_point = QVector3D(local_mouse_last_position).normalized();
       QVector3D prev_point = QVector3D(local_mouse_press_position).normalized();
-      float delta_rotation = acos(QVector3D::dotProduct(new_point,prev_point));
+      float delta_rotation = acos(QVector3D::dotProduct(new_point, prev_point));
       if (prev_point.x() > 0)
       {
         delta_rotation *= prev_point.y() < new_point.y() ? 1 : -1;
@@ -838,11 +838,8 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
           QVector3D new_position((int)(global_mouse_last_position.x() - processor->get_offset()->x()),
                                  (int)(global_mouse_last_position.y() - processor->get_offset()->y()), 0.0);
           processor->set_position(new_position);
-
         }
       }
-
-
     }
     need_to_update = true;
   }
@@ -863,16 +860,16 @@ float OpenGlWidget::UnwrapAngle(float angle)
 {
   if (angle < 0)
   {
-    angle += 2*M_PI;
+    angle += 2 * M_PI;
   }
-  return fmod(angle,2*M_PI);
+  return fmod(angle, 2 * M_PI);
 }
 
 float OpenGlWidget::FixAngle(float angle, int step, float tol)
 {
-  for (float i = 0; i < 2*M_PI; i += M_PI/step)
+  for (float i = 0; i < 2 * M_PI; i += M_PI / step)
   {
-    if (abs(angle - i) < tol*M_PI/180.0)
+    if (abs(angle - i) < tol * M_PI / 180.0)
     {
       angle = i;
       break;
@@ -881,11 +878,12 @@ float OpenGlWidget::FixAngle(float angle, int step, float tol)
   return angle;
 }
 
-void OpenGlWidget::updateView(){
+void OpenGlWidget::updateView()
+{
   view.setToIdentity();
   origin.setZ(0);
   view.scale(m_global_zoom);
-  view.rotate(global_rotation*180/M_PI, 0,0,1);
+  view.rotate(global_rotation * 180 / M_PI, 0, 0, 1);
   view.translate(origin);
   need_to_update = true;
 }
@@ -998,7 +996,6 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QString suffix;
     QFileInfo info;
 
-
     if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
     {
       setImage(&m_image);
@@ -1020,8 +1017,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       setOcclusionMap(&occlusionMap);
     }
 
-    int w = m_image.width()*devicePixelRatioF();
-    int h = m_image.height()*devicePixelRatioF();
+    int w = m_image.width() * devicePixelRatioF();
+    int h = m_image.height() * devicePixelRatioF();
     QOpenGLFramebufferObject frameBuffer(w, h);
 
     QVector3D texPos = *processor->get_position();
@@ -1029,13 +1026,13 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QMatrix4x4 transform, projection, view;
 
     projection.setToIdentity();
-    projection.ortho(-0.5*w,0.5*w, -0.5*h,0.5*h,-1,1);
+    projection.ortho(-0.5 * w, 0.5 * w, -0.5 * h, 0.5 * h, -1, 1);
 
     transform.setToIdentity();
     transform.translate(texPos);
 
-    float scaleX = 0.5*w;
-    float scaleY = 0.5*h;
+    float scaleX = 0.5 * w;
+    float scaleY = 0.5 * h;
 
     /* Adjust for retina */
     scaleX *= devicePixelRatioF();
@@ -1078,7 +1075,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("view_mode", Preview);
-    m_program.setUniformValue("transform", projection*view*transform);
+    m_program.setUniformValue("transform", projection * view * transform);
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
@@ -1108,7 +1105,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     scaleX = !processor->get_tile_x() ? sx : 1;
     scaleY = !processor->get_tile_y() ? sy : 1;
 
-    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(),-texPos.y(),10));
+    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 10));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);
 
@@ -1147,11 +1144,10 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       }
       renderedPreview.save(aux);
     }
-
   }
   else
   {
-    QOpenGLFramebufferObject frameBuffer(m_width,m_height);
+    QOpenGLFramebufferObject frameBuffer(m_width, m_height);
     frameBuffer.bind();
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -1164,10 +1160,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     int i1 =
         m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
-    int xmin =m_width, xmax = 0, ymin =m_height, ymax = 0;
+    int xmin = m_width, xmax = 0, ymin = m_height, ymax = 0;
 
     QMatrix4x4 transform;
-
 
     m_program.setUniformValue("view_mode", Preview);
     m_program.setUniformValue("pixelated", m_pixelated);
@@ -1178,8 +1173,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("selected", false);
     m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("height_scale", parallax_height);
-    m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor/100.0));
-    m_program.setUniformValue("zoom",m_global_zoom);
+    m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
+    m_program.setUniformValue("zoom", m_global_zoom);
 
     foreach (ImageProcessor *processor, processorList)
     {
@@ -1187,15 +1182,15 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       QPointF local_tex_position = WorldToLocal(tex_position);
       QSize tex_size(processor->get_texture()->size());
       /* Calculate positions for cropping after rendering */
-      int xi = local_tex_position.x() - tex_size.width()/2;
-      int xf = local_tex_position.x() + tex_size.width()/2;
-      int yi = local_tex_position.y() - tex_size.height()/2;
-      int yf = local_tex_position.y() + tex_size.height()/2;
+      int xi = local_tex_position.x() - tex_size.width() / 2;
+      int xf = local_tex_position.x() + tex_size.width() / 2;
+      int yi = local_tex_position.y() - tex_size.height() / 2;
+      int yf = local_tex_position.y() + tex_size.height() / 2;
 
       if (processor->get_tile_x())
       {
         xmin = 0;
-        xmax =m_width - 1;
+        xmax = m_width - 1;
       }
       else
       {
@@ -1208,7 +1203,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       if (processor->get_tile_y())
       {
         ymin = 0;
-        ymax =m_height - 1;
+        ymax = m_height - 1;
       }
       else
       {
@@ -1368,7 +1363,7 @@ void OpenGlWidget::apply_light_params(QMatrix4x4 projection, QMatrix4x4 view)
     QVector3D light_position = light->get_light_position();
     light_position.setZ(-light_position.z());
 
-    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(),projection*view*light_position);
+    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), projection * view * light_position);
     m_program.setUniformValue((Light + ".lightColor").toUtf8().constData(),
                               color);
     light->get_specular_color().getRgbF(&r, &g, &b, nullptr);
@@ -1448,7 +1443,8 @@ void OpenGlWidget::set_processor_list(QList<ImageProcessor *> list)
   processorList = list;
 }
 
-QList<ImageProcessor *> *OpenGlWidget::get_processor_list(){
+QList<ImageProcessor *> *OpenGlWidget::get_processor_list()
+{
   return &processorList;
 }
 
@@ -1513,24 +1509,24 @@ void OpenGlWidget::set_current_light_list(QList<LightSource *> *list)
 QPointF OpenGlWidget::LocalToView(QPointF local)
 {
   QPointF view;
-  view.setX( local.x()*devicePixelRatioF()-0.5*m_width);
-  view.setY( -local.y()*devicePixelRatioF()+0.5*m_height);
+  view.setX(local.x() * devicePixelRatioF() - 0.5 * m_width);
+  view.setY(-local.y() * devicePixelRatioF() + 0.5 * m_height);
   return view;
 }
 
 QPointF OpenGlWidget::LocalToWorld(QPointF local)
 {
   QVector3D local_position = QVector3D(LocalToView(local));
-  QVector3D world_position = view.inverted()*local_position;
+  QVector3D world_position = view.inverted() * local_position;
   return QPointF(world_position.x(), world_position.y());
 }
 
 QPointF OpenGlWidget::WorldToLocal(QPointF world)
 {
   QVector3D world_position(world);
-  QVector3D view_position = view*world_position;
+  QVector3D view_position = view * world_position;
   QVector3D local_position;
-  local_position.setX((view_position.x()+0.5*m_width)/devicePixelRatioF());
-  local_position.setY((view_position.y()+0.5*m_height)/devicePixelRatioF());
+  local_position.setX((view_position.x() + 0.5 * m_width) / devicePixelRatioF());
+  local_position.setY((view_position.y() + 0.5 * m_height) / devicePixelRatioF());
   return QPointF(local_position.x(), local_position.y());
 }

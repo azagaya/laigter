@@ -35,6 +35,8 @@
 #include <QDockWidget>
 #include <QDragEnterEvent>
 #include <QFileDialog>
+#include <QImageReader>
+#include <QImageWriter>
 #include <QJsonObject>
 #include <QListWidgetItem>
 #include <QMenu>
@@ -43,8 +45,6 @@
 #include <QPluginLoader>
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
-#include <QImageReader>
-#include <QImageWriter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -170,7 +170,7 @@ MainWindow::MainWindow(QWidget *parent)
   sprite_dock->setFeatures(QDockWidget::DockWidgetMovable);
   sprite_dock->setObjectName("SpriteDock");
   addDockWidget(Qt::RightDockWidgetArea, sprite_dock);
-  tabifyDockWidget(sprite_dock,ui->visualizationDockWidget);
+  tabifyDockWidget(sprite_dock, ui->visualizationDockWidget);
   connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
@@ -219,13 +219,11 @@ void MainWindow::setCurrentItem(QListWidgetItem *i)
     p = sample_processor;
   }
   animation_dock->setVisible(p->frames.count() > 1);
-//  if (p->frames.count() > 1)
+  //  if (p->frames.count() > 1)
   {
     animation_widget->setCurrentProcessor(p);
     sprite_widget->SetCurrentProcessor(p);
-
   }
-
 }
 
 void MainWindow::showContextMenuForListWidget(const QPoint &pos)
@@ -269,7 +267,9 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
 
     contextMenu.addAction(nextFrame);
     contextMenu.addAction(prevFrame);
-  } else {
+  }
+  else
+  {
     contextMenu.addAction(new QAction(tr("Split in frames")));
   }
 
@@ -280,17 +280,21 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
              SLOT(list_menu_action_triggered(QAction *)));
 }
 
-void MainWindow::remove_processor(ImageProcessor *p){
+void MainWindow::remove_processor(ImageProcessor *p)
+{
   QStringList paths;
 
-  for (int i=0; i<p->frames.count(); i++){
+  for (int i = 0; i < p->frames.count(); i++)
+  {
     Sprite frame;
     frame = p->frames[i];
     paths.append(frame.fileName);
     paths.append(frame.heightmapPath);
     paths.append(frame.specularPath);
-    for (int j = 0; j < 3; j++){
-      for (int k = 0; k < 3; k++){
+    for (int j = 0; j < 3; j++)
+    {
+      for (int k = 0; k < 3; k++)
+      {
         paths.append(frame.neighbours_paths[j][k]);
       }
     }
@@ -298,9 +302,11 @@ void MainWindow::remove_processor(ImageProcessor *p){
 
   fs_watcher.removePaths(paths);
 
-  for (int i = 0; i < ui->listWidget->count(); i++){
+  for (int i = 0; i < ui->listWidget->count(); i++)
+  {
     QListWidgetItem *item = ui->listWidget->item(i);
-    if (p->get_name() == item->text()){
+    if (p->get_name() == item->text())
+    {
       delete item;
       break;
     }
@@ -312,7 +318,6 @@ void MainWindow::remove_processor(ImageProcessor *p){
   }
   processorList.removeOne(p);
   p->deleteLater();
-
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action)
@@ -413,17 +418,17 @@ void MainWindow::splitInFrames()
     QImage original;
     processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
     ImageProcessor *n_p = new ImageProcessor;
-    n_p->set_name(processor->get_name()+"(frames)");
+    n_p->set_name(processor->get_name() + "(frames)");
     QString filePath = processor->get_current_frame()->get_file_name();
-    for (int i=0; i<v_frames; i++)
+    for (int i = 0; i < v_frames; i++)
     {
-      for (int j=0; j<h_frames; j++)
+      for (int j = 0; j < h_frames; j++)
       {
-        QString frame_number = QString("%1").arg(j+i*h_frames, (int)(log10(v_frames*h_frames)+1), 10, QChar('0'));
-        QString path = filePath.split(".").join("_"+frame_number+".");
-        QPoint top_left(j*original.width()/h_frames,i*original.height()/v_frames);
-        QSize size(original.width()/h_frames, original.height()/v_frames);
-        n_p->loadImage(path,original.copy(QRect(top_left,size)));
+        QString frame_number = QString("%1").arg(j + i * h_frames, (int)(log10(v_frames * h_frames) + 1), 10, QChar('0'));
+        QString path = filePath.split(".").join("_" + frame_number + ".");
+        QPoint top_left(j * original.width() / h_frames, i * original.height() / v_frames);
+        QSize size(original.width() / h_frames, original.height() / v_frames);
+        n_p->loadImage(path, original.copy(QRect(top_left, size)));
       }
     }
     add_processor(n_p);
@@ -580,7 +585,6 @@ void MainWindow::open_files(QStringList fileNames)
         }
       }
 
-
       ImageProcessor *p = new ImageProcessor();
       int i = 1;
       while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
@@ -629,16 +633,16 @@ void MainWindow::open_files(QStringList fileNames)
         p->set_name(name);
         p->copy_settings(processor->get_settings());
         i = 1;
-        foreach(QImage image, image_list)
+        foreach (QImage image, image_list)
         {
           image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-          p->loadImage(info.absolutePath()+"/"+name+"_"+QString::number(i++)+"."+info.suffix(), image);
+          p->loadImage(info.absolutePath() + "/" + name + "_" + QString::number(i++) + "." + info.suffix(), image);
         }
         add_processor(p);
       }
       else
       {
-        foreach(QImage image, image_list)
+        foreach (QImage image, image_list)
         {
           ImageProcessor *p = new ImageProcessor();
           int i = 1;
@@ -648,7 +652,7 @@ void MainWindow::open_files(QStringList fileNames)
           p->set_name(name);
           p->copy_settings(processor->get_settings());
           image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-          p->loadImage(info.absolutePath()+"/"+name+"."+info.suffix(), image);
+          p->loadImage(info.absolutePath() + "/" + name + "." + info.suffix(), image);
           add_processor(p);
         }
       }
@@ -747,8 +751,6 @@ void MainWindow::on_actionExport_triggered()
 
 void MainWindow::openGL_initialized()
 {
-  ui->openGLPreviewWidget->add_processor(processor);
-  ui->openGLPreviewWidget->loadTextures();
 
   QString tmpImage = ":/images/sample.png";
   bool success;
@@ -759,6 +761,9 @@ void MainWindow::openGL_initialized()
   processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
   on_comboBoxView_currentIndexChanged(Texture);
   on_actionLoadPlugins_triggered();
+
+  ui->openGLPreviewWidget->add_processor(processor);
+  ui->openGLPreviewWidget->loadTextures();
 }
 
 void MainWindow::on_pushButtonColor_clicked()
@@ -1005,13 +1010,13 @@ void MainWindow::on_listWidget_itemSelectionChanged()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
-
-void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination){
+void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination)
+{
   QImage n;
   QString suffix;
   QString name;
   QFileInfo info;
-  for (int i=0; i< p->frames.count(); i++)
+  for (int i = 0; i < p->frames.count(); i++)
   {
     p->frames[i].get_image(type, &n);
     QString file_name = p->frames[i].get_file_name();
@@ -1033,11 +1038,10 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
     }
     else
     {
-      name = destination + "/" +  info.baseName() + postfix + "." + suffix;
+      name = destination + "/" + info.baseName() + postfix + "." + suffix;
     }
 
     n.save(name);
-
   }
 }
 
@@ -1074,7 +1078,7 @@ void MainWindow::on_pushButton_clicked()
     foreach (ImageProcessor *p, processorList)
     {
       ui->openGLPreviewWidget->set_current_processor(p);
-      for (int i=0; i< p->frames.count(); i++)
+      for (int i = 0; i < p->frames.count(); i++)
       {
         p->animation.stop();
         p->set_current_frame_id(i);
@@ -1242,7 +1246,7 @@ void MainWindow::on_pushButtonExportTo_clicked()
       {
         ui->openGLPreviewWidget->set_current_processor(p);
         p->animation.stop();
-        for (int i=0; i< p->frames.count(); i++)
+        for (int i = 0; i < p->frames.count(); i++)
         {
           n = ui->openGLPreviewWidget->get_preview(false, false);
           info = QFileInfo(p->frames[i].get_file_name());
@@ -1467,13 +1471,15 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
   {
     disconnect_processor(p);
   }
-  disconnect_processor(sample_processor);  
+  disconnect_processor(sample_processor);
   processor->set_selected(selected);
-  QList <QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
+  QList<QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
   if (itemList.count() > 0)
   {
     setCurrentItem(itemList.at(0));
-  } else {
+  }
+  else
+  {
     setCurrentItem(nullptr);
   }
   set_enabled_map_controls(false);
@@ -1629,8 +1635,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
   foreach (QAction *action, ui->pluginToolBar->actions())
   {
     /* Had to duplicate the checks because translations were not working at first.. need to check this */
-    if (action->text() == "Load Plugins" || action->text() == "Install Plugin" ||action->text() == "Delete Plugin"
-        || action->text() == tr("Load Plugins") || action->text() == tr("Install Plugin") ||action->text() == tr("Delete Plugin"))
+    if (action->text() == "Load Plugins" || action->text() == "Install Plugin" || action->text() == "Delete Plugin" || action->text() == tr("Load Plugins") || action->text() == tr("Install Plugin") || action->text() == tr("Delete Plugin"))
       continue;
     ui->pluginToolBar->removeAction(action);
   }
@@ -1683,7 +1688,6 @@ void MainWindow::on_actionLoadPlugins_triggered()
       brush_list.append(b);
     }
   }
-
 }
 
 void MainWindow::select_plugin(BrushInterface *b)
@@ -1821,8 +1825,9 @@ void MainWindow::on_actionLoadProject_triggered()
   LoadProject(fileName);
 }
 
-void MainWindow::LoadProject(QString path){
-  QList <ImageProcessor *> newList;
+void MainWindow::LoadProject(QString path)
+{
+  QList<ImageProcessor *> newList;
   QJsonObject general_settings;
   /* Remove Current Processors */
   foreach (ImageProcessor *p, processorList)
@@ -1876,7 +1881,7 @@ void MainWindow::SaveProject(QString path)
   general_settings.insert("viewmode", ui->comboBoxView->currentIndex());
   general_settings.insert("toon", ui->checkBoxToon->isChecked());
   general_settings.insert("pixelated", ui->checkBoxPixelated->isChecked());
-  general_settings.insert("blend",ui->blendSlider->value());
+  general_settings.insert("blend", ui->blendSlider->value());
   general_settings.insert("lights per texture", ui->checkBoxLightsPerTexture->isChecked());
 
   QJsonArray sample_lights;
@@ -1905,11 +1910,10 @@ void MainWindow::SaveProject(QString path)
     light_props.insert("specular scatter", light->get_specular_scatter());
 
     sample_lights.append(light_props);
-
   }
   general_settings.insert("sample lights", sample_lights);
   general_settings.insert("ambient light", ui->horizontalSliderAmbientLight->value());
-  QList<ImageProcessor*> p_list;
+  QList<ImageProcessor *> p_list;
   for (int i = 0; i < ui->listWidget->count(); i++)
   {
     p_list.append(find_processor(ui->listWidget->item(i)->text()));
@@ -1922,8 +1926,6 @@ void MainWindow::on_blendSlider_valueChanged(int value)
   ui->openGLPreviewWidget->blend_factor = value;
   ui->openGLPreviewWidget->need_to_update = true;
 }
-
-
 
 void MainWindow::on_actionSave_Project_As_triggered()
 {
