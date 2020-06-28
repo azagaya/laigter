@@ -170,7 +170,8 @@ MainWindow::MainWindow(QWidget *parent)
   sprite_dock->setFeatures(QDockWidget::DockWidgetMovable);
   sprite_dock->setObjectName("SpriteDock");
   addDockWidget(Qt::RightDockWidgetArea, sprite_dock);
-  tabifyDockWidget(sprite_dock, ui->visualizationDockWidget);
+  tabifyDockWidget(ui->visualizationDockWidget, sprite_dock);
+  ui->visualizationDockWidget->raise();
   connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
