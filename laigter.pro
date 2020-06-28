@@ -21,7 +21,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets network
+QT       += core gui widgets
 
 TARGET = laigter
 TEMPLATE = app
@@ -179,6 +179,7 @@ RESOURCES += \
 	styles.qrc \
 	translations.qrc \
 	icons.qrc
+
 
 win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter_icon.icns
