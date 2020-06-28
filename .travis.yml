@@ -35,7 +35,6 @@ script:
   - make INSTALL_ROOT=appdir install
   - find appdir/
   - mkdir -p appdir/usr/lib/
-  - cp /opt/qt514/lib/libQt5Network.so appdir/usr/lib
 
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi

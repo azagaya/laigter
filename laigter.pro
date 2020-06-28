@@ -21,7 +21,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets network
 
 TARGET = laigter
 TEMPLATE = app

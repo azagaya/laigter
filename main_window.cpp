@@ -46,6 +46,9 @@
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
 
+#include <QtNetwork>
+QNetworkAccessManager manager;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
