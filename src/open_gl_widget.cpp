@@ -629,7 +629,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
-    tpos = global_mouse_press_position.toPoint();
+    tpos = (global_mouse_press_position - QPointF(0.5, 0.5)).toPoint();
     oldPos = tpos;
     currentBrush->setProcessor(&processor);
     currentBrush->mousePress(tpos);
