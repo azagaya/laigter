@@ -16,7 +16,8 @@ addons:
       - qt514tools
       - libgl1-mesa-dev
       - qt514imageformats
-      
+      - libssl1.0.0
+
 before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
         brew update > /dev/null
@@ -34,12 +35,11 @@ script:
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install
   - find appdir/
-  - mkdir -p appdir/usr/lib/
+  - ldconfig -p | grep ssl
 
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage; fi
-
 
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget https://raw.githubusercontent.com/arl/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py; fi
