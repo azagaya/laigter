@@ -36,6 +36,11 @@ script:
   - make INSTALL_ROOT=appdir install
   - find appdir/
   - ldconfig -p | grep ssl
+  - mkdir -p appdir/usr/lib
+
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+    cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 appdir/usr/lib
+    cp /usr/lib/x86_64-linux-gnu/libssl.so appdir/usr/lib
 
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
