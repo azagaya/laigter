@@ -162,6 +162,7 @@ Some basic example for common usages:
 Exporting a normals texture of the specified diffuse texture using the default profile.
 
 ``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n -c -o -p ```
-Exporting a normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
 
 ``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p ```
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.
