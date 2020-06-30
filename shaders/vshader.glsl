@@ -16,14 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  * Contact: azagaya.games@gmail.com
  */
-
+#version 110
 attribute vec3 aPos;
 attribute vec2 aTexCoord;
 varying vec2 texCoord;
 varying vec3 FragPos;
 
 uniform mat4 transform;
-void main() {
+void main()
+{
   gl_Position = transform * vec4(aPos, 1.0);
   FragPos = gl_Position.xyz;
   texCoord = aTexCoord;

@@ -1,0 +1,19 @@
+install:
+  - set QTDIR=C:\Qt\5.14.2\mingw73_64
+  - choco install -y InnoSetup
+  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw730_32\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
+build_script:
+  - qmake laigter.pro
+  - mingw32-make
+after_build:
+  - windeployqt release/fastqt.exe
+  - cmd: cp LICENSE release/LICENSE.txt
+  - cmd: cp ACKNOWLEDGEMENTS release/ACKNOWLEDGEMENTS.txt
+  - iscc innosetup.iss
+  - rm release/*.o
+  - rm release/*.cpp
+
+artifacts:
+  - path: Output\Laigter-*.exe
+  - path: release
+    type: zip

@@ -1,27 +1,54 @@
-# Laigter
+# Laigter [![Build Status](https://travis-ci.com/azagaya/laigter.svg?branch=master)](https://travis-ci.com/azagaya/laigter)
 
-Laigter is a tool that automatically generates maps for dynamic lighting effects in games. It allows normal, parallax, specular and occlusion map generation. Also, it allows the user to preview how the effect will look ingame.
-You can get binaries from itch.io: https://azagaya.itch.io/laigter
+## Overview
 
-Laigter is available in english and spanish. It should automatically detect your PC language.
+- [Download](https://github.com/azagaya/laigter#download)
+- [Contributing](https://github.com/azagaya/laigter#contributing)
+- [Screenshots](https://github.com/azagaya/laigter#screenshots)
+- [Compiling](https://github.com/azagaya/laigter#compiling)
+	- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
+	- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
+	- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
+- [License](https://github.com/azagaya/laigter#license)
 
-## Prerequisites
+![Epic_MegaGrants_Recipient_logo_horizontal](https://user-images.githubusercontent.com/46932830/77976528-a0395800-72d3-11ea-8c3c-4c049350e247.png)
 
-You need Qt framework (online installer is the recommended way to get it) and opencv 3.2 or above. Opencv is not meant for tools like this, but is the one i'm used to. In the future it would be nice to do without it.
+Laigter is a tool that automatically generates maps for dynamic lighting effects
+in games. It allows normal, parallax, specular and occlusion map generation.
+Also, it allows the user to preview how the effect will look in-game.
+
+Laigter is available in Spanish, English, French, Brazilian-Portuguese, Catalan,
+Danish and Greek. It should automatically detect your PC language.
+
+[![Discord Server](https://discordapp.com/api/guilds/582648422167871514/embed.png)](https://discord.gg/88kJqry)
+
+## Download
+
+[**Download from itch.io**](https://azagaya.itch.io/laigter)
+
+[**Download from the Release page**](https://github.com/azagaya/laigter/releases)
 
 ## Contributing
 
-Easiest way to contribute is trying laigter and giving me your feedback. Please open an issue when you find a bug, and try to specify the way to reproduce it.
-Also, suggestions, feature requests, and new ideas are welcome. Please open issues for all that!
+The easiest way to contribute is trying Laigter and giving me your feedback.
+Please open an issue when you find a bug, and try to specify the way to
+reproduce it. Also, suggestions, feature requests, and new ideas are welcome.
+Please open issues for all that!
 
-On itch.io, you can download the tool for free, or choose to pay any amount to support the project.
+On itch.io, you can download the tool for free, or choose to pay any amount to
+support the project.
 
-You can also support the development on [patreon](https://www.patreon.com/azagaya),
-or support it by paypal: [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/PabloFonovich).
+You can also support the development on Patreon: [![Become a Patron!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=19254491)
 
-Now you can also [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O110W22)
+Or support it by PayPal:
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/PabloFonovich).
 
-If you wan't to contribute by coding, please contact me and we will see how can we work together! Many things are needed.
+Now you can also
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O110W22)
+
+If you want to contribute by coding, please contact me and we'll see how we can
+work together! Many things are needed. Also, please read the
+[Contributing guidelines](CONTRIBUTING.md).
 
 ## Screenshots
 
@@ -30,64 +57,158 @@ If you wan't to contribute by coding, please contact me and we will see how can 
 ![captura-piedras-9](https://user-images.githubusercontent.com/46932830/60845823-dcf87880-a1b3-11e9-8772-a42180f3abdc.png)
 ![specular4](https://user-images.githubusercontent.com/46932830/60845825-dcf87880-a1b3-11e9-9f32-45ccc27abe0f.png)
 
-## Compiling on Linux
+## Compiling
 
-Compiling on linux is pretty straightforward. Just use your package manager to install prerequisites:
+- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
+- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
+- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
 
-* Qt and Qt creator: from package manager or online installer.
-* OpenCV: libopencv-dev from package manager
-* OpenGL libray: libgl1-mesa-dev from package manager.
+### Compiling on Linux
 
-Thats it, you can open the .pro file with qtcreator and build or debug laigter.
+- [Dependencies](https://github.com/azagaya/laigter#getting-the-dependencies)
+	- [Debian/Ubuntu](https://github.com/azagaya/laigter#debianubuntu)
+	- [Fedora](https://github.com/azagaya/laigter#fedora)
+	- [Arch Linux/Manjaro](https://github.com/azagaya/laigter#arch-linuxmanjaro)
 
-## Compiling on Windows
+- [Compiling and Building](https://github.com/azagaya/laigter#building)
 
-For windows, unfortunately, there are more steps to be done.
+#### Getting the Dependencies
 
-* Install Qt: I strongly discourage the offline installer, use the online installer instead. In the components selection window you will need to select  qt creator under "qt >> developer and designers tools" and the mingw 7.3 32bit or 64bit toolchain under "qt >> developer and designers tools >> mingw 7.3.0" and "qt >> qt 5.13.0 >> mingw 7.3.0". Do not choose the msvc toolchain. If you choose both the 32 and 64 bit versions, make sure that only one version is in the system path, otherwise you will have problems compiling. Tested with Qt 5.11, 5.12 and 5.13.
+Compiling on Linux is pretty straightforward. The following dependencies are required:
 
-* Install cmake: [download](https://cmake.org/download/) and install cmake.
+- Qt 5.14 or above (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
+- OpenGL development libraries.
+- (For Arch Linux/Manjaro: you will also need the VTK and HDF packages)
 
-* Install opencv: [download](https://github.com/opencv/opencv/releases/tag/3.2.0) and compile opencv 3.2. It must be version 3.2, it cannot be any other version; be warned.
+If you install Qt from the online installer, you don't need to install the qt related packages below.
 
-Once you have installed cmake and downloaded opencv 3.2, folow this tutorial here:
+Install prerequisites by entering the following command in a terminal (depending
+on your distribution):
 
-https://wiki.qt.io/How_to_setup_Qt_and_openCV_on_Windows
 
-But before clicking "generate" on cmake-gui, be sure to uncheck BUILD_opencv_python3 in case you have this flag and it is checked. I could not compile until I unchecked this. And also change EXECUTABLE_OUTPUT_PATH to C:\opencv-build\install\x86\mingw\bin wich is the path set on laigter.pro (or you could change the path on your laigter.pro to match your EXECUTABLE_OUTPUT_PATH).
 
-After several minutes, fortunately your compilation will be sucessfull. If that's the case, you can open the project on qt-creator, compile and run it. 
+##### Debian/Ubuntu
 
-* Deploy application: Once you want to deploy the application for windows, you will need the windeployqt command. Something like the following should be enough:
-
+```bash
+sudo apt install qt5-default qt5-qmake libgl1-mesa-dev
 ```
+
+##### Fedora
+
+```bash
+sudo dnf install qt5-devel mesa-libGL-devel
+```
+
+##### Arch Linux/Manjaro
+
+```bash
+sudo pacman -Sy hd5 vtk qt5-base
+```
+
+#### Get the source
+
+Then get the source either via `git clone`:
+
+```bash
+git clone https://github.com/azagaya/laigter
+```
+
+or download the package via:
+
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
+
+Then finally `cd` into the laigter directory: `cd laigter`
+
+#### Building
+
+##### Using QT Creator:
+
+That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
+
+##### Using the terminal:
+
+After installing dependencies, you can also build from the terminal with:
+
+```bash
+mkdir build
+cd build
+qmake ../
+make -j$(nproc)
+```
+
+### Compiling on Windows
+
+#### Getting Qt
+
+For Windows, the steps are similar:
+
+- Install Qt: I strongly discourage the offline installer, use the online installer instead. In the components selection window, you'll need to select Qt Creator under **Qt > Developer and Designer Tools** and the MinGW 64-bit or 32-bit toolchain under **Qt > Developer and Designer Tools > MinGW 7.3.0** and **Qt > Qt 5.14.0 > MinGW 7.3.0**.
+
+Do not choose the MSVC toolchain. If you choose both the 64-bit and 32-bit versions, make sure that only one version is in the system path, otherwise you will have problems compiling.
+
+Tested with Qt 5.14.
+
+#### Get the source
+
+You may get the source cloning the repository. For that, I recommend using (git for windows tool)[https://gitforwindows.org/]. With it, you can clone Laigter:
+
+```bash
+git clone https://github.com/azagaya/laigter
+```
+
+You may also download the package directly if you don't want to use git:
+
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
+
+#### Building
+
+Open Laigter project in QtCreator installed with the online installer, and run the project. No extra steps should be needed.
+
+#### Deploying the application
+
+If you want to deploy the application for Windows, you will need the
+[windeployqt](https://doc.qt.io/qt-5/windows-deployment.html) command. Something
+like the following should be enough:
+
+```batch
 mkdir .\deploy
-windeployqt --dir .\deploy ..\build-laigter-Desktop_Qt_5_13_0_MinGW_32_bit-Release\release\laigter.exe
-copy /Y ..\build-laigter-Desktop_Qt_5_13_0_MinGW_32_bit-Release\release\laigter.exe .\deploy\laigter.exe
+windeployqt --dir .\deploy ..\build-laigter-Desktop_Qt_5_14_0_MinGW_32_bit-Release\release\laigter.exe
+copy /Y ..\build-laigter-Desktop_Qt_5_14_0_MinGW_32_bit-Release\release\laigter.exe .\deploy\laigter.exe
 ```
 
-If for some reason the opencv libraries do not get copied, copy them also
+### Compiling on macOS
+
+On Mac, is very similar than on Linux.
+
+#### Prerequisites
+
+First, install Qt. I recommend using the online installer for Mac.
+
+#### Get the source
+
+Then get the source either via `git clone`:
+
+```bash
+git clone https://github.com/azagaya/laigter
 ```
-copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_core320.dll .\deploy\
-copy /Y C:\opencv-build\install\x86\mingw\bin\libopencv_imgproc320.dll .\deploy\
-```
 
-## Compiling on MAC
+or download the package via:
 
-I don't have a MAC, but a few tests i made on a friend's computer made me arrive to the following (maybe incomplete) steps:
+1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
+2. Extract the package in your desired location
 
-* Install pkg-config
+Then finally `cd` into the laigter directory: `cd laigter`
 
-* Install Qt and Qt Creator: online installer is recommended.
+#### Building
 
-* Install opencv: in mac, like in linux, i could only install opencv4. After installing, you should add to includepaht in Qt Creator the path to opencv (i think it was: /usr/local/Cellar/opencv/4.0.1/include/opencv4/)
-
-* If pkg-config does not find opencv, add a variable PKG_CONFIG_PATH to the project environment, with the path to opencv.pc
+That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
 And thats all the test i could make before i had to return the MAC. 
 
 
-## Using Laigter with command line
+### Using Laigter with command line
 
 Laigter can be used from the command line with following options:
 
@@ -165,4 +286,20 @@ Exporting a normals texture of the specified diffuse texture using the default p
 Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
 
 ``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p ```
-Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.#
+
+## License
+
+Copyright (C) 2019 Pablo Ivan Fonovich
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.

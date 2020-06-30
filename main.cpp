@@ -17,37 +17,37 @@
  * Contact: azagaya.games@gmail.com
  */
 
-#include "gui/presetsmanager.h"
-#include "mainwindow.h"
-#include "src/imageprocessor.h"
+#include "gui/presets_manager.h"
+#include "main_window.h"
+#include "src/image_processor.h"
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QOpenGLContext>
+#include <QSplashScreen>
 #include <QStandardPaths>
 #include <QTranslator>
 
-QCoreApplication *createApplication(int &argc, char *argv[]) {
+#define cimg_use_openmp 1
+
+QCoreApplication *createApplication(int &argc, char *argv[])
+{
   for (int i = 1; i < argc; ++i)
     if (!qstrcmp(argv[i], "--no-gui"))
       return new QCoreApplication(argc, argv);
+
   return new QApplication(argc, argv);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   QCoreApplication::setApplicationName("laigter");
-  QCoreApplication::setApplicationVersion("1.7-beta");
-
+  QCoreApplication::setApplicationVersion("1.10-beta");
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
-  QString locale = QLocale::system().name().split("_").at(0);
-  QTranslator translator;
-  bool loaded = translator.load(":/laigter_" + locale);
-  //    bool loaded = translator.load(":/laigter_en");
-  if (!loaded)
-    translator.load(":/laigter_en");
+  QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
 #ifndef PORTABLE
   QString appData =
@@ -55,10 +55,16 @@ int main(int argc, char *argv[]) {
   QDir dir(appData);
   if (!dir.exists())
     dir.mkpath(".");
+
   dir = QDir(appData + "/presets");
+
   if (!dir.exists())
     dir.mkpath(".");
 
+  dir = QDir(appData + "/plugins");
+
+  if (!dir.exists())
+    dir.mkpath(".");
 #else
   QDir dir("./presets");
   if (!dir.exists())
@@ -96,8 +102,9 @@ int main(int argc, char *argv[]) {
                                                  "generate specular");
   argsParser.addOption(outputSpecularTextureOption);
 
-  QCommandLineOption outputOcclusionTextureOption(QStringList() << "o"
-                                                                << "occlusion",
+  QCommandLineOption outputOcclusionTextureOption(QStringList()
+                                                      << "o"
+                                                      << "occlusion",
                                                   "generate occlusion");
   argsParser.addOption(outputOcclusionTextureOption);
 
@@ -116,46 +123,59 @@ int main(int argc, char *argv[]) {
   fmt.setSamples(16);
   fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
   QSurfaceFormat::setDefaultFormat(fmt);
-
   QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
+
   argsParser.process(*app.data());
   QImage auximage;
 
   ImageProcessor *processor = new ImageProcessor();
 
-  bool succes = false;
+  bool success = false;
   QString inputDiffuseTextureOptionValue =
       argsParser.value(inputDiffuseTextureOption);
-  if (!inputDiffuseTextureOptionValue.trimmed().isEmpty()) {
+  if (!inputDiffuseTextureOptionValue.trimmed().isEmpty())
+  {
     QFileInfo info(inputDiffuseTextureOptionValue);
     QString suffix =
         info.suffix(); // just the last suffix, not the complete one
 
     QString pressetOptionValue = argsParser.value(pressetOption);
     ImageLoader il;
-    auximage = il.loadImage(inputDiffuseTextureOptionValue, &succes);
-    auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-    processor->loadImage(inputDiffuseTextureOptionValue, auximage);
-    if (!pressetOptionValue.trimmed().isEmpty()) {
+    auximage = il.loadImage(inputDiffuseTextureOptionValue, &success);
+    auximage =
+        auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    if (!pressetOptionValue.trimmed().isEmpty())
+    {
+      processor->recalculate_timer.stop();
       PresetsManager::applyPresets(pressetOptionValue, *processor);
     }
-    QString pathWithoutExtension = info.absoluteFilePath().remove("." + suffix);
-    if (argsParser.isSet(outputNormalTextureOption)) {
+    processor->loadImage(inputDiffuseTextureOptionValue, auximage);
+
+    QString pathWithoutExtension =
+        info.absoluteFilePath().remove("." + suffix);
+    if (argsParser.isSet(outputNormalTextureOption))
+    {
       QImage normal = *processor->get_normal();
       QString name = pathWithoutExtension + "_n." + suffix;
       normal.save(name);
     }
-    if (argsParser.isSet(outputSpecularTextureOption)) {
+
+    if (argsParser.isSet(outputSpecularTextureOption))
+    {
       QImage specular = *processor->get_specular();
       QString name = pathWithoutExtension + "_s." + suffix;
       specular.save(name);
     }
-    if (argsParser.isSet(outputOcclusionTextureOption)) {
+
+    if (argsParser.isSet(outputOcclusionTextureOption))
+    {
       QImage occlusion = *processor->get_occlusion();
       QString name = pathWithoutExtension + "_o." + suffix;
       occlusion.save(name);
     }
-    if (argsParser.isSet(outputParallaxTextureOption)) {
+
+    if (argsParser.isSet(outputParallaxTextureOption))
+    {
       QImage parallax = *processor->get_parallax();
       QString name = pathWithoutExtension + "_p." + suffix;
       parallax.save(name);
@@ -164,29 +184,39 @@ int main(int argc, char *argv[]) {
 
   QApplication *a = qobject_cast<QApplication *>(app.data());
   int returnCode;
-  if (a) {
-    a->installTranslator(&translator);
+  if (a)
+  {
     bool softOpenGlValue = argsParser.isSet(softOpenGl);
-    if (softOpenGlValue) {
+    if (softOpenGlValue)
+    {
       a->setAttribute(Qt::AA_UseSoftwareOpenGL);
       qDebug() << "Soft OpenGL";
     }
     MainWindow w;
-    QGuiApplication::setWindowIcon(QIcon(":/images/laigter-icon.png"));
+    QGuiApplication::setWindowIcon(QIcon(":/images/laigter_icon.png"));
 
     w.show();
     qRegisterMetaType<ProcessedImage>("ProcessedImage");
 
-    if (succes) {
+    if (success)
       w.add_processor(processor);
-    } else {
+    else
       delete processor;
+
+    /* Load Project if dropped. Only supports one project */
+    if (argsParser.positionalArguments().count() > 0)
+    {
+      QString project_path = argsParser.positionalArguments().at(0);
+      w.LoadProject(project_path);
     }
 
     returnCode = app->exec();
-  } else {
+  }
+  else
+  {
     // do CLI only things here
     returnCode = 0;
   }
+
   return returnCode;
 }
