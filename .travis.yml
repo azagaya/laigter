@@ -43,6 +43,7 @@ script:
 
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then  wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then chmod a+x linuxdeployqt-continuous-x86_64.AppImage; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then if [[ "$TRAVIS_TAG" != "" ]]; then export VERSION=$TRAVIS_TAG;fi;fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage; fi
 
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then macdeployqt laigter.app; fi
