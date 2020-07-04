@@ -1072,6 +1072,10 @@ void MainWindow::on_pushButton_clicked()
     {
       ExportMap(TextureTypes::Occlussion, p, "_o");
     }
+    if (ui->checkBoxExportDiffuse->isChecked())
+    {
+      ExportMap(TextureTypes::Color, p, "_d");
+    }
   }
   if (ui->checkBoxExportPreview->isChecked())
   {

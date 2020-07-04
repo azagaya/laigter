@@ -36,7 +36,7 @@ void main()
     vec2 d = vec2(float(1.0 / pixelSize.x), float(1.0 / pixelSize.y));
     vec2 coords = texCoords * d;
 
-    texCoords = (floor(coords+0.5) + 0.5 / d) / d;
+    texCoords = (floor(coords+0.5)) / d;
   }
 
   vec4 color = texture2D(tex, texCoords);

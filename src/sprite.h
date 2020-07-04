@@ -17,6 +17,7 @@ enum class TextureTypes
   Neighbours,
   SpecularBase,
   OcclussionBase,
+  Color,
   TextureOverlay,
   NormalOverlay,
   HeightmapOverlay,
@@ -35,24 +36,6 @@ public:
 
 private:
   QVector<Texture> textures;
-  Texture diffuse;
-  Texture normal;
-  Texture specular;
-  Texture parallax;
-  Texture occlussion;
-  /* This textures are needed to generate the maps */
-  Texture heightmap;
-  Texture distance;
-  Texture neighbours;
-  Texture specular_base;
-  Texture occlussion_base;
-  /* Overlay for painting with brushes, can be replaced by arrays to let
-     * multiple overlays in the future */
-  Texture normal_overlay;
-  Texture heightmap_overlay;
-  Texture specular_overlay;
-  Texture parallax_overlay;
-  Texture occlussion_overlay;
 
 public:
   explicit Sprite();

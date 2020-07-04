@@ -964,6 +964,7 @@ QImage *ImageProcessor::get_texture()
   QPainter p(&last_texture);
   p.drawImage(last_texture.rect(), texture);
   p.drawImage(last_texture.rect(), ov);
+  current_frame->set_image(TextureTypes::Color, last_texture);
   return &last_texture;
 }
 

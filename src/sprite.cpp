@@ -2,7 +2,7 @@
 
 Sprite::Sprite()
 {
-  textures.resize(16);
+  textures.resize(17);
   neighbours_paths.resize(3);
   neighbours_paths[0].resize(3);
   neighbours_paths[1].resize(3);
@@ -56,6 +56,7 @@ void Sprite::set_texture(TextureTypes type, Texture t)
 
 QSize Sprite::size() { return textures[0].size(); }
 
-QString Sprite::get_file_name(){
+QString Sprite::get_file_name()
+{
   return fileName;
 }
