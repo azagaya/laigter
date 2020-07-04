@@ -205,6 +205,89 @@ Then finally `cd` into the laigter directory: `cd laigter`
 
 That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
+And thats all the test i could make before i had to return the MAC. 
+
+
+### Using Laigter with command line
+
+Laigter can be used from the command line with following options:
+
+``` -?, -h, --help ```
+Displays help on commandline options.
+
+``` --help-all ```
+Displays help including Qt specific options.
+
+``` -v, --version ```
+Displays version information.
+
+``` -s, --software-opengl ```
+Use software opengl renderer.
+
+``` -g, --no-gui ```
+Do not start graphical interface.
+
+``` -d, --diffuse <diffuse texture path> ```
+Diffuse texture to load.
+
+``` -n, --normal ```
+Generate normals texture.
+
+``` -c, --specular ```
+Generate specular texture.
+
+``` -o, --occlusion ```
+Generate occlusion teture.
+
+``` -p, --parallax ```
+Generate parallax textures.
+
+``` -r, --preset <preset file path> ```
+Preset file to use for texture generation.
+
+``` --qmljsdebugger <value> ```
+Activcates the QML/JS debugger with the specified port. The value must be of format port:1234[block] "block" makes the application wait for a connection.
+
+``` --platform <platformName[:options]> ```
+QPA plugin. See QGuiAplication documentation for available options for eah plugin.
+
+``` --platformpluginpath <path> ```
+Path to the platform plugins.
+
+``` --platformtheme <theme> ```
+Platform theme.
+
+``` --plguin <plugin> ```
+Additional plugins to load. Can be specified multiple times.
+
+``` --qwindowgeometry <geometry> ```
+Window geometry for the main windows, using the X11-syntax, lie 100x100+50+50.
+
+``` --qwindowicon <icon> ```
+Default window icon.
+
+``` --qwindowtitle <title> ```
+Title of the first window.
+
+``` --revers ```
+Sets the application's layout direction to Qt:RightToLeft (debugging helper).
+
+``` --session <session> ```
+Restores the application from an earlier session.
+
+### Examples for command line
+
+Some basic example for common usages:
+
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n ```
+Exporting a normals texture of the specified diffuse texture using the default profile.
+
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" -n -c -o -p ```
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
+
+``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p ```
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.#
+
 ## License
 
 Copyright (C) 2019 Pablo Ivan Fonovich
