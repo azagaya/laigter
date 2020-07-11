@@ -22,18 +22,25 @@ uniform vec3 lightColor;
 uniform sampler2D tex;
 uniform vec2 pixelSize;
 uniform bool selected;
+uniform float zoom;
 
 void main()
 {
-  vec2 pixSize = 2.0 * pixelSize;
+  vec2 pixSize = 0.5 * pixelSize / zoom;
   vec4 color = texture2D(tex, texCoord);
   float alpha = color.a;
   if (selected)
   {
-    alpha *= 1.5;
-    color.xyz =
-        mix(3.0 * lightColor,
-            color.xyz * (lightColor + vec3(0.8, 0.8, 0.8)), color.a);
+    vec4 u = texture2D(tex, texCoord + vec2(0.0, pixSize.y));
+    vec4 l = texture2D(tex, texCoord + vec2(-pixSize.x, 0.0));
+    vec4 r = texture2D(tex, texCoord + vec2(pixSize.x, 0.0));
+    vec4 d = texture2D(tex, texCoord + vec2(0.0, -pixSize.y));
+    vec4 outline = 0.2*(u+l+r+d+color);
+    if (outline.a != 1.0){
+        color = outline;
+        color.a *= color.a;
+    }
+    color.xyz = mix(3.0 * lightColor, color.xyz * (lightColor + vec3(0.8, 0.8, 0.8)), color.a)*1.05;
   }
   else
   {

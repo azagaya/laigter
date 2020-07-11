@@ -1,0 +1,15 @@
+<svg id="SVGRoot" width="48px" height="48px" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="linearGradient1390" x2="0" y1="48" gradientUnits="userSpaceOnUse">
+   <stop style="stop-color:#ff5722" offset="0"/>
+   <stop style="stop-color:#ff9800" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient1433" x1="15" x2="15" y1="21" y2="42" gradientUnits="userSpaceOnUse">
+   <stop style="stop-color:#ffeb3b" offset="0"/>
+   <stop style="stop-color:#ffc107" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path d="m5 29c0-18 19-15 19-22 0-3-4-7-4-7s8.5487 2.2478 12 8c3 5 2 8-2 13 7-2 7-7 7-7s6 5 6 15c0 9-7 19-19 19s-19-9-19-19z" style="fill:url(#linearGradient1390)"/>
+ <path d="m16 34c0-4 1-8 6-13 1 6 10 7 10 13 0 4-3 8-8 8s-8-4-8-8z" style="fill:url(#linearGradient1433)"/>
+ <path d="m42.979 28.43c-0.21754 8.886-7.1684 18.57-18.979 18.57-11.825 0-18.78-8.7424-18.98-18.566-0.004449 0.1909-0.019531 0.37057-0.019531 0.56641 0 10 7 19 19 19s19-10 19-19c0-0.19624-0.01695-0.37792-0.02148-0.57031z" style="opacity:.2"/>
+</svg>

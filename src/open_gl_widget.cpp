@@ -357,6 +357,7 @@ void OpenGlWidget::update_scene()
         lightProgram.setUniformValue("texture", 0);
         lightProgram.setUniformValue("pixelSize", 3.0 / x, 3.0 / y);
         lightProgram.setUniformValue("selected", currentLight == light);
+        lightProgram.setUniformValue("zoom", m_global_zoom);
         light->get_diffuse_color().getRgbF(&r, &g, &b, nullptr);
         color = QVector3D(r, g, b);
         lightProgram.setUniformValue("lightColor", color);
