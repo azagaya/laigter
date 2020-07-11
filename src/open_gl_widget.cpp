@@ -194,7 +194,7 @@ void OpenGlWidget::update_scene()
   GLfloat bkColor[4];
   glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
-  int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+  int i1 = m_pixelated ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
   int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
 
   QVector3D viewport_size(m_width, m_height, 1.0);
@@ -289,11 +289,12 @@ void OpenGlWidget::update_scene()
     zoomX = processor->get_tile_x() ? 1.0 / 3 : 1;
     zoomY = processor->get_tile_y() ? 1.0 / 3 : 1;
     m_program.setUniformValue("ratio", QVector2D(1 / zoomX, 1 / zoomY));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
     m_texture->bind(0);
     m_program.setUniformValue("diffuse", 0);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
     m_normalTexture->bind(1);
     m_program.setUniformValue("normalMap", 1);
     m_parallaxTexture->bind(2);
@@ -431,6 +432,8 @@ void OpenGlWidget::setImage(QImage *image)
   sy = (float)image->height() / m_height;
   pixelsX = image->width();
   pixelsY = image->height();
+
+  m_texture->generateMipMaps();
 }
 
 void OpenGlWidget::setNormalMap(QImage *image)
@@ -438,6 +441,8 @@ void OpenGlWidget::setNormalMap(QImage *image)
   m_normalTexture->destroy();
   if (m_normalTexture->create())
     m_normalTexture->setData(*image);
+
+  m_normalTexture->generateMipMaps();
 }
 
 void OpenGlWidget::setOcclusionMap(QImage *image)
@@ -445,6 +450,8 @@ void OpenGlWidget::setOcclusionMap(QImage *image)
   m_occlusionTexture->destroy();
   m_occlusionTexture->create();
   m_occlusionTexture->setData(*image);
+
+  m_occlusionTexture->generateMipMaps();
 }
 
 void OpenGlWidget::setParallaxMap(QImage *image)
@@ -452,6 +459,7 @@ void OpenGlWidget::setParallaxMap(QImage *image)
   m_parallaxTexture->destroy();
   m_parallaxTexture->create();
   m_parallaxTexture->setData(*image);
+  m_parallaxTexture->generateMipMaps();
 }
 
 void OpenGlWidget::setSpecularMap(QImage *image)
@@ -459,6 +467,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
   m_specularTexture->destroy();
   if (m_specularTexture->create())
     m_specularTexture->setData(*image);
+  m_specularTexture->generateMipMaps();
 }
 
 void OpenGlWidget::setZoom(float zoom)
@@ -1158,8 +1167,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     GLfloat bkColor[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
-    int i1 =
-        m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
     int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
     int xmin = m_width, xmax = 0, ymin = m_height, ymax = 0;
 
@@ -1251,9 +1259,6 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       float zoomY = !processor->get_tile_y() ? processor->get_zoom() : 1;
       transform.scale(zoomX, zoomY, 1);
 
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-
       /* Start first pass */
       m_program.bind();
       VAO.bind();
@@ -1284,10 +1289,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
       m_program.setUniformValue("ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
 
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-
       m_texture->bind(0);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       m_program.setUniformValue("diffuse", 0);
 
       m_normalTexture->bind(1);
