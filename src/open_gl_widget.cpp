@@ -493,7 +493,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 
 void OpenGlWidget::setZoom(float zoom)
 {
-  m_global_zoom = zoom * devicePixelRatioF();
+  m_global_zoom = zoom;
   updateView();
 }
 
@@ -531,23 +531,23 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
 
   if (!pixels.isNull())
   {
-    zoom = pixels.y() > 0 ? 1.1 : 0.9;
+    zoom = pixels.y() > 0 ? 1.05 : 0.95;
   }
 
   else if (!degree.isNull() && degree.y() != 0)
   {
-    zoom = degree.y() > 0 ? 1.1 : 0.9;
+    zoom = degree.y() > 0 ? 1.05 : 0.95;
   }
 
   if (zoom > 0)
   {
 
-      double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
-      double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
+    double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
+    double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
 
-      origin -= QVector3D(dx, dy, 0);
+    origin -= QVector3D(dx, dy, 0);
 
-      setZoom(zoom * m_global_zoom);
+    setZoom(zoom * m_global_zoom);
   }
 }
 
