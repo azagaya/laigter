@@ -89,12 +89,11 @@ private:
   QPointF local_mouse_last_position;
   float global_rotation = 0;
 
-
   QString exportBasePath;
   QTimer refreshTimer;
   QVector3D lightPosition, texturePosition, textureOffset;
-  QVector3D origin = QVector3D(0,0,0);
-  QVector3D origin_offset = QVector3D(0,0,0);
+  QVector3D origin = QVector3D(0, 0, 0);
+  QVector3D origin_offset = QVector3D(0, 0, 0);
   QMatrix4x4 transform;
   QMatrix4x4 model;
   QMatrix4x4 view;
@@ -105,12 +104,13 @@ private:
   bool m_fullPreview, m_autosave;
   bool m_light, tileX, tileY, m_parallax, m_pixelated, m_toon;
   bool sample_light_list_used;
+  bool useAlpha = false;
   float diffIntensity, ambientIntensity, specIntensity, specScatter;
   float m_zoom, m_global_zoom = 1;
   float sx, sy, parallax_height;
   int pixelsX, pixelsY, pixelSize;
   int viewmode;
-  int m_width=0, m_height=0;
+  int m_width = 0, m_height = 0;
   void apply_light_params(QMatrix4x4 projection, QMatrix4x4 view);
   void select_current_light_list();
   void select_light(LightSource *light);
@@ -152,7 +152,7 @@ public slots:
   void set_current_light_list(QList<LightSource *> *list);
   void set_current_processor(ImageProcessor *p);
   void set_processor_list(QList<ImageProcessor *> list);
-  QList<ImageProcessor *> * get_processor_list();
+  QList<ImageProcessor *> *get_processor_list();
   void set_processor_selected(ImageProcessor *processor, bool selected);
   void set_view_mode(int mode);
   void update();
@@ -186,7 +186,6 @@ protected:
   void paintGL() override;
   void resizeGL(int width, int height) override;
   void wheelEvent(QWheelEvent *event) override;
-
 };
 
 #endif // OPENGLWIDGET_H

@@ -58,6 +58,7 @@ uniform bool parallax;
 uniform bool pixelated;
 uniform bool toon;
 uniform bool selected;
+uniform bool useAlpha;
 uniform float height_scale;
 uniform float rotation_angle;
 uniform int pixelsX, pixelsY;
@@ -178,7 +179,10 @@ void main()
     l_color.a = tex.a;
     gl_FragColor = l_color;
   }
-
+  if (useAlpha)
+  {
+      gl_FragColor.a = tex.a;
+  }
   if (blend)
   {
     float src_a = tex.a * blend_factor;

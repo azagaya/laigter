@@ -899,6 +899,10 @@ void MainWindow::connect_processor(ImageProcessor *p)
           SLOT(set_tile_y(bool)));
   connect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p,
           SLOT(set_is_parallax(bool)));
+  connect(ui->checkBoxNormalAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_normal_alpha(bool)));
+  connect(ui->checkBoxParallaxAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_parallax_alpha(bool)));
+  connect(ui->checkBoxSpecularAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_specular_alpha(bool)));
+  connect(ui->checkBoxOcclusionAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_occlusion_alpha(bool)));
   p->set_connected(true);
 }
 
@@ -974,6 +978,11 @@ void MainWindow::disconnect_processor(ImageProcessor *p)
              SLOT(set_tile_y(bool)));
   disconnect(ui->checkBoxParallax, SIGNAL(toggled(bool)), p,
              SLOT(set_is_parallax(bool)));
+
+  disconnect(ui->checkBoxNormalAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_normal_alpha(bool)));
+  disconnect(ui->checkBoxParallaxAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_parallax_alpha(bool)));
+  disconnect(ui->checkBoxSpecularAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_specular_alpha(bool)));
+  disconnect(ui->checkBoxOcclusionAlpha, SIGNAL(toggled(bool)), p, SLOT(set_use_occlusion_alpha(bool)));
   p->set_connected(false);
 }
 
@@ -1014,7 +1023,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
-void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination)
+void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination, bool useAlpha)
 {
   QImage n;
   QString suffix;
@@ -1044,7 +1053,10 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
     {
       name = destination + "/" + info.baseName() + postfix + "." + suffix;
     }
-
+    if (useAlpha)
+    {
+      n.setAlphaChannel(p->get_texture()->alphaChannel());
+    }
     n.save(name);
   }
 }
@@ -1058,19 +1070,19 @@ void MainWindow::on_pushButton_clicked()
   {
     if (ui->checkBoxExportNormal->isChecked())
     {
-      ExportMap(TextureTypes::Normal, p, "_n");
+      ExportMap(TextureTypes::Normal, p, "_n", "", p->get_use_normal_alpha());
     }
     if (ui->checkBoxExportParallax->isChecked())
     {
-      ExportMap(TextureTypes::Parallax, p, "_p");
+      ExportMap(TextureTypes::Parallax, p, "_p", "", p->get_use_parallax_alpha());
     }
     if (ui->checkBoxExportSpecular->isChecked())
     {
-      ExportMap(TextureTypes::Specular, p, "_s");
+      ExportMap(TextureTypes::Specular, p, "_s", "", p->get_use_specular_alpha());
     }
     if (ui->checkBoxExportOcclusion->isChecked())
     {
-      ExportMap(TextureTypes::Occlussion, p, "_o");
+      ExportMap(TextureTypes::Occlussion, p, "_o", "", p->get_use_occlusion_alpha());
     }
     if (ui->checkBoxExportDiffuse->isChecked())
     {

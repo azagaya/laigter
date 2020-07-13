@@ -152,6 +152,10 @@ private:
   bool selected, tileX, tileY, is_parallax, connected;
   bool specular_invert;
   char gradient_end;
+  bool useNormalAlpha = false;
+  bool useParallaxAlpha = false;
+  bool useSpecularAlpha = false;
+  bool useOcclusionAlpha = false;
   cimg_library::CImg<float> current_heightmap;
   cimg_library::CImg<float> current_occlusion;
   cimg_library::CImg<float> current_parallax;
@@ -266,6 +270,16 @@ public slots:
   bool get_tile_x();
   bool get_tile_y();
   bool get_tileable();
+
+  void set_use_normal_alpha(bool a);
+  bool get_use_normal_alpha();
+  void set_use_parallax_alpha(bool a);
+  bool get_use_parallax_alpha();
+  void set_use_specular_alpha(bool a);
+  bool get_use_specular_alpha();
+  void set_use_occlusion_alpha(bool a);
+  bool get_use_occlusion_alpha();
+
   double get_occlusion_contrast();
   double get_parallax_contrast();
   double get_specular_contrast();

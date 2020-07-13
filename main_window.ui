@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>1725</height>
+    <height>1763</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -96,74 +96,6 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QGridLayout" name="gridLayout_7">
-     <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Enhance:</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Height:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="Slider" name="normalDepthSlider">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>4000</number>
-            </property>
-            <property name="value">
-             <number>400</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Soft:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="Slider" name="normalBlurSlider">
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>40</number>
-            </property>
-            <property name="singleStep">
-             <number>1</number>
-            </property>
-            <property name="value">
-             <number>5</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item row="2" column="0">
       <widget class="QGroupBox" name="groupBox_4">
        <property name="maximumSize">
@@ -296,6 +228,81 @@
          </layout>
         </item>
        </layout>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Enhance:</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Height:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Slider" name="normalDepthSlider">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>4000</number>
+            </property>
+            <property name="value">
+             <number>400</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Soft:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="Slider" name="normalBlurSlider">
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>40</number>
+            </property>
+            <property name="singleStep">
+             <number>1</number>
+            </property>
+            <property name="value">
+             <number>5</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QCheckBox" name="checkBoxNormalAlpha">
+       <property name="text">
+        <string>Use Alpha</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -885,58 +892,32 @@
         <string>Controls:</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_15">
-        <item row="8" column="0">
-         <spacer name="horizontalSpacer_2">
+        <item row="7" column="0">
+         <widget class="QLabel" name="labelErodeDilate">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Erode / Dilate:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Slider" name="parallaxThreshSlider">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="pageStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>140</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Maximum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="labelQuantization">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Quantization:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="labelThreshParallax">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Threshold:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="labelThreshMin">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Min Height:</string>
           </property>
          </widget>
         </item>
@@ -953,83 +934,11 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Slider" name="sliderParallaxBright">
+        <item row="4" column="1">
+         <widget class="Slider" name="parallaxQuantizationSlider">
           <property name="minimum">
-           <number>-255</number>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="labelContrast">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Contrast:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Slider" name="parallaxFocusSlider">
-          <property name="maximum">
-           <number>50</number>
-          </property>
-          <property name="singleStep">
            <number>1</number>
           </property>
-          <property name="value">
-           <number>3</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="QCheckBox" name="checkBoxParallaxInvert">
-          <property name="text">
-           <string>Invert</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="labelThreshFocus">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Focus:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="labelBrightness">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Brightness:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Slider" name="parallaxMinHeight">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -1051,29 +960,13 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="Slider" name="parallaxThreshSlider">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="pageStep">
-           <number>10</number>
+        <item row="7" column="1">
+         <widget class="Slider" name="sliderParallaxErodeDilate">
+          <property name="minimum">
+           <number>-99</number>
           </property>
           <property name="value">
-           <number>140</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="Slider" name="parallaxQuantizationSlider">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>255</number>
+           <number>0</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1096,8 +989,15 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="labelErodeDilate">
+        <item row="9" column="1">
+         <widget class="QCheckBox" name="checkBoxParallaxInvert">
+          <property name="text">
+           <string>Invert</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelThreshMin">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -1105,20 +1005,118 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Erode / Dilate:</string>
+           <string>Min Height:</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
-         <widget class="Slider" name="sliderParallaxErodeDilate">
-          <property name="minimum">
-           <number>-99</number>
-          </property>
-          <property name="value">
-           <number>0</number>
+        <item row="3" column="1">
+         <widget class="Slider" name="parallaxMinHeight">
+          <property name="maximum">
+           <number>255</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Slider" name="parallaxFocusSlider">
+          <property name="maximum">
+           <number>50</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>3</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelBrightness">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Brightness:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labelQuantization">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Quantization:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelThreshFocus">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Focus:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelThreshParallax">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Threshold:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelContrast">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Contrast:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Slider" name="sliderParallaxBright">
+          <property name="minimum">
+           <number>-255</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QCheckBox" name="checkBoxParallaxAlpha">
+          <property name="text">
+           <string>Use Alpha</string>
           </property>
          </widget>
         </item>
@@ -1199,22 +1197,6 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_17">
           <property name="text">
@@ -1252,6 +1234,13 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="checkBoxSpecularAlpha">
+          <property name="text">
+           <string>Use Alpha</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -1263,7 +1252,7 @@
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Occlussion</string>
+    <string>Occlusion</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -1339,22 +1328,6 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="2" column="1">
          <widget class="Slider" name="sliderOcclusionContrast">
           <property name="minimum">
@@ -1408,6 +1381,13 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="checkBoxOcclusionAlpha">
+          <property name="text">
+           <string>Use Alpha</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -1450,7 +1430,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-113</y>
+          <y>0</y>
           <width>228</width>
           <height>244</height>
          </rect>

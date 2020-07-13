@@ -971,24 +971,40 @@ QImage *ImageProcessor::get_texture()
 QImage *ImageProcessor::get_normal()
 {
   current_frame->get_image(TextureTypes::Normal, &last_normal);
+  if (useNormalAlpha)
+  {
+    last_normal.setAlphaChannel(texture.alphaChannel());
+  }
   return &last_normal;
 }
 
 QImage *ImageProcessor::get_parallax()
 {
   current_frame->get_image(TextureTypes::Parallax, &last_parallax);
+  if (useParallaxAlpha)
+  {
+    last_parallax.setAlphaChannel(texture.alphaChannel());
+  }
   return &last_parallax;
 }
 
 QImage *ImageProcessor::get_specular()
 {
   current_frame->get_image(TextureTypes::Specular, &last_specular);
+  if (useSpecularAlpha)
+  {
+    last_specular.setAlphaChannel(texture.alphaChannel());
+  }
   return &last_specular;
 }
 
 QImage *ImageProcessor::get_occlusion()
 {
   current_frame->get_image(TextureTypes::Occlussion, &last_occlussion);
+  if (useOcclusionAlpha)
+  {
+    last_occlussion.setAlphaChannel(texture.alphaChannel());
+  }
   return &last_occlussion;
 }
 
@@ -1570,4 +1586,48 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
     }
   }
   return srt;
+}
+
+bool ImageProcessor::get_use_normal_alpha()
+{
+  return useNormalAlpha;
+}
+
+void ImageProcessor::set_use_normal_alpha(bool a)
+{
+  useNormalAlpha = a;
+  processed();
+}
+
+bool ImageProcessor::get_use_parallax_alpha()
+{
+  return useParallaxAlpha;
+}
+
+void ImageProcessor::set_use_parallax_alpha(bool a)
+{
+  useParallaxAlpha = a;
+  processed();
+}
+
+bool ImageProcessor::get_use_specular_alpha()
+{
+  return useSpecularAlpha;
+}
+
+void ImageProcessor::set_use_specular_alpha(bool a)
+{
+  useSpecularAlpha = a;
+  processed();
+}
+
+bool ImageProcessor::get_use_occlusion_alpha()
+{
+  return useOcclusionAlpha;
+}
+
+void ImageProcessor::set_use_occlusion_alpha(bool a)
+{
+  useOcclusionAlpha = a;
+  processed();
 }

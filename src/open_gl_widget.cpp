@@ -214,6 +214,7 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
   m_program.setUniformValue("zoom", m_global_zoom);
   apply_light_params(projection, view);
+
   foreach (ImageProcessor *processor, processorList)
   {
     if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
@@ -236,6 +237,26 @@ void OpenGlWidget::update_scene()
     if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
     {
       setOcclusionMap(&occlusionMap);
+    }
+
+    bool useAlpha;
+
+    switch (viewmode)
+    {
+      case ViewMode::NormalMap:
+        useAlpha = processor->get_use_normal_alpha();
+        break;
+      case ViewMode::ParallaxMap:
+        useAlpha = processor->get_use_parallax_alpha();
+        break;
+      case ViewMode::SpecularMap:
+        useAlpha = processor->get_use_specular_alpha();
+        break;
+      case ViewMode::OcclusionMap:
+        useAlpha = processor->get_use_occlusion_alpha();
+        break;
+      default:
+        useAlpha = false;
     }
 
     transform.setToIdentity();
@@ -289,7 +310,7 @@ void OpenGlWidget::update_scene()
     zoomX = processor->get_tile_x() ? 1.0 / 3 : 1;
     zoomY = processor->get_tile_y() ? 1.0 / 3 : 1;
     m_program.setUniformValue("ratio", QVector2D(1 / zoomX, 1 / zoomY));
-
+    m_program.setUniformValue("useAlpha", useAlpha);
     m_texture->bind(0);
     m_program.setUniformValue("diffuse", 0);
 
