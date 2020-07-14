@@ -523,19 +523,31 @@ void OpenGlWidget::setParallax(bool p)
 void OpenGlWidget::wheelEvent(QWheelEvent *event)
 {
   QPointF mouse_position = LocalToWorld(event->position());
-  QPoint degree = event->angleDelta() / 8;
 
-  if (!degree.isNull() && degree.y() != 0)
+  QPoint pixels = event->pixelDelta();
+  QPoint degree = event->angleDelta();
+
+  double zoom = 0;
+
+  if (!pixels.isNull())
+  {
+    zoom = pixels.y() > 0 ? 1.1 : 0.9;
+  }
+
+  else if (!degree.isNull() && degree.y() != 0)
+  {
+    zoom = degree.y() > 0 ? 1.1 : 0.9;
+  }
+
+  if (zoom > 0)
   {
 
-    double zoom = degree.y() > 0 ? 1.1 : 0.9;
+      double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
+      double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
 
-    double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
-    double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
+      origin -= QVector3D(dx, dy, 0);
 
-    origin -= QVector3D(dx, dy, 0);
-
-    setZoom(zoom * m_global_zoom);
+      setZoom(zoom * m_global_zoom);
   }
 }
 
