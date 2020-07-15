@@ -280,7 +280,14 @@ void PresetsManager::on_pushButtonExportPreset_clicked()
     QString preset = ui->comboBoxPreset->currentText();
     QFile selected_preset(presetsPath + preset);
     if (selected_preset.open(QIODevice::ReadOnly))
-      selected_preset.copy(path + "/" + preset);
+    {
+      if (!selected_preset.copy(path + "/" + preset))
+      {
+        QMessageBox msg;
+        msg.setText(tr("Couldn't export. Check destination's permissions or if a file with the same name already exists there."));
+        msg.exec();
+      }
+    }
   }
 }
 
