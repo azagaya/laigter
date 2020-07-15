@@ -1023,12 +1023,13 @@ void MainWindow::on_listWidget_itemSelectionChanged()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
-void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination, bool useAlpha)
+bool MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination, bool useAlpha)
 {
   QImage n;
   QString suffix;
   QString name;
   QFileInfo info;
+  bool saved = true;
   for (int i = 0; i < p->frames.count(); i++)
   {
     p->frames[i].get_image(type, &n);
@@ -1057,36 +1058,37 @@ void MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
     {
       n.setAlphaChannel(p->get_texture()->alphaChannel());
     }
-    n.save(name);
+    saved &= n.save(name);
   }
+  return saved;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
 
   QString message = "";
-
+  bool saved = true;
   foreach (ImageProcessor *p, processorList)
   {
     if (ui->checkBoxExportNormal->isChecked())
     {
-      ExportMap(TextureTypes::Normal, p, "_n", "", p->get_use_normal_alpha());
+      saved &= ExportMap(TextureTypes::Normal, p, "_n", "", p->get_use_normal_alpha());
     }
     if (ui->checkBoxExportParallax->isChecked())
     {
-      ExportMap(TextureTypes::Parallax, p, "_p", "", p->get_use_parallax_alpha());
+      saved &= ExportMap(TextureTypes::Parallax, p, "_p", "", p->get_use_parallax_alpha());
     }
     if (ui->checkBoxExportSpecular->isChecked())
     {
-      ExportMap(TextureTypes::Specular, p, "_s", "", p->get_use_specular_alpha());
+      saved &= ExportMap(TextureTypes::Specular, p, "_s", "", p->get_use_specular_alpha());
     }
     if (ui->checkBoxExportOcclusion->isChecked())
     {
-      ExportMap(TextureTypes::Occlussion, p, "_o", "", p->get_use_occlusion_alpha());
+      saved &= ExportMap(TextureTypes::Occlussion, p, "_o", "", p->get_use_occlusion_alpha());
     }
     if (ui->checkBoxExportDiffuse->isChecked())
     {
-      ExportMap(TextureTypes::Color, p, "_d");
+      saved &= ExportMap(TextureTypes::Color, p, "_d");
     }
   }
   if (ui->checkBoxExportPreview->isChecked())
@@ -1107,7 +1109,14 @@ void MainWindow::on_pushButton_clicked()
     }
   }
 
-  message = tr("All selected maps were exported.\n");
+  if (saved)
+  {
+    message = tr("All selected maps were exported.\n");
+  }
+  else
+  {
+    message = tr("Could not export maps. Check destination's permissions.\n");
+  }
   QMessageBox msgBox;
   msgBox.setText(message);
   msgBox.exec();

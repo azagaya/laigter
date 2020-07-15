@@ -84,7 +84,7 @@ public:
   void openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames);
   void SaveProject(QString path);
   void LoadProject(QString path);
-  void ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination = "", bool useAlpha = false);
+  bool ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination = "", bool useAlpha = false);
   QStringList FindSimilarFiles(QString file_name, QStringList checkedFiles, QString *prefix);
 
 public slots:
