@@ -101,7 +101,7 @@ sudo dnf install qt5-devel mesa-libGL-devel
 ##### Arch Linux/Manjaro
 
 ```bash
-sudo pacman -Sy hd5 vtk qt5-base
+sudo pacman -Sy hdf5 vtk qt5-base
 ```
 
 #### Get the source
