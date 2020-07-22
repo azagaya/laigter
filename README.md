@@ -77,7 +77,6 @@ Compiling on Linux is pretty straightforward. The following dependencies are req
 
 - Qt 5.14 or above (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
 - OpenGL development libraries.
-- (For Arch Linux/Manjaro: you will also need the VTK and HDF packages)
 
 If you install Qt from the online installer, you don't need to install the qt related packages below.
 
@@ -101,7 +100,7 @@ sudo dnf install qt5-devel mesa-libGL-devel
 ##### Arch Linux/Manjaro
 
 ```bash
-sudo pacman -Sy hd5 vtk qt5-base
+sudo pacman -Sy qt5-base
 ```
 
 #### Get the source
