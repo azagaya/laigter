@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24px"
+   height="24px"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="SVGRoot"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="export.svg">
+  <defs
+     id="defs2928" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="15.084945"
+     inkscape:cx="12"
+     inkscape:cy="8.8658008"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:grid-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3484" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata2931">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill-opacity:1;fill-rule:evenodd;stroke:none;paint-order:stroke fill markers"
+       d="M 12.025391,0 A 1.0001,1.0001 0 0 0 11.375,0.21875 l -5,4 A 1.0001,1.0001 0 0 0 6.978516,6.00977 1.0001,1.0001 0 0 0 7.625,5.78125 L 11,3.08203 V 18 c 0,0.554 0.446,1 1,1 0.554,0 1,-0.446 1,-1 V 3.08203 l 3.375,2.69922 a 1.0004882,1.0004882 0 1 0 1.25,-1.5625 l -5,-4 A 1.0001,1.0001 0 0 0 12.025391,0 Z M 2,8 C 0.892,8 0,8.892 0,10 v 12 c 0,1.108 0.892,2 2,2 h 20 c 1.108,0 2,-0.892 2,-2 V 10 C 24,8.892 23.108,8 22,8 h -8 v 2 h 7 c 0.554,0 1,0.446 1,1 v 10 c 0,0.554 -0.446,1 -1,1 H 3 C 2.446,22 2,21.554 2,21 V 11 c 0,-0.554 0.446,-1 1,-1 h 7 V 8 Z"
+       id="rect1383-0"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

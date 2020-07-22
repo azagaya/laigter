@@ -53,6 +53,12 @@
    </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -1543,8 +1549,7 @@
   </widget>
   <action name="actionImport">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/import.png</normaloff>:/icons/import.png</iconset>
+    <iconset theme="import"/>
    </property>
    <property name="text">
     <string>Import</string>
@@ -1558,8 +1563,7 @@
   </action>
   <action name="actionFitZoom">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/zoom_fit.png</normaloff>:/icons/zoom_fit.png</iconset>
+    <iconset theme="zoom_fit"/>
    </property>
    <property name="text">
     <string>Fit Zoom</string>
@@ -1570,8 +1574,7 @@
   </action>
   <action name="actionZoom_100">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/zoom100.png</normaloff>:/icons/zoom100.png</iconset>
+    <iconset theme="zoom100"/>
    </property>
    <property name="text">
     <string>Zoom 100%</string>
@@ -1579,8 +1582,7 @@
   </action>
   <action name="actionZoomIn">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/zoom+.png</normaloff>:/icons/zoom+.png</iconset>
+    <iconset theme="zoom+"/>
    </property>
    <property name="text">
     <string>Zoom +</string>
@@ -1588,8 +1590,7 @@
   </action>
   <action name="actionZoomOut">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/zoom-.png</normaloff>:/icons/zoom-.png</iconset>
+    <iconset theme="zoom-"/>
    </property>
    <property name="text">
     <string>Zoom -</string>
@@ -1597,8 +1598,7 @@
   </action>
   <action name="actionExport">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
+    <iconset theme="export"/>
    </property>
    <property name="text">
     <string>Export</string>
@@ -1609,8 +1609,7 @@
   </action>
   <action name="actionPresets">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/presets.png</normaloff>:/icons/presets.png</iconset>
+    <iconset theme="presets"/>
    </property>
    <property name="text">
     <string>Presets</string>
@@ -1618,8 +1617,7 @@
   </action>
   <action name="actionExportPreview">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/export_preview.png</normaloff>:/icons/export_preview.png</iconset>
+    <iconset theme="export_preview"/>
    </property>
    <property name="text">
     <string>Export Preview</string>
@@ -1630,8 +1628,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/info.png</normaloff>:/icons/info.png</iconset>
+    <iconset theme="info"/>
    </property>
    <property name="text">
     <string>About</string>
@@ -1645,8 +1642,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/add_light.png</normaloff>:/icons/add_light.png</iconset>
+    <iconset theme="add_light"/>
    </property>
    <property name="text">
     <string>Add Light</string>
@@ -1657,8 +1653,7 @@
   </action>
   <action name="actionLoadPlugins">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/plugin-reload.png</normaloff>:/icons/plugin-reload.png</iconset>
+    <iconset theme="plugin-reload"/>
    </property>
    <property name="text">
     <string>Load Plugins</string>
@@ -1672,8 +1667,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/plugin-install.png</normaloff>:/icons/plugin-install.png</iconset>
+    <iconset theme="plugin-install"/>
    </property>
    <property name="text">
     <string>Install Plugin</string>
@@ -1687,8 +1681,7 @@
   </action>
   <action name="actionDelete_Plugin">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/plugin-delete.png</normaloff>:/icons/plugin-delete.png</iconset>
+    <iconset theme="plugin-delete"/>
    </property>
    <property name="text">
     <string>Delete Plugin</string>
@@ -1704,8 +1697,7 @@
   </action>
   <action name="actionSaveProject">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+    <iconset theme="save"/>
    </property>
    <property name="text">
     <string>Save Project</string>
@@ -1713,8 +1705,7 @@
   </action>
   <action name="actionLoadProject">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+    <iconset theme="open"/>
    </property>
    <property name="text">
     <string>Open Project</string>
@@ -1725,8 +1716,7 @@
   </action>
   <action name="actionSave_Project_As">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
+    <iconset theme="save_as"/>
    </property>
    <property name="text">
     <string>Save Project As</string>
@@ -1746,8 +1736,6 @@
    <header>gui/widgets/slider.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

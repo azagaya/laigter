@@ -77,8 +77,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icons/export.png</normaloff>:/icons/export.png</iconset>
+         <iconset theme="export"/>
         </property>
        </widget>
       </item>
@@ -103,8 +102,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icons/import.png</normaloff>:/icons/import.png</iconset>
+         <iconset theme="import"/>
         </property>
        </widget>
       </item>
@@ -123,8 +121,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../icons.qrc">
-          <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+         <iconset theme="delete"/>
         </property>
        </widget>
       </item>
@@ -693,8 +690,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

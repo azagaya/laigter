@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>368</width>
-    <height>124</height>
+    <height>162</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons.qrc">
-       <normaloff>:/icons/play.png</normaloff>:/icons/play.png</iconset>
+      <iconset theme="play"/>
      </property>
      <property name="iconSize">
       <size>
@@ -53,8 +52,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons.qrc">
-       <normaloff>:/icons/left.png</normaloff>:/icons/left.png</iconset>
+      <iconset theme="left"/>
      </property>
      <property name="iconSize">
       <size>
@@ -112,8 +110,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../icons.qrc">
-       <normaloff>:/icons/right.png</normaloff>:/icons/right.png</iconset>
+      <iconset theme="right"/>
      </property>
      <property name="iconSize">
       <size>
@@ -148,8 +145,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

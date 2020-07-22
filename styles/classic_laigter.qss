@@ -1,9 +1,9 @@
 QDockWidget
 {
 	color: rgb(235, 235, 235);
-	border: 1px solid black;
-        titlebar-close-icon: url(:/icons/close.png);
-	titlebar-normal-icon: url(:/icons/undock.png);
+        border: 1px solid black;
+        titlebar-close-icon: url(:/icons/Classic Laigter/custom-icons/close.png);
+        titlebar-normal-icon: url(:/icons/Classic Laigter/custom-icons/undock.png);
         margin: 0px;
 }
 

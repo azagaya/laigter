@@ -64,7 +64,7 @@ void AnimationDock::on_fpsSpinBox_valueChanged(int arg1)
 void AnimationDock::on_playButton_toggled(bool checked)
 {
   m_current_processor->playAnimation(checked);
-  checked ? ui->playButton->setIcon(QIcon(":/icons/pause.png")) : ui->playButton->setIcon(QIcon(":/icons/play.png"));
+  checked ? ui->playButton->setIcon(QIcon::fromTheme("pause")) : ui->playButton->setIcon(QIcon::fromTheme("play"));
 }
 
 void AnimationDock::on_leftButton_clicked()

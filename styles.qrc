@@ -1,8 +1,8 @@
 <RCC>
-	<qresource prefix="/">
-		<file>styles/spin_box_slider.qss</file>
-		<file>styles/spin_box_slider2.qss</file>
-		<file>styles/classic.qss</file>
-		<file>styles/dark_blue.qss</file>
-	</qresource>
+    <qresource prefix="/">
+        <file>styles/spin_box_slider.qss</file>
+        <file>styles/spin_box_slider2.qss</file>
+        <file>styles/classic_laigter.qss</file>
+        <file>styles/dark_blue.qss</file>
+    </qresource>
 </RCC>

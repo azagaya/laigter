@@ -1,34 +1,35 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/open.png</file>
-        <file>icons/zoom100.png</file>
-        <file>icons/zoom+.png</file>
-        <file>icons/zoom-.png</file>
-        <file>icons/zoom_fit.png</file>
-        <file>icons/export.png</file>
-        <file>icons/presets.png</file>
-        <file>icons/import.png</file>
-        <file>icons/export_preview.png</file>
         <file>icons/itchio.png</file>
         <file>icons/patreon.jpg</file>
         <file>icons/twitter.png</file>
         <file>icons/kofi.png</file>
-        <file>icons/info.png</file>
         <file>icons/github.png</file>
-        <file>icons/add_light.png</file>
-        <file>icons/undock.png</file>
-        <file>icons/save.png</file>
-        <file>icons/save_as.png</file>
-        <file>icons/close.png</file>
-        <file>icons/play.png</file>
-        <file>icons/right.png</file>
-        <file>icons/left.png</file>
-        <file>icons/plugin-install.png</file>
-        <file>icons/pause.png</file>
-        <file>icons/plugin-reload.png</file>
-        <file>icons/plugin-delete.png</file>
         <file>icons/laigter_icon.ico</file>
         <file>icons/laigter_icon.icns</file>
-        <file>icons/delete.png</file>
+        <file>icons/Classic Laigter/custom-icons/add_light.png</file>
+        <file>icons/Classic Laigter/custom-icons/close.png</file>
+        <file>icons/Classic Laigter/custom-icons/delete.png</file>
+        <file>icons/Classic Laigter/custom-icons/export.png</file>
+        <file>icons/Classic Laigter/custom-icons/export_preview.png</file>
+        <file>icons/Classic Laigter/custom-icons/import.png</file>
+        <file>icons/Classic Laigter/custom-icons/info.png</file>
+        <file>icons/Classic Laigter/custom-icons/left.png</file>
+        <file>icons/Classic Laigter/custom-icons/open.png</file>
+        <file>icons/Classic Laigter/custom-icons/pause.png</file>
+        <file>icons/Classic Laigter/custom-icons/play.png</file>
+        <file>icons/Classic Laigter/custom-icons/plugin-delete.png</file>
+        <file>icons/Classic Laigter/custom-icons/plugin-install.png</file>
+        <file>icons/Classic Laigter/custom-icons/plugin-reload.png</file>
+        <file>icons/Classic Laigter/custom-icons/presets.png</file>
+        <file>icons/Classic Laigter/custom-icons/right.png</file>
+        <file>icons/Classic Laigter/custom-icons/save.png</file>
+        <file>icons/Classic Laigter/custom-icons/save_as.png</file>
+        <file>icons/Classic Laigter/custom-icons/undock.png</file>
+        <file>icons/Classic Laigter/custom-icons/zoom+.png</file>
+        <file>icons/Classic Laigter/custom-icons/zoom-.png</file>
+        <file>icons/Classic Laigter/custom-icons/zoom100.png</file>
+        <file>icons/Classic Laigter/custom-icons/zoom_fit.png</file>
+        <file>icons/Classic Laigter/index.theme</file>
     </qresource>
 </RCC>

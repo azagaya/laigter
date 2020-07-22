@@ -54,6 +54,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
   ui->setupUi(this);
 
+  // Setting style
+  QFile stylesheet_file(":/styles/classic_laigter.qss");
+  stylesheet_file.open(QFile::ReadOnly);
+  QString stylesheet = QLatin1String(stylesheet_file.readAll());
+  qApp->setStyleSheet(stylesheet);
+
+  /* Set Icon Path */
+  QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
+  QIcon::setThemeName("Classic Laigter");
+
   /* Language settings */
   el = new LanguageSelector(this);
 
@@ -193,12 +203,6 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this, SLOT(openGL_initialized()));
   connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
   set_enabled_light_controls(false);
-
-  // Setting style
-  QFile stylesheet_file(":/styles/classic.qss");
-  stylesheet_file.open(QFile::ReadOnly);
-  QString stylesheet = QLatin1String(stylesheet_file.readAll());
-  qApp->setStyleSheet(stylesheet);
 }
 
 MainWindow::~MainWindow()
