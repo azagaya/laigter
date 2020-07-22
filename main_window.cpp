@@ -55,14 +55,14 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 
   // Setting style
-  QFile stylesheet_file(":/styles/classic_laigter.qss");
+  QFile stylesheet_file(":/styles/dark_blue.qss");
   stylesheet_file.open(QFile::ReadOnly);
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
 
   /* Set Icon Path */
   QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
-  QIcon::setThemeName("Classic Laigter");
+  QIcon::setThemeName("DarkBlue Laigter");
 
   /* Language settings */
   el = new LanguageSelector(this);

@@ -1,63 +1,38 @@
-QSlider::groove:horizontal
-{
-	height: 10px;
-	background: transparent;
-	margin: 4px 0px 4px 36px;
-	padding: 0px
-}
 
 QSlider::handle:horizontal
 {
 	background: rgb(20%, 20%, 30%);
-	border: 2px solid rgb(60%, 60%, 100%);
-	border-left: 30px solid transparent;
-	width: 10px;
-	margin: -4px 0px -4px -30px;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+        border: 2px solid rgb(60%, 60%, 100%);
 }
 
 QSlider::handle:horizontal:disabled
 {
 	background: rgb(60%, 60%, 60%);
-	border: 2px solid rgb(80%, 80%, 80%);
-	border-left: 30px solid transparent;
-	width: 10px;
-	margin: -4px 0px -4px -30px;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+        border: 2px solid rgb(80%, 80%, 80%);
 }
 
 QSlider::sub-page:horizontal
 {
-	background: rgb(20%, 20%, 30%);
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+        background: rgb(20%, 20%, 30%);
 	border: 2px solid rgb(60%, 60%, 100%);
 }
 
 QSlider::sub-page:horizontal:disabled
 {
-	background: rgb(60%, 60%, 60%);
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+        background: rgb(60%, 60%, 60%);
 	border: 2px solid rgb(80%, 80%, 80%);
 }
 
 QSlider::add-page:horizontal
 {
-	background:  rgb(20%, 20%, 30%);
-	border-radius: 5px;
-	border: 1px solid rgb(60%, 60%, 100%);
-	margin: 4px 0;
+        background:  rgb(20%, 20%, 30%);
+        border: 1px solid rgb(60%, 60%, 100%);
 }
 
 QSlider::add-page:horizontal:disabled
 {
-	background:  rgb(60%, 60%, 60%);
-	border-radius: 5px;
-	border: 1px solid rgb(80%, 80%, 80%);
-	margin: 4px 0;
+        background:  rgb(60%, 60%, 60%);
+        border: 1px solid rgb(80%, 80%, 80%);
 }
 
 QSpinBox
