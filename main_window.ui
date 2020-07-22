@@ -62,7 +62,7 @@
    <addaction name="actionLoadProject"/>
    <addaction name="actionSaveProject"/>
    <addaction name="actionSave_Project_As"/>
-   <addaction name="actionOpen"/>
+   <addaction name="actionImport"/>
    <addaction name="separator"/>
    <addaction name="actionFitZoom"/>
    <addaction name="actionZoom_100"/>
@@ -1541,16 +1541,16 @@
    <addaction name="actionLoadPlugins"/>
    <addaction name="separator"/>
   </widget>
-  <action name="actionOpen">
+  <action name="actionImport">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/import.png</normaloff>:/icons/import.png</iconset>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>Import</string>
    </property>
    <property name="toolTip">
-    <string>Open</string>
+    <string>Import Image</string>
    </property>
    <property name="font">
     <font/>
@@ -1658,7 +1658,7 @@
   <action name="actionLoadPlugins">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
+     <normaloff>:/icons/plugin-reload.png</normaloff>:/icons/plugin-reload.png</iconset>
    </property>
    <property name="text">
     <string>Load Plugins</string>
@@ -1673,7 +1673,7 @@
    </property>
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/install.png</normaloff>:/icons/install.png</iconset>
+     <normaloff>:/icons/plugin-install.png</normaloff>:/icons/plugin-install.png</iconset>
    </property>
    <property name="text">
     <string>Install Plugin</string>
@@ -1688,7 +1688,7 @@
   <action name="actionDelete_Plugin">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+     <normaloff>:/icons/plugin-delete.png</normaloff>:/icons/plugin-delete.png</iconset>
    </property>
    <property name="text">
     <string>Delete Plugin</string>
@@ -1717,7 +1717,10 @@
      <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
    </property>
    <property name="text">
-    <string>Load Project</string>
+    <string>Open Project</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Project</string>
    </property>
   </action>
   <action name="actionSave_Project_As">

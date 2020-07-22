@@ -3,8 +3,7 @@
 
 #include <QDebug>
 
-AnimationDock::AnimationDock(QWidget *parent) :
-                                                QWidget(parent),
+AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
                                                 ui(new Ui::AnimationDock)
 {
   ui->setupUi(this);
@@ -22,11 +21,11 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 
   disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
 
-
   m_current_processor = p;
 
   ui->playButton->setChecked(p->animation.isActive());
-  for (int i = 0; i < ui->listWidget->count(); i++) {
+  for (int i = 0; i < ui->listWidget->count(); i++)
+  {
     delete ui->listWidget->item(i);
   }
   ui->listWidget->clear();
@@ -37,15 +36,13 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
     p->frames[i].get_image(TextureTypes::Diffuse, &image);
     item->setIcon(QPixmap::fromImage(image));
     ui->listWidget->addItem(item);
-
   }
 
   ui->listWidget->setCurrentRow(p->get_current_frame_id());
-  ui->fpsSpinBox->setValue(1/(p->animation.interval()/1000.0));
+  ui->fpsSpinBox->setValue(1 / (p->animation.interval() / 1000.0));
 
   connect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   connect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
-
 }
 
 void AnimationDock::updateProcessorFrame(int index)
@@ -54,7 +51,7 @@ void AnimationDock::updateProcessorFrame(int index)
   {
     if (!m_current_processor->animation.isActive())
     {
-     m_current_processor->set_current_frame_id(index);
+      m_current_processor->set_current_frame_id(index);
     }
   }
 }
@@ -67,11 +64,12 @@ void AnimationDock::on_fpsSpinBox_valueChanged(int arg1)
 void AnimationDock::on_playButton_toggled(bool checked)
 {
   m_current_processor->playAnimation(checked);
+  checked ? ui->playButton->setIcon(QIcon(":/icons/pause.png")) : ui->playButton->setIcon(QIcon(":/icons/play.png"));
 }
 
 void AnimationDock::on_leftButton_clicked()
 {
-  QList <QListWidgetItem *> item_list = ui->listWidget->selectedItems();
+  QList<QListWidgetItem *> item_list = ui->listWidget->selectedItems();
   if (item_list.count() > 0)
   {
     int index = ui->listWidget->currentRow();
@@ -81,10 +79,10 @@ void AnimationDock::on_leftButton_clicked()
     }
     m_current_processor->playAnimation(false);
     Sprite s(m_current_processor->frames[index]);
-    m_current_processor->frames[index] = m_current_processor->frames[index-1];
-    m_current_processor->frames[index-1] = s;
-    ui->listWidget->insertItem(index-1, ui->listWidget->takeItem(index));
-    ui->listWidget->setCurrentRow(index-1);
+    m_current_processor->frames[index] = m_current_processor->frames[index - 1];
+    m_current_processor->frames[index - 1] = s;
+    ui->listWidget->insertItem(index - 1, ui->listWidget->takeItem(index));
+    ui->listWidget->setCurrentRow(index - 1);
   }
 }
 
@@ -95,19 +93,19 @@ void AnimationDock::setCurrentFrame(int index)
 
 void AnimationDock::on_rightButton_clicked()
 {
-  QList <QListWidgetItem *> item_list = ui->listWidget->selectedItems();
+  QList<QListWidgetItem *> item_list = ui->listWidget->selectedItems();
   if (item_list.count() > 0)
   {
     int index = ui->listWidget->currentRow();
-    if (index >= m_current_processor->frames.count()-1)
+    if (index >= m_current_processor->frames.count() - 1)
     {
       return;
     }
     m_current_processor->playAnimation(false);
     Sprite s(m_current_processor->frames[index]);
-    m_current_processor->frames[index] = m_current_processor->frames[index+1];
-    m_current_processor->frames[index+1] = s;
-    ui->listWidget->insertItem(index+1, ui->listWidget->takeItem(index));
-    ui->listWidget->setCurrentRow(index+1);
+    m_current_processor->frames[index] = m_current_processor->frames[index + 1];
+    m_current_processor->frames[index + 1] = s;
+    ui->listWidget->insertItem(index + 1, ui->listWidget->takeItem(index));
+    ui->listWidget->setCurrentRow(index + 1);
   }
 }

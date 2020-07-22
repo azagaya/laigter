@@ -482,13 +482,6 @@ void MainWindow::update_scene()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
-void MainWindow::on_actionOpen_triggered()
-{
-  QStringList fileNames = QFileDialog::getOpenFileNames(
-      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
-  open_files(fileNames);
-}
-
 void MainWindow::add_processor(ImageProcessor *p)
 {
   processorList.append(p);
@@ -1968,4 +1961,11 @@ void MainWindow::on_actionSave_Project_As_triggered()
   }
 
   SaveProject(fileName);
+}
+
+void MainWindow::on_actionImport_triggered()
+{
+  QStringList fileNames = QFileDialog::getOpenFileNames(
+      this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+  open_files(fileNames);
 }

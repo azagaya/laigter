@@ -114,7 +114,6 @@ private slots:
   void showContextMenuForListWidget(const QPoint &pos);
   void list_menu_action_triggered(QAction *action);
   void openGL_initialized();
-  void on_actionOpen_triggered();
   void on_actionFitZoom_triggered();
   void on_actionZoom_100_triggered();
   void on_actionZoomIn_triggered();
@@ -155,6 +154,8 @@ private slots:
   void on_actionLoadProject_triggered();
 
   void on_actionSave_Project_As_triggered();
+
+  void on_actionImport_triggered();
 
 protected slots:
   virtual void changeEvent(QEvent *event);

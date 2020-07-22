@@ -7,7 +7,6 @@
         <file>icons/zoom_fit.png</file>
         <file>icons/export.png</file>
         <file>icons/presets.png</file>
-        <file>icons/delete.png</file>
         <file>icons/import.png</file>
         <file>icons/export_preview.png</file>
         <file>icons/itchio.png</file>
@@ -17,14 +16,19 @@
         <file>icons/info.png</file>
         <file>icons/github.png</file>
         <file>icons/add_light.png</file>
-        <file>icons/refresh.png</file>
         <file>icons/undock.png</file>
-        <file>icons/install.png</file>
         <file>icons/save.png</file>
         <file>icons/save_as.png</file>
         <file>icons/close.png</file>
         <file>icons/play.png</file>
         <file>icons/right.png</file>
         <file>icons/left.png</file>
+        <file>icons/plugin-install.png</file>
+        <file>icons/pause.png</file>
+        <file>icons/plugin-reload.png</file>
+        <file>icons/plugin-delete.png</file>
+        <file>icons/laigter_icon.ico</file>
+        <file>icons/laigter_icon.icns</file>
+        <file>icons/delete.png</file>
     </qresource>
 </RCC>
