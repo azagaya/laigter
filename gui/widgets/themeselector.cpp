@@ -1,6 +1,7 @@
 #include "themeselector.h"
 #include "ui_themeselector.h"
 #include <QFile>
+#include <QSettings>
 #include <QtDebug>
 
 ThemeSelector::ThemeSelector(QWidget *parent) : QWidget(parent),
@@ -28,4 +29,8 @@ void ThemeSelector::on_listWidget_itemClicked(QListWidgetItem *item)
   /* Set Icon Path */
   QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
   QIcon::setThemeName(theme);
+
+  QSettings settings("Azagaya", "Laigter");
+  settings.setValue("theme", theme);
+  settings.setValue("style", style);
 }

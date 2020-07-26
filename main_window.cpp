@@ -55,15 +55,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
   ui->setupUi(this);
 
+  QSettings settings("Azagaya", "Laigter");
+  QString style = "classic_laigter.qss";
+  if (settings.contains("style"))
+  {
+    style = settings.value("style").toString();
+  }
+  QString theme = "Classic Laigter";
+  if (settings.contains("theme"))
+  {
+    theme = settings.value("theme").toString();
+  }
+
   // Setting style
-  QFile stylesheet_file(":/styles/darkblue_laigter.qss");
+  QFile stylesheet_file(":/styles/" + style);
   stylesheet_file.open(QFile::ReadOnly);
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
 
   /* Set Icon Path */
   QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
-  QIcon::setThemeName("DarkBlue Laigter");
+  QIcon::setThemeName(theme);
 
   /* Language settings */
   el = new LanguageSelector(this);
@@ -191,7 +203,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
   connect(sprite_widget, SIGNAL(splitButtonPressed()), this, SLOT(splitInFrames()));
 
-  QSettings settings("Azagaya", "Laigter");
+  // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
   restoreState(settings.value("windowState").toByteArray());
 
