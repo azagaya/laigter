@@ -25,6 +25,7 @@
 #include "gui/presets_manager.h"
 #include "gui/remove_plugin_dialog.h"
 #include "gui/widgets/animation_dock.h"
+#include "gui/widgets/themeselector.h"
 #include "src/brush_interface.h"
 #include "src/open_gl_widget.h"
 #include "ui_main_window.h"
@@ -55,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 
   // Setting style
-  QFile stylesheet_file(":/styles/dark_blue.qss");
+  QFile stylesheet_file(":/styles/darkblue_laigter.qss");
   stylesheet_file.open(QFile::ReadOnly);
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
@@ -1693,7 +1694,7 @@ void MainWindow::on_actionLoadPlugins_triggered()
     {
       ui->openGLPreviewWidget->currentBrush = b;
       b->setProcessor(&processor);
-      QAction *action = new QAction(b->getIcon(), b->getName());
+      QAction *action = new QAction(QIcon::fromTheme(b->getIcon()), b->getName());
       action->setCheckable(true);
       QDockWidget *pluginDock = new QDockWidget(b->getName(), this);
       QWidget *pluginGui = b->loadGUI();
@@ -1972,4 +1973,10 @@ void MainWindow::on_actionImport_triggered()
   QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
   open_files(fileNames);
+}
+
+void MainWindow::on_actionThemes_triggered()
+{
+  ThemeSelector *t = new ThemeSelector;
+  t->show();
 }

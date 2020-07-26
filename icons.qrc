@@ -55,5 +55,9 @@
         <file>icons/DarkBlue Laigter/custom-icons/zoom+.png</file>
         <file>icons/DarkBlue Laigter/custom-icons/zoom-.png</file>
         <file>icons/DarkBlue Laigter/custom-icons/zoom_fit.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/theme-selector.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/settings.png</file>
+        <file>icons/Classic Laigter/custom-icons/theme-selector.png</file>
+        <file>icons/Classic Laigter/custom-icons/settings.png</file>
     </qresource>
 </RCC>

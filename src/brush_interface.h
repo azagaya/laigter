@@ -24,7 +24,7 @@ public:
   virtual void set_selected(bool s) = 0;
   virtual QWidget *loadGUI(QWidget *parent = nullptr) = 0;
   virtual void setProcessor(ImageProcessor **processor) = 0;
-  virtual QIcon getIcon() = 0;
+  virtual QString getIcon() = 0;
   virtual QString getName() = 0;
   virtual QImage getBrushSprite() = 0;
   virtual QObject *getObject() = 0;

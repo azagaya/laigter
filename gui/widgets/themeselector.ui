@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ThemeSelector</class>
+ <widget class="QWidget" name="ThemeSelector">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>202</width>
+    <height>249</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QListWidget" name="listWidget">
+     <item>
+      <property name="text">
+       <string>Classic</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>DarkBlue</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -157,6 +157,8 @@ private slots:
 
   void on_actionImport_triggered();
 
+  void on_actionThemes_triggered();
+
 protected slots:
   virtual void changeEvent(QEvent *event);
 };
