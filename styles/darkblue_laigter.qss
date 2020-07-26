@@ -278,3 +278,31 @@ QSpinBox::down-button#flatSpinBox
 	border-width: 0px;
 	border-top-width: 0;
 }
+
+QTabBar::tab {
+    background: rgb(37, 51, 65);
+    min-width: 8ex;
+    margin: 2px;
+    padding: 2px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+
+    border: 1px solid rgb(29, 161, 242);
+}
+
+QTabBar::tab:selected {
+    border-color: rgb(37, 51, 65);
+    color: rgb(29, 161, 242);
+}
+
+QGroupBox {
+    background-color: transparent;
+    border: 1px solid rgb(37, 51, 65);
+    margin-top: 10px; /* leave space at the top for the title */
+    padding: 2px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+}
