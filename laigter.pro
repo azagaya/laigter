@@ -112,9 +112,9 @@ unix{
     shortcutfiles.files = dist/laigter.desktop
     shortcutfiles.path = $$PREFIX/share/applications/
     iconfiles.files = dist/laigter.png
-    iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/
-    appdatafiles.files = dist/laigter.appdata.xlm
-    appdatafiles.path = $$PREFIX/share/metainfo
+    iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/apps/
+    appdatafiles.files = dist/laigter.appdata.xml
+    appdatafiles.path = $$PREFIX/share/metainfo/
 
     INSTALLS += target
     INSTALLS += shortcutfiles
@@ -123,7 +123,7 @@ unix{
 }
 
 DISTFILES += \
-	ACKNOWLEDGEMETS \
+	ACKNOWLEDGEMENTS \
 	LICENSE
 
 TRANSLATIONS = translations/laigter_da.ts \
