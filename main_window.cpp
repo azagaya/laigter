@@ -258,6 +258,7 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
   contextMenu.addSeparator();
   contextMenu.addAction(new QAction(tr("Load heightmap")));
   contextMenu.addAction(new QAction(tr("Reset heightmap")));
+  contextMenu.addAction(new QAction(tr("Merge Heightmap with previous Sprite")));
   contextMenu.addSeparator();
   contextMenu.addAction(new QAction(tr("Load specular map")));
   contextMenu.addAction(new QAction(tr("Reset specular map")));
@@ -372,9 +373,33 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   {
     bool success;
     fs_watcher.removePath(p->get_heightmap_path());
-    QImage height = il.loadImage(p->get_name(), &success);
+    QImage height = il.loadImage(p->get_current_frame()->get_file_name(), &success);
     height = height.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadHeightMap(p->get_name(), height);
+  }
+  else if (option == tr("Merge Heightmap with previous Sprite"))
+  {
+    int index = get_processor_index(p);
+    if (index > 0)
+    {
+      ImageProcessor *p2 = processorList.at(index - 1);
+      qDebug() << processorList;
+      QImage h = p->get_heightmap();
+      QImage h2 = p2->get_heightmap();
+
+      QPainter painter(&h);
+      painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
+
+      QPoint point2 = p2->get_position()->toPoint();
+      QPoint point1 = p->get_position()->toPoint();
+      QPoint position = QPoint(point2.x(), -point2.y()) - QPoint(h2.width(), h2.height()) / 2 - (QPoint(point1.x(), -point1.y()) - QPoint(h.width(), h.height()) / 2);
+      qDebug() << position;
+      painter.drawImage(position, h2);
+
+      p->get_current_frame()->set_image(TextureTypes::Heightmap, h);
+      p->set_current_heightmap(p->get_current_frame_id());
+      p->calculate();
+    }
   }
   else if (option == tr("Load specular map"))
   {
@@ -509,6 +534,18 @@ void MainWindow::add_processor(ImageProcessor *p)
   i->setIcon(QIcon(QPixmap::fromImage(*p->get_texture())));
   ui->listWidget->addItem(i);
   ui->listWidget->setCurrentRow(ui->listWidget->count() - 1);
+}
+
+int MainWindow::get_processor_index(ImageProcessor *p)
+{
+  for (int i = 0; i < ui->listWidget->count(); i++)
+  {
+    if (p->get_name() == ui->listWidget->item(i)->data(Qt::UserRole).toString())
+    {
+      return i;
+    }
+  }
+  return -1;
 }
 
 ImageProcessor *MainWindow::find_processor(QString name)

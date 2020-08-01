@@ -89,6 +89,7 @@ public:
 
 public slots:
   ImageProcessor *find_processor(QString name);
+  int get_processor_index(ImageProcessor *p);
   void setCurrentItem(QListWidgetItem *i);
   void update_scene();
   void add_processor(ImageProcessor *p);

@@ -472,7 +472,6 @@ void ImageProcessor::calculate_texture()
 
 void ImageProcessor::calculate_distance()
 {
-
   m_distance = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
   m_distance.channel(3).threshold(0.1) * 255.0f;
   cimg_for_borderXY(m_distance, x, y, 1) m_distance(x, y) = 0.0;
@@ -1318,7 +1317,9 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 
 QImage ImageProcessor::get_heightmap()
 {
-  /* TODO Implement this */
+  QImage heightmap;
+  current_frame->get_image(TextureTypes::Heightmap, &heightmap);
+  return heightmap.copy();
 }
 
 QImage ImageProcessor::get_distance_map()
