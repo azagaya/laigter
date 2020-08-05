@@ -1,16 +1,17 @@
 ![laigter-banner](https://user-images.githubusercontent.com/46932830/87454669-acbf9300-c5da-11ea-932a-fa4ec67e705f.png)
+
 # Laigter [![Build Status](https://travis-ci.com/azagaya/laigter.svg?branch=master)](https://travis-ci.com/azagaya/laigter)
 
 ## Overview
 
-- [Download](https://github.com/azagaya/laigter#download)
-- [Contributing](https://github.com/azagaya/laigter#contributing)
-- [Screenshots](https://github.com/azagaya/laigter#screenshots)
-- [Compiling](https://github.com/azagaya/laigter#compiling)
-	- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
-	- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
-	- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
-- [License](https://github.com/azagaya/laigter#license)
+- [Download](#download)
+- [Contributing](#contributing)
+- [Screenshots](#screenshots)
+- [Compiling](#compiling)
+  - [Linux](#compiling-on-linux)
+  - [Windows](#compiling-on-windows)
+  - [macOS](#compiling-on-macos)
+- [License](#license)
 
 Laigter is a tool that automatically generates maps for dynamic lighting effects
 in games. It allows normal, parallax, specular and occlusion map generation.
@@ -58,18 +59,18 @@ work together! Many things are needed. Also, please read the
 
 ## Compiling
 
-- [Linux](https://github.com/azagaya/laigter#compiling-on-linux)
-- [Windows](https://github.com/azagaya/laigter#compiling-on-windows)
-- [MacOS](https://github.com/azagaya/laigter#compiling-on-macos)
+- [Linux](#compiling-on-linux)
+- [Windows](#compiling-on-windows)
+- [macOS](#compiling-on-macos)
 
 ### Compiling on Linux
 
-- [Dependencies](https://github.com/azagaya/laigter#getting-the-dependencies)
-	- [Debian/Ubuntu](https://github.com/azagaya/laigter#debianubuntu)
-	- [Fedora](https://github.com/azagaya/laigter#fedora)
-	- [Arch Linux/Manjaro](https://github.com/azagaya/laigter#arch-linuxmanjaro)
+- [Dependencies](#getting-the-dependencies)
+  - [Debian/Ubuntu](#debianubuntu)
+  - [Fedora](#fedora)
+  - [Arch Linux/Manjaro](#arch-linuxmanjaro)
 
-- [Compiling and Building](https://github.com/azagaya/laigter#building)
+- [Compiling and Building](#building)
 
 #### Getting the Dependencies
 
@@ -78,12 +79,10 @@ Compiling on Linux is pretty straightforward. The following dependencies are req
 - Qt 5.14 or above (modules Concurrent, Core, Gui, Widgets) and optionally Qt Creator.
 - OpenGL development libraries.
 
-If you install Qt from the online installer, you don't need to install the qt related packages below.
+If you install Qt from the online installer, you don't need to install the Qt-related packages below.
 
 Install prerequisites by entering the following command in a terminal (depending
 on your distribution):
-
-
 
 ##### Debian/Ubuntu
 
@@ -116,15 +115,15 @@ or download the package via:
 1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
 2. Extract the package in your desired location
 
-Then finally `cd` into the laigter directory: `cd laigter`
+Then finally `cd` into the Laigter directory: `cd laigter`
 
 #### Building
 
-##### Using QT Creator:
+##### Using Qt Creator
 
 That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
-##### Using the terminal:
+##### Using the terminal
 
 After installing dependencies, you can also build from the terminal with:
 
@@ -149,20 +148,20 @@ Tested with Qt 5.14.
 
 #### Get the source
 
-You may get the source cloning the repository. For that, I recommend using (git for windows tool)[https://gitforwindows.org/]. With it, you can clone Laigter:
+You may get the source cloning the repository. For that, I recommend using [Git for Windows](https://gitforwindows.org/). With it, you can clone Laigter:
 
 ```bash
 git clone https://github.com/azagaya/laigter
 ```
 
-You may also download the package directly if you don't want to use git:
+You may also download the package directly if you don't want to use Git:
 
 1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
 2. Extract the package in your desired location
 
 #### Building
 
-Open Laigter project in QtCreator installed with the online installer, and run the project. No extra steps should be needed.
+Open Laigter project in Qt Creator installed with the online installer, and run the project. No extra steps should be needed.
 
 #### Deploying the application
 
@@ -197,14 +196,13 @@ or download the package via:
 1. Get the package [here](https://github.com/azagaya/laigter/archive/master.zip)
 2. Extract the package in your desired location
 
-Then finally `cd` into the laigter directory: `cd laigter`
+Then finally `cd` into the Laigter directory: `cd laigter`
 
 #### Building
 
 That's it, you can now open `laigter.pro` with QtCreator and build or debug Laigter.
 
-And thats all the test i could make before i had to return the MAC. 
-
+And that's all the tests I could make before I had to return the Mac.
 
 ### Using Laigter with command line
 
