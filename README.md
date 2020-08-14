@@ -52,10 +52,15 @@ work together! Many things are needed. Also, please read the
 
 ## Screenshots
 
-![specular2](https://user-images.githubusercontent.com/46932830/60845793-cbaf6c00-a1b3-11e9-999b-404670185b4c.png)
-![captura-piedra-5](https://user-images.githubusercontent.com/46932830/60845822-dcf87880-a1b3-11e9-879c-e909fbd83469.png)
-![captura-piedras-9](https://user-images.githubusercontent.com/46932830/60845823-dcf87880-a1b3-11e9-8772-a42180f3abdc.png)
-![specular4](https://user-images.githubusercontent.com/46932830/60845825-dcf87880-a1b3-11e9-9f32-45ccc27abe0f.png)
+![screenshot1](https://user-images.githubusercontent.com/46932830/90258696-4c14b780-de1f-11ea-8e33-33dbfc9fd86c.png)
+![screenshot2](https://user-images.githubusercontent.com/46932830/90258716-51720200-de1f-11ea-900b-4511ec2b608b.png)
+![screenshot3](https://user-images.githubusercontent.com/46932830/90258795-6babe000-de1f-11ea-9833-5cb57255b21f.png)
+![screenshot4](https://user-images.githubusercontent.com/46932830/90258904-8e3df900-de1f-11ea-8fc0-5b903b17d5c7.png)
+![screenshot5](https://user-images.githubusercontent.com/46932830/90258976-a877d700-de1f-11ea-9add-afdd1f461bd7.png)
+![screenshot6](https://user-images.githubusercontent.com/46932830/90258978-a9106d80-de1f-11ea-97d6-6c782d6347ff.png)
+![screenshot7](https://user-images.githubusercontent.com/46932830/90259018-bded0100-de1f-11ea-808b-4e576e64db89.png)
+![screenshot8](https://user-images.githubusercontent.com/46932830/90259039-c7766900-de1f-11ea-98ac-4b09b7ebc528.png)
+![screenshot9](https://user-images.githubusercontent.com/46932830/90259055-ce04e080-de1f-11ea-8318-46424a9da843.png)
 
 ## Compiling
 
