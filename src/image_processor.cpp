@@ -518,7 +518,7 @@ void ImageProcessor::set_normal_depth(int depth)
 void ImageProcessor::set_normal_bisel_soft(bool soft)
 {
   normal_bisel_soft = soft;
-  bump_requested = true;
+  bump_requested = distance_requested = true;
   rect_requested = QRect(0, 0, 0, 0);
   normal_counter = 1;
 }
