@@ -387,7 +387,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -686,26 +686,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBoxParallax">
-          <property name="text">
-           <string>Parallax</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Slider" name="sliderParallax">
-          <property name="maximum">
-           <number>300</number>
-          </property>
-          <property name="value">
-           <number>30</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
@@ -736,19 +716,6 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_24">
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Mode:</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1" colspan="3">
          <widget class="QComboBox" name="comboBoxView">
           <item>
@@ -790,6 +757,43 @@
           </property>
          </widget>
         </item>
+        <item row="5" column="2" colspan="2">
+         <widget class="Slider" name="blendSlider">
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="checkBoxParallax">
+          <property name="text">
+           <string>Parallax</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Blending:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_24">
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Mode:</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="0" colspan="3">
          <widget class="QCheckBox" name="checkBoxPixelated">
           <property name="sizePolicy">
@@ -816,17 +820,13 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Blending:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2" colspan="2">
-         <widget class="QSlider" name="blendSlider">
+        <item row="4" column="3">
+         <widget class="Slider" name="sliderParallax">
           <property name="maximum">
-           <number>100</number>
+           <number>300</number>
+          </property>
+          <property name="value">
+           <number>30</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
