@@ -109,3 +109,13 @@ void AnimationDock::on_rightButton_clicked()
     ui->listWidget->setCurrentRow(index + 1);
   }
 }
+
+void AnimationDock::on_deleteFrameButton_pressed()
+{
+    m_current_processor->remove_frame(ui->listWidget->currentRow());
+    delete ui->listWidget->takeItem(ui->listWidget->currentRow());
+    if (m_current_processor->frames.count() <= 1){
+        parentWidget()->hide();
+        m_current_processor->animation.stop();
+    }
+}
