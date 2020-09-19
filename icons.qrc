@@ -59,5 +59,15 @@
         <file>icons/DarkBlue Laigter/custom-icons/settings.png</file>
         <file>icons/Classic Laigter/custom-icons/theme-selector.png</file>
         <file>icons/Classic Laigter/custom-icons/settings.png</file>
+        <file>icons/Classic Laigter/custom-icons/frame.png</file>
+        <file>icons/Classic Laigter/custom-icons/frame-add.png</file>
+        <file>icons/Classic Laigter/custom-icons/frame-delete.png</file>
+        <file>icons/Classic Laigter/custom-icons/multiframe.png</file>
+        <file>icons/Classic Laigter/custom-icons/multiframe-delete.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/frame.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/frame-add.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/frame-delete.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/multiframe.png</file>
+        <file>icons/DarkBlue Laigter/custom-icons/multiframe-delete.png</file>
     </qresource>
 </RCC>
