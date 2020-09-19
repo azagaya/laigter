@@ -268,14 +268,11 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
 
   if (p->frames.count() > 1)
   {
-    QAction *removeFrame = new QAction(tr("Remove current frame"));
     QAction *nextFrame = new QAction(tr("Next Frame"));
     QAction *prevFrame = new QAction(tr("Previous Frame"));
-    contextMenu.addAction(removeFrame);
     if (p->animation.isActive())
     {
       contextMenu.addAction(new QAction(tr("Stop Animation")));
-      removeFrame->setEnabled(false);
       nextFrame->setEnabled(false);
       prevFrame->setEnabled(false);
     }
@@ -443,11 +440,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
     p->set_current_frame_id(p->get_current_frame_id() + 1);
   else if (option == tr("Previous Frame"))
     p->set_current_frame_id(p->get_current_frame_id() - 1);
-  else if (option == tr("Remove current frame"))
-  {
-    p->remove_current_frame();
-    fs_watcher.removePath(p->get_current_frame()->fileName);
-  }
   else if (option == tr("Split in frames"))
   {
     splitInFrames();
