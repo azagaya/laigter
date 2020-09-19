@@ -20,6 +20,7 @@ protected:
   virtual void resizeEvent(QResizeEvent *ev) override;
   virtual void sliderChange(SliderChange change) override;
   virtual void paintEvent(QPaintEvent *ev) override;
+  virtual void mouseDoubleClickEvent( QMouseEvent * e ) override;
 
 private slots:
   void setSpinBoxRange(int min, int max);

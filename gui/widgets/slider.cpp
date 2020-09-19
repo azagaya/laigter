@@ -81,3 +81,9 @@ void Slider::paintEvent(QPaintEvent *ev)
   else
     painter.fillRect(rect, QBrush(QColor(200, 200, 200)));
 }
+
+
+void Slider::mouseDoubleClickEvent( QMouseEvent * e ){
+    spin_box.setFocus();
+    spin_box.selectAll();
+}
