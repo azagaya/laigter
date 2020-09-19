@@ -826,7 +826,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     return;
   }
 
-  if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
+  if (event->buttons() & Qt::LeftButton)
   {
     /* If shift pressed, rotate canvas*/
 
@@ -886,7 +886,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     }
     need_to_update = true;
   }
-  else if (event->buttons() & Qt::RightButton)
+  else if (event->buttons() & Qt::MidButton)
   {
     origin += QVector3D(global_mouse_last_position - global_mouse_press_position);
     updateView();
