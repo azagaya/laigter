@@ -1,7 +1,12 @@
 #include "animation_dock.h"
 #include "ui_animation_dock.h"
 
+#include "src/image_loader.h"
+
 #include <QDebug>
+#include <QFileDialog>
+#include <QThread>
+#include <QMessageBox>
 
 AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
                                                 ui(new Ui::AnimationDock)
@@ -112,10 +117,72 @@ void AnimationDock::on_rightButton_clicked()
 
 void AnimationDock::on_deleteFrameButton_pressed()
 {
+    bool isPlaying = m_current_processor->animation.isActive();
+    m_current_processor->animation.stop();
     m_current_processor->remove_frame(ui->listWidget->currentRow());
     delete ui->listWidget->takeItem(ui->listWidget->currentRow());
     if (m_current_processor->frames.count() <= 1){
         parentWidget()->hide();
-        m_current_processor->animation.stop();
+    }else{
+        if (isPlaying) m_current_processor->animation.start();
     }
+
+}
+
+void AnimationDock::on_addFrameButton_pressed()
+{
+    bool isPlaying = m_current_processor->animation.isActive();
+    m_current_processor->animation.stop();
+    QStringList fileNames = QFileDialog::getOpenFileNames(
+        this, tr("Open Image"), "",
+        tr("Image File (*.png *.jpg *.bmp *.tga)"));
+    QSize frameSize = m_current_processor->get_current_frame()->size();
+    foreach (QString fileName, fileNames)
+    {
+      if (fileName != nullptr)
+      {
+        bool success;
+        QImage image = ImageLoader::loadImage(fileName, &success);
+        if (!success)
+          continue;
+
+
+//        fs_watcher.addPath(fileName);
+        image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+
+        if (image.size() != frameSize){
+            QMessageBox msgBox;
+            msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                           tr("New frame must have the same size than original frames."));
+            msgBox.exec();
+            continue;
+        }
+
+        m_current_processor->loadImage(fileName, image);
+      }
+    }
+    if (isPlaying) m_current_processor->animation.start();
+    setCurrentProcessor(m_current_processor);
+}
+
+void AnimationDock::on_deleteEmptyButton_pressed()
+{
+    bool isPlaying = m_current_processor->animation.isActive();
+    m_current_processor->animation.stop();
+
+    QImage empty = m_current_processor->get_texture()->copy();
+    QImage test;
+    empty.fill(Qt::transparent);
+
+    for (int i=0; i<m_current_processor->frames.count(); i++ ) {
+        m_current_processor->frames[i].get_image(TextureTypes::Diffuse,&test);
+        if (empty == test){
+            m_current_processor->remove_frame(i);
+            i--;
+        }
+    }
+
+    if (isPlaying) m_current_processor->animation.start();
+    setCurrentProcessor(m_current_processor);
+
 }

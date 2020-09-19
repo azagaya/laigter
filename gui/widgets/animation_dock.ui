@@ -67,7 +67,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="8">
+   <item row="0" column="9">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>FPS:</string>
@@ -81,7 +81,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="10">
+   <item row="1" column="0" colspan="11">
     <widget class="QListWidget" name="listWidget">
      <property name="iconSize">
       <size>
@@ -114,7 +114,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="7">
+   <item row="0" column="8">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -127,7 +127,26 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="9">
+   <item row="0" column="6">
+    <widget class="QPushButton" name="addFrameButton">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="frame-add"/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="10">
     <widget class="QSpinBox" name="fpsSpinBox">
      <property name="minimumSize">
       <size>
@@ -169,13 +188,13 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="6">
-    <widget class="QPushButton" name="addFrameButton">
+   <item row="0" column="7">
+    <widget class="QPushButton" name="deleteEmptyButton">
      <property name="text">
       <string/>
      </property>
      <property name="icon">
-      <iconset theme="frame-add"/>
+      <iconset theme="multiframe-delete"/>
      </property>
      <property name="iconSize">
       <size>

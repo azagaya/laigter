@@ -262,35 +262,6 @@ void MainWindow::showContextMenuForListWidget(const QPoint &pos)
   contextMenu.addSeparator();
   contextMenu.addAction(new QAction(tr("Load specular map")));
   contextMenu.addAction(new QAction(tr("Reset specular map")));
-  contextMenu.addSeparator();
-  contextMenu.addAction(new QAction(tr("Add new frames")));
-  ImageProcessor *p = find_processor(current_item->text());
-
-  if (p->frames.count() > 1)
-  {
-    QAction *nextFrame = new QAction(tr("Next Frame"));
-    QAction *prevFrame = new QAction(tr("Previous Frame"));
-    if (p->animation.isActive())
-    {
-      contextMenu.addAction(new QAction(tr("Stop Animation")));
-      nextFrame->setEnabled(false);
-      prevFrame->setEnabled(false);
-    }
-    else
-      contextMenu.addAction(new QAction(tr("Start Animation")));
-
-    if (p->get_current_frame_id() == p->frames.count() - 1)
-      nextFrame->setEnabled(false);
-    else if (p->get_current_frame_id() == 0)
-      prevFrame->setEnabled(false);
-
-    contextMenu.addAction(nextFrame);
-    contextMenu.addAction(prevFrame);
-  }
-  else
-  {
-    contextMenu.addAction(new QAction(tr("Split in frames")));
-  }
 
   connect(&contextMenu, SIGNAL(triggered(QAction *)), this,
           SLOT(list_menu_action_triggered(QAction *)));
@@ -411,39 +382,7 @@ void MainWindow::list_menu_action_triggered(QAction *action)
         specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadSpecularMap(p->get_name(), specular);
   }
-  else if (option == tr("Add new frames"))
-  {
-    QStringList fileNames = QFileDialog::getOpenFileNames(
-        this, tr("Open Image"), "",
-        tr("Image File (*.png *.jpg *.bmp *.tga)"));
-    foreach (QString fileName, fileNames)
-    {
-      if (fileName != nullptr)
-      {
-        bool success;
-        QImage image = il.loadImage(fileName, &success);
-        if (!success)
-          return;
 
-        fs_watcher.addPath(fileName);
-        image = image.convertToFormat(
-            QImage::Format_RGBA8888_Premultiplied);
-        p->loadImage(fileName, image);
-      }
-    }
-  }
-  else if (option == tr("Stop Animation"))
-    p->animation.stop();
-  else if (option == tr("Start Animation"))
-    p->animation.start();
-  else if (option == tr("Next Frame"))
-    p->set_current_frame_id(p->get_current_frame_id() + 1);
-  else if (option == tr("Previous Frame"))
-    p->set_current_frame_id(p->get_current_frame_id() - 1);
-  else if (option == tr("Split in frames"))
-  {
-    splitInFrames();
-  }
 }
 
 void MainWindow::splitInFrames()

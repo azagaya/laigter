@@ -35,6 +35,8 @@ private slots:
 
 
   void on_deleteFrameButton_pressed();
+  void on_addFrameButton_pressed();
+  void on_deleteEmptyButton_pressed();
 };
 
 #endif // ANIMATION_DOCK_H

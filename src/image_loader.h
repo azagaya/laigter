@@ -29,9 +29,9 @@ class ImageLoader : public QObject
 
 public:
   explicit ImageLoader(QObject *parent = nullptr);
-  QImage loadTga(const char *filePath, bool *success);
-  QImage loadImage(QString fileName, bool *success);
-  QList<QImage> loadImages(QString fileName);
+  static QImage loadTga(const char *filePath, bool *success);
+  static QImage loadImage(QString fileName, bool *success);
+  static QList<QImage> loadImages(QString fileName);
 
 };
 
