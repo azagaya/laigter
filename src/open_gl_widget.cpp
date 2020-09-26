@@ -30,11 +30,6 @@
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
 
-float devicePixelRatioF()
-{
-  return 0.5;
-}
-
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
   Q_UNUSED(parent)
