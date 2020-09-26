@@ -488,7 +488,7 @@ void OpenGlWidget::setSpecularMap(QImage *image)
 
 void OpenGlWidget::setZoom(float zoom)
 {
-  m_global_zoom = zoom * devicePixelRatioF();
+  m_global_zoom = zoom;
   updateView();
 }
 
@@ -920,7 +920,7 @@ void OpenGlWidget::updateView()
 {
   view.setToIdentity();
   origin.setZ(0);
-  view.scale(m_global_zoom / devicePixelRatioF());
+  view.scale(m_global_zoom);
   view.rotate(global_rotation * 180 / M_PI, 0, 0, 1);
   view.translate(origin);
   need_to_update = true;
