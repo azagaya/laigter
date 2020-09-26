@@ -394,21 +394,47 @@ void MainWindow::splitInFrames()
   {
     QImage original;
     processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-    ImageProcessor *n_p = new ImageProcessor;
-    n_p->set_name(processor->get_name() + "(frames)");
-    QString filePath = processor->get_current_frame()->get_file_name();
-    for (int i = 0; i < v_frames; i++)
-    {
-      for (int j = 0; j < h_frames; j++)
-      {
-        QString frame_number = QString("%1").arg(j + i * h_frames, (int)(log10(v_frames * h_frames) + 1), 10, QChar('0'));
-        QString path = filePath.split(".").join("_" + frame_number + ".");
-        QPoint top_left(j * original.width() / h_frames, i * original.height() / v_frames);
-        QSize size(original.width() / h_frames, original.height() / v_frames);
-        n_p->loadImage(path, original.copy(QRect(top_left, size)));
-      }
-    }
-    add_processor(n_p);
+//    ImageProcessor *n_p = new ImageProcessor;
+//    n_p->set_name(processor->get_name() + "(frames)");
+//    QString filePath = processor->get_current_frame()->get_file_name();
+//    for (int i = 0; i < v_frames; i++)
+//    {
+//      for (int j = 0; j < h_frames; j++)
+//      {
+//        QString frame_number = QString("%1").arg(j + i * h_frames, (int)(log10(v_frames * h_frames) + 1), 10, QChar('0'));
+//        QString path = filePath.split(".").join("_" + frame_number + ".");
+//        QPoint top_left(j * original.width() / h_frames, i * original.height() / v_frames);
+//        QSize size(original.width() / h_frames, original.height() / v_frames);
+//        n_p->loadImage(path, original.copy(QRect(top_left, size)));
+//      }
+//    }
+//    add_processor(n_p);
+      processor->vertices.clear();
+      float w = 1.0/h_frames;
+      float h = 1.0/v_frames;
+          for (int i = 0; i < v_frames; i++)
+          {
+            for (int j = 0; j < h_frames; j++)
+            {
+                QVector <float> vertices;
+                float py = w*i;
+                float px = h*j;
+                float current_vertices[20] = {
+                    px-w, py-h, 0.0f, px, py+h, // bot left
+                    px+w, py-h, 0.0f, px+w, py+h,  // bot right
+                    px-w, py+h, 0.0f, 0.0f, 0.0f,   // top left
+                    px+w, py+h, 0.0f, px+w, 0.0f,   // top right
+
+                    //1.0f/2, 1.0f/2, 0.0f, 1.0f/2, 0.0f,   // top right
+                };
+
+                for (int i = 0; i < 20 ; i++ ) {
+                    vertices.append(current_vertices[i]);
+                }
+
+                processor->vertices.append(vertices);
+            }
+          }
   }
 }
 

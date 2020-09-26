@@ -112,8 +112,8 @@ void OpenGlWidget::initializeGL()
   float vertices[] = {
       -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
       1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
       1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
-      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f   // top left
   };
 
   // bind the Vertex Array Object first, then bind and set vertex buffer(s),
@@ -130,6 +130,7 @@ void OpenGlWidget::initializeGL()
   m_program.enableAttributeArray("aTexCoord");
   VAO.release();
   VBO.release();
+
   VBO.bind();
   lightProgram.setAttributeBuffer("aPos", GL_FLOAT, 0, 3, 5 * sizeof(float));
   lightProgram.enableAttributeArray("aPos");
@@ -327,7 +328,12 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("parallax", processor->get_is_parallax() &&
                                               viewmode == Preview);
     // m_texture->bind(0);
-    glDrawArrays(GL_QUADS, 0, 4);
+
+    VBO.bind();
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float)*20, processor->vertices[0].data());
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    VBO.release();
+
   }
 
   /* Render light texture */
@@ -383,7 +389,18 @@ void OpenGlWidget::update_scene()
         light->get_diffuse_color().getRgbF(&r, &g, &b, nullptr);
         color = QVector3D(r, g, b);
         lightProgram.setUniformValue("lightColor", color);
-        glDrawArrays(GL_QUADS, 0, 4);
+
+        float vertices[] = {
+            -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+            1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+            -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
+            1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+        };
+
+        VBO.bind();
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        VBO.release();
       }
     }
     lightProgram.release();

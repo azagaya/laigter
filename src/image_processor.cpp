@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
+#include <QDebug>
 
 using namespace cimg_library;
 
@@ -116,6 +117,11 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 
   recalculate_timer.setInterval(100);
   recalculate_timer.setSingleShot(false);
+
+  QVector<float> new_vertices;
+  for (int i = 0; i < 20; i++)
+      new_vertices.append(current_vertices[i]);
+  vertices.append(new_vertices);
 }
 
 ImageProcessor::~ImageProcessor()

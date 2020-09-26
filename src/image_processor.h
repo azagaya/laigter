@@ -132,7 +132,21 @@ public:
   bool busy, active;
   bool updated = false;
 
+  QVector<QVector <float>> vertices;
+
+  float current_vertices[20] = {
+      -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+      1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
+      1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+
+      //1.0f/2, 1.0f/2, 0.0f, 1.0f/2, 0.0f,   // top right
+  };
+
 private:
+
+
+
   ParallaxType parallax_type;
   ProcessorSettings settings;
   QBrush normal_brush;
