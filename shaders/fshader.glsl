@@ -68,6 +68,8 @@ uniform float blend_factor;
 uniform vec2 coordOffset;
 uniform vec3 outlineColor;
 
+uniform vec4 rect;
+
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 mat4 rotationZ(float angle);
 
@@ -75,10 +77,10 @@ void main()
 {
 
   if (selected &&
-      (texCoord.x <= 1.0 / float(pixelsX) / textureScale / ratio.x / zoom||
-       texCoord.x >= 1.0 - 1.0 / float(pixelsX) / textureScale / ratio.x / zoom ||
-       texCoord.y <= 1.0 / float(pixelsY) / textureScale / ratio.y / zoom ||
-       texCoord.y >= 1.0 - 1.0 / float(pixelsY) / textureScale / ratio.y / zoom))
+      (texCoord.x <= rect.x + 1.0 / float(pixelsX) / textureScale / ratio.x / zoom||
+       texCoord.x >= rect.y - 1.0 / float(pixelsX) / textureScale / ratio.x / zoom ||
+       texCoord.y <= rect.z + 1.0 / float(pixelsY) / textureScale / ratio.y / zoom ||
+       texCoord.y >= rect.w - 1.0 / float(pixelsY) / textureScale / ratio.y / zoom))
   {
     gl_FragColor.xyz = 1.0 - outlineColor;
     gl_FragColor.a = 0.5;

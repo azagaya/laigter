@@ -159,6 +159,7 @@ private:
   QVector3D offset;
   QVector3D position;
   Sprite *current_frame;
+  int selected_frame = 0;
   bool customHeightMap, customSpecularMap;
   bool normal_bisel_soft, tileable, update_tileable = false, parallax_invert;
   bool occlusion_distance_mode;
@@ -261,6 +262,8 @@ public:
   int WrapCoordinate(int coord, int interval);
   QImage CImg2QImage(cimg_library::CImg<uchar> in);
   cimg_library::CImg<uchar> QImage2CImg(QImage in);
+
+  int get_frame_count();
 
 public slots:
   void playAnimation(bool play);

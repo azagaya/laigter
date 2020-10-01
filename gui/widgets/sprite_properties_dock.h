@@ -31,7 +31,7 @@ signals:
   void neighboursButtonPressed();
   void heightmapButtonPressed();
   void specularButtonPressed();
-  void splitButtonPressed();
+  void framesChanged(int,int);
 
 private slots:
   void on_scaleSpinBox_valueChanged(double arg1);
@@ -42,7 +42,8 @@ private slots:
   void on_neighboursButton_pressed();
   void on_heightmapButton_pressed();
   void on_specularButton_pressed();
-  void on_splitButton_pressed();
+  void on_hFramesSpinBox_valueChanged(int arg1);
+  void on_vFramesSpinBox_valueChanged(int arg1);
 };
 
 #endif // SPRITE_PROPERTIES_DOCK_H

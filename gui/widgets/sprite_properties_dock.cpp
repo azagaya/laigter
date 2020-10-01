@@ -30,8 +30,6 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   ui->infoSize->setText(tr("Size: ") + QString::number(processor->texture.width()) + "x" + QString::number(processor->texture.height()));
   int frames = processor->frames.count();
   ui->framesLabel->setText(tr("Frames: ") + QString::number(frames));
-  ui->currentFrameLabel->setText(tr("Current Frame: ") + QString::number(processor->get_current_frame_id()));
-  ui->splitButton->setEnabled(frames == 1);
 
   ui->scaleSpinBox->setValue(processor->get_zoom());
   ui->rotationSpinBox->setValue(processor->get_rotation());
@@ -46,7 +44,6 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
 
 void SpritePropertiesDock::setCurrentFrame(int i)
 {
-  ui->currentFrameLabel->setText(tr("Current Frame: ") + QString::number(i));
   QImage frame;
   current_processor->get_current_frame()->get_image(TextureTypes::Diffuse, &frame);
   ui->textureLabel->setPixmap(QPixmap::fromImage(frame.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
@@ -101,7 +98,12 @@ void SpritePropertiesDock::on_specularButton_pressed()
   specularButtonPressed();
 }
 
-void SpritePropertiesDock::on_splitButton_pressed()
+void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
 {
-  splitButtonPressed();
+    framesChanged(arg1, ui->vFramesSpinBox->value());
+}
+
+void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
+{
+    framesChanged(ui->hFramesSpinBox->value(), arg1);
 }

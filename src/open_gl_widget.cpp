@@ -198,6 +198,8 @@ void OpenGlWidget::update_scene()
   projection.setToIdentity();
   projection.ortho(-0.5 * m_width, 0.5 * m_width, -0.5 * m_height, 0.5 * m_height, -1, 1);
 
+  float *current_vertices = nullptr;
+
   m_program.bind();
   m_program.setUniformValue("view_mode", viewmode);
   m_program.setUniformValue("pixelated", m_pixelated);
@@ -324,12 +326,17 @@ void OpenGlWidget::update_scene()
                                               viewmode == Preview);
     // m_texture->bind(0);
 
+    current_vertices = processor->vertices[processor->get_current_frame_id()].data();
+    m_program.setUniformValue("rect",QVector4D(current_vertices[3],current_vertices[8],current_vertices[14],current_vertices[4]));
+
     VBO.bind();
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float)*20, processor->vertices[0].data());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float)*20, current_vertices);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     VBO.release();
 
   }
+
+
 
   /* Render light texture */
   m_program.release();

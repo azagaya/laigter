@@ -1,9 +1,9 @@
 <RCC>
-	<qresource prefix="/">
-		<file>shaders/fshader.glsl</file>
-		<file>shaders/lfshader.glsl</file>
-		<file>shaders/lvshader.glsl</file>
-		<file>shaders/vshader.glsl</file>
-		<file>shaders/cursor_fragment_shader.glsl</file>
-	</qresource>
+    <qresource prefix="/">
+        <file>shaders/fshader.glsl</file>
+        <file>shaders/lfshader.glsl</file>
+        <file>shaders/lvshader.glsl</file>
+        <file>shaders/vshader.glsl</file>
+        <file>shaders/cursor_fragment_shader.glsl</file>
+    </qresource>
 </RCC>

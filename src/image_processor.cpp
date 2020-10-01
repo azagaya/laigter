@@ -1449,51 +1449,35 @@ Sprite *ImageProcessor::get_current_frame()
   return current_frame;
 }
 
+
+int ImageProcessor::get_frame_count(){
+    return vertices.count();
+}
+
 void ImageProcessor::next_frame()
 {
-  if (frames.count() <= 1)
-  {
-    animation.stop();
-    return;
-  }
-
-  if (normal_mutex.tryLock())
-  {
-    if (specular_mutex.tryLock())
-    {
-      if (parallax_mutex.tryLock())
-      {
-        if (occlusion_mutex.tryLock())
-        {
-          int id = (current_frame_id + 1) % frames.count();
-          set_current_frame_id(id);
-          occlusion_mutex.unlock();
-        }
-        parallax_mutex.unlock();
-      }
-      specular_mutex.unlock();
-    }
-    normal_mutex.unlock();
-  }
+  current_frame_id = (current_frame_id+1) % get_frame_count();
+  processed();
 }
 
 void ImageProcessor::remove_frame(int id)
 {
-  frames.remove(id);
-  set_current_frame_id(id);
-}
 
-void ImageProcessor::remove_current_frame() { remove_frame(current_frame_id); }
 
-void ImageProcessor::setAnimationRate(int fps)
-{
-  animation.setInterval(1000.0 / fps);
 }
 
 void ImageProcessor::playAnimation(bool play)
 {
   play ? animation.start() : animation.stop();
 }
+
+void ImageProcessor::setAnimationRate(int fps)
+{
+  animation.setInterval(1000.0 / fps);
+}
+
+void ImageProcessor::remove_current_frame() {  }
+
 
 int ImageProcessor::WrapCoordinate(int coord, int interval)
 {

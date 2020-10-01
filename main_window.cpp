@@ -201,7 +201,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
-  connect(sprite_widget, SIGNAL(splitButtonPressed()), this, SLOT(splitInFrames()));
+  connect(sprite_widget, SIGNAL(framesChanged(int,int)), this, SLOT(splitInFrames(int,int)));
 
   // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
@@ -385,11 +385,8 @@ void MainWindow::list_menu_action_triggered(QAction *action)
 
 }
 
-void MainWindow::splitInFrames()
+void MainWindow::splitInFrames(int h_frames, int v_frames)
 {
-  int h_frames, v_frames;
-  FrameSplitter fs(&h_frames, &v_frames);
-  fs.exec();
   if (h_frames > 0 && v_frames > 0)
   {
     QImage original;
@@ -417,15 +414,14 @@ void MainWindow::splitInFrames()
             for (int j = 0; j < h_frames; j++)
             {
                 QVector <float> vertices;
-                float py = w*i;
-                float px = h*j;
+                float py = h*i;
+                float px = w*j;
                 float current_vertices[20] = {
-                    px-w, py-h, 0.0f, px, py+h, // bot left
-                    px+w, py-h, 0.0f, px+w, py+h,  // bot right
-                    px-w, py+h, 0.0f, 0.0f, 0.0f,   // top left
-                    px+w, py+h, 0.0f, px+w, 0.0f,   // top right
+                    -w, -h, 0.0f, px, py+h, // bot left
+                    +w, -h, 0.0f, px+w, py+h,  // bot right
+                    -w, +h, 0.0f, px, py,   // top left
+                    +w, +h, 0.0f, px+w, py,   // top right
 
-                    //1.0f/2, 1.0f/2, 0.0f, 1.0f/2, 0.0f,   // top right
                 };
 
                 for (int i = 0; i < 20 ; i++ ) {
@@ -435,6 +431,8 @@ void MainWindow::splitInFrames()
                 processor->vertices.append(vertices);
             }
           }
+          ui->openGLPreviewWidget->need_to_update = true;
+          processor->animation.start();
   }
 }
 
