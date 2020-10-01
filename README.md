@@ -20,7 +20,7 @@ Also, it allows the user to preview how the effect will look in-game.
 Laigter is available in Spanish, English, French, Brazilian-Portuguese, Catalan,
 Danish and Greek. It should automatically detect your PC language.
 
-[![Discord Server](https://discordapp.com/api/guilds/582648422167871514/embed.png)](https://discord.gg/88kJqry)
+[![Discord Server](https://discord.com/api/guilds/582648422167871514/embed.png)](https://discord.gg/88kJqry)
 
 ## Download
 
