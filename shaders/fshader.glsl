@@ -73,14 +73,20 @@ uniform vec4 rect;
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir);
 mat4 rotationZ(float angle);
 
+float insideBox(vec2 v, vec2 bottomLeft, vec2 topRight) {
+    vec2 s = step(bottomLeft, v) - step(topRight, v);
+    return s.x * s.y;
+}
+
 void main()
 {
 
-  if (selected &&
-      (texCoord.x <= rect.x + 1.0 / float(pixelsX) / textureScale / ratio.x / zoom||
-       texCoord.x >= rect.y - 1.0 / float(pixelsX) / textureScale / ratio.x / zoom ||
-       texCoord.y <= rect.z + 1.0 / float(pixelsY) / textureScale / ratio.y / zoom ||
-       texCoord.y >= rect.w - 1.0 / float(pixelsY) / textureScale / ratio.y / zoom))
+    float x_pixel_size = 1.0 / float(pixelsX) / textureScale / ratio.x / zoom;
+    float y_pixel_size = 1.0 / float(pixelsY) / textureScale / ratio.y / zoom ;
+    bool on_edge = (insideBox(texCoord,vec2(rect.x,rect.z),vec2(rect.y,rect.w))
+                    - insideBox(texCoord,vec2(rect.x+x_pixel_size,rect.z+y_pixel_size),
+                                vec2(rect.y-x_pixel_size,rect.w-y_pixel_size))) == 1.0;
+  if (selected && on_edge)
   {
     gl_FragColor.xyz = 1.0 - outlineColor;
     gl_FragColor.a = 0.5;
