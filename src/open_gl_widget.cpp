@@ -107,7 +107,7 @@ void OpenGlWidget::initializeGL()
   float vertices[] = {
       -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
       1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
-      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
+      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
       1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
   };
 
@@ -190,8 +190,11 @@ void OpenGlWidget::update_scene()
   GLfloat bkColor[4];
   glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
-  int i1 = m_pixelated ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
+  int i1 = m_pixelated ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
   int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
   QVector3D viewport_size(m_width, m_height, 1.0);
 
@@ -275,9 +278,6 @@ void OpenGlWidget::update_scene()
     float zoomY = processor->get_zoom();
     transform.scale(zoomX, zoomY, 1);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-
     /* Start first pass */
 
     VAO.bind();
@@ -327,16 +327,16 @@ void OpenGlWidget::update_scene()
     // m_texture->bind(0);
 
     current_vertices = processor->vertices[processor->get_current_frame_id()].data();
-    m_program.setUniformValue("rect",QVector4D(current_vertices[3],current_vertices[8],current_vertices[14],current_vertices[4]));
+    m_program.setUniformValue("rect", QVector4D(current_vertices[3], current_vertices[8], current_vertices[14], current_vertices[4]));
 
     VBO.bind();
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float)*20, current_vertices);
+    if (processor->frame_mode == "Animation")
+    {
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, current_vertices);
+    }
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     VBO.release();
-
   }
-
-
 
   /* Render light texture */
   m_program.release();
@@ -395,7 +395,7 @@ void OpenGlWidget::update_scene()
         float vertices[] = {
             -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
             1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
-            -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
+            -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
             1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
         };
 
@@ -561,8 +561,8 @@ void OpenGlWidget::wheelEvent(QWheelEvent *event)
   if (zoom > 0)
   {
 
-    double dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
-    double dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
+    float dx = (1 - 1.0 / zoom) * (mouse_position.x() + origin.x());
+    float dy = (1 - 1.0 / zoom) * (mouse_position.y() + origin.y());
 
     origin -= QVector3D(dx, dy, 0);
 
@@ -768,6 +768,10 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           processor_selected = true;
           set_processor_selected(processor, true);
           selected = true;
+          QPoint point = global_mouse_press_position.toPoint();
+          point.setY(-point.y());
+          point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
+          processor->set_current_frame_id(processor->get_frame_at_point(point));
         }
       }
     }

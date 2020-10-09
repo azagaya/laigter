@@ -1,6 +1,5 @@
-#include "gui/presets_manager.h"
-#include "gui/presets_manager.h"
 #include "project.h"
+#include "gui/presets_manager.h"
 
 #include <QDebug>
 #include <QFile>
@@ -18,11 +17,13 @@ extern "C"
 
 Project::Project(QObject *parent) : QObject(parent) {}
 
-QString Project::GetCurrentPath(){
+QString Project::GetCurrentPath()
+{
   return m_path;
 }
 
-bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings){
+bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonObject *general_settings)
+{
   void *buf = NULL;
   size_t bufsize;
   QJsonDocument doc;
@@ -46,9 +47,9 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       zip_entry_read(zip, &buf, &bufsize);
     }
     zip_entry_close(zip);
-    data.append((char*)buf, bufsize);
+    data.append((char *)buf, bufsize);
     QJsonParseError e;
-    doc = QJsonDocument::fromJson(data,&e);
+    doc = QJsonDocument::fromJson(data, &e);
     project_json = doc.object();
     /* Set general settings */
     general_settings->insert("general", project_json.value("general"));
@@ -73,7 +74,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           diffuse = QImage::fromData(data);
           p->loadImage(path, diffuse, base_path);
         }
@@ -85,7 +86,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->get_current_frame()->set_image(TextureTypes::Neighbours, QImage::fromData(data));
         }
         zip_entry_close(zip);
@@ -96,7 +97,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->get_current_frame()->set_image(TextureTypes::HeightmapOverlay, QImage::fromData(data));
         }
         zip_entry_close(zip);
@@ -106,7 +107,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           QImage image = QImage::fromData(data);
           p->set_normal_overlay(QImage::fromData(data));
         }
@@ -117,7 +118,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->set_occlussion_overlay(QImage::fromData(data));
         }
         zip_entry_close(zip);
@@ -127,7 +128,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->set_parallax_overlay(QImage::fromData(data));
         }
         zip_entry_close(zip);
@@ -137,7 +138,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->set_parallax_overlay(QImage::fromData(data));
         }
         zip_entry_close(zip);
@@ -147,13 +148,12 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
         zip_entry_open(zip, path.toUtf8());
         {
           zip_entry_read(zip, &buf, &bufsize);
-          data.append((char*)buf, bufsize);
+          data.append((char *)buf, bufsize);
           p->set_texture_overlay(QImage::fromData(data));
         }
         zip_entry_close(zip);
 
         /* Load custom heightmaps and specular maps */
-
       }
 
       /* restore position of processor */
@@ -175,18 +175,16 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       /* Read Presets */
       data.clear();
-      zip_entry_open(zip, (processor_name+"/"+processor_name+".presets").toUtf8());
+      zip_entry_open(zip, (processor_name + "/" + processor_name + ".presets").toUtf8());
       {
         zip_entry_read(zip, &buf, &bufsize);
-        data.append((char*)buf, bufsize);
+        data.append((char *)buf, bufsize);
       }
       zip_entry_close(zip);
 
-      PresetsManager::applyPresetsString(data,p);
+      PresetsManager::applyPresetsString(data, p);
       p_list->append(p);
-
     }
-
   }
   zip_close(zip);
 
@@ -194,7 +192,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
   return true;
 }
 
-bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObject general_settings)
+bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObject general_settings)
 {
   QJsonArray json_array;
   m_path = path;
@@ -204,96 +202,97 @@ bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObje
     ImageProcessor *p = processorList.at(j);
     QJsonObject processor_json;
     processor_json.insert("processor name", p->get_name());
-    processor_json.insert("frame count", p->frames.count());
+    processor_json.insert("frame count", p->get_frame_count());
 
     QJsonArray frames_json;
-    for (int i = 0; i < p->frames.count(); i++)
-    {
-      QJsonObject frame_json;
-      frame_json.insert("id", i);
-      Sprite s;
-      s = p->frames[i];
-      QString name;
-      for (int i = 0; i < types.count(); i++)
-      {
-        QImage texture;
-        s.get_image((TextureTypes)i, &texture);
-        bool save = true;
-        switch ((TextureTypes)i)
-        {
-          case TextureTypes::Heightmap:
-          {
-            name = s.heightmapPath;
-            save = name != "";
-            break;
-          }
+    // TODO: REDO project frame save
+    //    for (int i = 0; i < p->frames.count(); i++)
+    //    {
+    //      QJsonObject frame_json;
+    //      frame_json.insert("id", i);
+    //      Sprite s;
+    //      s = p->frames[i];
+    //      QString name;
+    //      for (int i = 0; i < types.count(); i++)
+    //      {
+    //        QImage texture;
+    //        s.get_image((TextureTypes)i, &texture);
+    //        bool save = true;
+    //        switch ((TextureTypes)i)
+    //        {
+    //          case TextureTypes::Heightmap:
+    //          {
+    //            name = s.heightmapPath;
+    //            save = name != "";
+    //            break;
+    //          }
 
-          case TextureTypes::SpecularBase:
-          {
-            name = s.specularPath;
-            save = name != "";
-            break;
-          }
+    //          case TextureTypes::SpecularBase:
+    //          {
+    //            name = s.specularPath;
+    //            save = name != "";
+    //            break;
+    //          }
 
-          case TextureTypes::OcclussionBase:
-          {
-            save = false;
-            break;
-          }
+    //          case TextureTypes::OcclussionBase:
+    //          {
+    //            save = false;
+    //            break;
+    //          }
 
-          default:
-          {
-            name = s.fileName;
-            break;
-          }
-        }
+    //          default:
+    //          {
+    //            name = s.fileName;
+    //            break;
+    //          }
+    //        }
 
-        if (save)
-        {
-          QDir dir(QStandardPaths::writableLocation(
-              QStandardPaths::TempLocation));
-          name = dir.path() + "/" + name.split("/").last().split(".").join(suffixes.at(i) + ".");
-          texture.save(name);
-          QString entry_name = p->get_name() + "/" + types.at(i) + "/" + name.split("/").last();
+    //        if (save)
+    //        {
+    //          QDir dir(QStandardPaths::writableLocation(
+    //              QStandardPaths::TempLocation));
+    //          name = dir.path() + "/" + name.split("/").last().split(".").join(suffixes.at(i) + ".");
+    //          texture.save(name);
+    //          QString entry_name = p->get_name() + "/" + types.at(i) + "/" + name.split("/").last();
 
-          frame_json.insert(types.at(i), entry_name);
+    //          frame_json.insert(types.at(i), entry_name);
 
-          zip_entry_open(zip, entry_name.toUtf8());
-          {
-            QFile f(name);
-            if (f.open(QIODevice::ReadOnly))
-            {
-              QByteArray a = f.readAll();
-              zip_entry_write(zip, a, a.count());
-              f.close();
-            }
-          }
-          zip_entry_close(zip);
-        }
-      }
-      zip_entry_open(zip, (p->get_name() + "/" +p->get_name()+".presets").toUtf8());
-      {
-        QDir dir(QStandardPaths::writableLocation(
-            QStandardPaths::TempLocation));
-        name = dir.path() + "/" + p->get_name()+".presets";
-        PresetsManager::SaveAllPresets(p,name);
-        QFile f(name);
-        if (f.open(QIODevice::ReadOnly))
-        {
-          QByteArray content = f.readAll();
-          zip_entry_write(zip, content, content.count());
-        }
-      }
-      zip_entry_close(zip);
-      frames_json.append(frame_json);
-    }
+    //          zip_entry_open(zip, entry_name.toUtf8());
+    //          {
+    //            QFile f(name);
+    //            if (f.open(QIODevice::ReadOnly))
+    //            {
+    //              QByteArray a = f.readAll();
+    //              zip_entry_write(zip, a, a.count());
+    //              f.close();
+    //            }
+    //          }
+    //          zip_entry_close(zip);
+    //        }
+    //      }
+    //      zip_entry_open(zip, (p->get_name() + "/" +p->get_name()+".presets").toUtf8());
+    //      {
+    //        QDir dir(QStandardPaths::writableLocation(
+    //            QStandardPaths::TempLocation));
+    //        name = dir.path() + "/" + p->get_name()+".presets";
+    //        PresetsManager::SaveAllPresets(p,name);
+    //        QFile f(name);
+    //        if (f.open(QIODevice::ReadOnly))
+    //        {
+    //          QByteArray content = f.readAll();
+    //          zip_entry_write(zip, content, content.count());
+    //        }
+    //      }
+    //      zip_entry_close(zip);
+    //      frames_json.append(frame_json);
+    //    }
     processor_json.insert("frames", frames_json);
-    processor_json.insert("presets",p->get_name() + "/" +p->get_name()+".presets");
+    processor_json.insert("presets", p->get_name() + "/" + p->get_name() + ".presets");
     QJsonObject position;
-    position.insert("x",p->get_position()->x());
-    position.insert("y",p->get_position()->y());
-    position.insert("z",p->get_position()->z());
-    processor_json.insert("position",position);
+    position.insert("x", p->get_position()->x());
+    position.insert("y", p->get_position()->y());
+    position.insert("z", p->get_position()->z());
+    processor_json.insert("position", position);
 
     /* tile preview options */
     processor_json.insert("tile x", p->get_tile_x());
@@ -303,11 +302,10 @@ bool Project::save(QString path, QList<ImageProcessor *>processorList, QJsonObje
     processor_json.insert("zoom", p->get_zoom());
 
     json_array.append(processor_json);
-
   }
   QJsonObject project_json;
-  project_json.insert("processors",json_array);
-  project_json.insert("general",general_settings);
+  project_json.insert("processors", json_array);
+  project_json.insert("general", general_settings);
   QJsonDocument json_project(project_json);
   zip_entry_open(zip, "project.json");
   {

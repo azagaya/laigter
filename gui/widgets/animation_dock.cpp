@@ -5,8 +5,8 @@
 
 #include <QDebug>
 #include <QFileDialog>
-#include <QThread>
 #include <QMessageBox>
+#include <QThread>
 
 AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
                                                 ui(new Ui::AnimationDock)
@@ -34,13 +34,19 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
     delete ui->listWidget->item(i);
   }
   ui->listWidget->clear();
-  for (int i = 0; i < p->frames.count(); i++)
+
+  QImage texture = p->texture.copy();
+  float h = texture.height() / p->v_frames;
+  float w = texture.width() / p->h_frames;
+  for (int j = 0; j < p->v_frames; j++)
   {
-    QListWidgetItem *item = new QListWidgetItem;
-    QImage image;
-    p->frames[i].get_image(TextureTypes::Diffuse, &image);
-    item->setIcon(QPixmap::fromImage(image));
-    ui->listWidget->addItem(item);
+    for (int i = 0; i < p->h_frames; i++)
+    {
+      QListWidgetItem *item = new QListWidgetItem;
+      QImage image = texture.copy(QRect(i * w, j * h, w, h));
+      item->setIcon(QPixmap::fromImage(image));
+      ui->listWidget->addItem(item);
+    }
   }
 
   ui->listWidget->setCurrentRow(p->get_current_frame_id());
@@ -52,7 +58,8 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 
 void AnimationDock::updateProcessorFrame(int index)
 {
-  if (index >= 0 && index < m_current_processor->frames.count() && ui->listWidget->selectedItems().count() > 0)
+
+  if (index >= 0 && index < m_current_processor->get_frame_count() && ui->listWidget->selectedItems().count() > 0)
   {
     if (!m_current_processor->animation.isActive())
     {
@@ -82,12 +89,7 @@ void AnimationDock::on_leftButton_clicked()
     {
       return;
     }
-    m_current_processor->playAnimation(false);
-    Sprite s(m_current_processor->frames[index]);
-    m_current_processor->frames[index] = m_current_processor->frames[index - 1];
-    m_current_processor->frames[index - 1] = s;
-    ui->listWidget->insertItem(index - 1, ui->listWidget->takeItem(index));
-    ui->listWidget->setCurrentRow(index - 1);
+    // TODO: REDO FRAME MOVEMENT
   }
 }
 
@@ -99,90 +101,65 @@ void AnimationDock::setCurrentFrame(int index)
 void AnimationDock::on_rightButton_clicked()
 {
   QList<QListWidgetItem *> item_list = ui->listWidget->selectedItems();
-  if (item_list.count() > 0)
-  {
-    int index = ui->listWidget->currentRow();
-    if (index >= m_current_processor->frames.count() - 1)
-    {
-      return;
-    }
-    m_current_processor->playAnimation(false);
-    Sprite s(m_current_processor->frames[index]);
-    m_current_processor->frames[index] = m_current_processor->frames[index + 1];
-    m_current_processor->frames[index + 1] = s;
-    ui->listWidget->insertItem(index + 1, ui->listWidget->takeItem(index));
-    ui->listWidget->setCurrentRow(index + 1);
-  }
+  // TODO: REDO FRAME MOVEMENT
 }
 
 void AnimationDock::on_deleteFrameButton_pressed()
 {
-    bool isPlaying = m_current_processor->animation.isActive();
-    m_current_processor->animation.stop();
-    m_current_processor->remove_frame(ui->listWidget->currentRow());
-    delete ui->listWidget->takeItem(ui->listWidget->currentRow());
-    if (m_current_processor->frames.count() <= 1){
-        parentWidget()->hide();
-    }else{
-        if (isPlaying) m_current_processor->animation.start();
-    }
-
+  bool isPlaying = m_current_processor->animation.isActive();
+  m_current_processor->animation.stop();
+  // TODO: REDO DELETE FRAMES
 }
 
 void AnimationDock::on_addFrameButton_pressed()
 {
-    bool isPlaying = m_current_processor->animation.isActive();
-    m_current_processor->animation.stop();
-    QStringList fileNames = QFileDialog::getOpenFileNames(
-        this, tr("Open Image"), "",
-        tr("Image File (*.png *.jpg *.bmp *.tga)"));
-    QSize frameSize = m_current_processor->get_current_frame()->size();
-    foreach (QString fileName, fileNames)
+  bool isPlaying = m_current_processor->animation.isActive();
+  m_current_processor->animation.stop();
+  QStringList fileNames = QFileDialog::getOpenFileNames(
+      this, tr("Open Image"), "",
+      tr("Image File (*.png *.jpg *.bmp *.tga)"));
+  QSize frameSize = m_current_processor->get_current_frame()->size();
+  foreach (QString fileName, fileNames)
+  {
+    if (fileName != nullptr)
     {
-      if (fileName != nullptr)
+      bool success;
+      QImage image = ImageLoader::loadImage(fileName, &success);
+      if (!success)
+        continue;
+
+      //        fs_watcher.addPath(fileName);
+      image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+
+      if (image.size() != frameSize)
       {
-        bool success;
-        QImage image = ImageLoader::loadImage(fileName, &success);
-        if (!success)
-          continue;
-
-
-//        fs_watcher.addPath(fileName);
-        image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-
-        if (image.size() != frameSize){
-            QMessageBox msgBox;
-            msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
-                           tr("New frame must have the same size than original frames."));
-            msgBox.exec();
-            continue;
-        }
-
-        m_current_processor->loadImage(fileName, image);
+        QMessageBox msgBox;
+        msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                       tr("New frame must have the same size than original frames."));
+        msgBox.exec();
+        continue;
       }
+
+      m_current_processor->loadImage(fileName, image);
     }
-    if (isPlaying) m_current_processor->animation.start();
-    setCurrentProcessor(m_current_processor);
+  }
+  if (isPlaying)
+    m_current_processor->animation.start();
+  setCurrentProcessor(m_current_processor);
 }
 
 void AnimationDock::on_deleteEmptyButton_pressed()
 {
-    bool isPlaying = m_current_processor->animation.isActive();
-    m_current_processor->animation.stop();
+  bool isPlaying = m_current_processor->animation.isActive();
+  m_current_processor->animation.stop();
 
-    QImage empty = m_current_processor->get_texture()->copy();
-    QImage test;
-    empty.fill(Qt::transparent);
+  QImage empty = m_current_processor->get_texture()->copy();
+  QImage test;
+  empty.fill(Qt::transparent);
 
-    for (int i=0; i<m_current_processor->frames.count(); i++ ) {
-        m_current_processor->frames[i].get_image(TextureTypes::Diffuse,&test);
-        if (empty == test){
-            m_current_processor->remove_frame(i);
-            i--;
-        }
-    }
+  // TODO: REDO REMOVE EMPTY
 
-    if (isPlaying) m_current_processor->animation.start();
-    setCurrentProcessor(m_current_processor);
-
+  if (isPlaying)
+    m_current_processor->animation.start();
+  setCurrentProcessor(m_current_processor);
 }

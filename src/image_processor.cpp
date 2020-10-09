@@ -24,7 +24,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
-#include <QDebug>
 
 using namespace cimg_library;
 
@@ -113,14 +112,13 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 
   animation.setInterval(80);
   animation.setSingleShot(false);
-  animation.start();
 
   recalculate_timer.setInterval(100);
   recalculate_timer.setSingleShot(false);
 
   QVector<float> new_vertices;
   for (int i = 0; i < 20; i++)
-      new_vertices.append(current_vertices[i]);
+    new_vertices.append(current_vertices[i]);
   vertices.append(new_vertices);
 }
 
@@ -150,26 +148,24 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   }
   texture = image;
   last_texture = image;
-  Sprite s;
-  s.set_image(TextureTypes::Diffuse, image);
-  s.set_image(TextureTypes::Heightmap, image);
-  s.set_image(TextureTypes::SpecularBase, image);
-  s.set_image(TextureTypes::OcclussionBase, image);
+  sprite.set_image(TextureTypes::Diffuse, image);
+  sprite.set_image(TextureTypes::Heightmap, image);
+  sprite.set_image(TextureTypes::SpecularBase, image);
+  sprite.set_image(TextureTypes::OcclussionBase, image);
   QImage n(3 * image.size(), QImage::Format_RGBA8888_Premultiplied);
   n.fill(0);
-  s.set_image(TextureTypes::Neighbours, n);
+  sprite.set_image(TextureTypes::Neighbours, n);
   n = QImage(image.width(), image.height(),
              QImage::Format_RGBA8888_Premultiplied);
   n.fill(0);
-  s.set_image(TextureTypes::NormalOverlay, n);
-  s.set_image(TextureTypes::HeightmapOverlay, n);
-  s.set_image(TextureTypes::SpecularOverlay, n);
-  s.set_image(TextureTypes::ParallaxOverlay, n);
-  s.set_image(TextureTypes::OcclussionOverlay, n);
-  s.set_image(TextureTypes::TextureOverlay, n);
-  s.fileName = fileName;
-  frames.append(s);
-  set_current_frame_id(frames.count() - 1);
+  sprite.set_image(TextureTypes::NormalOverlay, n);
+  sprite.set_image(TextureTypes::HeightmapOverlay, n);
+  sprite.set_image(TextureTypes::SpecularOverlay, n);
+  sprite.set_image(TextureTypes::ParallaxOverlay, n);
+  sprite.set_image(TextureTypes::OcclussionOverlay, n);
+  sprite.set_image(TextureTypes::TextureOverlay, n);
+  sprite.fileName = fileName;
+  set_current_frame_id(0);
   get_normal_overlay();
 
   if (!customHeightMap)
@@ -183,11 +179,10 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
 
 void ImageProcessor::set_current_heightmap(int id)
 {
-  Sprite *current_frame = &frames[id];
   if (tileable)
-    current_frame->get_image(TextureTypes::Neighbours, &heightmap);
+    sprite.get_image(TextureTypes::Neighbours, &heightmap);
   else
-    current_frame->get_image(TextureTypes::Heightmap, &heightmap);
+    sprite.get_image(TextureTypes::Heightmap, &heightmap);
 
   current_heightmap = QImage2CImg(heightmap.convertToFormat(QImage::Format_RGBA8888));
   m_gray = QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8));
@@ -240,34 +235,28 @@ void ImageProcessor::calculate_parallax()
     parallax_counter = 1;
     return;
   }
-  int frame = current_frame_id;
 
-  for (int i = 0; i < frames.count(); i++)
+  QImage ovi = get_parallax_overlay();
+
+  CImg<float> ov(QImage2CImg(ovi));
+  CImg<float> alpha = ov.get_channel(3) / 255.0;
+
+  current_parallax = modify_parallax();
+
+  if (tileable)
   {
-    set_current_frame_id(i);
-    QImage ovi = get_parallax_overlay();
 
-    CImg<float> ov(QImage2CImg(ovi));
-    CImg<float> alpha = ov.get_channel(3) / 255.0;
-
-    current_parallax = modify_parallax();
-
-    if (tileable)
-    {
-
-      QSize s = current_frame->size();
-      current_parallax.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
-    }
-
-    current_parallax = (current_parallax.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
-
-    parallax_ready.lock();
-    frames[i].set_image(TextureTypes::Parallax, CImg2QImage(current_parallax));
-
-    parallax_ready.unlock();
+    QSize s = sprite.size();
+    current_parallax.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  set_current_frame_id(frame);
+  current_parallax = (current_parallax.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+
+  parallax_ready.lock();
+  sprite.set_image(TextureTypes::Parallax, CImg2QImage(current_parallax));
+
+  parallax_ready.unlock();
+
   processed();
   parallax_mutex.unlock();
 }
@@ -279,31 +268,25 @@ void ImageProcessor::calculate_specular()
     specular_counter = 1;
     return;
   }
-  int frame = current_frame_id;
 
-  for (int i = 0; i < frames.count(); i++)
+  current_specular = modify_specular();
+  QImage ovi = get_specular_overlay();
+
+  CImg<float> ov(QImage2CImg(ovi));
+  CImg<float> alpha = ov.get_channel(3) / 255.0;
+
+  if (tileable)
   {
-    set_current_frame_id(i);
-    current_specular = modify_specular();
-    QImage ovi = get_specular_overlay();
-
-    CImg<float> ov(QImage2CImg(ovi));
-    CImg<float> alpha = ov.get_channel(3) / 255.0;
-
-    if (tileable)
-    {
-      QSize s = current_frame->size();
-      current_specular.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
-    }
-
-    current_specular = (current_specular.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
-
-    specular_ready.lock();
-    frames[i].set_image(TextureTypes::Specular, CImg2QImage(current_specular));
-    specular_ready.unlock();
+    QSize s = sprite.size();
+    current_specular.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  set_current_frame_id(frame);
+  current_specular = (current_specular.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+
+  specular_ready.lock();
+  sprite.set_image(TextureTypes::Specular, CImg2QImage(current_specular));
+  specular_ready.unlock();
+
   processed();
   specular_mutex.unlock();
 }
@@ -315,31 +298,25 @@ void ImageProcessor::calculate_occlusion()
     occlussion_counter = 1;
     return;
   }
-  int frame = current_frame_id;
 
-  for (int i = 0; i < frames.count(); i++)
+  current_occlusion = modify_occlusion();
+  QImage ovi = get_occlusion_overlay();
+
+  CImg<float> ov(QImage2CImg(ovi));
+  CImg<float> alpha = ov.get_channel(3) / 255.0;
+
+  /* TODO IMPORTANT make occlussion tileable */
+  QSize s = sprite.size();
+  if (tileable)
   {
-    set_current_frame_id(i);
-    current_occlusion = modify_occlusion();
-    QImage ovi = get_occlusion_overlay();
-
-    CImg<float> ov(QImage2CImg(ovi));
-    CImg<float> alpha = ov.get_channel(3) / 255.0;
-
-    /* TODO IMPORTANT make occlussion tileable */
-    QSize s = current_frame->size();
-    if (tileable)
-    {
-      current_occlusion.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
-    }
-
-    current_occlusion = (current_occlusion.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
-    occlussion_ready.lock();
-    frames[i].set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
-    occlussion_ready.unlock();
+    current_occlusion.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  set_current_frame_id(frame);
+  current_occlusion = (current_occlusion.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+  occlussion_ready.lock();
+  sprite.set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
+  occlussion_ready.unlock();
+
   processed();
   occlusion_mutex.unlock();
 }
@@ -352,8 +329,8 @@ void ImageProcessor::calculate_heightmap()
 int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 {
   QImage neighbours;
-  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
-  QSize s = current_frame->size();
+  sprite.get_image(TextureTypes::Neighbours, &neighbours);
+  QSize s = sprite.size();
   image = image.scaled(s);
 
   for (int x = 0; x < 3; x++)
@@ -369,13 +346,13 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 void ImageProcessor::reset_neighbours()
 {
   QImage diffuse;
-  current_frame->get_image(TextureTypes::Diffuse, &diffuse);
-  fill_neighbours(current_frame->fileName, diffuse);
+  sprite.get_image(TextureTypes::Diffuse, &diffuse);
+  fill_neighbours(sprite.fileName, diffuse);
 }
 
 int ImageProcessor::empty_neighbour(int x, int y)
 {
-  QImage image(current_frame->size(), QImage::Format_RGBA64_Premultiplied);
+  QImage image(sprite.size(), QImage::Format_RGBA64_Premultiplied);
   image.fill(0);
   set_neighbour_image("", image, x, y);
 
@@ -386,16 +363,16 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x,
                                         int y)
 {
   QImage neighbours;
-  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
-  QSize s = current_frame->size();
-  current_frame->neighbours_paths[x][y] = fileName;
+  sprite.get_image(TextureTypes::Neighbours, &neighbours);
+  QSize s = sprite.size();
+  sprite.neighbours_paths[x][y] = fileName;
   int aleft = x * s.width();
   int atop = y * s.height();
   QRect r(aleft, atop, s.width(), s.height());
   QPainter p(&neighbours);
   p.setCompositionMode(QPainter::CompositionMode_Source);
   p.drawImage(r, image);
-  current_frame->set_image(TextureTypes::Neighbours, neighbours);
+  sprite.set_image(TextureTypes::Neighbours, neighbours);
 
   return 0;
 }
@@ -403,8 +380,8 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x,
 QImage ImageProcessor::get_neighbour(int x, int y)
 {
   QImage neighbours;
-  current_frame->get_image(TextureTypes::Neighbours, &neighbours);
-  QSize s = current_frame->size();
+  sprite.get_image(TextureTypes::Neighbours, &neighbours);
+  QSize s = sprite.size();
   x *= s.width();
   y *= s.height();
   QRect r(x, y, s.width(), s.height());
@@ -415,30 +392,30 @@ QImage ImageProcessor::get_neighbour(int x, int y)
 
 QString ImageProcessor::get_specular_path()
 {
-  return current_frame->specularPath;
+  return sprite.specularPath;
 }
 
 QString ImageProcessor::get_heightmap_path()
 {
-  return current_frame->heightmapPath;
+  return sprite.heightmapPath;
 }
 
 int ImageProcessor::loadSpecularMap(QString fileName, QImage specular)
 {
   if (fileName == m_fileName)
   {
-    current_frame->specularPath = "";
+    sprite.specularPath = "";
     customSpecularMap = false;
   }
   else
   {
-    current_frame->specularPath = fileName;
+    sprite.specularPath = fileName;
     customSpecularMap = true;
   }
 
-  QSize s = current_frame->size();
+  QSize s = sprite.size();
   specular = specular.scaled(s.width(), s.height());
-  current_frame->set_image(TextureTypes::SpecularBase, specular);
+  sprite.set_image(TextureTypes::SpecularBase, specular);
   calculate();
 
   return 0;
@@ -448,18 +425,18 @@ int ImageProcessor::loadHeightMap(QString fileName, QImage height)
 {
   if (fileName == m_fileName)
   {
-    current_frame->heightmapPath = "";
+    sprite.heightmapPath = "";
     customHeightMap = false;
   }
   else
   {
-    current_frame->heightmapPath = fileName;
+    sprite.heightmapPath = fileName;
     customHeightMap = true;
   }
 
-  QSize s = current_frame->size();
+  QSize s = sprite.size();
   height = height.scaled(s.width(), s.height());
-  current_frame->set_image(TextureTypes::Heightmap, height);
+  sprite.set_image(TextureTypes::Heightmap, height);
   calculate();
 
   return 0;
@@ -469,10 +446,10 @@ void ImageProcessor::calculate_gradient() {}
 
 void ImageProcessor::calculate_texture()
 {
-  current_frame->get_image(TextureTypes::Diffuse, &texture);
+  sprite.get_image(TextureTypes::Diffuse, &texture);
   QPainter p(&texture);
   QImage overlay;
-  current_frame->get_image(TextureTypes::TextureOverlay, &overlay);
+  sprite.get_image(TextureTypes::TextureOverlay, &overlay);
   p.drawImage(QPoint(0, 0), overlay);
 }
 
@@ -677,7 +654,7 @@ CImg<float> ImageProcessor::modify_parallax()
 
 CImg<float> ImageProcessor::modify_specular()
 {
-  current_frame->get_image(TextureTypes::SpecularBase, &specular);
+  sprite.get_image(TextureTypes::SpecularBase, &specular);
   specular = specular.convertToFormat(QImage::Format_Grayscale8);
   CImg<uchar> img = QImage2CImg(specular);
   CImg<float> img_float(img);
@@ -756,91 +733,88 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
   }
 
-  for (int i = 0; i < frames.count(); i++)
+  if (update_tileable)
   {
-    if (update_tileable || frames.count() > 1)
-    {
-      set_current_heightmap(i);
-      calculate_heightmap();
-      calculate_distance();
-    }
-
-    if (update_tileable)
-    {
-      update_tileable = false;
-      distance_requested = true;
-    }
-
-    if (updateEnhance || frames.count() > 1)
-    {
-      for (int i = 0; i < rlist.count(); i++)
-      {
-        m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius);
-      }
-    }
-
-    if (updateDistance || frames.count() > 1)
-    {
-      new_distance = modify_distance();
-    }
-
-    if (updateBump || frames.count() > 1)
-    {
-      for (int i = 0; i < rlist.count(); i++)
-      {
-        m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius);
-      }
-    }
-
-    if (m_normal.width() == 0 || m_normal.height() == 0)
-    {
-      m_normal = m_emboss_normal;
-    }
-
-    foreach (QRect rect, rlist)
-    {
-      int xmin = 0, xmax = texture.width() - 1;
-      int ymin = 0, ymax = texture.height() - 1;
-
-      if (rect != QRect(0, 0, 0, 0))
-      {
-        rect.getCoords(&xmin, &ymin, &xmax, &ymax);
-      }
-      for (int x = xmin; x <= xmax; ++x)
-      {
-        for (int y = ymin; y <= ymax; ++y)
-        {
-          float nr, ng, nb, norm, r, g, b, a;
-          QColor ov = normalOverlay.pixelColor(x, y);
-          r = ov.redF() * 2 - 1;
-          g = ov.greenF() * 2 - 1;
-          b = ov.blueF() * 2 - 1;
-          a = ov.alphaF();
-          nr = m_emboss_normal(x, y, 0, 0) * 3 / 2.0 + m_distance_normal(x, y, 0, 0) * 3 / 2.0 + m_height_ov(x, y, 0, 0);
-          ng = m_emboss_normal(x, y, 0, 1) * 3 / 2.0 + m_distance_normal(x, y, 0, 1) * 3 / 2.0 + m_height_ov(x, y, 0, 1);
-          nb = m_emboss_normal(x, y, 0, 2) * 3 / 2.0 + m_distance_normal(x, y, 0, 2) * 3 / 2.0 + m_height_ov(x, y, 0, 2);
-
-          nr = nr * (1 - a) + (r)*a;
-          ng = ng * (1 - a) + (g)*a;
-          nb = nb * (1 - a) + (b)*a;
-          norm = sqrtf(nr * nr + ng * ng + nb * nb);
-
-          m_normal(x, y, 0, 0) = 255.0 * (nr / norm * 0.5 + 0.5);
-          m_normal(x, y, 0, 1) = 255.0 * (ng / norm * 0.5 + 0.5);
-          m_normal(x, y, 0, 2) = 255.0 * (nb / norm * 0.5 + 0.5);
-
-          //          if (!active)
-          //          {
-          //            normal_mutex.unlock();
-          //            return;
-          //          }
-        }
-      }
-    }
-    normal_ready.lock();
-    frames[i].set_image(TextureTypes::Normal, CImg2QImage(m_normal));
-    normal_ready.unlock();
+    set_current_heightmap(0);
+    calculate_heightmap();
+    calculate_distance();
   }
+
+  if (update_tileable)
+  {
+    update_tileable = false;
+    distance_requested = true;
+  }
+
+  if (updateEnhance)
+  {
+    for (int i = 0; i < rlist.count(); i++)
+    {
+      m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius);
+    }
+  }
+
+  if (updateDistance)
+  {
+    new_distance = modify_distance();
+  }
+
+  if (updateBump)
+  {
+    for (int i = 0; i < rlist.count(); i++)
+    {
+      m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius);
+    }
+  }
+
+  if (m_normal.width() == 0 || m_normal.height() == 0)
+  {
+    m_normal = m_emboss_normal;
+  }
+
+  foreach (QRect rect, rlist)
+  {
+    int xmin = 0, xmax = texture.width() - 1;
+    int ymin = 0, ymax = texture.height() - 1;
+
+    if (rect != QRect(0, 0, 0, 0))
+    {
+      rect.getCoords(&xmin, &ymin, &xmax, &ymax);
+    }
+    for (int x = xmin; x <= xmax; ++x)
+    {
+      for (int y = ymin; y <= ymax; ++y)
+      {
+        float nr, ng, nb, norm, r, g, b, a;
+        QColor ov = normalOverlay.pixelColor(x, y);
+        r = ov.redF() * 2 - 1;
+        g = ov.greenF() * 2 - 1;
+        b = ov.blueF() * 2 - 1;
+        a = ov.alphaF();
+        nr = m_emboss_normal(x, y, 0, 0) * 3 / 2.0 + m_distance_normal(x, y, 0, 0) * 3 / 2.0 + m_height_ov(x, y, 0, 0);
+        ng = m_emboss_normal(x, y, 0, 1) * 3 / 2.0 + m_distance_normal(x, y, 0, 1) * 3 / 2.0 + m_height_ov(x, y, 0, 1);
+        nb = m_emboss_normal(x, y, 0, 2) * 3 / 2.0 + m_distance_normal(x, y, 0, 2) * 3 / 2.0 + m_height_ov(x, y, 0, 2);
+
+        nr = nr * (1 - a) + (r)*a;
+        ng = ng * (1 - a) + (g)*a;
+        nb = nb * (1 - a) + (b)*a;
+        norm = sqrtf(nr * nr + ng * ng + nb * nb);
+
+        m_normal(x, y, 0, 0) = 255.0 * (nr / norm * 0.5 + 0.5);
+        m_normal(x, y, 0, 1) = 255.0 * (ng / norm * 0.5 + 0.5);
+        m_normal(x, y, 0, 2) = 255.0 * (nb / norm * 0.5 + 0.5);
+
+        //          if (!active)
+        //          {
+        //            normal_mutex.unlock();
+        //            return;
+        //          }
+      }
+    }
+  }
+  normal_ready.lock();
+  sprite.set_image(TextureTypes::Normal, CImg2QImage(m_normal));
+  normal_ready.unlock();
 
   processed();
   normal_mutex.unlock();
@@ -848,7 +822,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
 CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
-  QSize s = current_frame->size();
+  QSize s = sprite.size();
   float dx, dy;
 
   CImg<float> img(in);
@@ -962,20 +936,20 @@ int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
 
 QImage *ImageProcessor::get_texture()
 {
-  current_frame->get_image(TextureTypes::Diffuse, &texture);
+  sprite.get_image(TextureTypes::Diffuse, &texture);
   QImage ov(texture.size(), QImage::Format_RGBA8888_Premultiplied);
-  current_frame->get_image(TextureTypes::TextureOverlay, &ov);
+  sprite.get_image(TextureTypes::TextureOverlay, &ov);
   last_texture.fill(Qt::transparent);
   QPainter p(&last_texture);
   p.drawImage(last_texture.rect(), texture);
   p.drawImage(last_texture.rect(), ov);
-  current_frame->set_image(TextureTypes::Color, last_texture);
+  sprite.set_image(TextureTypes::Color, last_texture);
   return &last_texture;
 }
 
 QImage *ImageProcessor::get_normal()
 {
-  current_frame->get_image(TextureTypes::Normal, &last_normal);
+  sprite.get_image(TextureTypes::Normal, &last_normal);
   if (useNormalAlpha)
   {
     last_normal.setAlphaChannel(texture.alphaChannel());
@@ -985,7 +959,7 @@ QImage *ImageProcessor::get_normal()
 
 QImage *ImageProcessor::get_parallax()
 {
-  current_frame->get_image(TextureTypes::Parallax, &last_parallax);
+  sprite.get_image(TextureTypes::Parallax, &last_parallax);
   if (useParallaxAlpha)
   {
     last_parallax.setAlphaChannel(texture.alphaChannel());
@@ -995,7 +969,7 @@ QImage *ImageProcessor::get_parallax()
 
 QImage *ImageProcessor::get_specular()
 {
-  current_frame->get_image(TextureTypes::Specular, &last_specular);
+  sprite.get_image(TextureTypes::Specular, &last_specular);
   if (useSpecularAlpha)
   {
     last_specular.setAlphaChannel(texture.alphaChannel());
@@ -1005,7 +979,7 @@ QImage *ImageProcessor::get_specular()
 
 QImage *ImageProcessor::get_occlusion()
 {
-  current_frame->get_image(TextureTypes::Occlussion, &last_occlussion);
+  sprite.get_image(TextureTypes::Occlussion, &last_occlussion);
   if (useOcclusionAlpha)
   {
     last_occlussion.setAlphaChannel(texture.alphaChannel());
@@ -1015,24 +989,24 @@ QImage *ImageProcessor::get_occlusion()
 
 QImage ImageProcessor::get_texture_overlay()
 {
-  current_frame->get_image(TextureTypes::TextureOverlay, &textureOverlay);
+  sprite.get_image(TextureTypes::TextureOverlay, &textureOverlay);
   return textureOverlay;
 }
 
 void ImageProcessor::set_texture_overlay(QImage to)
 {
-  current_frame->set_image(TextureTypes::TextureOverlay, to);
+  sprite.set_image(TextureTypes::TextureOverlay, to);
 }
 
 QImage ImageProcessor::get_normal_overlay()
 {
-  current_frame->get_image(TextureTypes::NormalOverlay, &normalOverlay);
+  sprite.get_image(TextureTypes::NormalOverlay, &normalOverlay);
   return normalOverlay;
 }
 
 void ImageProcessor::set_normal_overlay(QImage no)
 {
-  current_frame->set_image(TextureTypes::NormalOverlay, no);
+  sprite.set_image(TextureTypes::NormalOverlay, no);
   normal_mutex.lock();
   get_normal_overlay();
   normal_mutex.unlock();
@@ -1040,47 +1014,47 @@ void ImageProcessor::set_normal_overlay(QImage no)
 
 QImage ImageProcessor::get_parallax_overlay()
 {
-  current_frame->get_image(TextureTypes::ParallaxOverlay, &parallaxOverlay);
+  sprite.get_image(TextureTypes::ParallaxOverlay, &parallaxOverlay);
   return parallaxOverlay;
 }
 
 void ImageProcessor::set_parallax_overlay(QImage po)
 {
-  current_frame->set_image(TextureTypes::ParallaxOverlay, po);
+  sprite.set_image(TextureTypes::ParallaxOverlay, po);
 }
 
 QImage ImageProcessor::get_specular_overlay()
 {
-  current_frame->get_image(TextureTypes::SpecularOverlay, &specularOverlay);
+  sprite.get_image(TextureTypes::SpecularOverlay, &specularOverlay);
   return specularOverlay;
 }
 
 void ImageProcessor::set_specular_overlay(QImage so)
 {
-  current_frame->set_image(TextureTypes::SpecularOverlay, so);
+  sprite.set_image(TextureTypes::SpecularOverlay, so);
 }
 
 QImage ImageProcessor::get_heightmap_overlay()
 {
-  current_frame->get_image(TextureTypes::HeightmapOverlay, &heightOverlay);
+  sprite.get_image(TextureTypes::HeightmapOverlay, &heightOverlay);
   return heightOverlay;
 }
 
 void ImageProcessor::set_heightmap_overlay(QImage ho)
 {
-  current_frame->set_image(TextureTypes::HeightmapOverlay, ho);
+  sprite.set_image(TextureTypes::HeightmapOverlay, ho);
 }
 
 QImage ImageProcessor::get_occlusion_overlay()
 {
-  current_frame->get_image(TextureTypes::OcclussionOverlay,
-                           &occlussionOverlay);
+  sprite.get_image(TextureTypes::OcclussionOverlay,
+                   &occlussionOverlay);
   return occlussionOverlay;
 }
 
 void ImageProcessor::set_occlussion_overlay(QImage oo)
 {
-  current_frame->set_image(TextureTypes::OcclussionOverlay, oo);
+  sprite.set_image(TextureTypes::OcclussionOverlay, oo);
 }
 
 bool ImageProcessor::get_parallax_invert() { return parallax_invert; }
@@ -1324,7 +1298,7 @@ ProcessorSettings &ProcessorSettings::operator=(ProcessorSettings other)
 QImage ImageProcessor::get_heightmap()
 {
   QImage heightmap;
-  current_frame->get_image(TextureTypes::Heightmap, &heightmap);
+  sprite.get_image(TextureTypes::Heightmap, &heightmap);
   return heightmap.copy();
 }
 
@@ -1431,14 +1405,12 @@ int ImageProcessor::get_current_frame_id()
 
 void ImageProcessor::set_current_frame_id(int id)
 {
-  if (id >= frames.count())
-    id = frames.count() - 1;
+  if (id >= get_frame_count())
+    id = get_frame_count() - 1;
   else if (id < 0)
     id = 0;
 
-  current_frame = &frames[id];
   current_frame_id = id;
-  current_frame->get_image(TextureTypes::Diffuse, &texture);
 
   frameChanged(id);
   processed();
@@ -1446,24 +1418,23 @@ void ImageProcessor::set_current_frame_id(int id)
 
 Sprite *ImageProcessor::get_current_frame()
 {
-  return current_frame;
+  return &sprite;
 }
 
-
-int ImageProcessor::get_frame_count(){
-    return vertices.count();
+int ImageProcessor::get_frame_count()
+{
+  return vertices.count();
 }
 
 void ImageProcessor::next_frame()
 {
-  current_frame_id = (current_frame_id+1) % get_frame_count();
+  current_frame_id = (current_frame_id + 1) % get_frame_count();
+  frameChanged(current_frame_id);
   processed();
 }
 
 void ImageProcessor::remove_frame(int id)
 {
-
-
 }
 
 void ImageProcessor::playAnimation(bool play)
@@ -1476,8 +1447,7 @@ void ImageProcessor::setAnimationRate(int fps)
   animation.setInterval(1000.0 / fps);
 }
 
-void ImageProcessor::remove_current_frame() {  }
-
+void ImageProcessor::remove_current_frame() {}
 
 int ImageProcessor::WrapCoordinate(int coord, int interval)
 {
@@ -1621,4 +1591,19 @@ void ImageProcessor::set_use_occlusion_alpha(bool a)
 {
   useOcclusionAlpha = a;
   processed();
+}
+
+int ImageProcessor::get_frame_at_point(QPoint point)
+{
+  float w = texture.width() / h_frames;
+  float h = texture.height() / v_frames;
+  for (int i = 0; i < get_frame_count(); i++)
+  {
+    QRect rect(texture.width() * vertices[i][3], texture.height() * vertices[i][14], w, h);
+    if (rect.contains(point))
+    {
+      return i;
+    }
+  }
+  return 0;
 }

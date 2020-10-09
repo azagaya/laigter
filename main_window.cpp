@@ -201,7 +201,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
-  connect(sprite_widget, SIGNAL(framesChanged(int,int)), this, SLOT(splitInFrames(int,int)));
+  connect(sprite_widget, SIGNAL(framesChanged(int, int)), this, SLOT(splitInFrames(int, int)));
 
   // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
@@ -239,7 +239,7 @@ void MainWindow::setCurrentItem(QListWidgetItem *i)
     current_item = 0;
     p = sample_processor;
   }
-  animation_dock->setVisible(p->frames.count() > 1);
+  animation_dock->setVisible(p->get_frame_count() > 1 && p->frame_mode == "Animation");
   //  if (p->frames.count() > 1)
   {
     animation_widget->setCurrentProcessor(p);
@@ -274,19 +274,14 @@ void MainWindow::remove_processor(ImageProcessor *p)
 {
   QStringList paths;
 
-  for (int i = 0; i < p->frames.count(); i++)
+  paths.append(p->sprite.fileName);
+  paths.append(p->sprite.heightmapPath);
+  paths.append(p->sprite.specularPath);
+  for (int j = 0; j < 3; j++)
   {
-    Sprite frame;
-    frame = p->frames[i];
-    paths.append(frame.fileName);
-    paths.append(frame.heightmapPath);
-    paths.append(frame.specularPath);
-    for (int j = 0; j < 3; j++)
+    for (int k = 0; k < 3; k++)
     {
-      for (int k = 0; k < 3; k++)
-      {
-        paths.append(frame.neighbours_paths[j][k]);
-      }
+      paths.append(p->sprite.neighbours_paths[j][k]);
     }
   }
 
@@ -382,7 +377,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
         specular.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
     p->loadSpecularMap(p->get_name(), specular);
   }
-
 }
 
 void MainWindow::splitInFrames(int h_frames, int v_frames)
@@ -391,48 +385,35 @@ void MainWindow::splitInFrames(int h_frames, int v_frames)
   {
     QImage original;
     processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-//    ImageProcessor *n_p = new ImageProcessor;
-//    n_p->set_name(processor->get_name() + "(frames)");
-//    QString filePath = processor->get_current_frame()->get_file_name();
-//    for (int i = 0; i < v_frames; i++)
-//    {
-//      for (int j = 0; j < h_frames; j++)
-//      {
-//        QString frame_number = QString("%1").arg(j + i * h_frames, (int)(log10(v_frames * h_frames) + 1), 10, QChar('0'));
-//        QString path = filePath.split(".").join("_" + frame_number + ".");
-//        QPoint top_left(j * original.width() / h_frames, i * original.height() / v_frames);
-//        QSize size(original.width() / h_frames, original.height() / v_frames);
-//        n_p->loadImage(path, original.copy(QRect(top_left, size)));
-//      }
-//    }
-//    add_processor(n_p);
-      processor->vertices.clear();
-      float w = 1.0/h_frames;
-      float h = 1.0/v_frames;
-          for (int i = 0; i < v_frames; i++)
-          {
-            for (int j = 0; j < h_frames; j++)
-            {
-                QVector <float> vertices;
-                float py = h*i;
-                float px = w*j;
-                float current_vertices[20] = {
-                    -w, -h, 0.0f, px, py+h, // bot left
-                    +w, -h, 0.0f, px+w, py+h,  // bot right
-                    -w, +h, 0.0f, px, py,   // top left
-                    +w, +h, 0.0f, px+w, py,   // top right
+    processor->h_frames = h_frames;
+    processor->v_frames = v_frames;
+    processor->vertices.clear();
+    float w = 1.0 / h_frames;
+    float h = 1.0 / v_frames;
+    for (int i = 0; i < v_frames; i++)
+    {
+      for (int j = 0; j < h_frames; j++)
+      {
+        QVector<float> vertices;
+        float py = h * i;
+        float px = w * j;
+        float current_vertices[20] = {
+            -w, -h, 0.0f, px, py + h,     // bot left
+            +w, -h, 0.0f, px + w, py + h, // bot right
+            -w, +h, 0.0f, px, py,         // top left
+            +w, +h, 0.0f, px + w, py,     // top right
 
-                };
+        };
 
-                for (int i = 0; i < 20 ; i++ ) {
-                    vertices.append(current_vertices[i]);
-                }
+        for (int i = 0; i < 20; i++)
+        {
+          vertices.append(current_vertices[i]);
+        }
 
-                processor->vertices.append(vertices);
-            }
-          }
-          ui->openGLPreviewWidget->need_to_update = true;
-          processor->animation.start();
+        processor->vertices.append(vertices);
+      }
+    }
+    ui->openGLPreviewWidget->need_to_update = true;
   }
 }
 
@@ -1032,36 +1013,35 @@ bool MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
   QString name;
   QFileInfo info;
   bool saved = true;
-  for (int i = 0; i < p->frames.count(); i++)
+
+  p->sprite.get_image(type, &n);
+  QString file_name = p->sprite.get_file_name();
+  info = QFileInfo(file_name);
+  if (!info.exists())
   {
-    p->frames[i].get_image(type, &n);
-    QString file_name = p->frames[i].get_file_name();
+    info = QFileInfo(project.GetCurrentPath());
+    file_name = info.dir().path() + "/" + file_name.split("/").last();
     info = QFileInfo(file_name);
-    if (!info.exists())
-    {
-      info = QFileInfo(project.GetCurrentPath());
-      file_name = info.dir().path() + "/" + file_name.split("/").last();
-      info = QFileInfo(file_name);
-    }
-    suffix = info.completeSuffix();
-    if (!QImageWriter::supportedImageFormats().contains(suffix.toUtf8()))
-    {
-      suffix = "png";
-    }
-    if (destination == "")
-    {
-      name = p->m_absolute_path + "/" + info.baseName() + postfix + "." + suffix;
-    }
-    else
-    {
-      name = destination + "/" + info.baseName() + postfix + "." + suffix;
-    }
-    if (useAlpha)
-    {
-      n.setAlphaChannel(p->get_texture()->alphaChannel());
-    }
-    saved &= n.save(name);
   }
+  suffix = info.completeSuffix();
+  if (!QImageWriter::supportedImageFormats().contains(suffix.toUtf8()))
+  {
+    suffix = "png";
+  }
+  if (destination == "")
+  {
+    name = p->m_absolute_path + "/" + info.baseName() + postfix + "." + suffix;
+  }
+  else
+  {
+    name = destination + "/" + info.baseName() + postfix + "." + suffix;
+  }
+  if (useAlpha)
+  {
+    n.setAlphaChannel(p->get_texture()->convertToFormat(QImage::Format_Alpha8));
+  }
+  saved &= n.save(name);
+
   return saved;
 }
 
@@ -1102,12 +1082,9 @@ void MainWindow::on_pushButton_clicked()
     foreach (ImageProcessor *p, processorList)
     {
       ui->openGLPreviewWidget->set_current_processor(p);
-      for (int i = 0; i < p->frames.count(); i++)
-      {
-        p->animation.stop();
-        p->set_current_frame_id(i);
-        n = ui->openGLPreviewWidget->get_preview(false, true);
-      }
+
+      p->animation.stop();
+      n = ui->openGLPreviewWidget->get_preview(false, true);
     }
   }
 
@@ -1277,14 +1254,12 @@ void MainWindow::on_pushButtonExportTo_clicked()
       {
         ui->openGLPreviewWidget->set_current_processor(p);
         p->animation.stop();
-        for (int i = 0; i < p->frames.count(); i++)
-        {
-          n = ui->openGLPreviewWidget->get_preview(false, false);
-          info = QFileInfo(p->frames[i].get_file_name());
-          suffix = info.completeSuffix();
-          name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
-          n.save(name);
-        }
+
+        n = ui->openGLPreviewWidget->get_preview(false, false);
+        info = QFileInfo(p->sprite.get_file_name());
+        suffix = info.completeSuffix();
+        name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
+        n.save(name);
       }
     }
 

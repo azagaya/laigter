@@ -1,8 +1,7 @@
 #include "sprite_properties_dock.h"
 #include "ui_sprite_properties_dock.h"
 
-SpritePropertiesDock::SpritePropertiesDock(QWidget *parent) :
-                                                              QWidget(parent),
+SpritePropertiesDock::SpritePropertiesDock(QWidget *parent) : QWidget(parent),
                                                               ui(new Ui::SpritePropertiesDock)
 {
   ui->setupUi(this);
@@ -25,10 +24,10 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
 
   current_processor = processor;
   ui->textureLabel->setPixmap(QPixmap::fromImage(current_processor->texture.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
-  ui->infoName->setText(tr("Name: ")+ processor->get_name());
+  ui->infoName->setText(tr("Name: ") + processor->get_name());
   ui->infoPath->setText(tr("Path: ") + processor->m_fileName);
   ui->infoSize->setText(tr("Size: ") + QString::number(processor->texture.width()) + "x" + QString::number(processor->texture.height()));
-  int frames = processor->frames.count();
+  int frames = processor->get_frame_count();
   ui->framesLabel->setText(tr("Frames: ") + QString::number(frames));
 
   ui->scaleSpinBox->setValue(processor->get_zoom());
@@ -39,18 +38,17 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   connect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
   connect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   updatePosition();
-
 }
 
 void SpritePropertiesDock::setCurrentFrame(int i)
 {
   QImage frame;
-  current_processor->get_current_frame()->get_image(TextureTypes::Diffuse, &frame);
-  ui->textureLabel->setPixmap(QPixmap::fromImage(frame.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
-
+  //  current_processor->get_current_frame()->get_image(TextureTypes::Diffuse, &frame);
+  //  ui->textureLabel->setPixmap(QPixmap::fromImage(frame.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
 }
 
-void SpritePropertiesDock::updatePosition(){
+void SpritePropertiesDock::updatePosition()
+{
   ui->xPositionSpinBox->setValue(current_processor->get_position()->x());
   ui->yPositionSpinBox->setValue(current_processor->get_position()->y());
 }
@@ -87,7 +85,6 @@ void SpritePropertiesDock::on_neighboursButton_pressed()
   neighboursButtonPressed();
 }
 
-
 void SpritePropertiesDock::on_heightmapButton_pressed()
 {
   heightmapButtonPressed();
@@ -100,10 +97,15 @@ void SpritePropertiesDock::on_specularButton_pressed()
 
 void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
 {
-    framesChanged(arg1, ui->vFramesSpinBox->value());
+  framesChanged(arg1, ui->vFramesSpinBox->value());
 }
 
 void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
 {
-    framesChanged(ui->hFramesSpinBox->value(), arg1);
+  framesChanged(ui->hFramesSpinBox->value(), arg1);
+}
+
+void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
+{
+  current_processor->frame_mode = checked ? "Sheet" : "Animation";
 }

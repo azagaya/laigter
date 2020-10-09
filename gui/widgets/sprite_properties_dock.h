@@ -1,10 +1,11 @@
 #ifndef SPRITE_PROPERTIES_DOCK_H
 #define SPRITE_PROPERTIES_DOCK_H
 
-#include <QWidget>
 #include "src/image_processor.h"
+#include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class SpritePropertiesDock;
 }
 
@@ -31,7 +32,7 @@ signals:
   void neighboursButtonPressed();
   void heightmapButtonPressed();
   void specularButtonPressed();
-  void framesChanged(int,int);
+  void framesChanged(int, int);
 
 private slots:
   void on_scaleSpinBox_valueChanged(double arg1);
@@ -44,6 +45,7 @@ private slots:
   void on_specularButton_pressed();
   void on_hFramesSpinBox_valueChanged(int arg1);
   void on_vFramesSpinBox_valueChanged(int arg1);
+  void on_radioButton_2_toggled(bool checked);
 };
 
 #endif // SPRITE_PROPERTIES_DOCK_H

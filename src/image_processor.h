@@ -128,25 +128,24 @@ public:
   QMutex texture_overlay_mutex;
   QString m_fileName, m_absolute_path;
   QTimer animation, recalculate_timer;
-  QVector<Sprite> frames;
+  Sprite sprite;
+  int h_frames = 1, v_frames = 1;
+  QString frame_mode = "Sheet";
   bool busy, active;
   bool updated = false;
 
-  QVector<QVector <float>> vertices;
+  QVector<QVector<float>> vertices;
 
   float current_vertices[20] = {
       -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
       1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
-      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,   // top left
+      -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
       1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
 
       //1.0f/2, 1.0f/2, 0.0f, 1.0f/2, 0.0f,   // top right
   };
 
 private:
-
-
-
   ParallaxType parallax_type;
   ProcessorSettings settings;
   QBrush normal_brush;
@@ -158,7 +157,6 @@ private:
   QString m_name, m_heightmapPath, m_specularPath;
   QVector3D offset;
   QVector3D position;
-  Sprite *current_frame;
   int selected_frame = 0;
   bool customHeightMap, customSpecularMap;
   bool normal_bisel_soft, tileable, update_tileable = false, parallax_invert;
@@ -264,6 +262,7 @@ public:
   cimg_library::CImg<uchar> QImage2CImg(QImage in);
 
   int get_frame_count();
+  int get_frame_at_point(QPoint point);
 
 public slots:
   void playAnimation(bool play);
