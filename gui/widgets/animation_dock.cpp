@@ -13,10 +13,13 @@ AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
 {
   ui->setupUi(this);
   m_current_processor = nullptr;
+  animation_creator = new AnimationCreator;
+  animation_creator->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 AnimationDock::~AnimationDock()
 {
+  animation_creator->close();
   delete ui;
 }
 
@@ -179,8 +182,9 @@ void AnimationDock::on_deleteEmptyButton_pressed()
 
 void AnimationDock::on_editorPushButton_pressed()
 {
-  animation_creator.setCurrentProcessor(m_current_processor);
-  animation_creator.show();
+  animation_creator->setCurrentProcessor(m_current_processor);
+  animation_creator->show();
+  animation_creator->activateWindow();
 }
 
 void AnimationDock::on_comboBox_activated(const QString &arg1)
@@ -203,8 +207,8 @@ void AnimationDock::updateList(QString animation_name)
 
   Animation *animation = m_current_processor->getAnimation(animation_name);
   QImage texture = m_current_processor->texture.copy();
-  float h = texture.height() / m_current_processor->v_frames;
-  float w = texture.width() / m_current_processor->h_frames;
+  float h = texture.height() / m_current_processor->getVFrames();
+  float w = texture.width() / m_current_processor->getHFrames();
 
   foreach (int i, animation->frames_id)
   {

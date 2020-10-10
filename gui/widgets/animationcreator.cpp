@@ -18,8 +18,8 @@ void AnimationCreator::setCurrentProcessor(ImageProcessor *p)
   processor = p;
   this->disconnect();
   QImage texture = p->texture.copy();
-  float h = texture.height() / p->v_frames;
-  float w = texture.width() / p->h_frames;
+  float h = texture.height() / p->getVFrames();
+  float w = texture.width() / p->getHFrames();
   int k = 0;
 
   QString style = "QPushButton { \
@@ -42,9 +42,9 @@ void AnimationCreator::setCurrentProcessor(ImageProcessor *p)
   }
 
   ui->listWidget->clear();
-  for (int j = 0; j < p->v_frames; j++)
+  for (int j = 0; j < p->getVFrames(); j++)
   {
-    for (int i = 0; i < p->h_frames; i++)
+    for (int i = 0; i < p->getHFrames(); i++)
     {
       QPushButton *frame = new QPushButton();
       frame->setProperty("frame_id", k);
@@ -52,7 +52,7 @@ void AnimationCreator::setCurrentProcessor(ImageProcessor *p)
       k++;
       QImage image = texture.copy(QRect(i * w, j * h, w, h));
 
-      frame->setMinimumSize(image.size());
+      frame->setMinimumSize(image.size() + QSize(3, 3));
       frame->setIconSize(image.size());
       frame->setIcon(QPixmap::fromImage(image));
       frame->setStyleSheet(style);

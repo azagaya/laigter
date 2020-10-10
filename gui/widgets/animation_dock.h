@@ -17,7 +17,7 @@ class AnimationDock : public QWidget
 private:
   Ui::AnimationDock *ui;
   ImageProcessor *m_current_processor;
-  AnimationCreator animation_creator;
+  AnimationCreator *animation_creator;
 
 public:
   explicit AnimationDock(QWidget *parent = nullptr);

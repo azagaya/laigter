@@ -14,22 +14,86 @@
    <string>Animation Dock</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="10">
-    <widget class="QSpinBox" name="fpsSpinBox">
-     <property name="minimumSize">
+   <item row="0" column="3">
+    <widget class="QPushButton" name="rightButton">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="right">
+       <normaloff>.</normaloff>.</iconset>
+     </property>
+     <property name="iconSize">
       <size>
-       <width>50</width>
-       <height>0</height>
+       <width>24</width>
+       <height>24</height>
       </size>
      </property>
-     <property name="minimum">
-      <number>1</number>
+     <property name="flat">
+      <bool>true</bool>
      </property>
-     <property name="maximum">
-      <number>60</number>
+    </widget>
+   </item>
+   <item row="0" column="8">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>FPS:</string>
      </property>
-     <property name="value">
-      <number>10</number>
+    </widget>
+   </item>
+   <item row="0" column="10">
+    <widget class="QComboBox" name="comboBox"/>
+   </item>
+   <item row="1" column="0" colspan="12">
+    <widget class="QListWidget" name="listWidget">
+     <property name="iconSize">
+      <size>
+       <width>100</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="flow">
+      <enum>QListView::LeftToRight</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="7">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="leftButton">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="left">
+       <normaloff>.</normaloff>.</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -59,117 +123,22 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QPushButton" name="leftButton">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset theme="left">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6">
-    <widget class="QPushButton" name="addFrameButton">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset theme="frame-add">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="9">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>FPS:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="12">
-    <widget class="QPushButton" name="editorPushButton">
-     <property name="text">
-      <string>Edit Animations</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QPushButton" name="rightButton">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset theme="right">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-     <property name="iconSize">
+    <widget class="QSpinBox" name="fpsSpinBox">
+     <property name="minimumSize">
       <size>
-       <width>24</width>
-       <height>24</height>
+       <width>50</width>
+       <height>0</height>
       </size>
      </property>
-     <property name="flat">
-      <bool>true</bool>
+     <property name="minimum">
+      <number>1</number>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="13">
-    <widget class="QListWidget" name="listWidget">
-     <property name="iconSize">
-      <size>
-       <width>100</width>
-       <height>100</height>
-      </size>
+     <property name="maximum">
+      <number>60</number>
      </property>
-     <property name="flow">
-      <enum>QListView::LeftToRight</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <widget class="QPushButton" name="deleteEmptyButton">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset theme="multiframe-delete">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
+     <property name="value">
+      <number>10</number>
      </property>
     </widget>
    </item>
@@ -179,19 +148,6 @@
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-   </item>
-   <item row="0" column="8">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item row="0" column="5">
     <widget class="QPushButton" name="deleteFrameButton">
@@ -216,8 +172,18 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="11">
-    <widget class="QComboBox" name="comboBox"/>
+   <item row="0" column="6">
+    <widget class="QPushButton" name="editorPushButton">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset theme="settings"/>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

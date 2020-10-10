@@ -331,8 +331,7 @@ void ImageProcessor::calculate_heightmap()
 
 int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 {
-  QImage neighbours;
-  sprite.get_image(TextureTypes::Neighbours, &neighbours);
+
   QSize s = sprite.size();
   image = image.scaled(s);
 
@@ -349,8 +348,40 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 void ImageProcessor::reset_neighbours()
 {
   QImage diffuse;
+  QImage neighbours;
+  sprite.get_image(TextureTypes::Neighbours, &neighbours);
   sprite.get_image(TextureTypes::Diffuse, &diffuse);
-  fill_neighbours(sprite.fileName, diffuse);
+  float w = (float)texture.width() / h_frames;
+  float h = (float)texture.height() / v_frames;
+  QRect neighbor_rect(0, 0, w, h);
+  QPainter p(&neighbours);
+  p.setCompositionMode(QPainter::CompositionMode_Source);
+  int base_top = 0, base_left = 0;
+
+  neighbours.fill(Qt::transparent);
+  for (int i = 0; i < h_frames; i++)
+  {
+    base_left = i * w * 3;
+    for (int j = 0; j < v_frames; j++)
+    {
+      base_top = j * h * 3;
+      neighbor_rect.moveLeft(base_left);
+      neighbor_rect.moveTop(base_top);
+      for (int x = -1; x <= 1; x++)
+      {
+        for (int y = -1; y <= 1; y++)
+        {
+          QImage neighbour = getFrameImage(i + x, j + y);
+          p.drawImage(neighbor_rect, neighbour);
+          neighbor_rect.moveTop(neighbor_rect.top() + h);
+        }
+        neighbor_rect.moveTop(base_top);
+        neighbor_rect.moveLeft(neighbor_rect.left() + w);
+      }
+    }
+  }
+
+  sprite.set_image(TextureTypes::Neighbours, neighbours);
 }
 
 int ImageProcessor::empty_neighbour(int x, int y)
@@ -1654,4 +1685,56 @@ void ImageProcessor::setFrameMode(QString mode)
 {
   frame_mode = mode;
   processed();
+}
+
+QImage ImageProcessor::getFrameImage(int frame)
+{
+  QRect rect = getFrameRect(frame);
+  return texture.copy(rect);
+}
+
+QImage ImageProcessor::getFrameImage(int x, int y)
+{
+  if ((x < 0) || (y < 0) || (x >= h_frames) || (y >= v_frames))
+  {
+    QImage empty(texture.size(), QImage::Format_RGBA8888_Premultiplied);
+    empty.fill(Qt::transparent);
+    return empty;
+  }
+
+  int frame = h_frames * y + x;
+  return getFrameImage(frame);
+}
+
+QRect ImageProcessor::getFrameRect(int frame)
+{
+  float h = texture.height() / v_frames;
+  float w = texture.width() / h_frames;
+  return QRect(texture.width() * vertices[frame][3], texture.height() * vertices[frame][14], w, h);
+}
+
+QRect ImageProcessor::getFrameRect(int x, int y)
+{
+  int frame = h_frames * y + x;
+  return getFrameRect(frame);
+}
+
+void ImageProcessor::setHFrames(int h)
+{
+  h_frames = h;
+}
+
+void ImageProcessor::setVFrames(int v)
+{
+  v_frames = v;
+}
+
+int ImageProcessor::getHFrames()
+{
+  return h_frames;
+}
+
+int ImageProcessor::getVFrames()
+{
+  return v_frames;
 }

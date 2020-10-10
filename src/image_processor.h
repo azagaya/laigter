@@ -156,7 +156,6 @@ public:
   QString m_fileName, m_absolute_path;
   QTimer animation, recalculate_timer;
   Sprite sprite;
-  int h_frames = 1, v_frames = 1;
   QString frame_mode = "Sheet";
   bool busy, active;
   bool updated = false;
@@ -242,6 +241,8 @@ private:
   int specular_bright;
   int specular_thresh;
 
+  int h_frames = 1, v_frames = 1;
+
 public:
   explicit ImageProcessor(QObject *parent = nullptr);
   ~ImageProcessor();
@@ -297,6 +298,15 @@ public:
   QStringList getAnimationNames();
   void setCurrentAnimation(QString name);
   void setFrameMode(QString mode);
+  QImage getFrameImage(int frame);
+  QImage getFrameImage(int x, int y);
+  QRect getFrameRect(int frame);
+  QRect getFrameRect(int x, int y);
+
+  int getHFrames();
+  void setHFrames(int h);
+  int getVFrames();
+  void setVFrames(int v);
 
 public slots:
   void playAnimation(bool play);

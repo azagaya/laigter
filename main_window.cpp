@@ -385,8 +385,7 @@ void MainWindow::splitInFrames(int h_frames, int v_frames)
   {
     QImage original;
     processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-    processor->h_frames = h_frames;
-    processor->v_frames = v_frames;
+
     processor->vertices.clear();
     Animation *animation = processor->getAnimation("Default");
     animation->frames_id.clear();
@@ -419,6 +418,9 @@ void MainWindow::splitInFrames(int h_frames, int v_frames)
         processor->vertices.append(vertices);
       }
     }
+    processor->setHFrames(h_frames);
+    processor->setVFrames(v_frames);
+    processor->reset_neighbours();
     ui->openGLPreviewWidget->need_to_update = true;
   }
 }
@@ -1963,5 +1965,6 @@ void MainWindow::on_actionImport_triggered()
 void MainWindow::on_actionThemes_triggered()
 {
   ThemeSelector *t = new ThemeSelector;
+  t->setAttribute(Qt::WA_QuitOnClose, false);
   t->show();
 }
