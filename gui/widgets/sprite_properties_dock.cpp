@@ -28,7 +28,6 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   ui->infoPath->setText(tr("Path: ") + processor->m_fileName);
   ui->infoSize->setText(tr("Size: ") + QString::number(processor->texture.width()) + "x" + QString::number(processor->texture.height()));
   int frames = processor->get_frame_count();
-  ui->framesLabel->setText(tr("Frames: ") + QString::number(frames));
 
   ui->scaleSpinBox->setValue(processor->get_zoom());
   ui->rotationSpinBox->setValue(processor->get_rotation());
@@ -107,5 +106,5 @@ void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
 
 void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
 {
-  current_processor->frame_mode = checked ? "Sheet" : "Animation";
+  current_processor->setFrameMode(checked ? "Sheet" : "Animation");
 }

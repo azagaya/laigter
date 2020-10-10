@@ -120,6 +120,9 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   for (int i = 0; i < 20; i++)
     new_vertices.append(current_vertices[i]);
   vertices.append(new_vertices);
+
+  animation_list.append(Animation("Default"));
+  current_animation = getAnimation("Default");
 }
 
 ImageProcessor::~ImageProcessor()
@@ -1405,6 +1408,7 @@ int ImageProcessor::get_current_frame_id()
 
 void ImageProcessor::set_current_frame_id(int id)
 {
+
   if (id >= get_frame_count())
     id = get_frame_count() - 1;
   else if (id < 0)
@@ -1428,13 +1432,24 @@ int ImageProcessor::get_frame_count()
 
 void ImageProcessor::next_frame()
 {
-  current_frame_id = (current_frame_id + 1) % get_frame_count();
+  if (!current_animation)
+  {
+    return;
+  }
+  if (current_animation->frames_id.size() <= 0)
+    return;
+
+  int idx = (current_animation->idx + 1) % current_animation->frames_id.size();
+  current_frame_id = current_animation->getFrame(idx);
+
   frameChanged(current_frame_id);
   processed();
 }
 
 void ImageProcessor::remove_frame(int id)
 {
+
+  current_animation->frames_id.remove(id);
 }
 
 void ImageProcessor::playAnimation(bool play)
@@ -1606,4 +1621,37 @@ int ImageProcessor::get_frame_at_point(QPoint point)
     }
   }
   return 0;
+}
+
+Animation *ImageProcessor::getAnimation(QString name)
+{
+  for (int i = 0; i < animation_list.size(); i++)
+  {
+    if (animation_list.at(i).name == name)
+    {
+      return &animation_list[i];
+    }
+  }
+  return nullptr;
+}
+
+QStringList ImageProcessor::getAnimationNames()
+{
+  QStringList list;
+  foreach (Animation animation, animation_list)
+  {
+    list.append(animation.name);
+  }
+  return list;
+}
+
+void ImageProcessor::setCurrentAnimation(QString name)
+{
+  current_animation = getAnimation(name);
+}
+
+void ImageProcessor::setFrameMode(QString mode)
+{
+  frame_mode = mode;
+  processed();
 }

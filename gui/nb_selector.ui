@@ -101,7 +101,7 @@ QPushButton:hover:!pressed
 QPushButton:hover:!pressed
 {
   border: 2px solid #8080a0;
-}R</string>
+}</string>
      </property>
      <property name="text">
       <string/>
@@ -452,14 +452,14 @@ QPushButton:hover:!pressed
    <item row="3" column="2">
     <widget class="QPushButton" name="pushButtonResetNeighbours">
      <property name="text">
-      <string>Reset Neighbours</string>
+      <string>Reset</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Empty Neighbours</string>
+      <string>Empty</string>
      </property>
     </widget>
    </item>

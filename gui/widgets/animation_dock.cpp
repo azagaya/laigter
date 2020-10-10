@@ -33,27 +33,17 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
   {
     delete ui->listWidget->item(i);
   }
-  ui->listWidget->clear();
 
-  QImage texture = p->texture.copy();
-  float h = texture.height() / p->v_frames;
-  float w = texture.width() / p->h_frames;
-  for (int j = 0; j < p->v_frames; j++)
-  {
-    for (int i = 0; i < p->h_frames; i++)
-    {
-      QListWidgetItem *item = new QListWidgetItem;
-      QImage image = texture.copy(QRect(i * w, j * h, w, h));
-      item->setIcon(QPixmap::fromImage(image));
-      ui->listWidget->addItem(item);
-    }
-  }
+  updateList(p->current_animation->name);
 
   ui->listWidget->setCurrentRow(p->get_current_frame_id());
   ui->fpsSpinBox->setValue(1 / (p->animation.interval() / 1000.0));
 
   connect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   connect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
+
+  ui->comboBox->clear();
+  ui->comboBox->addItems(p->getAnimationNames());
 }
 
 void AnimationDock::updateProcessorFrame(int index)
@@ -61,6 +51,7 @@ void AnimationDock::updateProcessorFrame(int index)
 
   if (index >= 0 && index < m_current_processor->get_frame_count() && ui->listWidget->selectedItems().count() > 0)
   {
+    index = ui->listWidget->currentItem()->data(Qt::UserRole).toInt();
     if (!m_current_processor->animation.isActive())
     {
       m_current_processor->set_current_frame_id(index);
@@ -89,26 +80,48 @@ void AnimationDock::on_leftButton_clicked()
     {
       return;
     }
-    // TODO: REDO FRAME MOVEMENT
+    int id = m_current_processor->current_animation->frames_id.takeAt(index);
+    m_current_processor->current_animation->frames_id.insert(index - 1, id);
+    ui->listWidget->insertItem(index - 1, ui->listWidget->takeItem(index));
+    ui->listWidget->setCurrentRow(index - 1);
   }
 }
 
 void AnimationDock::setCurrentFrame(int index)
 {
-  ui->listWidget->setCurrentRow(index);
+  for (int i = 0; i < ui->listWidget->count(); i++)
+  {
+    if (ui->listWidget->item(i)->data(Qt::UserRole).toInt() == index)
+    {
+      ui->listWidget->setCurrentRow(i);
+      break;
+    }
+  }
 }
 
 void AnimationDock::on_rightButton_clicked()
 {
   QList<QListWidgetItem *> item_list = ui->listWidget->selectedItems();
-  // TODO: REDO FRAME MOVEMENT
+  if (item_list.count() > 0)
+  {
+    int index = ui->listWidget->currentRow();
+    if (index >= m_current_processor->current_animation->frames_id.size() - 1)
+    {
+      return;
+    }
+    int id = m_current_processor->current_animation->frames_id.takeAt(index);
+    m_current_processor->current_animation->frames_id.insert(index + 1, id);
+    ui->listWidget->insertItem(index + 1, ui->listWidget->takeItem(index));
+    ui->listWidget->setCurrentRow(index + 1);
+  }
 }
 
 void AnimationDock::on_deleteFrameButton_pressed()
 {
-  bool isPlaying = m_current_processor->animation.isActive();
-  m_current_processor->animation.stop();
-  // TODO: REDO DELETE FRAMES
+  if (ui->listWidget->selectedItems().size() <= 0)
+    return;
+  m_current_processor->remove_frame(ui->listWidget->currentRow());
+  delete ui->listWidget->takeItem(ui->listWidget->currentRow());
 }
 
 void AnimationDock::on_addFrameButton_pressed()
@@ -162,4 +175,44 @@ void AnimationDock::on_deleteEmptyButton_pressed()
   if (isPlaying)
     m_current_processor->animation.start();
   setCurrentProcessor(m_current_processor);
+}
+
+void AnimationDock::on_editorPushButton_pressed()
+{
+  animation_creator.setCurrentProcessor(m_current_processor);
+  animation_creator.show();
+}
+
+void AnimationDock::on_comboBox_activated(const QString &arg1)
+{
+
+  Animation *animation = m_current_processor->getAnimation(arg1);
+
+  if (!animation)
+    return;
+
+  m_current_processor->setCurrentAnimation(arg1);
+
+  updateList(arg1);
+}
+
+void AnimationDock::updateList(QString animation_name)
+{
+
+  ui->listWidget->clear();
+
+  Animation *animation = m_current_processor->getAnimation(animation_name);
+  QImage texture = m_current_processor->texture.copy();
+  float h = texture.height() / m_current_processor->v_frames;
+  float w = texture.width() / m_current_processor->h_frames;
+
+  foreach (int i, animation->frames_id)
+  {
+    QListWidgetItem *item = new QListWidgetItem;
+    QRect rect(texture.width() * m_current_processor->vertices[i][3], texture.height() * m_current_processor->vertices[i][14], w, h);
+    QImage image = texture.copy(rect);
+    item->setIcon(QPixmap::fromImage(image));
+    item->setData(Qt::UserRole, i);
+    ui->listWidget->addItem(item);
+  }
 }

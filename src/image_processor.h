@@ -64,6 +64,33 @@ public:
   QRect rect = QRect(0, 0, 0, 0);
 };
 
+class Animation
+{
+public:
+  Animation(QString name)
+  {
+    this->name = name;
+  }
+  int idx = 0;
+  QString name;
+  QVector<int> frames_id;
+  int getFrame(int idx)
+  {
+
+    if (idx >= frames_id.size())
+    {
+      idx = frames_id.size() - 1;
+    }
+    else if (idx < 0)
+    {
+      idx = 0;
+    }
+
+    this->idx = idx;
+    return frames_id[idx];
+  }
+};
+
 class ProcessorSettings
 {
 public:
@@ -144,6 +171,9 @@ public:
 
       //1.0f/2, 1.0f/2, 0.0f, 1.0f/2, 0.0f,   // top right
   };
+
+  QList<Animation> animation_list;
+  Animation *current_animation = nullptr;
 
 private:
   ParallaxType parallax_type;
@@ -263,6 +293,10 @@ public:
 
   int get_frame_count();
   int get_frame_at_point(QPoint point);
+  Animation *getAnimation(QString name);
+  QStringList getAnimationNames();
+  void setCurrentAnimation(QString name);
+  void setFrameMode(QString mode);
 
 public slots:
   void playAnimation(bool play);

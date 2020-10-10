@@ -388,12 +388,18 @@ void MainWindow::splitInFrames(int h_frames, int v_frames)
     processor->h_frames = h_frames;
     processor->v_frames = v_frames;
     processor->vertices.clear();
+    Animation *animation = processor->getAnimation("Default");
+    animation->frames_id.clear();
     float w = 1.0 / h_frames;
     float h = 1.0 / v_frames;
+    int k = 0;
     for (int i = 0; i < v_frames; i++)
     {
       for (int j = 0; j < h_frames; j++)
       {
+        animation->frames_id.append(k);
+        k++;
+
         QVector<float> vertices;
         float py = h * i;
         float px = w * j;

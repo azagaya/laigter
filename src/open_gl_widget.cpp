@@ -334,6 +334,16 @@ void OpenGlWidget::update_scene()
     {
       glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, current_vertices);
     }
+    else
+    {
+      float vertices[] = {
+          -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+          1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+          -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
+          1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+      };
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, vertices);
+    }
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     VBO.release();
   }
@@ -771,7 +781,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           QPoint point = global_mouse_press_position.toPoint();
           point.setY(-point.y());
           point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
-          processor->set_current_frame_id(processor->get_frame_at_point(point));
+          if (processor->frame_mode == "Sheet")
+            processor->set_current_frame_id(processor->get_frame_at_point(point));
         }
       }
     }

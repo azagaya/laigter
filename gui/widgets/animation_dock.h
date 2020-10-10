@@ -1,10 +1,12 @@
 #ifndef ANIMATION_DOCK_H
 #define ANIMATION_DOCK_H
 
-#include <QWidget>
+#include "gui/widgets/animationcreator.h"
 #include "src/image_processor.h"
+#include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class AnimationDock;
 }
 
@@ -15,10 +17,12 @@ class AnimationDock : public QWidget
 private:
   Ui::AnimationDock *ui;
   ImageProcessor *m_current_processor;
+  AnimationCreator animation_creator;
 
 public:
   explicit AnimationDock(QWidget *parent = nullptr);
   ~AnimationDock();
+  void updateList(QString animation_name);
 
 public slots:
   void setCurrentProcessor(ImageProcessor *p);
@@ -33,10 +37,11 @@ private slots:
 
   void on_rightButton_clicked();
 
-
   void on_deleteFrameButton_pressed();
   void on_addFrameButton_pressed();
   void on_deleteEmptyButton_pressed();
+  void on_editorPushButton_pressed();
+  void on_comboBox_activated(const QString &arg1);
 };
 
 #endif // ANIMATION_DOCK_H
