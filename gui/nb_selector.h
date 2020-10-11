@@ -40,6 +40,7 @@ private:
   ImageProcessor *processor;
   ImageLoader *il;
   QListWidget *frameList;
+  QListWidget *imagesList;
 
 public:
   explicit NBSelector(QDialog *parent = nullptr);
@@ -60,6 +61,8 @@ private slots:
   void on_NBR_clicked();
   void on_pushButton_clicked();
   void setNeighbor(int x, int y);
+  void on_pushButtonResetNeighbours_pressed();
+  void on_addImagePushButton_pressed();
 };
 
 #endif // NBSELECTOR_H

@@ -453,7 +453,7 @@ void OpenGlWidget::update_scene()
     cursorProgram.setUniformValue("pixelated", m_pixelated);
     cursorProgram.setUniformValue("zoom", m_global_zoom);
     color = QVector3D(0.2, 0.2, 0.2);
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     cursorProgram.release();
   }
   else

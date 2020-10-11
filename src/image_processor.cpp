@@ -1743,8 +1743,18 @@ void ImageProcessor::setFrameMode(QString mode)
 
 QImage ImageProcessor::getFrameImage(int frame)
 {
-  QRect rect = getFrameRect(frame);
-  return texture.copy(rect);
+  if (frame >= 0)
+  {
+    QRect rect = getFrameRect(frame);
+    return texture.copy(rect);
+  }
+  else
+  {
+    QSize s(texture.width() / h_frames, texture.height() / v_frames);
+    QImage image(s, texture.format());
+    image.fill(Qt::transparent);
+    return image.copy();
+  }
 }
 
 QImage ImageProcessor::getFrameImage(int x, int y)

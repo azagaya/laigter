@@ -29,7 +29,8 @@ NBSelector::NBSelector(QDialog *parent)
     : QDialog(parent), ui(new Ui::NBSelector)
 {
   ui->setupUi(this);
-  frameList = ui->tab->findChild<QListWidget *>("listWidget");
+  frameList = ui->framesTab->findChild<QListWidget *>("listWidget");
+  imagesList = ui->imagesTab->findChild<QListWidget *>("listWidgetImages");
 }
 
 NBSelector::~NBSelector() { delete ui; }
@@ -45,16 +46,26 @@ void NBSelector::setProcessor(ImageProcessor *processor)
     QListWidgetItem *item = frameList->takeItem(i);
     delete item;
   }
-
+  QSize s(processor->texture.width() / processor->getHFrames(), processor->texture.height() / processor->getVFrames());
+  QImage empty(s, processor->texture.format());
+  empty.fill(Qt::transparent);
   foreach (int frame, processor->current_animation->frames_id)
   {
+    QImage image = processor->getFrameImage(frame);
+    if (image == empty)
+      continue;
     QListWidgetItem *item = new QListWidgetItem;
     item->setData(Qt::UserRole, frame);
-    QPixmap icon = QPixmap::fromImage(processor->getFrameImage(frame));
+    QPixmap icon = QPixmap::fromImage(image);
     item->setIcon(icon);
     frameList->addItem(item);
   }
 
+  QListWidgetItem *item = new QListWidgetItem;
+  item->setData(Qt::UserRole, -1);
+  QPixmap icon = QPixmap::fromImage(processor->getFrameImage(-1));
+  item->setIcon(icon);
+  frameList->addItem(item);
   get_neighbours();
 }
 
@@ -88,14 +99,26 @@ void NBSelector::on_pushButtonResetNeighbours_clicked()
 
 void NBSelector::setNeighbor(int x, int y)
 {
-  if (frameList->selectedItems().size() <= 0)
-    return;
+  QImage image;
+  if (ui->tabWidget->currentIndex() == 0)
+  {
+    if (frameList->selectedItems().size() <= 0)
+      return;
 
-  QImage image = processor->getFrameImage(frameList->currentItem()->data(Qt::UserRole).toInt());
+    image = processor->getFrameImage(frameList->currentItem()->data(Qt::UserRole).toInt());
+  }
+  else if (ui->tabWidget->currentIndex() == 1)
+  {
+    if (imagesList->selectedItems().size() <= 0)
+      return;
+    QString filename = imagesList->currentItem()->data(Qt::UserRole).toString();
+    bool success;
+    image = il->loadImage(filename, &success);
+    image = image.convertToFormat(QImage::Format_RGBA8888);
+  }
 
   processor->set_neighbour_image(image, x, y);
   get_neighbours();
-
   processor->set_tileable(true);
 }
 
@@ -153,4 +176,28 @@ void NBSelector::on_pushButton_clicked()
   }
   processor->calculate();
   get_neighbours();
+}
+
+void NBSelector::on_pushButtonResetNeighbours_pressed()
+{
+  processor->reset_neighbours();
+  get_neighbours();
+  processor->set_tileable(true);
+}
+
+void NBSelector::on_addImagePushButton_pressed()
+{
+  QString fileName = QFileDialog::getOpenFileName(
+      this, tr("Open Image"), "",
+      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
+  if (fileName != nullptr)
+  {
+    bool success;
+    QImage image = il->loadImage(fileName, &success);
+    image = image.convertToFormat(QImage::Format_RGBA8888);
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setIcon(QPixmap::fromImage(image));
+    item->setData(Qt::UserRole, fileName);
+    imagesList->addItem(item);
+  }
 }
