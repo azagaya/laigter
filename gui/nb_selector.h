@@ -24,6 +24,7 @@
 #include "src/image_processor.h"
 
 #include <QDialog>
+#include <QListWidget>
 
 namespace Ui
 {
@@ -38,9 +39,11 @@ private:
   Ui::NBSelector *ui;
   ImageProcessor *processor;
   ImageLoader *il;
+  QListWidget *frameList;
 
 public:
-  explicit NBSelector(ImageProcessor *processor, QWidget *parent = nullptr);
+  explicit NBSelector(QDialog *parent = nullptr);
+  void setProcessor(ImageProcessor *processor);
   ~NBSelector();
 
 private slots:
@@ -56,6 +59,7 @@ private slots:
   void on_NBM_clicked();
   void on_NBR_clicked();
   void on_pushButton_clicked();
+  void setNeighbor(int x, int y);
 };
 
 #endif // NBSELECTOR_H

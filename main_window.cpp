@@ -216,6 +216,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->openGLPreviewWidget, SIGNAL(initialized()), this, SLOT(openGL_initialized()));
   connect(&fs_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onFileChanged(QString)));
   set_enabled_light_controls(false);
+
+  nbSelector.setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 MainWindow::~MainWindow()
@@ -1134,8 +1136,9 @@ void MainWindow::set_background_color(const QColor &color)
 
 void MainWindow::selectNeighbours()
 {
-  NBSelector *nb = new NBSelector(processor);
-  nb->exec();
+  nbSelector.setProcessor(processor);
+  nbSelector.show();
+  nbSelector.activateWindow();
 }
 
 void MainWindow::on_comboBox_currentIndexChanged(int index)

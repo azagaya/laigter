@@ -2,6 +2,8 @@
 #include "QPushButton"
 #include "ui_animationcreator.h"
 
+#include <QMessageBox>
+
 AnimationCreator::AnimationCreator(QWidget *parent) : QWidget(parent),
                                                       ui(new Ui::AnimationCreator)
 {
@@ -16,7 +18,6 @@ AnimationCreator::~AnimationCreator()
 void AnimationCreator::setCurrentProcessor(ImageProcessor *p)
 {
   processor = p;
-  this->disconnect();
   QImage texture = p->texture.copy();
   float h = texture.height() / p->getVFrames();
   float w = texture.width() / p->getHFrames();
@@ -37,6 +38,7 @@ void AnimationCreator::setCurrentProcessor(ImageProcessor *p)
   while ((item = ui->gridLayout->takeAt(0)))
   {
     QWidget *widget = item->widget();
+    widget->disconnect();
     widget->deleteLater();
     delete item;
   }
@@ -93,6 +95,8 @@ void AnimationCreator::updateAnimation()
       }
     }
   }
+
+  animationsUpdated(processor);
 }
 
 void AnimationCreator::on_pushButton_clicked()
@@ -111,10 +115,8 @@ void AnimationCreator::on_pushButton_clicked()
       }
     }
   }
-}
 
-void AnimationCreator::on_listWidget_currentTextChanged(const QString &currentText)
-{
+  animationsUpdated(processor);
 }
 
 void AnimationCreator::on_listWidget_currentRowChanged(int currentRow)
@@ -133,4 +135,23 @@ void AnimationCreator::on_listWidget_currentRowChanged(int currentRow)
       ((QPushButton *)ui->gridLayout->itemAtPosition(i, j)->widget())->setChecked(animation->frames_id.contains(frame));
     }
   }
+}
+
+void AnimationCreator::on_deletePushButton_pressed()
+{
+  if (ui->listWidget->selectedItems().size() <= 0)
+    return;
+  QListWidgetItem *item = ui->listWidget->currentItem();
+  if (item->text() == "Default")
+  {
+    QMessageBox msg;
+    msg.setText("Cannot delete Default Animation");
+    msg.exec();
+    return;
+  }
+  processor->removeAnimation(item->text());
+  ui->listWidget->removeItemWidget(item);
+  delete item;
+
+  animationsUpdated(processor);
 }

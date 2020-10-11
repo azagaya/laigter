@@ -296,6 +296,7 @@ public:
   int get_frame_at_point(QPoint point);
   Animation *getAnimation(QString name);
   QStringList getAnimationNames();
+  void removeAnimation(QString name);
   void setCurrentAnimation(QString name);
   void setFrameMode(QString mode);
   QImage getFrameImage(int frame);
@@ -307,6 +308,8 @@ public:
   void setHFrames(int h);
   int getVFrames();
   void setVFrames(int v);
+
+  void getFramePosition(int frame, int &x, int &y);
 
 public slots:
   void playAnimation(bool play);
@@ -372,6 +375,7 @@ public slots:
   int get_specular_bright();
   int get_specular_trhesh();
   int set_neighbour_image(QString fileName, QImage image, int x, int y);
+  int set_neighbour_image(QImage image, int x, int y);
   void copy_settings(ProcessorSettings s);
   void next_frame();
   void remove_current_frame();

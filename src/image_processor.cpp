@@ -411,14 +411,51 @@ int ImageProcessor::set_neighbour_image(QString fileName, QImage image, int x,
   return 0;
 }
 
+int ImageProcessor::set_neighbour_image(QImage image, int x,
+                                        int y)
+{
+  QImage neighbours;
+  sprite.get_image(TextureTypes::Neighbours, &neighbours);
+
+  QSize s = sprite.size();
+  s.setHeight(s.height() / v_frames);
+  s.setWidth(s.width() / h_frames);
+
+  int cx, cy;
+  getFramePosition(current_frame_id, cx, cy);
+
+  cx = x + cx * 3;
+  cy = cy * 3 + y;
+
+  cx *= s.width();
+  cy *= s.height();
+  QRect r(cx, cy, s.width(), s.height());
+
+  QPainter p(&neighbours);
+  p.setCompositionMode(QPainter::CompositionMode_Source);
+  p.drawImage(r, image);
+  sprite.set_image(TextureTypes::Neighbours, neighbours);
+
+  return 0;
+}
+
 QImage ImageProcessor::get_neighbour(int x, int y)
 {
   QImage neighbours;
   sprite.get_image(TextureTypes::Neighbours, &neighbours);
   QSize s = sprite.size();
-  x *= s.width();
-  y *= s.height();
-  QRect r(x, y, s.width(), s.height());
+  s.setHeight(s.height() / v_frames);
+  s.setWidth(s.width() / h_frames);
+
+  int cx, cy;
+  getFramePosition(current_frame_id, cx, cy);
+
+  cx = x + cx * 3;
+  cy = cy * 3 + y;
+
+  cx *= s.width();
+  cy *= s.height();
+  QRect r(cx, cy, s.width(), s.height());
   QImage p = neighbours.copy(r);
 
   return p;
@@ -889,6 +926,8 @@ CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur
 
   CImg<float> normals(img.width(), img.height(), 1, 3);
 
+  CImg<float> out(s.width(), s.height(), 1, 3);
+
   img /= 255.0;
 
   for (int x = xs; x <= xe; ++x)
@@ -937,9 +976,24 @@ CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur
   //  normals *= 255.0;
   if (tileable)
   {
-    normals.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
+    int w = s.width() / h_frames;
+    int h = s.height() / v_frames;
+    for (int i = 0; i < h_frames; i++)
+    {
+      for (int j = 0; j < v_frames; j++)
+      {
+        int si = i * 3 + 1;
+        int sj = j * 3 + 1;
+        CImg<float> frame_normal = normals.get_crop(si * w, sj * h, (si + 1) * w - 1, (sj + 1) * h - 1);
+        out.draw_image(i * w, j * h, frame_normal);
+      }
+    }
   }
-  return normals;
+  else
+  {
+    out = normals;
+  }
+  return out;
 }
 
 void ImageProcessor::copy_settings(ProcessorSettings s) { settings = s; }
@@ -1737,4 +1791,23 @@ int ImageProcessor::getHFrames()
 int ImageProcessor::getVFrames()
 {
   return v_frames;
+}
+
+void ImageProcessor::getFramePosition(int frame, int &x, int &y)
+{
+  x = frame % h_frames;
+  y = frame / h_frames;
+}
+
+void ImageProcessor::removeAnimation(QString name)
+{
+  for (int i = 0; i < animation_list.size(); i++)
+  {
+    if (animation_list[i].name == name)
+    {
+      animation_list.removeAt(i);
+      break;
+    }
+  }
+  current_animation = getAnimation("Default");
 }

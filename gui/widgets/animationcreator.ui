@@ -94,12 +94,13 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset theme="frame-add"/>
+        <iconset theme="frame-add">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="deletePushButton">
        <property name="toolTip">
         <string>Delete Current Animation</string>
        </property>
@@ -107,7 +108,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset theme="delete"/>
+        <iconset theme="delete">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>

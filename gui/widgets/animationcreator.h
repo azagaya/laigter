@@ -23,12 +23,15 @@ public slots:
 
   void updateAnimation();
 
+signals:
+  void animationsUpdated(ImageProcessor *processor);
+
 private slots:
   void on_pushButton_clicked();
 
-  void on_listWidget_currentTextChanged(const QString &currentText);
-
   void on_listWidget_currentRowChanged(int currentRow);
+
+  void on_deletePushButton_pressed();
 
 private:
   Ui::AnimationCreator *ui;

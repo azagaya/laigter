@@ -15,6 +15,8 @@ AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
   m_current_processor = nullptr;
   animation_creator = new AnimationCreator;
   animation_creator->setAttribute(Qt::WA_QuitOnClose, false);
+
+  connect(animation_creator, SIGNAL(animationsUpdated(ImageProcessor *)), this, SLOT(setCurrentProcessor(ImageProcessor *)));
 }
 
 AnimationDock::~AnimationDock()
@@ -26,7 +28,8 @@ AnimationDock::~AnimationDock()
 void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
   this->disconnect();
-
+  /* reconnect animation_creator signal */
+  connect(animation_creator, SIGNAL(animationsUpdated(ImageProcessor *)), this, SLOT(setCurrentProcessor(ImageProcessor *)));
   disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
 
   m_current_processor = p;
@@ -125,59 +128,6 @@ void AnimationDock::on_deleteFrameButton_pressed()
     return;
   m_current_processor->remove_frame(ui->listWidget->currentRow());
   delete ui->listWidget->takeItem(ui->listWidget->currentRow());
-}
-
-void AnimationDock::on_addFrameButton_pressed()
-{
-  bool isPlaying = m_current_processor->animation.isActive();
-  m_current_processor->animation.stop();
-  QStringList fileNames = QFileDialog::getOpenFileNames(
-      this, tr("Open Image"), "",
-      tr("Image File (*.png *.jpg *.bmp *.tga)"));
-  QSize frameSize = m_current_processor->get_current_frame()->size();
-  foreach (QString fileName, fileNames)
-  {
-    if (fileName != nullptr)
-    {
-      bool success;
-      QImage image = ImageLoader::loadImage(fileName, &success);
-      if (!success)
-        continue;
-
-      //        fs_watcher.addPath(fileName);
-      image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
-
-      if (image.size() != frameSize)
-      {
-        QMessageBox msgBox;
-        msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
-                       tr("New frame must have the same size than original frames."));
-        msgBox.exec();
-        continue;
-      }
-
-      m_current_processor->loadImage(fileName, image);
-    }
-  }
-  if (isPlaying)
-    m_current_processor->animation.start();
-  setCurrentProcessor(m_current_processor);
-}
-
-void AnimationDock::on_deleteEmptyButton_pressed()
-{
-  bool isPlaying = m_current_processor->animation.isActive();
-  m_current_processor->animation.stop();
-
-  QImage empty = m_current_processor->get_texture()->copy();
-  QImage test;
-  empty.fill(Qt::transparent);
-
-  // TODO: REDO REMOVE EMPTY
-
-  if (isPlaying)
-    m_current_processor->animation.start();
-  setCurrentProcessor(m_current_processor);
 }
 
 void AnimationDock::on_editorPushButton_pressed()

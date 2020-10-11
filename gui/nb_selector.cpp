@@ -21,16 +21,42 @@
 #include "ui_nb_selector.h"
 
 #include <QFileDialog>
+#include <QListWidgetItem>
 #include <QMessageBox>
+#include <QtConcurrent/QtConcurrent>
 
-NBSelector::NBSelector(ImageProcessor *processor, QWidget *parent)
-    : QDialog(parent), ui(new Ui::NBSelector), processor(processor)
+NBSelector::NBSelector(QDialog *parent)
+    : QDialog(parent), ui(new Ui::NBSelector)
 {
   ui->setupUi(this);
-  get_neighbours();
+  frameList = ui->tab->findChild<QListWidget *>("listWidget");
 }
 
 NBSelector::~NBSelector() { delete ui; }
+
+void NBSelector::setProcessor(ImageProcessor *processor)
+{
+  this->disconnect();
+  this->processor = processor;
+  connect(processor, SIGNAL(processed()), this, SLOT(get_neighbours()));
+
+  for (int i = 0; i < frameList->count(); i++)
+  {
+    QListWidgetItem *item = frameList->takeItem(i);
+    delete item;
+  }
+
+  foreach (int frame, processor->current_animation->frames_id)
+  {
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setData(Qt::UserRole, frame);
+    QPixmap icon = QPixmap::fromImage(processor->getFrameImage(frame));
+    item->setIcon(icon);
+    frameList->addItem(item);
+  }
+
+  get_neighbours();
+}
 
 void NBSelector::get_neighbours()
 {
@@ -60,148 +86,62 @@ void NBSelector::on_pushButtonResetNeighbours_clicked()
   get_neighbours();
 }
 
+void NBSelector::setNeighbor(int x, int y)
+{
+  if (frameList->selectedItems().size() <= 0)
+    return;
+
+  QImage image = processor->getFrameImage(frameList->currentItem()->data(Qt::UserRole).toInt());
+
+  processor->set_neighbour_image(image, x, y);
+  get_neighbours();
+
+  processor->set_tileable(true);
+}
+
 void NBSelector::on_NUL_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 0, 0);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(0, 0);
 }
 
 void NBSelector::on_NUM_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 1, 0);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(1, 0);
 }
 
 void NBSelector::on_NUR_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 2, 0);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(2, 0);
 }
 
 void NBSelector::on_NML_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 0, 1);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(0, 1);
 }
 
 void NBSelector::on_NMM_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 1, 1);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(1, 1);
 }
 
 void NBSelector::on_NMR_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 2, 1);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(2, 1);
 }
 
 void NBSelector::on_NBL_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 0, 2);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(0, 2);
 }
 
 void NBSelector::on_NBM_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 1, 2);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(1, 2);
 }
 
 void NBSelector::on_NBR_clicked()
 {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "",
-      tr("Image Files (*.png *.jpg *.bmp *.tga)"));
-  if (fileName != nullptr)
-  {
-    bool success;
-    QImage image = il->loadImage(fileName, &success);
-    image = image.convertToFormat(QImage::Format_RGBA8888);
-    processor->set_neighbour_image(fileName, image, 2, 2);
-    get_neighbours();
-    processor->calculate();
-  }
+  setNeighbor(2, 2);
 }
 
 void NBSelector::on_pushButton_clicked()

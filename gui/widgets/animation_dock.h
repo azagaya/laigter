@@ -38,8 +38,6 @@ private slots:
   void on_rightButton_clicked();
 
   void on_deleteFrameButton_pressed();
-  void on_addFrameButton_pressed();
-  void on_deleteEmptyButton_pressed();
   void on_editorPushButton_pressed();
   void on_comboBox_activated(const QString &arg1);
 };

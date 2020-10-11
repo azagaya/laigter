@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>430</height>
+    <width>802</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>430</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Neighbours selector</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QPushButton" name="NUL">
      <property name="sizePolicy">
@@ -47,14 +47,16 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -94,14 +96,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -141,14 +145,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -165,6 +171,44 @@ QPushButton:hover:!pressed
      <property name="flat">
       <bool>false</bool>
      </property>
+    </widget>
+   </item>
+   <item row="0" column="3" rowspan="3" colspan="2">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Sprite Frames</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QListWidget" name="listWidget">
+         <property name="iconSize">
+          <size>
+           <width>100</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="flow">
+          <enum>QListView::LeftToRight</enum>
+         </property>
+         <property name="isWrapping" stdset="0">
+          <bool>true</bool>
+         </property>
+         <property name="resizeMode">
+          <enum>QListView::Adjust</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>ExternalImages</string>
+      </attribute>
+     </widget>
     </widget>
    </item>
    <item row="1" column="0">
@@ -188,14 +232,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -235,14 +281,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -282,14 +330,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -329,14 +379,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -376,14 +428,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -423,14 +477,16 @@ QPushButton:hover:!pressed
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-    border: 2px solid  #33334D;
-    border-radius: 6px;
-}
-QPushButton:hover:!pressed
-{
-  border: 2px solid #8080a0;
-}R</string>
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
      </property>
      <property name="text">
       <string/>
@@ -449,17 +505,17 @@ QPushButton:hover:!pressed
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QPushButton" name="pushButtonResetNeighbours">
-     <property name="text">
-      <string>Reset</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
+   <item row="3" column="3">
     <widget class="QPushButton" name="pushButton">
      <property name="text">
       <string>Empty</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="pushButtonResetNeighbours">
+     <property name="text">
+      <string>Reset</string>
      </property>
     </widget>
    </item>

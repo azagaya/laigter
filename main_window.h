@@ -27,6 +27,7 @@
 #include "src/light_source.h"
 #include "src/project.h"
 
+#include "gui/nb_selector.h"
 #include "gui/widgets/animation_dock.h"
 #include "gui/widgets/sprite_properties_dock.h"
 
@@ -75,6 +76,7 @@ private:
   QDockWidget *animation_dock, *sprite_dock;
   AnimationDock *animation_widget;
   SpritePropertiesDock *sprite_widget;
+  NBSelector nbSelector;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
