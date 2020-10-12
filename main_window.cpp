@@ -385,44 +385,7 @@ void MainWindow::splitInFrames(int h_frames, int v_frames)
 {
   if (h_frames > 0 && v_frames > 0)
   {
-    QImage original;
-    processor->get_current_frame()->get_image(TextureTypes::Diffuse, &original);
-
-    processor->vertices.clear();
-    Animation *animation = processor->getAnimation("Default");
-    animation->frames_id.clear();
-    float w = 1.0 / h_frames;
-    float h = 1.0 / v_frames;
-    int k = 0;
-    for (int i = 0; i < v_frames; i++)
-    {
-      for (int j = 0; j < h_frames; j++)
-      {
-        animation->frames_id.append(k);
-        k++;
-
-        QVector<float> vertices;
-        float py = h * i;
-        float px = w * j;
-        float current_vertices[20] = {
-            -w, -h, 0.0f, px, py + h,     // bot left
-            +w, -h, 0.0f, px + w, py + h, // bot right
-            -w, +h, 0.0f, px, py,         // top left
-            +w, +h, 0.0f, px + w, py,     // top right
-
-        };
-
-        for (int i = 0; i < 20; i++)
-        {
-          vertices.append(current_vertices[i]);
-        }
-
-        processor->vertices.append(vertices);
-      }
-    }
-    processor->setHFrames(h_frames);
-    processor->setVFrames(v_frames);
-    processor->reset_neighbours();
+    processor->splitInFrames(h_frames, v_frames);
     ui->openGLPreviewWidget->need_to_update = true;
   }
 }
@@ -635,8 +598,6 @@ void MainWindow::open_files(QStringList fileNames)
       splitInFrames(image_list.size(), 1);
 
       p->reset_neighbours();
-
-      loaded ? add_processor(p) : delete p;
     }
     else
     {

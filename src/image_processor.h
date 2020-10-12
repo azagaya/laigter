@@ -310,6 +310,7 @@ public:
   void setVFrames(int v);
 
   void getFramePosition(int frame, int &x, int &y);
+  void splitInFrames(int h_frames, int v_frames);
 
 public slots:
   void playAnimation(bool play);

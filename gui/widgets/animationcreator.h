@@ -24,7 +24,7 @@ public slots:
   void updateAnimation();
 
 signals:
-  void animationsUpdated(ImageProcessor *processor);
+  void animationsUpdated();
 
 private slots:
   void on_pushButton_clicked();

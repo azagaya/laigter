@@ -1821,3 +1821,48 @@ void ImageProcessor::removeAnimation(QString name)
   }
   current_animation = getAnimation("Default");
 }
+
+void ImageProcessor::splitInFrames(int h_frames, int v_frames)
+{
+  QImage original;
+  get_current_frame()->get_image(TextureTypes::Diffuse, &original);
+
+  vertices.clear();
+  animation_list.clear();
+  animation_list.append(Animation("Default"));
+  Animation *animation = getAnimation("Default");
+
+  animation->frames_id.clear();
+  float w = 1.0 / h_frames;
+  float h = 1.0 / v_frames;
+  int k = 0;
+  for (int i = 0; i < v_frames; i++)
+  {
+    for (int j = 0; j < h_frames; j++)
+    {
+      animation->frames_id.append(k);
+      k++;
+
+      QVector<float> vertices;
+      float py = h * i;
+      float px = w * j;
+      float current_vertices[20] = {
+          -w, -h, 0.0f, px, py + h,     // bot left
+          +w, -h, 0.0f, px + w, py + h, // bot right
+          -w, +h, 0.0f, px, py,         // top left
+          +w, +h, 0.0f, px + w, py,     // top right
+
+      };
+
+      for (int i = 0; i < 20; i++)
+      {
+        vertices.append(current_vertices[i]);
+      }
+
+      this->vertices.append(vertices);
+    }
+  }
+  setHFrames(h_frames);
+  setVFrames(v_frames);
+  reset_neighbours();
+}

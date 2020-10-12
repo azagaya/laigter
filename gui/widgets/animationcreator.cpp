@@ -96,7 +96,7 @@ void AnimationCreator::updateAnimation()
     }
   }
 
-  animationsUpdated(processor);
+  animationsUpdated();
 }
 
 void AnimationCreator::on_pushButton_clicked()
@@ -116,7 +116,7 @@ void AnimationCreator::on_pushButton_clicked()
     }
   }
 
-  animationsUpdated(processor);
+  animationsUpdated();
 }
 
 void AnimationCreator::on_listWidget_currentRowChanged(int currentRow)
@@ -153,5 +153,5 @@ void AnimationCreator::on_deletePushButton_pressed()
   ui->listWidget->removeItemWidget(item);
   delete item;
 
-  animationsUpdated(processor);
+  animationsUpdated();
 }

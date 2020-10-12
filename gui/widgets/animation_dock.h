@@ -28,6 +28,7 @@ public slots:
   void setCurrentProcessor(ImageProcessor *p);
   void setCurrentFrame(int index);
   void updateProcessorFrame(int index);
+  void updateAnimationList();
 private slots:
   void on_fpsSpinBox_valueChanged(int arg1);
 

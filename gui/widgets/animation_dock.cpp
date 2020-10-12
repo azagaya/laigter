@@ -16,7 +16,7 @@ AnimationDock::AnimationDock(QWidget *parent) : QWidget(parent),
   animation_creator = new AnimationCreator;
   animation_creator->setAttribute(Qt::WA_QuitOnClose, false);
 
-  connect(animation_creator, SIGNAL(animationsUpdated(ImageProcessor *)), this, SLOT(setCurrentProcessor(ImageProcessor *)));
+  connect(animation_creator, SIGNAL(animationsUpdated()), this, SLOT(updateAnimationList()));
 }
 
 AnimationDock::~AnimationDock()
@@ -25,11 +25,17 @@ AnimationDock::~AnimationDock()
   delete ui;
 }
 
+void AnimationDock::updateAnimationList()
+{
+  ui->comboBox->clear();
+  ui->comboBox->addItems(m_current_processor->getAnimationNames());
+}
+
 void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
   this->disconnect();
   /* reconnect animation_creator signal */
-  connect(animation_creator, SIGNAL(animationsUpdated(ImageProcessor *)), this, SLOT(setCurrentProcessor(ImageProcessor *)));
+  connect(animation_creator, SIGNAL(animationsUpdated()), this, SLOT(updateAnimationList()));
   disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
 
   m_current_processor = p;
