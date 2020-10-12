@@ -592,29 +592,49 @@ void MainWindow::open_files(QStringList fileNames)
 
       bool loaded = false;
 
+      QList<QImage> image_list;
       foreach (fileName, similarList)
       {
         if (fileName != nullptr)
         {
-          // TODO create a single image from all frames
-          //          ImageLoader il;
-          //          bool success;
-          //          auximage = il.loadImage(fileName, &success);
-          //          loaded = loaded || success;
-          //          if (!success || auximage.isNull())
-          //          {
-          //            QMessageBox msgBox;
-          //            msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
-          //                           tr("Unsupported or incorrect format."));
-          //            msgBox.exec();
-          //            continue;
-          //          }
-          //          auximage = auximage.convertToFormat(
-          //              QImage::Format_RGBA8888_Premultiplied);
-          //          p->loadImage(fileName, auximage);
-          //          fs_watcher.addPath(fileName);
+          ImageLoader il;
+          bool success;
+          auximage = il.loadImage(fileName, &success);
+          loaded = loaded || success;
+          if (!success || auximage.isNull())
+          {
+            QMessageBox msgBox;
+            msgBox.setText(tr("Cannot open ") + fileName + ".\n" +
+                           tr("Unsupported or incorrect format."));
+            msgBox.exec();
+            continue;
+          }
+          auximage = auximage.convertToFormat(
+              QImage::Format_RGBA8888_Premultiplied);
+          image_list.append(auximage);
         }
       }
+      QSize frame_size = il.maxImagesSize(image_list);
+      /* all frames in a single row */
+      QSize full_size(frame_size.width() * image_list.size(), frame_size.height());
+      QImage sprite(full_size, QImage::Format_RGBA8888_Premultiplied);
+      sprite.fill(Qt::transparent);
+      QPainter painter(&sprite);
+      painter.setCompositionMode(QPainter::CompositionMode_Source);
+
+      i = 0;
+      foreach (QImage image, image_list)
+      {
+        image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        QRect rect(i * frame_size.width(), 0, frame_size.width(), frame_size.height());
+        painter.drawImage(rect, image);
+        i++;
+      }
+      p->loadImage(similarList[0], sprite);
+      add_processor(p);
+      splitInFrames(image_list.size(), 1);
+
+      p->reset_neighbours();
 
       loaded ? add_processor(p) : delete p;
     }
@@ -627,7 +647,9 @@ void MainWindow::open_files(QStringList fileNames)
         /* all frames in a single row */
         QSize full_size(frame_size.width() * image_list.size(), frame_size.height());
         QImage sprite(full_size, QImage::Format_RGBA8888_Premultiplied);
+        sprite.fill(Qt::transparent);
         QPainter painter(&sprite);
+        painter.setCompositionMode(QPainter::CompositionMode_Source);
         ImageProcessor *p = new ImageProcessor();
         int i = 1;
         while (ui->listWidget->findItems(name, Qt::MatchExactly).count())
@@ -641,12 +663,13 @@ void MainWindow::open_files(QStringList fileNames)
           image = image.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
           QRect rect(i * frame_size.width(), 0, frame_size.width(), frame_size.height());
           painter.drawImage(rect, image);
+          i++;
         }
-        p->loadImage(name, sprite);
-        p->setHFrames(image_list.size());
-        p->setVFrames(1);
-        p->reset_neighbours();
+        p->loadImage(fileName, sprite);
         add_processor(p);
+        splitInFrames(image_list.size(), 1);
+
+        p->reset_neighbours();
       }
       else
       {

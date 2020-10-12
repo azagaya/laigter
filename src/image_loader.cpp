@@ -219,4 +219,5 @@ QSize ImageLoader::maxImagesSize(QList<QImage> image_list)
       s.setHeight(image.size().height());
     }
   }
+  return s;
 }
