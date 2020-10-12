@@ -32,7 +32,7 @@ public:
   static QImage loadTga(const char *filePath, bool *success);
   static QImage loadImage(QString fileName, bool *success);
   static QList<QImage> loadImages(QString fileName);
-
+  static QSize maxImagesSize(QList<QImage> image_list);
 };
 
 #endif // IMAGELOADER_H

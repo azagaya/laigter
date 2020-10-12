@@ -19,10 +19,10 @@
 
 #include "image_loader.h"
 
-#include <fstream>
-#include <QImageReader>
-#include <QFileInfo>
 #include <QDebug>
+#include <QFileInfo>
+#include <QImageReader>
+#include <fstream>
 
 ImageLoader::ImageLoader(QObject *parent) : QObject(parent) {}
 
@@ -34,6 +34,7 @@ QList<QImage> ImageLoader::loadImages(QString fileName)
   {
     reader.jumpToImage(i);
     image_list.append(reader.read());
+    qDebug() << reader.errorString();
   }
   return image_list;
 }
@@ -202,4 +203,20 @@ QImage ImageLoader::loadTga(const char *filePath, bool *success)
 
   *success = true;
   return img;
+}
+
+QSize ImageLoader::maxImagesSize(QList<QImage> image_list)
+{
+  QSize s(0, 0);
+  foreach (QImage image, image_list)
+  {
+    if (s.width() < image.size().width())
+    {
+      s.setWidth(image.size().width());
+    }
+    if (s.height() < image.size().height())
+    {
+      s.setHeight(image.size().height());
+    }
+  }
 }
