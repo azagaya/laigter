@@ -201,7 +201,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(neighboursButtonPressed()), this, SLOT(selectNeighbours()));
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
-  connect(sprite_widget, SIGNAL(framesChanged(int, int)), this, SLOT(splitInFrames(int, int)));
+  connect(sprite_widget, SIGNAL(framesChanged(int, int, ImageProcessor *)), this, SLOT(splitInFrames(int, int, ImageProcessor *)));
 
   // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
@@ -242,10 +242,11 @@ void MainWindow::setCurrentItem(QListWidgetItem *i)
     p = sample_processor;
   }
   animation_dock->setVisible(p->get_frame_count() > 1 && p->frame_mode == "Animation");
-  //  if (p->frames.count() > 1)
+
+  sprite_widget->SetCurrentProcessor(p);
+  //  if (p->get_frame_count() > 1)
   {
     animation_widget->setCurrentProcessor(p);
-    sprite_widget->SetCurrentProcessor(p);
   }
 }
 
@@ -381,7 +382,7 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   }
 }
 
-void MainWindow::splitInFrames(int h_frames, int v_frames)
+void MainWindow::splitInFrames(int h_frames, int v_frames, ImageProcessor *processor)
 {
   if (h_frames > 0 && v_frames > 0)
   {
@@ -595,7 +596,7 @@ void MainWindow::open_files(QStringList fileNames)
       }
       p->loadImage(similarList[0], sprite);
       add_processor(p);
-      splitInFrames(image_list.size(), 1);
+      splitInFrames(image_list.size(), 1, p);
 
       p->reset_neighbours();
     }
@@ -628,7 +629,7 @@ void MainWindow::open_files(QStringList fileNames)
         }
         p->loadImage(fileName, sprite);
         add_processor(p);
-        splitInFrames(image_list.size(), 1);
+        splitInFrames(image_list.size(), 1, p);
 
         p->reset_neighbours();
       }
@@ -1486,7 +1487,7 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
   disconnect_processor(sample_processor);
   processor->set_selected(selected);
   QList<QListWidgetItem *> itemList = ui->listWidget->findItems(processor->get_name(), Qt::MatchExactly);
-  if (itemList.count() > 0)
+  if (itemList.count() > 0 && selected)
   {
     setCurrentItem(itemList.at(0));
   }

@@ -133,7 +133,7 @@ private slots:
   void selectNeighbours();
   void loadHeightmap();
   void loadSpecular();
-  void splitInFrames(int h_frames, int v_frames);
+  void splitInFrames(int h_frames, int v_frames, ImageProcessor *processor);
   void on_comboBox_currentIndexChanged(int index);
   void on_pushButtonExportTo_clicked();
   void open_files(QStringList fileNames);

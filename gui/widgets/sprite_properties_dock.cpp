@@ -27,12 +27,16 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   ui->infoName->setText(tr("Name: ") + processor->get_name());
   ui->infoPath->setText(tr("Path: ") + processor->m_fileName);
   ui->infoSize->setText(tr("Size: ") + QString::number(processor->texture.width()) + "x" + QString::number(processor->texture.height()));
-  int frames = processor->get_frame_count();
 
   ui->scaleSpinBox->setValue(processor->get_zoom());
   ui->rotationSpinBox->setValue(processor->get_rotation());
 
   ui->tileCheckBox->setChecked(current_processor->get_tileable());
+
+  processor->getFrameMode() == "Animation" ? ui->radioButton->setChecked(true) : ui->radioButton_2->setChecked(true);
+
+  ui->hFramesSpinBox->setValue(processor->getHFrames());
+  ui->vFramesSpinBox->setValue(processor->getVFrames());
 
   connect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
   connect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
@@ -96,15 +100,17 @@ void SpritePropertiesDock::on_specularButton_pressed()
 
 void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
 {
-  framesChanged(arg1, ui->vFramesSpinBox->value());
+  framesChanged(arg1, ui->vFramesSpinBox->value(), current_processor);
 }
 
 void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
 {
-  framesChanged(ui->hFramesSpinBox->value(), arg1);
+  framesChanged(ui->hFramesSpinBox->value(), arg1, current_processor);
 }
 
 void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
 {
+  if (!current_processor)
+    return;
   current_processor->setFrameMode(checked ? "Sheet" : "Animation");
 }

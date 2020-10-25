@@ -89,6 +89,10 @@ public:
     this->idx = idx;
     return frames_id[idx];
   }
+  QString getName()
+  {
+    return name;
+  }
 };
 
 class ProcessorSettings
@@ -298,7 +302,11 @@ public:
   QStringList getAnimationNames();
   void removeAnimation(QString name);
   void setCurrentAnimation(QString name);
+  QString getCurrentAnimationName();
+  QString current_animation_name = "Default";
+  Animation *getCurrentAnimation();
   void setFrameMode(QString mode);
+  QString getFrameMode();
   QImage getFrameImage(int frame);
   QImage getFrameImage(int x, int y);
   QRect getFrameRect(int frame);

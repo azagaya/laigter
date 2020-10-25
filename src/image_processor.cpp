@@ -1733,6 +1733,19 @@ QStringList ImageProcessor::getAnimationNames()
 void ImageProcessor::setCurrentAnimation(QString name)
 {
   current_animation = getAnimation(name);
+  if (current_animation)
+    current_animation_name = name;
+}
+
+QString ImageProcessor::getCurrentAnimationName()
+{
+  return current_animation_name;
+}
+
+Animation *ImageProcessor::getCurrentAnimation()
+{
+
+  return current_animation;
 }
 
 void ImageProcessor::setFrameMode(QString mode)
@@ -1865,4 +1878,9 @@ void ImageProcessor::splitInFrames(int h_frames, int v_frames)
   setHFrames(h_frames);
   setVFrames(v_frames);
   reset_neighbours();
+}
+
+QString ImageProcessor::getFrameMode()
+{
+  return frame_mode;
 }

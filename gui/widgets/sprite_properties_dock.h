@@ -32,7 +32,7 @@ signals:
   void neighboursButtonPressed();
   void heightmapButtonPressed();
   void specularButtonPressed();
-  void framesChanged(int, int);
+  void framesChanged(int, int, ImageProcessor *);
 
 private slots:
   void on_scaleSpinBox_valueChanged(double arg1);

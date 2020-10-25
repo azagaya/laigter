@@ -46,8 +46,6 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
     delete ui->listWidget->item(i);
   }
 
-  updateList(p->current_animation->name);
-
   ui->listWidget->setCurrentRow(p->get_current_frame_id());
   ui->fpsSpinBox->setValue(1 / (p->animation.interval() / 1000.0));
 
@@ -56,6 +54,8 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 
   ui->comboBox->clear();
   ui->comboBox->addItems(p->getAnimationNames());
+
+  updateList(p->getCurrentAnimationName());
 }
 
 void AnimationDock::updateProcessorFrame(int index)
@@ -162,6 +162,8 @@ void AnimationDock::updateList(QString animation_name)
   ui->listWidget->clear();
 
   Animation *animation = m_current_processor->getAnimation(animation_name);
+  if (!animation)
+    return;
   QImage texture = m_current_processor->texture.copy();
   float h = texture.height() / m_current_processor->getVFrames();
   float w = texture.width() / m_current_processor->getHFrames();
