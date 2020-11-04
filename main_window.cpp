@@ -1548,17 +1548,6 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
     ui->checkBoxMosaicoY->setChecked(processor->get_tile_y());
   }
 
-  if (ui->listWidget->selectedItems().count() == 1)
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      if (p->get_name() == ui->listWidget->selectedItems().at(0)->data(Qt::UserRole).toString())
-      {
-        p->set_selected(true);
-      }
-    }
-  }
-
   foreach (ImageProcessor *p, processorList)
   {
     if (p->get_selected())

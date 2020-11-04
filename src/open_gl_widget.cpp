@@ -764,23 +764,23 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     if (!lightSelected)
     {
       set_enabled_light_controls(false);
-      bool processor_selected = false;
       for (int i = processorList.count() - 1; i >= 0; i--)
       {
         ImageProcessor *processor = processorList.at(i);
         processor->set_offset(QVector3D(global_mouse_press_position) - *processor->get_position());
         float w = processor->get_tile_x() ? 3.0 * processor->texture.width() : processor->texture.width();
         float h = processor->get_tile_y() ? 3.0 * processor->texture.height() : processor->texture.height();
+
         if (processor->getFrameMode() == "Animation")
         {
           w /= processor->getHFrames();
           h /= processor->getVFrames();
         }
+
         if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
             qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
             not selected)
         {
-          processor_selected = true;
           set_processor_selected(processor, true);
           selected = true;
           QPoint point = global_mouse_press_position.toPoint();
@@ -904,7 +904,6 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else
     {
-      bool processor_selected = false;
       foreach (ImageProcessor *processor, processorList)
       {
         /* This check is to move ligths instead of processor if light is above processor */
@@ -916,7 +915,6 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
         else if (processor->get_selected())
         {
           /* Move */
-          processor_selected = true;
           QVector3D new_position((int)(global_mouse_last_position.x() - processor->get_offset()->x()),
                                  (int)(global_mouse_last_position.y() - processor->get_offset()->y()), 0.0);
           processor->set_position(new_position);
