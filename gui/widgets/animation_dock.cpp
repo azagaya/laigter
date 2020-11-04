@@ -37,6 +37,7 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
   /* reconnect animation_creator signal */
   connect(animation_creator, SIGNAL(animationsUpdated()), this, SLOT(updateAnimationList()));
   disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+  disconnect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
 
   m_current_processor = p;
 

@@ -23,6 +23,7 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   disconnect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
 
   current_processor = processor;
+
   ui->textureLabel->setPixmap(QPixmap::fromImage(current_processor->texture.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
   ui->infoName->setText(tr("Name: ") + processor->get_name());
   ui->infoPath->setText(tr("Path: ") + processor->m_fileName);
@@ -100,12 +101,14 @@ void SpritePropertiesDock::on_specularButton_pressed()
 
 void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
 {
-  framesChanged(arg1, ui->vFramesSpinBox->value(), current_processor);
+  current_processor->set_current_frame_id(0);
+  framesChanged(arg1, current_processor->getVFrames(), current_processor);
 }
 
 void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
 {
-  framesChanged(ui->hFramesSpinBox->value(), arg1, current_processor);
+  current_processor->set_current_frame_id(0);
+  framesChanged(current_processor->getHFrames(), arg1, current_processor);
 }
 
 void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
