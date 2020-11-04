@@ -771,6 +771,11 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
         processor->set_offset(QVector3D(global_mouse_press_position) - *processor->get_position());
         float w = processor->get_tile_x() ? 3.0 * processor->texture.width() : processor->texture.width();
         float h = processor->get_tile_y() ? 3.0 * processor->texture.height() : processor->texture.height();
+        if (processor->getFrameMode() == "Animation")
+        {
+          w /= processor->getHFrames();
+          h /= processor->getVFrames();
+        }
         if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
             qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
             not selected)
