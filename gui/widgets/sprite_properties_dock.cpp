@@ -101,12 +101,16 @@ void SpritePropertiesDock::on_specularButton_pressed()
 
 void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
 {
+  if (arg1 == current_processor->getHFrames())
+    return;
   current_processor->set_current_frame_id(0);
   framesChanged(arg1, current_processor->getVFrames(), current_processor);
 }
 
 void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
 {
+  if (arg1 == current_processor->getVFrames())
+    return;
   current_processor->set_current_frame_id(0);
   framesChanged(current_processor->getHFrames(), arg1, current_processor);
 }
