@@ -453,6 +453,16 @@ void OpenGlWidget::update_scene()
     cursorProgram.setUniformValue("pixelated", m_pixelated);
     cursorProgram.setUniformValue("zoom", m_global_zoom);
     color = QVector3D(0.2, 0.2, 0.2);
+
+    VBO.bind();
+    float vertices[] = {
+        -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+        1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+        -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
+        1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+    };
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, vertices);
+
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     cursorProgram.release();
   }
@@ -1191,7 +1201,17 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     apply_light_params(projection, view);
     m_texture->bind(0);
-    glDrawArrays(GL_QUADS, 0, 4);
+
+    VBO.bind();
+    float vertices[] = {
+        -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+        1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+        -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
+        1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+    };
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, vertices);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
     m_program.release();
     frameBuffer.release();
@@ -1381,7 +1401,16 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
                                     viewmode == Preview);
 
       apply_light_params(projection, view);
-      glDrawArrays(GL_QUADS, 0, 4);
+      VBO.bind();
+      float vertices[] = {
+          -1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // bot left
+          1.0f, -1.0f, 0.0f, 1.0f, 1.0f,  // bot right
+          -1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // top left
+          1.0f, 1.0f, 0.0f, 1.0f, 0.0f,   // top right
+      };
+      glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 20, vertices);
+
+      glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
       m_program.release();
     }
