@@ -48,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>29</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
@@ -387,7 +387,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabDif">
            <attribute name="title">
@@ -854,8 +854,31 @@
      <property name="verticalSpacing">
       <number>3</number>
      </property>
-     <item row="0" column="0" colspan="2">
+     <item row="2" column="0" colspan="2">
       <widget class="QListWidget" name="listWidget"/>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="deletePushButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset theme="delete"/>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -1438,8 +1461,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>228</width>
-          <height>244</height>
+          <width>246</width>
+          <height>231</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_11">

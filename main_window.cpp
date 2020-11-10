@@ -306,6 +306,20 @@ void MainWindow::remove_processor(ImageProcessor *p)
   }
   processorList.removeOne(p);
   p->deleteLater();
+
+  if (ui->listWidget->selectedItems().count() == 0)
+  {
+    if (ui->listWidget->count() == 0)
+    {
+      ui->openGLPreviewWidget->clear_processor_list();
+      processor_selected(sample_processor, true);
+      ui->openGLPreviewWidget->add_processor(sample_processor);
+    }
+    else
+    {
+      ui->listWidget->setCurrentRow(0);
+    }
+  }
 }
 
 void MainWindow::list_menu_action_triggered(QAction *action)
@@ -316,20 +330,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
   if (option == tr("Remove"))
   {
     remove_processor(p);
-
-    if (ui->listWidget->selectedItems().count() == 0)
-    {
-      if (ui->listWidget->count() == 0)
-      {
-        ui->openGLPreviewWidget->clear_processor_list();
-        processor_selected(sample_processor, true);
-        ui->openGLPreviewWidget->add_processor(sample_processor);
-      }
-      else
-      {
-        ui->listWidget->setCurrentRow(0);
-      }
-    }
   }
   else if (option == tr("Load heightmap"))
   {
@@ -1955,4 +1955,12 @@ void MainWindow::on_actionThemes_triggered()
   ThemeSelector *t = new ThemeSelector;
   t->setAttribute(Qt::WA_QuitOnClose, false);
   t->show();
+}
+
+void MainWindow::on_deletePushButton_clicked()
+{
+  foreach (QListWidgetItem *item, ui->listWidget->selectedItems())
+  {
+    remove_processor(find_processor(item->data(Qt::UserRole).toString()));
+  }
 }

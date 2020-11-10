@@ -162,6 +162,8 @@ private slots:
 
   void on_actionThemes_triggered();
 
+  void on_deletePushButton_clicked();
+
 protected slots:
   virtual void changeEvent(QEvent *event);
 };
