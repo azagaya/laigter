@@ -20,6 +20,7 @@ public:
   virtual void mousePress(const QPoint &pos) = 0;
   virtual void mouseMove(const QPoint &oldPos, const QPoint &newPos) = 0;
   virtual void mouseRelease(const QPoint &pos) = 0;
+  virtual void setPressure(float pressure) = 0;
   virtual bool get_selected() = 0;
   virtual void set_selected(bool s) = 0;
   virtual QWidget *loadGUI(QWidget *parent = nullptr) = 0;

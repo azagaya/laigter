@@ -183,6 +183,8 @@ protected:
   void mouseMoveEvent(QMouseEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
+  void tabletEvent(QTabletEvent *event) override;
+
   void paintGL() override;
   void resizeGL(int width, int height) override;
   void wheelEvent(QWheelEvent *event) override;

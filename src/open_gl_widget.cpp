@@ -703,8 +703,17 @@ float OpenGlWidget::getZoom()
   return m_global_zoom;
 }
 
+void OpenGlWidget::tabletEvent(QTabletEvent *event)
+{
+  if (currentBrush && currentBrush->get_selected())
+  {
+    currentBrush->setPressure(event->pressure());
+  }
+}
+
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
+
   old_position = event->localPos();
   global_mouse_press_position = LocalToWorld(event->localPos());
   local_mouse_press_position = LocalToView(event->localPos());
@@ -714,6 +723,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     tpos = (global_mouse_press_position - QPointF(0.5, 0.5)).toPoint();
     oldPos = tpos;
     currentBrush->setProcessor(&processor);
+    currentBrush->setPressure(0.5);
     currentBrush->mousePress(tpos);
   }
 
@@ -864,6 +874,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
+
   global_mouse_last_position = LocalToWorld(event->localPos());
   local_mouse_last_position = LocalToView(event->localPos());
   QVector3D newLightPos(global_mouse_last_position.x(), global_mouse_last_position.y(), currentLight->get_height());
