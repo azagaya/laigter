@@ -723,7 +723,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     tpos = (global_mouse_press_position - QPointF(0.5, 0.5)).toPoint();
     oldPos = tpos;
     currentBrush->setProcessor(&processor);
-    currentBrush->setPressure(0.5);
     currentBrush->mousePress(tpos);
   }
 
@@ -920,6 +919,14 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     {
       QPoint tpos;
       tpos = global_mouse_last_position.toPoint();
+      if (event->source() != Qt::MouseEventSynthesizedByQt)
+      {
+        currentBrush->setPressure(0.5);
+      }
+      if (event->source() != Qt::MouseEventSynthesizedByQt)
+      {
+        currentBrush->setPressure(0.5);
+      }
       currentBrush->mouseMove(oldPos, tpos);
       oldPos = tpos;
     }
