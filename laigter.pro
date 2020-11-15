@@ -118,11 +118,14 @@ unix{
     iconfiles.path = $$PREFIX/share/icons/hicolor/256x256/apps/
     appdatafiles.files = dist/laigter.appdata.xml
     appdatafiles.path = $$PREFIX/share/metainfo/
+	mimetypefiles.files = dist/x-laigter-project.xml
+    mimetypefiles.path = $$PREFIX/share/mime/packages/
 
     INSTALLS += target
     INSTALLS += shortcutfiles
     INSTALLS += iconfiles
     INSTALLS += appdatafiles
+    INSTALLS += mimetypefiles
 }
 
 DISTFILES += \
@@ -189,5 +192,3 @@ RESOURCES += \
 
 win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter_icon.icns
-
-
