@@ -1008,6 +1008,10 @@ void OpenGlWidget::update_light_position(QVector3D new_pos)
 void OpenGlWidget::mouseReleaseEvent(QMouseEvent *event)
 {
   lightSelected = false;
+  if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
+  {
+    currentBrush->mouseRelease(QPoint(0, 0));
+  }
 }
 
 void OpenGlWidget::setLight(bool light)

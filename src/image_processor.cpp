@@ -766,33 +766,41 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   /* Calculate rects to update */
   QList<QRect> rlist;
   bool diagonal = true;
+  if (rect != QRect(0, 0, 0, 0))
+  {
+    // Adjust for 1px blur
+    rect.adjust(0, 0, 1, 1);
+    rlist.append(rect.intersected(texture.rect()));
 
-  // Adjust for 1px blur
-  rect.adjust(0, 0, 1, 1);
-  rect.moveTo(WrapCoordinate(rect.left(), texture.width()) - 1,
-              WrapCoordinate(rect.top(), texture.height()) - 1);
-  rlist.append(rect.intersected(texture.rect()));
+    rect.moveTo(WrapCoordinate(rect.left(), texture.width()),
+                WrapCoordinate(rect.top(), texture.height()));
 
-  if (rect.right() > texture.rect().right() && tileX)
-    rlist.prepend(
-        QRect(0, rect.top(), WrapCoordinate(rect.right(), texture.width()), rect.height())
-            .intersected(texture.rect()));
-  else
-    diagonal = false;
+    if (!rlist.contains(rect))
+      rlist.append(rect.intersected(texture.rect()));
 
-  if (rect.bottom() > texture.rect().bottom() && tileY)
-    rlist.append(QRect(rect.left(), 0, rect.width(),
-                       WrapCoordinate(rect.bottom(), texture.height()))
-                     .intersected(texture.rect()));
-  else
-    diagonal = false;
+    qDebug() << rlist;
 
-  if (diagonal)
-    rlist.append(QRect(0, 0, WrapCoordinate(rect.right(), texture.width()),
-                       WrapCoordinate(rect.bottom(), texture.height()))
-                     .intersected(texture.rect()));
+    if (rect.right() > texture.rect().right() && tileX)
+      rlist.prepend(
+          QRect(0, rect.top(), WrapCoordinate(rect.right(), texture.width()), rect.height())
+              .intersected(texture.rect()));
+    else
+      diagonal = false;
 
-  rlist.removeAll(QRect(0, 0, 0, 0));
+    if (rect.bottom() > texture.rect().bottom() && tileY)
+      rlist.append(QRect(rect.left(), 0, rect.width(),
+                         WrapCoordinate(rect.bottom(), texture.height()))
+                       .intersected(texture.rect()));
+    else
+      diagonal = false;
+
+    if (diagonal)
+      rlist.append(QRect(0, 0, WrapCoordinate(rect.right(), texture.width()),
+                         WrapCoordinate(rect.bottom(), texture.height()))
+                       .intersected(texture.rect()));
+
+    rlist.removeAll(QRect(0, 0, 0, 0));
+  }
   if (rlist.count() == 0)
     rlist.append(QRect(0, 0, 0, 0));
 
