@@ -113,7 +113,7 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   animation.setInterval(80);
   animation.setSingleShot(false);
 
-  recalculate_timer.setInterval(100);
+  recalculate_timer.setInterval(40);
   recalculate_timer.setSingleShot(false);
 
   QVector<float> new_vertices;
@@ -758,9 +758,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     normal_counter = 1;
     enhance_requested = bump_requested = distance_requested = true;
     rect_requested = rect_requested.united(rect);
+    qDebug() << " not lock here";
     return;
   }
-
   QMutexLocker hlocker(&heightmap_mutex);
 
   /* Calculate rects to update */
@@ -777,8 +777,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
     if (!rlist.contains(rect))
       rlist.append(rect.intersected(texture.rect()));
-
-    qDebug() << rlist;
 
     if (rect.right() > texture.rect().right() && tileX)
       rlist.prepend(

@@ -164,6 +164,10 @@ public:
   bool busy, active;
   bool updated = false;
 
+  int normal_counter, parallax_counter, specular_counter, occlussion_counter;
+
+  QRect rect_requested = QRect(0, 0, 0, 0);
+
   QVector<QVector<float>> vertices;
 
   float current_vertices[20] = {
@@ -222,13 +226,11 @@ private:
   float zoom;
   int current_frame_id = 0;
   bool enhance_requested = false, bump_requested = false, distance_requested = false;
-  QRect rect_requested = QRect(0, 0, 0, 0);
   int normalInvertX, normalInvertY, normalInvertZ;
   int normal_bisel_blur_radius;
   int normal_bisel_depth;
   int normal_bisel_distance;
   int normal_blur_radius;
-  int normal_counter, parallax_counter, specular_counter, occlussion_counter;
   int normal_depth;
   int occlusion_blur;
   int occlusion_bright;
