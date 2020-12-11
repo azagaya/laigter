@@ -714,9 +714,9 @@ void OpenGlWidget::tabletEvent(QTabletEvent *event)
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
 
-  old_position = event->localPos();
-  global_mouse_press_position = LocalToWorld(event->localPos());
-  local_mouse_press_position = LocalToView(event->localPos());
+  old_position = event->position();
+  global_mouse_press_position = LocalToWorld(event->position());
+  local_mouse_press_position = LocalToView(event->position());
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos;
@@ -796,17 +796,20 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           h /= processor->getVFrames();
         }
 
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 * devicePixelRatioF() &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 * devicePixelRatioF() &&
             not selected)
         {
           set_processor_selected(processor, true);
           selected = true;
-          QPoint point = global_mouse_press_position.toPoint();
+          QPoint point = global_mouse_press_position.toPoint() / devicePixelRatioF();
           point.setY(-point.y());
-          point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
+          point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) / devicePixelRatioF() + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
+
           if (processor->frame_mode == "Sheet")
+          {
             processor->set_current_frame_id(processor->get_frame_at_point(point));
+          }
         }
       }
     }
@@ -874,8 +877,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
 
-  global_mouse_last_position = LocalToWorld(event->localPos());
-  local_mouse_last_position = LocalToView(event->localPos());
+  global_mouse_last_position = LocalToWorld(event->position());
+  local_mouse_last_position = LocalToView(event->position());
   QVector3D newLightPos(global_mouse_last_position.x(), global_mouse_last_position.y(), currentLight->get_height());
 
   if (addLight)
