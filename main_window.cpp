@@ -363,7 +363,7 @@ void MainWindow::list_menu_action_triggered(QAction *action)
       painter.drawImage(position, h2);
 
       p->get_current_frame()->set_image(TextureTypes::Heightmap, h);
-      p->set_current_heightmap(p->get_current_frame_id());
+      p->set_current_heightmap();
       p->calculate();
     }
   }
@@ -490,7 +490,7 @@ QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedF
         match = rx.match(file);
 
         QStringList parts = file.split("/").last().split(match.captured(0));
-        if (parts.first() == prefix && parts.last() == postfix)
+        if (parts.first() == *prefix && parts.last() == postfix)
         {
           similarList.append(dir.path() + "/" + file);
         }

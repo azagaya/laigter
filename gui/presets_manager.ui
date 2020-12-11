@@ -77,7 +77,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="export"/>
+         <iconset theme="export">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -102,7 +103,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="import"/>
+         <iconset theme="import">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -121,7 +123,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="delete"/>
+         <iconset theme="delete">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -207,9 +210,6 @@
          <property name="checkState">
           <enum>Checked</enum>
          </property>
-         <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-         </property>
          <item>
           <property name="text">
            <string>Enhance</string>
@@ -219,9 +219,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
           </property>
           <item>
            <property name="text">
@@ -255,9 +252,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
           </property>
           <item>
            <property name="text">
@@ -314,9 +308,6 @@
           <property name="text">
            <string/>
           </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-          </property>
           <item>
            <property name="text">
             <string>X Axis</string>
@@ -351,9 +342,6 @@
          <property name="text">
           <string>6</string>
          </property>
-         <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-         </property>
         </item>
         <item>
          <property name="text">
@@ -361,9 +349,6 @@
          </property>
          <property name="checkState">
           <enum>Checked</enum>
-         </property>
-         <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
          </property>
          <item>
           <property name="text">
@@ -385,9 +370,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
           </property>
           <item>
            <property name="text">
@@ -452,9 +434,6 @@
           <property name="checkState">
            <enum>Checked</enum>
           </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-          </property>
           <item>
            <property name="text">
             <string>Brightness</string>
@@ -497,9 +476,6 @@
          <property name="checkState">
           <enum>Checked</enum>
          </property>
-         <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-         </property>
          <item>
           <property name="text">
            <string>Soft</string>
@@ -509,9 +485,6 @@
           </property>
           <property name="text">
            <string>18</string>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
           </property>
          </item>
          <item>
@@ -524,9 +497,6 @@
           <property name="text">
            <string>19</string>
           </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-          </property>
          </item>
          <item>
           <property name="text">
@@ -537,9 +507,6 @@
           </property>
           <property name="text">
            <string>20</string>
-          </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
           </property>
          </item>
          <item>
@@ -552,9 +519,6 @@
           <property name="text">
            <string>21</string>
           </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-          </property>
          </item>
          <item>
           <property name="text">
@@ -566,9 +530,6 @@
           <property name="text">
            <string>22</string>
           </property>
-          <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
-          </property>
          </item>
         </item>
         <item>
@@ -577,9 +538,6 @@
          </property>
          <property name="checkState">
           <enum>Checked</enum>
-         </property>
-         <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
          </property>
          <item>
           <property name="text">

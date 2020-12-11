@@ -32,6 +32,7 @@ void Slider::setValueFromSpinBox(int v) { setValue(v * maximum() / 100.0); }
 
 void Slider::setValueToSpinBox(int v)
 {
+  Q_UNUSED(v)
   spin_box.setValue(value() * 100.0 / maximum());
 }
 
@@ -82,8 +83,9 @@ void Slider::paintEvent(QPaintEvent *ev)
     painter.fillRect(rect, QBrush(QColor(200, 200, 200)));
 }
 
-
-void Slider::mouseDoubleClickEvent( QMouseEvent * e ){
-    spin_box.setFocus();
-    spin_box.selectAll();
+void Slider::mouseDoubleClickEvent(QMouseEvent *e)
+{
+  Q_UNUSED(e)
+  spin_box.setFocus();
+  spin_box.selectAll();
 }

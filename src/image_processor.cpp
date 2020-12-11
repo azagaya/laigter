@@ -180,7 +180,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   return 0;
 }
 
-void ImageProcessor::set_current_heightmap(int id)
+void ImageProcessor::set_current_heightmap()
 {
   if (tileable)
     sprite.get_image(TextureTypes::Neighbours, &heightmap);
@@ -193,7 +193,7 @@ void ImageProcessor::set_current_heightmap(int id)
 
 void ImageProcessor::calculate()
 {
-  set_current_heightmap(current_frame_id);
+  set_current_heightmap();
   calculate_distance();
   calculate_heightmap();
   generate_normal_map();
@@ -208,7 +208,7 @@ void ImageProcessor::recalculate()
   {
 
     normal_mutex.unlock();
-    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, enhance_requested, bump_requested,
+    QtConcurrent::run(&ImageProcessor::generate_normal_map, this, enhance_requested, bump_requested,
                       distance_requested, rect_requested);
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
@@ -216,17 +216,17 @@ void ImageProcessor::recalculate()
   }
   if (specular_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_specular);
+    QtConcurrent::run(&ImageProcessor::calculate_specular, this);
     specular_counter = 0;
   }
   if (parallax_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_parallax);
+    QtConcurrent::run(&ImageProcessor::calculate_parallax, this);
     parallax_counter = 0;
   }
   if (occlussion_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_occlusion);
+    QtConcurrent::run(&ImageProcessor::calculate_occlusion, this);
     occlussion_counter = 0;
   }
 }
@@ -635,7 +635,7 @@ CImg<float> ImageProcessor::modify_distance()
 CImg<float> ImageProcessor::modify_occlusion()
 {
   QMutexLocker locker(&heightmap_mutex);
-  set_current_heightmap(current_frame_id);
+  set_current_heightmap();
 
   CImg<float> occ(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
 
@@ -668,7 +668,7 @@ CImg<float> ImageProcessor::modify_occlusion()
 CImg<float> ImageProcessor::modify_parallax()
 {
   QMutexLocker locker(&heightmap_mutex);
-  set_current_heightmap(current_frame_id);
+  set_current_heightmap();
 
   CImg<float> par(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
   CImg<float> dist = modify_distance();
@@ -812,7 +812,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   if (update_tileable)
   {
-    set_current_heightmap(0);
+    set_current_heightmap();
     calculate_heightmap();
     calculate_distance();
   }
@@ -1046,7 +1046,7 @@ QImage *ImageProcessor::get_normal()
   sprite.get_image(TextureTypes::Normal, &last_normal);
   if (useNormalAlpha)
   {
-    last_normal.setAlphaChannel(texture.alphaChannel());
+    last_normal.setAlphaChannel(texture.createAlphaMask());
   }
   return &last_normal;
 }
@@ -1056,7 +1056,7 @@ QImage *ImageProcessor::get_parallax()
   sprite.get_image(TextureTypes::Parallax, &last_parallax);
   if (useParallaxAlpha)
   {
-    last_parallax.setAlphaChannel(texture.alphaChannel());
+    last_parallax.setAlphaChannel(texture.createAlphaMask());
   }
   return &last_parallax;
 }
@@ -1066,7 +1066,7 @@ QImage *ImageProcessor::get_specular()
   sprite.get_image(TextureTypes::Specular, &last_specular);
   if (useSpecularAlpha)
   {
-    last_specular.setAlphaChannel(texture.alphaChannel());
+    last_specular.setAlphaChannel(texture.createAlphaMask());
   }
   return &last_specular;
 }
@@ -1076,7 +1076,7 @@ QImage *ImageProcessor::get_occlusion()
   sprite.get_image(TextureTypes::Occlussion, &last_occlussion);
   if (useOcclusionAlpha)
   {
-    last_occlussion.setAlphaChannel(texture.alphaChannel());
+    last_occlussion.setAlphaChannel(texture.createAlphaMask());
   }
   return &last_occlussion;
 }
@@ -1705,7 +1705,7 @@ int ImageProcessor::get_frame_at_point(QPoint point)
   float h = texture.height() / v_frames;
   for (int i = 0; i < get_frame_count(); i++)
   {
-    QRect rect(texture.width() * vertices[i][3], texture.height() * vertices[i][14], w, h);
+    QRect rect(texture.width() * vertices[i][3], texture.height() * vertices[i][14], int(w), int(h));
     if (rect.contains(point))
     {
       return i;

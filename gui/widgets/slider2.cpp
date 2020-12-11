@@ -32,6 +32,7 @@ void Slider2::setValueFromSpinBox(int v) { setValue(v * maximum() / 100.0); }
 
 void Slider2::setValueToSpinBox(int v)
 {
+  Q_UNUSED(v)
   spin_box.setValue(value() * 100.0 / maximum());
 }
 
