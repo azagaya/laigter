@@ -1131,14 +1131,14 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     int w = m_image.width() * devicePixelRatioF();
     int h = m_image.height() * devicePixelRatioF();
-    QOpenGLFramebufferObject frameBuffer(w, h);
+    QOpenGLFramebufferObject frameBuffer(m_width, m_height);
 
     QVector3D texPos = *processor->get_position();
 
     QMatrix4x4 transform, projection, view;
 
     projection.setToIdentity();
-    projection.ortho(-0.5 * w, 0.5 * w, -0.5 * h, 0.5 * h, -1, 1);
+    projection.ortho(-0.5 * w, m_width - 0.5 * w, -m_height + 0.5 * h, 0.5 * h, -1.0, 1.0);
 
     transform.setToIdentity();
     transform.translate(texPos);
@@ -1160,7 +1160,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0, 0, m_image.width(), m_image.height());
+    glViewport(0, 0, m_width, m_height);
     m_program.bind();
 
     VAO.bind();
@@ -1238,7 +1238,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.release();
     frameBuffer.release();
 
-    renderedPreview = frameBuffer.toImage();
+    renderedPreview = frameBuffer.toImage().copy(0, 0, w, h);
+
     if (m_autosave)
     {
       if (exportBasePath == "")
