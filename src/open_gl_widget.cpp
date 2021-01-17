@@ -424,6 +424,7 @@ void OpenGlWidget::update_scene()
     setCursor(Qt::BlankCursor);
     brushTexture->destroy();
     brushTexture->create();
+    QImage b = currentBrush->getBrushSprite();
     brushTexture->setData(currentBrush->getBrushSprite());
     float x = static_cast<float>(brushTexture->width()) * 0.5f;
     float y = static_cast<float>(brushTexture->height()) * 0.5f;
@@ -435,22 +436,22 @@ void OpenGlWidget::update_scene()
     QPointF cursor = mapFromGlobal(QCursor::pos());
     cursor = LocalToWorld(cursor);
     transform.setToIdentity();
-    transform.translate(floor(cursor.x()) + 0.5, floor(cursor.y()) - 0.5);
+    transform.translate(floor(cursor.x()), floor(cursor.y()));
     transform.scale(x, y, 1);
     cursorProgram.bind();
     lightVAO.bind();
     cursorProgram.setUniformValue("transform", projection * view * transform);
     brushTexture->bind(0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    GL_NEAREST_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glActiveTexture(GL_TEXTURE0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     cursorProgram.setUniformValue("texture", 0);
     cursorProgram.setUniformValue("scale", processor->get_zoom());
     cursorProgram.setUniformValue("pixelSize", 1.0 / brushTexture->width(), 1.0 / brushTexture->height());
-    cursorProgram.setUniformValue("pixelated", m_pixelated);
+    cursorProgram.setUniformValue("pixelated", false);
     cursorProgram.setUniformValue("zoom", m_global_zoom);
     color = QVector3D(0.2, 0.2, 0.2);
 
@@ -719,8 +720,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   local_mouse_press_position = LocalToView(event->localPos());
   if (currentBrush && currentBrush->get_selected())
   {
-    QPoint tpos;
-    tpos = (global_mouse_press_position - QPointF(0.5, 0.5)).toPoint();
+    QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
     oldPos = tpos;
     currentBrush->setProcessor(&processor);
     currentBrush->mousePress(tpos);
@@ -917,18 +917,20 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
     {
-      QPoint tpos;
-      tpos = global_mouse_last_position.toPoint();
-      if (event->source() != Qt::MouseEventSynthesizedByQt)
+      QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
+      if (abs(oldPos.x() - tpos.x()) + abs(oldPos.y() - tpos.y()) > 1)
       {
-        currentBrush->setPressure(0.5);
+        if (event->source() != Qt::MouseEventSynthesizedByQt)
+        {
+          currentBrush->setPressure(0.5);
+        }
+        if (event->source() != Qt::MouseEventSynthesizedByQt)
+        {
+          currentBrush->setPressure(0.5);
+        }
+        currentBrush->mouseMove(oldPos, tpos);
+        oldPos = tpos;
       }
-      if (event->source() != Qt::MouseEventSynthesizedByQt)
-      {
-        currentBrush->setPressure(0.5);
-      }
-      currentBrush->mouseMove(oldPos, tpos);
-      oldPos = tpos;
     }
     else
     {
