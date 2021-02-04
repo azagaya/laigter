@@ -9,13 +9,13 @@ compiler: clang
 addons:
   apt:
     sources:
-      - sourceline: ppa:beineri/opt-qt-5.14.1-xenial
+      - sourceline: ppa:beineri/opt-qt-5.15.2-xenial
     packages:
-      - qt514base
-      - qt514x11extras
-      - qt514tools
+      - qt515base
+      - qt515x11extras
+      - qt515tools
       - libgl1-mesa-dev
-      - qt514imageformats
+      - qt515imageformats
       - libssl1.0.0
 
 before_install:
@@ -23,7 +23,7 @@ before_install:
         brew update > /dev/null
       && brew upgrade --verbose qt5
       && chmod -R 755 /usr/local/opt/qt5/*
-      && brew link --verbose qt5 --force
+      && brew link qt5 --force
       ;
     fi
 
