@@ -19,13 +19,8 @@ addons:
       - libssl1.0.0
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      brew update
-      && travis_wait brew upgrade qt5
-      && travis_wait chmod -R 755 /usr/local/opt/qt5/*
-      && travis _waitbrew link qt5 --force
-      ;
-    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$(brew --prefix)/bin:$PATH"; fi
 
 install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_wait source /opt/qt*/bin/qt*-env.sh; fi
