@@ -27,6 +27,7 @@
 #include "src/light_source.h"
 #include "src/project.h"
 
+#include "gui/exportwidget.h"
 #include "gui/nb_selector.h"
 #include "gui/widgets/animation_dock.h"
 #include "gui/widgets/sprite_properties_dock.h"
@@ -77,6 +78,7 @@ private:
   AnimationDock *animation_widget;
   SpritePropertiesDock *sprite_widget;
   NBSelector nbSelector;
+  ExportWidget exportWidget;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -128,14 +130,12 @@ private slots:
   void on_horizontalSliderAmbientLight_valueChanged(int value);
   void on_pushButtonAmbientColor_clicked();
   void on_listWidget_itemSelectionChanged();
-  void on_pushButton_clicked();
   void on_pushButtonBackgroundColor_clicked();
   void selectNeighbours();
   void loadHeightmap();
   void loadSpecular();
   void splitInFrames(int h_frames, int v_frames, ImageProcessor *processor);
   void on_comboBox_currentIndexChanged(int index);
-  void on_pushButtonExportTo_clicked();
   void open_files(QStringList fileNames);
   void on_actionPresets_triggered();
   void on_horizontalSliderSpec_valueChanged(int value);

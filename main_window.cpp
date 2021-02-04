@@ -169,7 +169,6 @@ MainWindow::MainWindow(QWidget *parent)
   tabifyDockWidget(ui->normalDockWidget, ui->specularDockWidget);
   tabifyDockWidget(ui->normalDockWidget, ui->parallaxDockWidget);
   tabifyDockWidget(ui->normalDockWidget, ui->occlusionDockWidget);
-  tabifyDockWidget(ui->dockWidgetTextures, ui->dockWidgetExport);
 
   ui->dockWidgetTextures->raise();
   ui->normalDockWidget->raise();
@@ -218,6 +217,8 @@ MainWindow::MainWindow(QWidget *parent)
   set_enabled_light_controls(false);
 
   nbSelector.setAttribute(Qt::WA_QuitOnClose, false);
+  exportWidget.setAttribute(Qt::WA_QuitOnClose, false);
+  exportWidget.oglWidget = ui->openGLPreviewWidget;
 }
 
 MainWindow::~MainWindow()
@@ -675,71 +676,77 @@ void MainWindow::on_actionZoomOut_triggered()
 
 void MainWindow::on_actionExport_triggered()
 {
-  QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
-  if (fileName == "")
-    return;
+  exportWidget.processorList = processorList;
+  exportWidget.selectedProcessors = selectedProcessors;
 
-  QString aux;
-  QImage n;
-  QString suffix;
-  QFileInfo info;
-  QString message = "";
-  info = QFileInfo(fileName);
-  suffix = info.completeSuffix();
-  ui->listWidget->setCurrentItem(ui->listWidget->selectedItems().at(0));
+  exportWidget.show();
+  exportWidget.activateWindow();
 
-  if (suffix == "")
-    suffix = "png";
+  //  QString fileName = QFileDialog::getSaveFileName(
+  //      this, tr("Save Image"), "", tr("Image File (*.png *.jpg *.bmp)"));
+  //  if (fileName == "")
+  //    return;
 
-  if (ui->checkBoxExportNormal->isChecked())
-  {
-    aux = info.absoluteFilePath().remove("." + suffix) + "_n." + suffix;
-    n = *processor->get_normal();
-    n.save(aux);
-    message += tr("Normal map was exported.\n");
-  }
+  //  QString aux;
+  //  QImage n;
+  //  QString suffix;
+  //  QFileInfo info;
+  //  QString message = "";
+  //  info = QFileInfo(fileName);
+  //  suffix = info.completeSuffix();
+  //  ui->listWidget->setCurrentItem(ui->listWidget->selectedItems().at(0));
 
-  if (ui->checkBoxExportParallax->isChecked())
-  {
-    aux = info.absoluteFilePath().remove("." + suffix) + "_p." + suffix;
-    n = *processor->get_parallax();
-    n.save(aux);
-    message += tr("Parallax map was exported.\n");
-  }
+  //  if (suffix == "")
+  //    suffix = "png";
 
-  if (ui->checkBoxExportSpecular->isChecked())
-  {
-    aux = info.absoluteFilePath().remove("." + suffix) + "_s." + suffix;
-    n = *processor->get_specular();
-    n.save(aux);
-    message += tr("Specular map was exported.\n");
-  }
+  //  if (ui->checkBoxExportNormal->isChecked())
+  //  {
+  //    aux = info.absoluteFilePath().remove("." + suffix) + "_n." + suffix;
+  //    n = *processor->get_normal();
+  //    n.save(aux);
+  //    message += tr("Normal map was exported.\n");
+  //  }
 
-  if (ui->checkBoxExportOcclusion->isChecked())
-  {
-    fileName =
-        info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
-    n = *processor->get_occlusion();
-    n.save(fileName);
-    message += tr("Occlussion map was exported.\n");
-  }
+  //  if (ui->checkBoxExportParallax->isChecked())
+  //  {
+  //    aux = info.absoluteFilePath().remove("." + suffix) + "_p." + suffix;
+  //    n = *processor->get_parallax();
+  //    n.save(aux);
+  //    message += tr("Parallax map was exported.\n");
+  //  }
 
-  if (ui->checkBoxExportPreview->isChecked())
-  {
-    n = ui->openGLPreviewWidget->get_preview(false);
-    fileName =
-        info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
-    n.save(fileName);
-    message += tr("Preview was exported.\n");
-  }
+  //  if (ui->checkBoxExportSpecular->isChecked())
+  //  {
+  //    aux = info.absoluteFilePath().remove("." + suffix) + "_s." + suffix;
+  //    n = *processor->get_specular();
+  //    n.save(aux);
+  //    message += tr("Specular map was exported.\n");
+  //  }
 
-  if (message != "")
-  {
-    QMessageBox msgBox;
-    msgBox.setText(message);
-    msgBox.exec();
-  }
+  //  if (ui->checkBoxExportOcclusion->isChecked())
+  //  {
+  //    fileName =
+  //        info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
+  //    n = *processor->get_occlusion();
+  //    n.save(fileName);
+  //    message += tr("Occlussion map was exported.\n");
+  //  }
+
+  //  if (ui->checkBoxExportPreview->isChecked())
+  //  {
+  //    n = ui->openGLPreviewWidget->get_preview(false);
+  //    fileName =
+  //        info.absoluteFilePath().remove("." + suffix) + "_v." + suffix;
+  //    n.save(fileName);
+  //    message += tr("Preview was exported.\n");
+  //  }
+
+  //  if (message != "")
+  //  {
+  //    QMessageBox msgBox;
+  //    msgBox.setText(message);
+  //    msgBox.exec();
+  //  }
 }
 
 void MainWindow::openGL_initialized()
@@ -1051,62 +1058,6 @@ bool MainWindow::ExportMap(TextureTypes type, ImageProcessor *p, QString postfix
   return saved;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-
-  QString message = "";
-  bool saved = true;
-  foreach (ImageProcessor *p, processorList)
-  {
-    if (ui->checkBoxExportNormal->isChecked())
-    {
-      saved &= ExportMap(TextureTypes::Normal, p, "_n", "", p->get_use_normal_alpha());
-    }
-    if (ui->checkBoxExportParallax->isChecked())
-    {
-      saved &= ExportMap(TextureTypes::Parallax, p, "_p", "", p->get_use_parallax_alpha());
-    }
-    if (ui->checkBoxExportSpecular->isChecked())
-    {
-      saved &= ExportMap(TextureTypes::Specular, p, "_s", "", p->get_use_specular_alpha());
-    }
-    if (ui->checkBoxExportOcclusion->isChecked())
-    {
-      saved &= ExportMap(TextureTypes::Occlussion, p, "_o", "", p->get_use_occlusion_alpha());
-    }
-    if (ui->checkBoxExportDiffuse->isChecked())
-    {
-      saved &= ExportMap(TextureTypes::Color, p, "_d");
-    }
-  }
-  if (ui->checkBoxExportPreview->isChecked())
-  {
-    QImage n;
-    QString suffix;
-    QString name;
-    QFileInfo info;
-    foreach (ImageProcessor *p, processorList)
-    {
-      ui->openGLPreviewWidget->set_current_processor(p);
-
-      p->animation.stop();
-      n = ui->openGLPreviewWidget->get_preview(false, true);
-    }
-  }
-
-  if (saved)
-  {
-    message = tr("All selected maps were exported.\n");
-  }
-  else
-  {
-    message = tr("Could not export maps. Check destination's permissions.\n");
-  }
-  QMessageBox msgBox;
-  msgBox.setText(message);
-  msgBox.exec();
-}
-
 void MainWindow::on_pushButtonBackgroundColor_clicked()
 {
   QColorDialog *cd = new QColorDialog(currentColor);
@@ -1220,66 +1171,66 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
   }
 }
 
-void MainWindow::on_pushButtonExportTo_clicked()
-{
-  QImage n;
-  QString suffix;
-  QString name;
-  QFileInfo info;
-  QString message = "";
-  QString path = QFileDialog::getExistingDirectory();
+//void MainWindow::on_pushButtonExportTo_clicked()
+//{
+//  QImage n;
+//  QString suffix;
+//  QString name;
+//  QFileInfo info;
+//  QString message = "";
+//  QString path = QFileDialog::getExistingDirectory();
 
-  if (path != nullptr)
-  {
-    foreach (ImageProcessor *p, processorList)
-    {
-      if (ui->checkBoxExportNormal->isChecked())
-      {
-        ExportMap(TextureTypes::Normal, p, "_n", path);
-      }
-      if (ui->checkBoxExportParallax->isChecked())
-      {
-        ExportMap(TextureTypes::Parallax, p, "_p", path);
-      }
-      if (ui->checkBoxExportSpecular->isChecked())
-      {
-        ExportMap(TextureTypes::Specular, p, "_s", path);
-      }
-      if (ui->checkBoxExportOcclusion->isChecked())
-      {
-        ExportMap(TextureTypes::Occlussion, p, "_o", path);
-      }
-    }
+//  if (path != nullptr)
+//  {
+//    foreach (ImageProcessor *p, processorList)
+//    {
+//      if (ui->checkBoxExportNormal->isChecked())
+//      {
+//        ExportMap(TextureTypes::Normal, p, "_n", path);
+//      }
+//      if (ui->checkBoxExportParallax->isChecked())
+//      {
+//        ExportMap(TextureTypes::Parallax, p, "_p", path);
+//      }
+//      if (ui->checkBoxExportSpecular->isChecked())
+//      {
+//        ExportMap(TextureTypes::Specular, p, "_s", path);
+//      }
+//      if (ui->checkBoxExportOcclusion->isChecked())
+//      {
+//        ExportMap(TextureTypes::Occlussion, p, "_o", path);
+//      }
+//    }
 
-    if (ui->checkBoxExportPreview->isChecked())
-    {
-      QImage n;
-      QString suffix;
-      QString name;
-      QFileInfo info;
-      foreach (ImageProcessor *p, processorList)
-      {
-        ui->openGLPreviewWidget->set_current_processor(p);
-        p->animation.stop();
+//    if (ui->checkBoxExportPreview->isChecked())
+//    {
+//      QImage n;
+//      QString suffix;
+//      QString name;
+//      QFileInfo info;
+//      foreach (ImageProcessor *p, processorList)
+//      {
+//        ui->openGLPreviewWidget->set_current_processor(p);
+//        p->animation.stop();
 
-        n = ui->openGLPreviewWidget->get_preview(false, false);
-        info = QFileInfo(p->sprite.get_file_name());
-        suffix = info.completeSuffix();
-        name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
-        n.save(name);
-      }
-    }
+//        n = ui->openGLPreviewWidget->get_preview(false, false);
+//        info = QFileInfo(p->sprite.get_file_name());
+//        suffix = info.completeSuffix();
+//        name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
+//        n.save(name);
+//      }
+//    }
 
-    message = tr("All selected maps were exported.\n");
+//    message = tr("All selected maps were exported.\n");
 
-    if (message != "")
-    {
-      QMessageBox msgBox;
-      msgBox.setText(message);
-      msgBox.exec();
-    }
-  }
-}
+//    if (message != "")
+//    {
+//      QMessageBox msgBox;
+//      msgBox.setText(message);
+//      msgBox.exec();
+//    }
+//  }
+//}
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 {
