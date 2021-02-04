@@ -69,13 +69,13 @@
    <addaction name="actionSaveProject"/>
    <addaction name="actionSave_Project_As"/>
    <addaction name="actionImport"/>
+   <addaction name="actionExport"/>
    <addaction name="separator"/>
    <addaction name="actionFitZoom"/>
    <addaction name="actionZoom_100"/>
    <addaction name="actionZoomIn"/>
    <addaction name="actionZoomOut"/>
    <addaction name="separator"/>
-   <addaction name="actionExport"/>
    <addaction name="actionAdd_Light"/>
    <addaction name="separator"/>
    <addaction name="actionPresets"/>

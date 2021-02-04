@@ -306,3 +306,11 @@ QGroupBox {
 QGroupBox::title {
     subcontrol-origin: margin;
 }
+
+QLineEdit {
+    border: 1px solid rgb(37, 51, 65);
+    background-color: transparent;
+    padding: 0 8px;
+    color : white;
+    selection-background-color: rgb(29, 161, 242);
+}
