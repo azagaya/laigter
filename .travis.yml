@@ -19,11 +19,16 @@ addons:
       - libssl1.0.0
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then HOMEBREW_VERBOSE_USING_DOTS=1 brew upgrade --verbose qt; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/qt/bin:$(brew --prefix)/bin:$PATH"; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+        brew update > /dev/null
+      && brew upgrade --verbose qt5
+      && chmod -R 755 /usr/local/opt/qt5/*
+      && brew link --verbose qt5 --force
+      ;
+    fi
 
 install:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then travis_wait source /opt/qt*/bin/qt*-env.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then source /opt/qt*/bin/qt*-env.sh; fi
 
 script:
   - qmake CONFIG+=release PREFIX=/usr
