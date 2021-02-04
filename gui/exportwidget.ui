@@ -23,7 +23,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="radioButtonOriginalPos">
         <property name="text">
-         <string>Original Position</string>
+         <string>Original Directory</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -52,7 +52,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="open"/>
+         <iconset theme="open">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
