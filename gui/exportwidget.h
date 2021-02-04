@@ -31,6 +31,8 @@ private slots:
 
   void on_pushButton_clicked();
 
+  void on_pushButtonExportDirectory_clicked();
+
 private:
   Ui::ExportWidget *ui;
 };

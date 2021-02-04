@@ -1171,67 +1171,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
   }
 }
 
-//void MainWindow::on_pushButtonExportTo_clicked()
-//{
-//  QImage n;
-//  QString suffix;
-//  QString name;
-//  QFileInfo info;
-//  QString message = "";
-//  QString path = QFileDialog::getExistingDirectory();
-
-//  if (path != nullptr)
-//  {
-//    foreach (ImageProcessor *p, processorList)
-//    {
-//      if (ui->checkBoxExportNormal->isChecked())
-//      {
-//        ExportMap(TextureTypes::Normal, p, "_n", path);
-//      }
-//      if (ui->checkBoxExportParallax->isChecked())
-//      {
-//        ExportMap(TextureTypes::Parallax, p, "_p", path);
-//      }
-//      if (ui->checkBoxExportSpecular->isChecked())
-//      {
-//        ExportMap(TextureTypes::Specular, p, "_s", path);
-//      }
-//      if (ui->checkBoxExportOcclusion->isChecked())
-//      {
-//        ExportMap(TextureTypes::Occlussion, p, "_o", path);
-//      }
-//    }
-
-//    if (ui->checkBoxExportPreview->isChecked())
-//    {
-//      QImage n;
-//      QString suffix;
-//      QString name;
-//      QFileInfo info;
-//      foreach (ImageProcessor *p, processorList)
-//      {
-//        ui->openGLPreviewWidget->set_current_processor(p);
-//        p->animation.stop();
-
-//        n = ui->openGLPreviewWidget->get_preview(false, false);
-//        info = QFileInfo(p->sprite.get_file_name());
-//        suffix = info.completeSuffix();
-//        name = path + "/" + info.fileName().remove("." + suffix) + "_v." + suffix;
-//        n.save(name);
-//      }
-//    }
-
-//    message = tr("All selected maps were exported.\n");
-
-//    if (message != "")
-//    {
-//      QMessageBox msgBox;
-//      msgBox.setText(message);
-//      msgBox.exec();
-//    }
-//  }
-//}
-
 void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 {
   if (e->mimeData()->hasUrls())
