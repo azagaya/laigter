@@ -30,7 +30,7 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="204"/>
         <source>Christine Garner (Friend of Laigter!)</source>
-        <translation type="unfinished"></translation>
+        <translation>Christine Garner (Φίλη του Laigter!)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="209"/>
@@ -40,12 +40,12 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="214"/>
         <source>Christoffer Sundbom (Supporter!)</source>
-        <translation type="unfinished"></translation>
+        <translation>Christoffer Sundbom (Υποστηρικτής!)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="222"/>
         <source>Patreon:</source>
-        <translation type="unfinished"></translation>
+        <translation>Patreon:</translation>
     </message>
     <message>
         <source>Programmers</source>
@@ -64,12 +64,12 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="192"/>
         <source>Supporters</source>
-        <translation type="unfinished"></translation>
+        <translation>Υποστηρικτές</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="230"/>
         <source>Contributors</source>
-        <translation type="unfinished"></translation>
+        <translation>Συνεισφέροντες</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="237"/>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="242"/>
         <source>creepertron95 - Laigter Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>creepertron95 - Εικονίδιο Laigter</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="261"/>
@@ -89,22 +89,22 @@
     <message>
         <location filename="../gui/about_dialog.ui" line="268"/>
         <source>Hans Wakelin (Japanese)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hans Wakelin (Ιαπωνικά)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="273"/>
         <source>Muhammed Altaş - Turkish</source>
-        <translation type="unfinished"></translation>
+        <translation>Muhammed Altaş - Τουρκικά</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="278"/>
         <source>Manolis Papadeas (Overloaded) - Greek</source>
-        <translation type="unfinished"></translation>
+        <translation>Μανόλης Παπαδέας (Overloaded) - Ελληνικά</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="283"/>
         <source>Hugo Locurcio (Calinou) &amp; Danton Slip - French</source>
-        <translation type="unfinished"></translation>
+        <translation>Hugo Locurcio (Calinou) &amp; Danton Slip -Γαλλικά</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="318"/>
@@ -1482,12 +1482,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/animation_dock.ui" line="14"/>
         <source>Animation Dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Παράθυρο κίνησης</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animation_dock.ui" line="45"/>
         <source>FPS:</source>
-        <translation type="unfinished"></translation>
+        <translation>FPS:</translation>
     </message>
 </context>
 <context>
@@ -1495,27 +1495,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/frame_splitter.ui" line="14"/>
         <source>Frame Splitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαχωριστής καρέ</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="20"/>
         <source>Horizontal Frames:</source>
-        <translation type="unfinished"></translation>
+        <translation>Οριζόντια καρέ:</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="34"/>
         <source>Vertical Frames:</source>
-        <translation type="unfinished"></translation>
+        <translation>Κάθετα καρέ:</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="48"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Άκυρο</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="55"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Εντάξει</translation>
     </message>
 </context>
 <context>
@@ -1523,12 +1523,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/language_selector.ui" line="14"/>
         <source>Language Selector</source>
-        <translation type="unfinished"></translation>
+        <translation>Επιλογέας γλώσσας</translation>
     </message>
     <message>
         <location filename="../gui/language_selector.ui" line="36"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Εντάξει</translation>
     </message>
 </context>
 <context>
@@ -1607,7 +1607,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1247"/>
         <location filename="../main_window.ui" line="1394"/>
         <source>Use Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρήση αδιαφάνειας</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="329"/>
@@ -1703,7 +1703,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="776"/>
         <source>Occlussion Map</source>
-        <translation>Χάρτης Εμποδίων</translation>
+        <translation>Χάρτης Απόφραξης</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="781"/>
@@ -1714,49 +1714,50 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="802"/>
         <source>Pixelated</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Unsure if this can be translated</translatorcomment>
+        <translation>Pixelated</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="815"/>
         <source>Toon</source>
-        <translation type="unfinished"></translation>
+        <translation>Καρτούν</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1262"/>
         <source>Occlusion</source>
-        <translation type="unfinished"></translation>
+        <translation>Απόφραξη</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1562"/>
         <source>Import</source>
-        <translation type="unfinished">Εισαγωγή</translation>
+        <translation>Εισαγωγή</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1565"/>
         <source>Import Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Εισαγωγή εικόνας</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1710"/>
         <source>Save Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποθήκευση έργου</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1718"/>
         <location filename="../main_window.ui" line="1721"/>
         <source>Open Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Άνοιγμα έργου</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1737"/>
         <location filename="../main_window.ui" line="1740"/>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Θέματα</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1729"/>
         <source>Save Project As</source>
-        <translation type="unfinished"></translation>
+        <translation>Αποθήκευση έργου ως</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="654"/>
@@ -1783,7 +1784,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="822"/>
         <source>Blending:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ανάμειξη:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="847"/>
@@ -1815,7 +1816,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1067"/>
         <source>Quantization:</source>
-        <translation>Κβαντισμός</translation>
+        <translation>Κβαντισμός:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1093"/>
@@ -1858,7 +1859,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1702"/>
         <location filename="../main_window.cpp" line="1869"/>
         <source>Languages</source>
-        <translation type="unfinished"></translation>
+        <translation>Γλώσσες</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1106"/>
@@ -1889,12 +1890,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="911"/>
         <source>Erode / Dilate:</source>
-        <translation>Διάβρωση / Διαστολλή</translation>
+        <translation>Διάβρωση / Διαστολλή:</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1449"/>
         <source>Occlussion</source>
-        <translation>Εμπόδιο</translation>
+        <translation>Απόφραξη</translation>
     </message>
     <message>
         <source>Neighbours</source>
@@ -1997,7 +1998,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="261"/>
         <location filename="../main_window.cpp" line="380"/>
         <source>Merge Heightmap with previous Sprite</source>
-        <translation type="unfinished"></translation>
+        <translation>Συγχώνευση χάρτη ύψους με τη προηγούμενη εικόνα</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="263"/>
@@ -2015,43 +2016,43 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="266"/>
         <location filename="../main_window.cpp" line="417"/>
         <source>Add new frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη νέων καρέ</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="271"/>
         <location filename="../main_window.cpp" line="446"/>
         <source>Remove current frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Αφαίρεση του τρέχοντος καρέ</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="272"/>
         <location filename="../main_window.cpp" line="442"/>
         <source>Next Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Επόμενο καρέ</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="273"/>
         <location filename="../main_window.cpp" line="444"/>
         <source>Previous Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Προηγούμενο καρέ</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="277"/>
         <location filename="../main_window.cpp" line="438"/>
         <source>Stop Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Σταμάτηση Κίνησης</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="283"/>
         <location filename="../main_window.cpp" line="440"/>
         <source>Start Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Έναρξη κίνησης</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="295"/>
         <location filename="../main_window.cpp" line="451"/>
         <source>Split in frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαχωρισμός σε καρέ</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="420"/>
@@ -2084,28 +2085,29 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="1336"/>
         <source>All selected maps were exported.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Έγινε εξαγωγή όλων των επιλεγμένων χαρτών.
+</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1165"/>
         <source>Could not export maps. Check destination&apos;s permissions.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η εξαγωγή χαρτών. Ελέγξτε τα δικαιώματα του προορισμού.</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1895"/>
         <source>Open Laigter Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Άνοιγμα έργου Laigter</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1896"/>
         <source>Project File (*.laigter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Αρχείο έργου (*.laigter)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="2009"/>
         <source>Image File (*.laigter)</source>
-        <translation type="unfinished"></translation>
+        <translation>Αρχείο εικόνας (*.laigter)</translation>
     </message>
     <message>
         <source>The image is already opened in Laigter.</source>
@@ -2122,7 +2124,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.cpp" line="737"/>
         <location filename="../main_window.cpp" line="1483"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
-        <translation>Αρχείο Εικόνας (*.png *.jpg *.bmp)</translation>
+        <translation>Αρχείο εικόνας (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="758"/>
@@ -2330,17 +2332,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="234"/>
         <source>0</source>
-        <translation type="unfinished"></translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="245"/>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="270"/>
         <source>2</source>
-        <translation type="unfinished"></translation>
+        <translation>2</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="275"/>
@@ -2351,17 +2353,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="281"/>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="292"/>
         <source>4</source>
-        <translation type="unfinished"></translation>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="303"/>
         <source>5</source>
-        <translation type="unfinished"></translation>
+        <translation>5</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="309"/>
@@ -2374,17 +2376,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="328"/>
         <source>7</source>
-        <translation type="unfinished"></translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="339"/>
         <source>8</source>
-        <translation type="unfinished"></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="352"/>
         <source>6</source>
-        <translation type="unfinished"></translation>
+        <translation>6</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="360"/>
@@ -2399,7 +2401,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="376"/>
         <source>9</source>
-        <translation type="unfinished"></translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="381"/>
@@ -2409,17 +2411,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="400"/>
         <source>10</source>
-        <translation type="unfinished"></translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="411"/>
         <source>11</source>
-        <translation type="unfinished"></translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="422"/>
         <source>13</source>
-        <translation type="unfinished"></translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="427"/>
@@ -2429,12 +2431,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="433"/>
         <source>14</source>
-        <translation type="unfinished"></translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="445"/>
         <source>12</source>
-        <translation type="unfinished"></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="14"/>
@@ -2528,7 +2530,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="466"/>
         <source>15</source>
-        <translation type="unfinished"></translation>
+        <translation>15</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="471"/>
@@ -2540,12 +2542,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="477"/>
         <source>16</source>
-        <translation type="unfinished"></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="489"/>
         <source>17</source>
-        <translation type="unfinished"></translation>
+        <translation>17</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="495"/>
@@ -2555,62 +2557,62 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="511"/>
         <source>18</source>
-        <translation type="unfinished"></translation>
+        <translation>18</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="525"/>
         <source>19</source>
-        <translation type="unfinished"></translation>
+        <translation>19</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="539"/>
         <source>20</source>
-        <translation type="unfinished"></translation>
+        <translation>20</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="553"/>
         <source>21</source>
-        <translation type="unfinished"></translation>
+        <translation>21</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="567"/>
         <source>22</source>
-        <translation type="unfinished"></translation>
+        <translation>22</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="576"/>
         <source>Occlussion</source>
-        <translation>Εμπόδιο</translation>
+        <translation>Απόφραξη</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="592"/>
         <source>23</source>
-        <translation type="unfinished"></translation>
+        <translation>23</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="603"/>
         <source>24</source>
-        <translation type="unfinished"></translation>
+        <translation>24</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="614"/>
         <source>25</source>
-        <translation type="unfinished"></translation>
+        <translation>25</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="625"/>
         <source>26</source>
-        <translation type="unfinished"></translation>
+        <translation>26</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="636"/>
         <source>27</source>
-        <translation type="unfinished"></translation>
+        <translation>27</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="647"/>
         <source>28</source>
-        <translation type="unfinished"></translation>
+        <translation>28</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="652"/>
@@ -2620,7 +2622,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="658"/>
         <source>29</source>
-        <translation type="unfinished"></translation>
+        <translation>29</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="684"/>
@@ -2630,7 +2632,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="670"/>
         <source>30</source>
-        <translation type="unfinished"></translation>
+        <translation>30</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="149"/>
@@ -2651,7 +2653,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.cpp" line="229"/>
         <source>Cannot open the specified preset.</source>
-        <translation>Δεν είναι δυνατό να ανοίξει η προεπιλογή</translation>
+        <translation>Δεν είναι δυνατό να ανοίξει η προεπιλογή.</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="237"/>
@@ -2672,7 +2674,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.cpp" line="287"/>
         <source>Couldn&apos;t export. Check destination&apos;s permissions or if a file with the same name already exists there.</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η εξαγωγή. Ελέγξτε τα δικαιώματα του προορισμού ή εάν υπάρχει ήδη ένα αρχείο με το ίδιο όνομα.</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="321"/>
@@ -2685,12 +2687,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="14"/>
         <source>Remove Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαγραφή Πρόσθετων</translation>
     </message>
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="20"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Πρόσθετα</translatorcomment>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2698,123 +2701,123 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="47"/>
         <source>Neighbours</source>
-        <translation type="unfinished">Γείτονες</translation>
+        <translation>Γείτονες</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="60"/>
         <source>Transform:</source>
-        <translation type="unfinished"></translation>
+        <translation>Μετασχηματισμός:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="66"/>
         <source>Scale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Κλιμάκωση:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="89"/>
         <source>Rotation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Περιστροφή:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="112"/>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Πληροφορίες</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="145"/>
         <source>Name:</source>
-        <translation type="unfinished">Όνομα:</translation>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="164"/>
         <source>Path:</source>
-        <translation type="unfinished"></translation>
+        <translation>Μονοπάτι:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="177"/>
         <source>Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Μέγεθος:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="193"/>
         <source>Load Specular</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρτωση κατοπτρικού χάρτη</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="200"/>
         <source>Tile</source>
-        <translation type="unfinished">Μοτίβο</translation>
+        <translation>Επανάληψη</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="207"/>
         <source>Load Heightmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρτωση χάρτη ύψους</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="220"/>
         <source>Position:</source>
-        <translation type="unfinished"></translation>
+        <translation>Τοποθεσία:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="247"/>
         <source>X:</source>
-        <translation type="unfinished"></translation>
+        <translation>Χ:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="270"/>
         <source>Y:</source>
-        <translation type="unfinished"></translation>
+        <translation>Υ:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="332"/>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Κίνηση</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="359"/>
         <source>Frames:</source>
-        <translation type="unfinished"></translation>
+        <translation>Καρέ:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="372"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαχωρισμός</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="379"/>
         <source>Current:</source>
-        <translation type="unfinished"></translation>
+        <translation>Τρέχον:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="28"/>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
+        <translation>Όνομα: </translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="29"/>
         <source>Path: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="30"/>
         <source>Size: </source>
-        <translation type="unfinished"></translation>
+        <translation>Μέγεθος: </translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="32"/>
         <source>Frames: </source>
-        <translation type="unfinished"></translation>
+        <translation>Καρέ: </translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="33"/>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="49"/>
         <source>Current Frame: </source>
-        <translation type="unfinished"></translation>
+        <translation>Τρέχον καρέ: </translation>
     </message>
 </context>
 <context>
@@ -2822,17 +2825,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="21"/>
         <source>Classic</source>
-        <translation type="unfinished"></translation>
+        <translation>Κλασσικό</translation>
     </message>
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="26"/>
         <source>DarkBlue</source>
-        <translation type="unfinished"></translation>
+        <translation>ΣκούροΜπλε</translation>
     </message>
 </context>
 </TS>
