@@ -350,7 +350,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
     if (index > 0)
     {
       ImageProcessor *p2 = processorList.at(index - 1);
-      qDebug() << processorList;
       QImage h = p->get_heightmap();
       QImage h2 = p2->get_heightmap();
 
@@ -360,7 +359,6 @@ void MainWindow::list_menu_action_triggered(QAction *action)
       QPoint point2 = p2->get_position()->toPoint();
       QPoint point1 = p->get_position()->toPoint();
       QPoint position = QPoint(point2.x(), -point2.y()) - QPoint(h2.width(), h2.height()) / 2 - (QPoint(point1.x(), -point1.y()) - QPoint(h.width(), h.height()) / 2);
-      qDebug() << position;
       painter.drawImage(position, h2);
 
       p->get_current_frame()->set_image(TextureTypes::Heightmap, h);
@@ -1540,6 +1538,8 @@ void MainWindow::on_actionLoadPlugins_triggered()
     }
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
+    qDebug() << pl->metaData().value("MetaData").toObject().value("version").toDouble();
+    qDebug() << pl->metaData().value("MetaData").toObject().value("name").toString();
     if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.103)
     {
       qDebug() << "incorrect plugin version.";
