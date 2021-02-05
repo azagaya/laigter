@@ -1497,7 +1497,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Φόρμα</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="84"/>
@@ -1597,7 +1597,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/exportwidget.ui" line="133"/>
         <location filename="../gui/exportwidget.ui" line="240"/>
         <source>Occlusion</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Απόφραξη</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="140"/>
@@ -1667,19 +1667,20 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/exportwidget.ui" line="288"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Άκυρο</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.cpp" line="214"/>
         <source>All selected maps were exported.
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Έγινε εξαγωγή όλων των επιλεγμένων χαρτών.
+</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.cpp" line="218"/>
         <source>Could not export maps. Check destination&apos;s permissions.
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Δεν ήταν δυνατή η εξαγωγή χαρτών. Ελέγξτε τα δικαιώματα του προορισμού.</translation>
     </message>
 </context>
 <context>
@@ -2081,11 +2082,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Occlussion</source>
-<<<<<<< HEAD
-        <translation type="vanished">Εμπόδιο</translation>
-=======
-        <translation>Απόφραξη</translation>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
+        <translation type="vanished">Απόφραξη</translation>
     </message>
     <message>
         <source>Neighbours</source>
@@ -2200,58 +2197,37 @@ p, li { white-space: pre-wrap; }
         <translation>Επαναφορά κατοπτρικού χάρτη</translation>
     </message>
     <message>
-<<<<<<< HEAD
+        <source>Add new frames</source>
+        <translation type="vanished">Προσθήκη νέων καρέ</translation>
+    </message>
+    <message>
+        <source>Remove current frame</source>
+        <translation type="vanished">Αφαίρεση του τρέχοντος καρέ</translation>
+    </message>
+    <message>
+        <source>Next Frame</source>
+        <translation type="vanished">Επόμενο καρέ</translation>
+    </message>
+    <message>
+        <source>Previous Frame</source>
+        <translation type="vanished">Προηγούμενο καρέ</translation>
+    </message>
+    <message>
+        <source>Stop Animation</source>
+        <translation type="vanished">Σταμάτηση Κίνησης</translation>
+    </message>
+    <message>
+        <source>Start Animation</source>
+        <translation type="vanished">Έναρξη κίνησης</translation>
+    </message>
+    <message>
+        <source>Split in frames</source>
+        <translation type="vanished">Διαχωρισμός σε καρέ</translation>
+    </message>
+    <message>
         <location filename="../main_window.cpp" line="398"/>
         <location filename="../main_window.cpp" line="416"/>
         <location filename="../main_window.cpp" line="1839"/>
-=======
-        <location filename="../main_window.cpp" line="266"/>
-        <location filename="../main_window.cpp" line="417"/>
-        <source>Add new frames</source>
-        <translation>Προσθήκη νέων καρέ</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="271"/>
-        <location filename="../main_window.cpp" line="446"/>
-        <source>Remove current frame</source>
-        <translation>Αφαίρεση του τρέχοντος καρέ</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="272"/>
-        <location filename="../main_window.cpp" line="442"/>
-        <source>Next Frame</source>
-        <translation>Επόμενο καρέ</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="273"/>
-        <location filename="../main_window.cpp" line="444"/>
-        <source>Previous Frame</source>
-        <translation>Προηγούμενο καρέ</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="277"/>
-        <location filename="../main_window.cpp" line="438"/>
-        <source>Stop Animation</source>
-        <translation>Σταμάτηση Κίνησης</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="283"/>
-        <location filename="../main_window.cpp" line="440"/>
-        <source>Start Animation</source>
-        <translation>Έναρξη κίνησης</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="295"/>
-        <location filename="../main_window.cpp" line="451"/>
-        <source>Split in frames</source>
-        <translation>Διαχωρισμός σε καρέ</translation>
-    </message>
-    <message>
-        <location filename="../main_window.cpp" line="420"/>
-        <location filename="../main_window.cpp" line="487"/>
-        <location filename="../main_window.cpp" line="505"/>
-        <location filename="../main_window.cpp" line="2023"/>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
         <source>Open Image</source>
         <translation>Άνοιγμα Εικόνας</translation>
     </message>
@@ -2273,25 +2249,18 @@ p, li { white-space: pre-wrap; }
         <translation>Μη υποστηριζόμενη ή λανθασμένη μορφή.</translation>
     </message>
     <message>
-<<<<<<< HEAD
-        <location filename="../main_window.cpp" line="1711"/>
-=======
-        <location filename="../main_window.cpp" line="1161"/>
-        <location filename="../main_window.cpp" line="1336"/>
         <source>All selected maps were exported.
 </source>
-        <translation>Έγινε εξαγωγή όλων των επιλεγμένων χαρτών.
+        <translation type="vanished">Έγινε εξαγωγή όλων των επιλεγμένων χαρτών.
 </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1165"/>
         <source>Could not export maps. Check destination&apos;s permissions.
 </source>
-        <translation>Δεν ήταν δυνατή η εξαγωγή χαρτών. Ελέγξτε τα δικαιώματα του προορισμού.</translation>
+        <translation type="vanished">Δεν ήταν δυνατή η εξαγωγή χαρτών. Ελέγξτε τα δικαιώματα του προορισμού.</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1895"/>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
+        <location filename="../main_window.cpp" line="1711"/>
         <source>Open Laigter Project</source>
         <translation>Άνοιγμα έργου Laigter</translation>
     </message>
@@ -2971,7 +2940,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="332"/>
-<<<<<<< HEAD
         <source>Frames</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2988,31 +2956,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="380"/>
         <source>Animation</source>
-        <translation type="unfinished"></translation>
+        <translation>Κίνηση</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="387"/>
         <source>Sheet</source>
         <translation type="unfinished"></translation>
-=======
-        <source>Animation</source>
-        <translation>Κίνηση</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/sprite_properties_dock.ui" line="359"/>
         <source>Frames:</source>
-        <translation>Καρέ:</translation>
+        <translation type="vanished">Καρέ:</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/sprite_properties_dock.ui" line="372"/>
         <source>Split</source>
-        <translation>Διαχωρισμός</translation>
+        <translation type="vanished">Διαχωρισμός</translation>
     </message>
     <message>
-        <location filename="../gui/widgets/sprite_properties_dock.ui" line="379"/>
         <source>Current:</source>
-        <translation>Τρέχον:</translation>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
+        <translation type="vanished">Τρέχον:</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="28"/>
@@ -3029,32 +2990,25 @@ p, li { white-space: pre-wrap; }
         <source>Size: </source>
         <translation>Μέγεθος: </translation>
     </message>
-<<<<<<< HEAD
-=======
     <message>
-        <location filename="../gui/widgets/sprite_properties_dock.cpp" line="32"/>
         <source>Frames: </source>
-        <translation>Καρέ: </translation>
+        <translation type="vanished">Καρέ: </translation>
     </message>
     <message>
-        <location filename="../gui/widgets/sprite_properties_dock.cpp" line="33"/>
-        <location filename="../gui/widgets/sprite_properties_dock.cpp" line="49"/>
         <source>Current Frame: </source>
-        <translation>Τρέχον καρέ: </translation>
+        <translation type="vanished">Τρέχον καρέ: </translation>
     </message>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
 </context>
 <context>
     <name>ThemeSelector</name>
     <message>
+        <source>Form</source>
+        <translation type="vanished">Φόρμα</translation>
+    </message>
+    <message>
         <location filename="../gui/widgets/themeselector.ui" line="14"/>
-<<<<<<< HEAD
         <source>Theme Selector</source>
         <translation type="unfinished"></translation>
-=======
-        <source>Form</source>
-        <translation>Φόρμα</translation>
->>>>>>> 418cd66c3d9e9c2c4eca2a9e72220b52045bd7d9
     </message>
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="21"/>
