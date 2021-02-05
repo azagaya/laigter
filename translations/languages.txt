@@ -6,4 +6,4 @@ Français	FR.png	fr
 日本語	JP.png	jp
 Português brasileiro	BR.png	pt_BR
 Türkçe	TR.png	tr
-ελληνικά	GR.png	el
+Ελληνικά	GR.png	el
