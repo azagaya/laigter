@@ -53,10 +53,12 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
   connect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   connect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
 
+  QString last_animation = p->getCurrentAnimationName();
+
   ui->comboBox->clear();
   ui->comboBox->addItems(p->getAnimationNames());
 
-  ui->comboBox->setCurrentText(p->getCurrentAnimationName());
+  ui->comboBox->setCurrentText(last_animation);
 //  on_comboBox_activated(p->getCurrentAnimationName());
 }
 
