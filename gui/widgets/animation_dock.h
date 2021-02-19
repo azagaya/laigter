@@ -41,6 +41,7 @@ private slots:
   void on_deleteFrameButton_pressed();
   void on_editorPushButton_pressed();
   void on_comboBox_activated(const QString &arg1);
+  void on_comboBox_currentIndexChanged(const QString &arg1);
 };
 
 #endif // ANIMATION_DOCK_H
