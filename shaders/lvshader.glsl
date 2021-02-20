@@ -21,9 +21,11 @@ attribute vec3 aPos;
 attribute vec2 aTexCoord;
 varying vec2 texCoord;
 uniform mat4 transform;
+uniform mat4 view;
+uniform mat4 projection;
 void main()
 {
-  gl_Position = transform * vec4(aPos, 1.0);
+  gl_Position = projection * view * transform * vec4(aPos, 1.0);
   gl_Position.z = 0.0;
   texCoord = aTexCoord;
 }

@@ -23,9 +23,11 @@ varying vec2 texCoord;
 varying vec3 FragPos;
 
 uniform mat4 transform;
+uniform mat4 view;
+uniform mat4 projection;
 void main()
 {
-  gl_Position = transform * vec4(aPos, 1.0);
+  gl_Position = projection * view * transform * vec4(aPos, 1.0);
   FragPos = gl_Position.xyz;
   texCoord = aTexCoord;
 }

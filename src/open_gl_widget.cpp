@@ -214,6 +214,7 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("height_scale", parallax_height);
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
   m_program.setUniformValue("zoom", m_global_zoom);
+  m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
   apply_light_params(projection, view);
 
   foreach (ImageProcessor *processor, processorList)
@@ -297,7 +298,12 @@ void OpenGlWidget::update_scene()
 
     glActiveTexture(GL_TEXTURE0);
 
-    m_program.setUniformValue("transform", projection * view * transform);
+    m_program.setUniformValue("transform", transform);
+    m_program.setUniformValue("view", view);
+    m_program.setUniformValue("projection", projection);
+    m_program.setUniformValue("inv_transform", transform.inverted());
+    m_program.setUniformValue("inv_view", view.inverted());
+    m_program.setUniformValue("inv_projection", projection.inverted());
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
@@ -380,7 +386,9 @@ void OpenGlWidget::update_scene()
       lightProgram.bind();
       lightVAO.bind();
 
-      lightProgram.setUniformValue("transform", projection * view * transform);
+      lightProgram.setUniformValue("transform", transform);
+      lightProgram.setUniformValue("view", view);
+      lightProgram.setUniformValue("projection", projection);
       laigterTexture->bind(0);
 
       if (m_light)
@@ -1191,7 +1199,14 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     glActiveTexture(GL_TEXTURE0);
     m_program.setUniformValue("view_mode", Preview);
-    m_program.setUniformValue("transform", projection * view * transform);
+
+    m_program.setUniformValue("transform", transform);
+    m_program.setUniformValue("view", view);
+    m_program.setUniformValue("projection", projection);
+    m_program.setUniformValue("inv_transform", transform.inverted());
+    m_program.setUniformValue("inv_view", view.inverted());
+    m_program.setUniformValue("inv_projection", projection.inverted());
+
     m_program.setUniformValue("pixelsX", pixelsX);
     m_program.setUniformValue("pixelsY", pixelsY);
     m_program.setUniformValue("pixelSize", pixelSize);
@@ -1199,6 +1214,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("toon", m_toon);
     m_program.setUniformValue("selected", false);
     m_program.setUniformValue("ratio", QVector2D(1, 1));
+    m_program.setUniformValue("zoom", float(1.0));
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
@@ -1224,6 +1240,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 10));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);
+    m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
 
     apply_light_params(projection, view);
     m_texture->bind(0);
@@ -1426,6 +1443,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       m_program.setUniformValue("parallax",
                                 processor->get_is_parallax() &&
                                     viewmode == Preview);
+      m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
 
       apply_light_params(projection, view);
       VBO.bind();

@@ -65,6 +65,10 @@ uniform int pixelsX, pixelsY;
 uniform int view_mode;
 uniform float blend_factor;
 
+uniform vec2 viewport_size;
+uniform mat4 inv_transform;
+uniform mat4 inv_view;
+uniform mat4 inv_projection;
 uniform vec2 coordOffset;
 uniform vec3 outlineColor;
 
@@ -94,7 +98,10 @@ void main()
   }
 
   vec2 dis;
-  vec3 viewDir = normalize(viewPos - FragPos);
+
+  vec4 f_pos = inv_view*inv_projection*vec4(FragPos, 1.0);
+  vec4 v_pos =  inv_view*inv_projection*vec4(viewPos, 1.0);
+  vec3 viewDir = normalize( - vec3(0.0, 0.0, -1000.0));
 
   vec2 texCoords = texCoord + coordOffset;
 
@@ -153,8 +160,12 @@ void main()
 
     for (int i = 0; i < lightNum; i++)
     {
+      float l_height = Light[i].lightPos.z;
+      vec4 l_pos =  inv_view*inv_projection*vec4(Light[i].lightPos,1.0)*zoom;
+      vec4 f_pos = inv_view*inv_projection*vec4(FragPos, 1.0)*zoom;
+      l_pos.z = l_height;
       vec3 lightDir =
-          normalize(Light[i].lightPos - vec3(FragPos.xy, 0.0));
+          normalize( vec3(l_pos.xy, l_height*1000.0) - vec3(f_pos.xy, 0.0));
 
       vec3 reflectDir = reflect(-lightDir, normal);
 
