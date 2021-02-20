@@ -1133,6 +1133,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     int w = m_image.width() * devicePixelRatioF();
     int h = m_image.height() * devicePixelRatioF();
+    int m_width = (int(w / this->m_width) + 1) * this->m_width;
+    int m_height = (int(h / this->m_height) + 1) * this->m_height;
     QOpenGLFramebufferObject frameBuffer(m_width, m_height);
 
     QVector3D texPos = *processor->get_position();

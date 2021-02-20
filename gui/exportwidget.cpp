@@ -137,7 +137,6 @@ void ExportWidget::on_pushButton_clicked()
   {
     if (ui->checkBoxNormal->isChecked())
     {
-      p->set_normal_invert_x(true);
       saved &= ExportMap(TextureTypes::Normal, p, ui->lineEditNormalPostfix->text(), path, p->get_use_normal_alpha());
     }
     if (ui->checkBoxParallax->isChecked())

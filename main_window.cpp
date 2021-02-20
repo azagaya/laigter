@@ -1837,6 +1837,7 @@ void MainWindow::on_actionImport_triggered()
 {
   QStringList fileNames = QFileDialog::getOpenFileNames(
       this, tr("Open Image"), "", tr("Image File (*.png *.jpg *.bmp *.tga)"));
+
   open_files(fileNames);
 }
 
