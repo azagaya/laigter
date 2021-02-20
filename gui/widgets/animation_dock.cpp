@@ -53,10 +53,13 @@ void AnimationDock::setCurrentProcessor(ImageProcessor *p)
   connect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
   connect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
 
+  QString last_animation = p->getCurrentAnimationName();
+
   ui->comboBox->clear();
   ui->comboBox->addItems(p->getAnimationNames());
 
-  updateList(p->getCurrentAnimationName());
+  ui->comboBox->setCurrentText(last_animation);
+//  on_comboBox_activated(p->getCurrentAnimationName());
 }
 
 void AnimationDock::updateProcessorFrame(int index)
@@ -147,14 +150,7 @@ void AnimationDock::on_editorPushButton_pressed()
 void AnimationDock::on_comboBox_activated(const QString &arg1)
 {
 
-  Animation *animation = m_current_processor->getAnimation(arg1);
 
-  if (!animation)
-    return;
-
-  m_current_processor->setCurrentAnimation(arg1);
-
-  updateList(arg1);
 }
 
 void AnimationDock::updateList(QString animation_name)
@@ -178,4 +174,17 @@ void AnimationDock::updateList(QString animation_name)
     item->setData(Qt::UserRole, i);
     ui->listWidget->addItem(item);
   }
+  ui->comboBox->setCurrentText(animation_name);
+}
+
+void AnimationDock::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    Animation *animation = m_current_processor->getAnimation(arg1);
+
+    if (!animation)
+      return;
+
+    m_current_processor->setCurrentAnimation(arg1);
+
+    updateList(arg1);
 }

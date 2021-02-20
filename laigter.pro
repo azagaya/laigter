@@ -195,3 +195,4 @@ RESOURCES += \
 
 win32: RC_ICONS = icons\laigter_icon.ico
 mac: ICON = icons/laigter_icon.icns
+

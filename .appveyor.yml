@@ -6,7 +6,7 @@ build_script:
   - qmake laigter.pro
   - mingw32-make
 after_build:
-  - windeployqt release/fastqt.exe
+  - windeployqt release/laigter.exe
   - cmd: cp LICENSE release/LICENSE.txt
   - cmd: cp ACKNOWLEDGEMENTS release/ACKNOWLEDGEMENTS.txt
   - iscc innosetup.iss
