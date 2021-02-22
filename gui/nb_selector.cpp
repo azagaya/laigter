@@ -41,9 +41,9 @@ void NBSelector::setProcessor(ImageProcessor *processor)
   this->processor = processor;
   connect(processor, SIGNAL(processed()), this, SLOT(get_neighbours()));
 
-  for (int i = 0; i < frameList->count(); i++)
+  while (frameList->count() > 0)
   {
-    QListWidgetItem *item = frameList->takeItem(i);
+    QListWidgetItem *item = frameList->takeItem(0);
     delete item;
   }
   QSize s(processor->texture.width() / processor->getHFrames(), processor->texture.height() / processor->getVFrames());
