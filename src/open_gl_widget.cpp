@@ -448,7 +448,9 @@ void OpenGlWidget::update_scene()
     transform.scale(x, y, 1);
     cursorProgram.bind();
     lightVAO.bind();
-    cursorProgram.setUniformValue("transform", projection * view * transform);
+    cursorProgram.setUniformValue("transform", transform);
+    cursorProgram.setUniformValue("projection", projection);
+    cursorProgram.setUniformValue("view", view);
     brushTexture->bind(0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                     GL_NEAREST_MIPMAP_NEAREST);
@@ -461,7 +463,6 @@ void OpenGlWidget::update_scene()
     cursorProgram.setUniformValue("pixelSize", 1.0 / brushTexture->width(), 1.0 / brushTexture->height());
     cursorProgram.setUniformValue("pixelated", false);
     cursorProgram.setUniformValue("zoom", m_global_zoom);
-    color = QVector3D(0.2, 0.2, 0.2);
 
     VBO.bind();
     float vertices[] = {
