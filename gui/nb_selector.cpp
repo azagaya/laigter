@@ -41,6 +41,7 @@ void NBSelector::setProcessor(ImageProcessor *processor)
   this->processor = processor;
   connect(processor, SIGNAL(processed()), this, SLOT(get_neighbours()));
 
+  qDebug() << 0;
   while (frameList->count() > 0)
   {
     QListWidgetItem *item = frameList->takeItem(0);
@@ -49,6 +50,10 @@ void NBSelector::setProcessor(ImageProcessor *processor)
   QSize s(processor->texture.width() / processor->getHFrames(), processor->texture.height() / processor->getVFrames());
   QImage empty(s, processor->texture.format());
   empty.fill(Qt::transparent);
+  qDebug() << 1;
+  qDebug() << processor->current_animation->frames_id;
+
+  qDebug() << 1.5;
   foreach (int frame, processor->current_animation->frames_id)
   {
     QImage image = processor->getFrameImage(frame);
@@ -61,6 +66,7 @@ void NBSelector::setProcessor(ImageProcessor *processor)
     frameList->addItem(item);
   }
 
+  qDebug() << 2;
   QListWidgetItem *item = new QListWidgetItem;
   item->setData(Qt::UserRole, -1);
   QPixmap icon = QPixmap::fromImage(processor->getFrameImage(-1));

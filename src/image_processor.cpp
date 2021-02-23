@@ -1851,6 +1851,7 @@ void ImageProcessor::splitInFrames(int h_frames, int v_frames)
   animation_list.append(Animation("Default"));
   Animation *animation = getAnimation("Default");
 
+  setCurrentAnimation("Default");
   animation->frames_id.clear();
   float w = 1.0 / h_frames;
   float h = 1.0 / v_frames;
@@ -1860,6 +1861,7 @@ void ImageProcessor::splitInFrames(int h_frames, int v_frames)
     for (int j = 0; j < h_frames; j++)
     {
       animation->frames_id.append(k);
+      qDebug() << animation->frames_id;
       k++;
 
       QVector<float> vertices;
@@ -1881,6 +1883,7 @@ void ImageProcessor::splitInFrames(int h_frames, int v_frames)
       this->vertices.append(vertices);
     }
   }
+
   setHFrames(h_frames);
   setVFrames(v_frames);
   reset_neighbours();
