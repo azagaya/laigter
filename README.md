@@ -287,7 +287,17 @@ Exporting a normals texture of the specified diffuse texture using the default p
 Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the default profile.
 
 ``` <PathToLaigter>/laigter.exe --no-gui -d "<pathToDiffuseTexture>.png" --r "<pathToPresetProfile>" -n -c -o -p ```
-Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.#
+Exporting normals, specular, occlusion and parallax textures of the specified diffuse texture using the specified preset profile.
+
+#### MacOS
+
+Symlink the binary. Replace `/Applications` with the path to laigter.
+
+``` sudo ln -s /Applications/laigter.app/Contents/MacOS/laigter /usr/local/bin ```
+
+Run laigter anywhere:
+
+``` laigter --no-gui -d <pathToDiffuseTexture>.png -n ``` etc.
 
 ## License
 
