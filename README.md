@@ -246,36 +246,6 @@ Generate parallax textures.
 ``` -r, --preset <preset file path> ```
 Preset file to use for texture generation.
 
-``` --qmljsdebugger <value> ```
-Activcates the QML/JS debugger with the specified port. The value must be of format port:1234[block] "block" makes the application wait for a connection.
-
-``` --platform <platformName[:options]> ```
-QPA plugin. See QGuiAplication documentation for available options for eah plugin.
-
-``` --platformpluginpath <path> ```
-Path to the platform plugins.
-
-``` --platformtheme <theme> ```
-Platform theme.
-
-``` --plguin <plugin> ```
-Additional plugins to load. Can be specified multiple times.
-
-``` --qwindowgeometry <geometry> ```
-Window geometry for the main windows, using the X11-syntax, lie 100x100+50+50.
-
-``` --qwindowicon <icon> ```
-Default window icon.
-
-``` --qwindowtitle <title> ```
-Title of the first window.
-
-``` --revers ```
-Sets the application's layout direction to Qt:RightToLeft (debugging helper).
-
-``` --session <session> ```
-Restores the application from an earlier session.
-
 ### Examples for command line
 
 Some basic example for common usages:
