@@ -29,6 +29,11 @@ bool ExportWidget::ExportMap(TextureTypes type, ImageProcessor *p, QString postf
 
   p->sprite.get_image(type, &n);
 
+  if (ui->AnimationComboBox->currentIndex() > 0 && ui->AnimationComboBox->currentIndex() < 5)
+  {
+    n = rearrangeFrames(n, p);
+  }
+
   if (type == TextureTypes::Normal)
   {
 
@@ -114,8 +119,25 @@ bool ExportWidget::ExportMap(TextureTypes type, ImageProcessor *p, QString postf
   {
     n.setAlphaChannel(p->get_texture()->convertToFormat(QImage::Format_Alpha8));
   }
-  saved &= n.save(name);
 
+  if (ui->AnimationComboBox->currentIndex() == 5)
+  {
+    int digits = log10((float)p->get_frame_count()) + 1;
+    for (int i = 0; i < p->get_frame_count(); i++)
+    {
+      QString frame_number = QStringLiteral("%1").arg(i, digits, 10, QLatin1Char('0'));
+      QStringList path_parts = name.split("/");
+      path_parts.last() = path_parts.last().split(".").join("_" + frame_number + ".");
+      QString i_name = path_parts.join("/");
+      QImage image = n.copy(p->getFrameRect(i));
+      saved &= image.save(i_name);
+      qDebug() << i_name;
+    }
+  }
+  else
+  {
+    saved &= n.save(name);
+  }
   return saved;
 }
 
@@ -204,7 +226,29 @@ void ExportWidget::on_pushButton_clicked()
         path = info.absolutePath();
       }
       name = path + "/" + info.fileName().remove("." + suffix) + ui->lineEditPreviewPostfix->text() + "." + suffix;
-      n.save(name);
+
+      if (ui->AnimationComboBox->currentIndex() > 0 && ui->AnimationComboBox->currentIndex() < 5)
+      {
+        n = rearrangeFrames(n, p);
+      }
+      if (ui->AnimationComboBox->currentIndex() == 5)
+      {
+        int digits = log10((float)p->get_frame_count()) + 1;
+        for (int i = 0; i < p->get_frame_count(); i++)
+        {
+          QString frame_number = QStringLiteral("%1").arg(i, digits, 10, QLatin1Char('0'));
+          QStringList path_parts = name.split("/");
+          path_parts.last() = path_parts.last().split(".").join("_" + frame_number + ".");
+          QString i_name = path_parts.join("/");
+          QImage image = n.copy(p->getFrameRect(i));
+          saved &= image.save(i_name);
+          qDebug() << i_name;
+        }
+      }
+      else
+      {
+        saved &= n.save(name);
+      }
     }
   }
 
@@ -225,4 +269,91 @@ void ExportWidget::on_pushButton_clicked()
 void ExportWidget::on_pushButtonExportDirectory_clicked()
 {
   ui->lineEdit->setText(QFileDialog::getExistingDirectory());
+}
+
+void ExportWidget::on_AnimationComboBox_activated(const QString &arg1)
+{
+
+  if (arg1 == "Fixed Rows")
+  {
+    ui->labelFrames->setText("Rows:");
+    ui->labelFrames->setEnabled(true);
+    ui->spinBoxFrames->setEnabled(true);
+  }
+  else if (arg1 == "Fixed Columns")
+  {
+    ui->labelFrames->setText("Columns:");
+    ui->labelFrames->setEnabled(true);
+    ui->spinBoxFrames->setEnabled(true);
+  }
+  else
+  {
+
+    ui->labelFrames->setText("");
+    ui->labelFrames->setEnabled(false);
+    ui->spinBoxFrames->setEnabled(false);
+  }
+}
+
+QImage ExportWidget::rearrangeFrames(QImage n, ImageProcessor *p)
+{
+  QSize s = p->getFrameImage(0).size();
+  int frames = p->get_frame_count();
+  int h_frames = 1, v_frames = 1;
+  bool by_rows = false;
+  switch (ui->AnimationComboBox->currentIndex())
+  {
+    case 1:
+      h_frames = frames;
+      break;
+    case 2:
+      v_frames = frames;
+      break;
+    case 3:
+      v_frames = ui->spinBoxFrames->value();
+      h_frames = ceil((float)frames / v_frames);
+      break;
+    case 4:
+      by_rows = true;
+      h_frames = ui->spinBoxFrames->value();
+      v_frames = ceil((float)frames / h_frames);
+      break;
+  }
+
+  QImage aux(h_frames * s.width(), v_frames * s.height(), n.format());
+  if (aux.hasAlphaChannel())
+    aux.fill(Qt::transparent);
+  else
+    aux.fill(Qt::black);
+  QPainter painter(&aux);
+  int index = 0;
+  if (!by_rows)
+  {
+    for (int i = 0; i < h_frames; i++)
+      for (int j = 0; j < v_frames; j++)
+      {
+        {
+          if (index >= frames)
+            break;
+          painter.drawImage(QRectF(i * s.width(), j * s.height(), s.width(), s.height()), n.copy(p->getFrameRect(index)));
+          index++;
+        }
+      }
+  }
+  else
+  {
+    for (int j = 0; j < v_frames; j++)
+      for (int i = 0; i < h_frames; i++)
+      {
+        {
+          if (index >= frames)
+            break;
+          qDebug() << index << frames;
+          painter.drawImage(QRectF(i * s.width(), j * s.height(), s.width(), s.height()), n.copy(p->getFrameRect(index)));
+          index++;
+        }
+      }
+  }
+
+  return aux.copy();
 }

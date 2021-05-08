@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>444</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -187,38 +187,106 @@
       <string>Exporting Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="checkBoxCombinedMaps">
-        <property name="toolTip">
-         <string>This Option will export Specular, Parallax, and Occlusion maps in a single RGB image.</string>
-        </property>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxInvertY">
         <property name="text">
-         <string>Combine Grayscale Maps</string>
+         <string>Invert Normal Y</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
+      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBoxInvertX">
         <property name="text">
          <string>Invert Normal X</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="2" column="0" colspan="2">
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Frames export options:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QComboBox" name="AnimationComboBox">
+        <item>
+         <property name="text">
+          <string>Default</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Horizontal Strip</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Vertical Strip</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fixed Rows</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fixed Columns</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sepparate Images</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelFrames">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="spinBoxFrames">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="toolTip">
+         <string>Embedd this map as the alpha channel of normal map.</string>
+        </property>
+        <property name="text">
+         <string>Normal Alpha Channel:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" colspan="2">
        <widget class="QComboBox" name="comboBoxNormalAlpha">
         <item>
          <property name="text">
@@ -242,20 +310,20 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="checkBoxInvertY">
-        <property name="text">
-         <string>Invert Normal Y</string>
+      <item row="9" column="0" colspan="2">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label">
+      <item row="10" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxCombinedMaps">
         <property name="toolTip">
-         <string>Embedd this map as the alpha channel of normal map.</string>
+         <string>This Option will export Specular, Parallax, and Occlusion maps in a single RGB image.</string>
         </property>
         <property name="text">
-         <string>Normal Alpha Channel:</string>
+         <string>Combine Grayscale Maps</string>
         </property>
        </widget>
       </item>

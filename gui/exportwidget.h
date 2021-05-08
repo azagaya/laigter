@@ -19,6 +19,7 @@ class ExportWidget : public QWidget
 public:
   explicit ExportWidget(QWidget *parent = nullptr);
   bool ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination = "", bool useAlpha = false);
+  QImage rearrangeFrames(QImage n, ImageProcessor *p);
 
   QList<ImageProcessor *> processorList;
   QList<ImageProcessor *> selectedProcessors;
@@ -32,6 +33,8 @@ private slots:
   void on_pushButton_clicked();
 
   void on_pushButtonExportDirectory_clicked();
+
+  void on_AnimationComboBox_activated(const QString &arg1);
 
 private:
   Ui::ExportWidget *ui;
