@@ -1775,7 +1775,7 @@ void MainWindow::SaveProject(QString path)
   general_settings.insert("toon", ui->checkBoxToon->isChecked());
   general_settings.insert("pixelated", ui->checkBoxPixelated->isChecked());
   general_settings.insert("blend", ui->blendSlider->value());
-  //general_settings.insert("lights per texture", ui->checkBoxLightsPerTexture->isChecked());
+  general_settings.insert("lights per texture", ui->checkBoxLightsPerTexture->isChecked());
 
   QJsonArray sample_lights;
 
