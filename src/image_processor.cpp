@@ -151,6 +151,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   }
   texture = image;
   last_texture = image;
+  qDebug() << image.hasAlphaChannel();
   sprite.set_image(TextureTypes::Diffuse, image);
   sprite.set_image(TextureTypes::Heightmap, image);
   sprite.set_image(TextureTypes::SpecularBase, image);
@@ -805,7 +806,12 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   QImage heightOverlay = get_heightmap_overlay();
   CImg<float> heightOv = QImage2CImg(heightOverlay);
   if (heightOv.is_empty())
+  {
     qDebug() << "empty";
+
+    normal_mutex.unlock();
+    return;
+  }
   heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
   for (int i = 0; i < rlist.count(); i++)
   {
@@ -1621,6 +1627,10 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
     case QImage::Format_Grayscale8:
       channels = 1;
       break;
+    case QImage::Format_RGB32:
+      channels = 3;
+      in = in.convertToFormat(QImage::Format_RGB888);
+      break;
     case QImage::Format_ARGB32:
       channels = 4;
       in.convertTo(QImage::Format_RGBA8888);
@@ -1632,10 +1642,7 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
     default:
       channels = 0;
   }
-  if (channels == 0)
-  {
-    channels = 0;
-  }
+
   int w = in.width(), h = in.height();
 
   //  CImg<uchar> srt(in.bits(), channels, w, h, 1);

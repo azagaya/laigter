@@ -253,7 +253,6 @@ bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObj
           save = false;
           break;
         }
-
         default:
         {
           name = s.fileName;
@@ -266,6 +265,11 @@ bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObj
         QDir dir(QStandardPaths::writableLocation(
             QStandardPaths::TempLocation));
         name = dir.path() + "/" + name.split("/").last().split(".").join(suffixes.at(i) + ".");
+        if (texture.hasAlphaChannel() && (name.endsWith("jpg") || name.endsWith("jpeg")))
+        {
+          name = name.replace("jpg", "png");
+          name = name.replace("jpeg", "png");
+        }
         texture.save(name);
         QString entry_name = p->get_name() + "/" + types.at(i) + "/" + name.split("/").last();
 

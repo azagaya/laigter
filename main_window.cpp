@@ -572,8 +572,9 @@ void MainWindow::open_files(QStringList fileNames)
             msgBox.exec();
             continue;
           }
-          auximage = auximage.convertToFormat(
-              QImage::Format_RGBA8888_Premultiplied);
+          if (auximage.hasAlphaChannel())
+            auximage = auximage.convertToFormat(
+                QImage::Format_RGBA8888_Premultiplied);
           image_list.append(auximage);
         }
       }
