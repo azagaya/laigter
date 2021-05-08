@@ -95,7 +95,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
-        p->get_current_frame()->set_image(TextureTypes::HeightmapOverlay, QImage::fromData(data));
+        p->set_heightmap_overlay(QImage::fromData(data));
       }
       zip_entry_close(zip);
 
@@ -136,7 +136,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
-        p->set_parallax_overlay(QImage::fromData(data));
+        p->set_specular_overlay(QImage::fromData(data));
       }
       zip_entry_close(zip);
 

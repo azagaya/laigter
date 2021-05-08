@@ -804,6 +804,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   QImage heightOverlay = get_heightmap_overlay();
   CImg<float> heightOv = QImage2CImg(heightOverlay);
+  if (heightOv.is_empty())
+    qDebug() << "empty";
   heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
   for (int i = 0; i < rlist.count(); i++)
   {

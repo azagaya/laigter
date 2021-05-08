@@ -3,8 +3,8 @@
 
 #include "src/image_processor.h"
 
-#include <QObject>
 #include <QJsonObject>
+#include <QObject>
 
 class Project : public QObject
 {
@@ -24,14 +24,14 @@ public slots:
 private:
   QString m_path;
   const QStringList suffixes = {"", "_n", "_s", "_p", "_o", "_h",
-                                "_d", "_neigh", "_sb", "_ob", "_to", "_no",
+                                "_d", "_neigh", "_sb", "_ob", "_co", "_to", "_no",
                                 "_ho", "_so", "_po", "_oo"};
 
   const QStringList types = {
       "diffuse", "normal", "specular",
       "parallax", "occlussion", "heightmap",
       "distance", "neighbours", "specularBase",
-      "occlussionBase", "textureOverlay", "normalOverlay",
+      "occlussionBase", "color", "textureOverlay", "normalOverlay",
       "heightmapOverlay", "specularOverlay", "parallaxOverlay",
       "occlussionOverlay"};
 };
