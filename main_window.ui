@@ -876,8 +876,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset theme="delete">
-         <normaloff>.</normaloff>.</iconset>
+        <iconset theme="delete"/>
        </property>
       </widget>
      </item>
