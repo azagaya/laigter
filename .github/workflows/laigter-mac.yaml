@@ -15,7 +15,7 @@ jobs:
     - name: build Laigter
       shell: bash
       run: |
-        export PATH="/usr/local/opt/qt@5/bin:$PATH
+        export PATH="/usr/local/opt/qt@5/bin:$PATH"
         qmake CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
