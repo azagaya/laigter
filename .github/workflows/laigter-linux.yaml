@@ -1,5 +1,8 @@
 name: Ubuntu 18.04
-on:  push
+on:  
+  push:
+    tags:
+      - '*'
 
 jobs:
   buildOnXenial:
@@ -40,6 +43,6 @@ jobs:
       uses: fnkr/github-action-ghr@v1.3
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: /__w/laigter/laigter/Laigter*.AppImage*
+        GHR_PATH: Laigter-x86_64.AppImage
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
