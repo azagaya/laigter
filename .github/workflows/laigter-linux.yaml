@@ -40,6 +40,6 @@ jobs:
       uses: fnkr/github-action-ghr@v1.3
       if: startsWith(github.ref, 'refs/tags/')
       env:
-        GHR_PATH: ./Laigter*.AppImage*
+        GHR_PATH: /__w/laigter/laigter/Laigter*.AppImage*
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
