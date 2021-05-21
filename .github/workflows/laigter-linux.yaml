@@ -27,7 +27,6 @@ jobs:
         
     - name: build Laigter
       run: |
-        cd ..
         /opt/qt514/bin/qmake CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
