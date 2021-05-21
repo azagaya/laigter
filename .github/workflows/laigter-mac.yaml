@@ -1,0 +1,32 @@
+name: MacOS
+on: push
+      
+jobs:
+  buildMac:
+    runs-on: macOS-latest
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v2
+    - name: setup Homebrew
+      run: |
+        export HOMEBREW_NO_AUTO_UPDATE=1 && export HOMEBREW_NO_INSTALL_CLEANUP=1 && brew update
+        HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt5
+        export PATH="/usr/local/opt/qt5/bin:$(brew --prefix)/bin:$PATH"
+    - name: build Laigter
+      run: |
+        qmake CONFIG+=release PREFIX=/usr
+        make -j$(nproc)
+        make INSTALL_ROOT=appdir install
+        find appdir/
+        mkdir -p appdir/usr/lib
+        macdeployqt laigter.app
+        wget https://raw.githubusercontent.com/arl/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py
+        ./macdeployqtfix.py laigter.app /usr/local/Cellar/qt/*/
+        zip -r laigter.zip laigter.app
+        
+    - name: GitHub Releases
+      uses: fnkr/github-action-ghr@v1.3
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GHR_PATH: Laigter-x86_64.AppImage
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
