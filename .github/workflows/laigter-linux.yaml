@@ -1,8 +1,5 @@
 name: Ubuntu 18.04
-on: 
-  push:
-    tags:
-    - '*'
+on: push
 
 jobs:
   buildOnXenial:
