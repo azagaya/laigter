@@ -35,8 +35,7 @@ jobs:
         make INSTALL_ROOT=appdir install
         find appdir/
         mkdir -p appdir/usr/lib
-        cp /lib/x86_64-linux-gnu/libssl* appdir/usr/lib
-        cp /usr/lib/x86_64-linux-gnu/libssl.so appdir/usr/lib
+        
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
