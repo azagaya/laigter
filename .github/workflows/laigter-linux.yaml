@@ -23,7 +23,7 @@ jobs:
         apt install -y software-properties-common g++ make wget
         add-apt-repository ppa:beineri/opt-qt-5.14.2-bionic
         apt-get update
-        apt install -y qt514base qt514x11extras qt514tools libgl1-mesa-dev qt514imageformats libssl1.0.0 libssl-dev
+        apt install -y qt514base qt514x11extras qt514tools libgl1-mesa-dev qt514imageformats
         
     - name: build Laigter
       shell: bash
@@ -35,7 +35,7 @@ jobs:
         make INSTALL_ROOT=appdir install
         find appdir/
         mkdir -p appdir/usr/lib
-        
+        export APPIMAGE_EXTRACT_AND_RUN=1
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
