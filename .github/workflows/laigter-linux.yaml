@@ -26,10 +26,6 @@ jobs:
         apt install -y qt514base qt514x11extras qt514tools libgl1-mesa-dev qt514imageformats libssl1.0.0 libssl-dev
         
         apt install -y fuse
-        modprobe fuse
-        groupadd fuse
-        user="$(whoami)"
-        usermod -a -G fuse $user
         
     - name: build Laigter
       shell: bash
@@ -48,7 +44,10 @@ jobs:
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage
         
-    - name: deploy build
-      run: |
-        wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-        bash upload.sh Laigter*.AppImage*
+    - name: Release
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+          GHR_COMPRESS: xz
+          GHR_PATH: ./Laigter*.AppImage*
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
