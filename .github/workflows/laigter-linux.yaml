@@ -37,8 +37,7 @@ jobs:
         if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage -verbose=2
-        ls
-        pwd
+
     - name: GitHub Releases
       uses: fnkr/github-action-ghr@v1.3
       if: startsWith(github.ref, 'refs/tags/')
