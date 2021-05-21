@@ -1,5 +1,12 @@
 name: Ubuntu 18.04
-on: push
+on: 
+  push:
+    branches:
+      master
+  pull_request:
+    branches:
+      master
+  create: tags
 
 jobs:
   buildOnXenial:
