@@ -25,6 +25,12 @@ jobs:
         apt-get update
         apt install -y qt514base qt514x11extras qt514tools libgl1-mesa-dev qt514imageformats libssl1.0.0 libssl-dev
         
+        apt install -y fuse
+        modprobe fuse
+        groupadd fuse
+        user="$(whoami)"
+        usermod -a -G fuse $user
+        
     - name: build Laigter
       shell: bash
       run: |
