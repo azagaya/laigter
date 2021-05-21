@@ -8,11 +8,13 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v2
     - name: setup Homebrew
+      shell: bash
       run: |
         export HOMEBREW_NO_AUTO_UPDATE=1 && export HOMEBREW_NO_INSTALL_CLEANUP=1 && brew update
         HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt5
-        export PATH="/usr/local/opt/qt5/bin:$(brew --prefix)/bin:$PATH"
+        echo 'export PATH="/usr/local/opt/qt@5/bin:$PATH"' >> /Users/runner/.bash_profile
     - name: build Laigter
+      shell: bash
       run: |
         qmake CONFIG+=release PREFIX=/usr
         make -j$(nproc)
