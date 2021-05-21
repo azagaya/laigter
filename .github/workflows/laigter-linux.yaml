@@ -36,7 +36,7 @@ jobs:
         mkdir -p appdir/usr/lib
         cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 appdir/usr/lib
         cp /usr/lib/x86_64-linux-gnu/libssl.so appdir/usr/lib
-        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage
         
