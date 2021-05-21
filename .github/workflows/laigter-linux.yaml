@@ -1,4 +1,4 @@
-name: Ubuntu 16.04
+name: Ubuntu 18.04
 on:
   push:
     branches:
@@ -9,9 +9,9 @@ on:
 
 jobs:
   buildOnXenial:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     container:
-      image: ubuntu:16.04 # yes, this looks redundant, but something is messed up with their Ubuntu image that causes our builds to fail
+      image: ubuntu:18.04 # yes, this looks redundant, but something is messed up with their Ubuntu image that causes our builds to fail
 
     steps:
     - name: checkout sources
@@ -21,16 +21,9 @@ jobs:
       run: |
         apt update
         apt install -y software-properties-common g++ make wget
-        add-apt-repository ppa:beineri/opt-qt-5.14.2-xenial
+        add-apt-repository ppa:beineri/opt-qt-5.14.2-bionic
         apt-get update
         apt install -y qt514base qt514x11extras qt514tools libgl1-mesa-dev qt514imageformats libssl1.0.0 libssl-dev
-        
-        apt install -y fuse
-        /sbin/modprobe fuse
-        groupadd fuse
-
-        user="$(whoami)"
-        /sbin/usermod -a -G fuse $user
         
     - name: build Laigter
       shell: bash
