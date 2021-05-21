@@ -1,5 +1,5 @@
 name: Ubuntu 16.04
-n:
+on:
   push:
     branches:
     - master
