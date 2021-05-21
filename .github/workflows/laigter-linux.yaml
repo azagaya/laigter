@@ -28,7 +28,7 @@ jobs:
     - name: build Laigter
       shell: bash
       run: |
-        source /opt/qt*/bin/qt*-env.sh
+        source /opt/qt*/bin/qt*-env.sh || true
         /opt/qt514/bin/qmake CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
