@@ -27,6 +27,14 @@ QPushButton::pressed
         border-radius: 2px;
 }
 
+QPushButton:checked
+{
+border: 1px solid rgb(29, 161, 242);
+background: rgb(27, 31, 45);
+color: rgb(0%,0%,20%);
+border-radius: 2px;
+}
+
 QDockWidget
 {
 	color: rgb(235, 235, 235);
