@@ -2,11 +2,12 @@ name: Ubuntu 18.04
 on: 
   push:
     branches:
-      master
+    - master
+    tags:
+    - '*'
   pull_request:
     branches:
-      master
-  create: tags
+    - master
 
 jobs:
   buildOnXenial:
