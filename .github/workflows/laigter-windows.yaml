@@ -1,0 +1,24 @@
+
+name: MacOS
+on: push
+
+jobs:
+  buildWin:
+    runs-on: windows-latest
+    steps:
+    
+    - name: checkout sources
+      uses: actions/checkout@v2
+      
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '5.14.2'
+        modules: 'imageformats'
+        aqtversion: '==1.1.6'
+        extra: '--external 7z'
+        
+    - name: Build Laigter
+      run: |
+        qmake
+    
