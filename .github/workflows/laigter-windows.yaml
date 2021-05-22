@@ -25,10 +25,10 @@ jobs:
         qmake
         make
         dir
-        mkdir .\laigter-windows
+        mkdir \laigter-windows
         windeployqt --dir .\laigter-windows .\release\laigter.exe
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
-        tar.exe -a -c -f laigter-windows.zip .\laigter-windows
+        tar.exe -a -c -f laigter-windows.zip laigter-windows
         
     - name: GitHub Releases
       uses: svenstaro/upload-release-action@v2
