@@ -27,8 +27,9 @@ jobs:
         zip -r laigter.zip laigter.app
         
     - name: GitHub Releases
-      uses: fnkr/github-action-ghr@v1.3
+      uses: svenstaro/upload-release-action@v2
       if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GHR_PATH: Laigter-x86_64.AppImage
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: laigter.zip
+        tag: ${{ github.ref }}
