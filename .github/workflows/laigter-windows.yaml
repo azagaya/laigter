@@ -15,13 +15,13 @@ jobs:
       with:
         version: '5.15.2'
         modules: 'imageformats'
+        arch: win64_mingw73
         aqtversion: '==1.1.6'
         extra: '--external 7z'
         
     - name: Build Laigter
       shell: cmd
       run: |
-        call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         qmake
         make
     
