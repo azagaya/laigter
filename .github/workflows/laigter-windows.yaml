@@ -13,7 +13,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: '5.15.2'
+        version: '5.14.2'
         modules: 'imageformats'
         arch: win64_mingw73
         aqtversion: '==1.1.6'
