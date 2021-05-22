@@ -24,4 +24,9 @@ jobs:
       run: |
         qmake
         make
+        dir
+        mkdir \laigter-windows
+        windeployqt --dir \laigter-windows release\laigter.exe
+        copy /Y release\laigter.exe .\laigter-windows\laigter.exe
+        
     
