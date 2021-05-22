@@ -25,8 +25,16 @@ jobs:
         qmake
         make
         dir
-        mkdir \laigter-windows
-        windeployqt --dir \laigter-windows release\laigter.exe
-        copy /Y release\laigter.exe .\laigter-windows\laigter.exe
+        mkdir .\laigter-windows
+        windeployqt --dir .\laigter-windows .\release\laigter.exe
+        copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
+        tar.exe -a -c -f laigter-windows.zip .\laigter-windows
         
+    - name: GitHub Releases
+      uses: svenstaro/upload-release-action@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: laigter-windows.zip
+        tag: ${{ github.ref }}
     
