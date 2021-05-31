@@ -26,7 +26,7 @@ jobs:
         make
         dir
         mkdir \laigter-windows
-        windeployqt --dir .\laigter-windows .\release\laigter.exe
+        windeployqt --compiler-runtime --dir .\laigter-windows .\release\laigter.exe
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
         tar.exe -a -c -f laigter-windows.zip laigter-windows
         
