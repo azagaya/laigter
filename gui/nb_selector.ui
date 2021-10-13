@@ -257,8 +257,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="frame-add">
-           <normaloff>.</normaloff>.</iconset>
+          <iconset theme="frame-add"/>
          </property>
         </widget>
        </item>
@@ -271,8 +270,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="delete">
-           <normaloff>.</normaloff>.</iconset>
+          <iconset theme="delete"/>
          </property>
         </widget>
        </item>
