@@ -185,7 +185,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -196,12 +196,12 @@
         <widget class="QListWidget" name="listWidget">
          <item>
           <property name="text">
-           <string>Rico Cruz (Producer!)</string>
+           <string>Manolis Papadeas (Participant!)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Lodugh (Participant!)</string>
+           <string>Lodugh (Supporter!)</string>
           </property>
          </item>
          <item>
@@ -212,11 +212,6 @@
          <item>
           <property name="text">
            <string>SHo0N (Participant!)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Matthieu (Participant!)</string>
           </property>
          </item>
          <item>
