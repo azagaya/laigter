@@ -7,3 +7,4 @@ Français	FR.png	fr
 Português brasileiro	BR.png	pt_BR
 Türkçe	TR.png	tr
 Ελληνικά	GR.png	el
+Deutsche	DE.png	de

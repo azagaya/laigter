@@ -23,27 +23,21 @@
         <translation type="vanished">Contributions</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="199"/>
         <source>Patrick &quot;Ffyhlkain&quot; Henschel (Producer!)</source>
-        <translation>Patrick &apos;Ffyhlkain&apos; Henschel (Producer!)</translation>
+        <translation type="vanished">Patrick &apos;Ffyhlkain&apos; Henschel (Producer!)</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="209"/>
-        <source>Christine Garner (Friend of Laigter!)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/about_dialog.ui" line="214"/>
+        <location filename="../gui/about_dialog.ui" line="204"/>
         <source>Lodugh (Participant!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="229"/>
+        <location filename="../gui/about_dialog.ui" line="224"/>
         <source>Christoffer Sundbom (Supporter!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="237"/>
+        <location filename="../gui/about_dialog.ui" line="232"/>
         <source>Patreon:</source>
         <translation>Patreon&#xa0;:</translation>
     </message>
@@ -52,12 +46,12 @@
         <translation type="vanished">Développeurs</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="267"/>
+        <location filename="../gui/about_dialog.ui" line="262"/>
         <source>Gnumaru - Experimental CLI Interface</source>
         <translation>Gnumaru - Interface en ligne de commandes expérimentale</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="262"/>
+        <location filename="../gui/about_dialog.ui" line="257"/>
         <source>George Marques (vnen) - Translation load</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,58 +61,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="204"/>
+        <location filename="../gui/about_dialog.ui" line="199"/>
         <source>Rico Cruz (Producer!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="219"/>
+        <location filename="../gui/about_dialog.ui" line="209"/>
+        <source>GameDevTraum (Friend of Laigter!)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/about_dialog.ui" line="214"/>
         <source>SHo0N (Participant!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="224"/>
+        <location filename="../gui/about_dialog.ui" line="219"/>
         <source>Matthieu (Participant!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="245"/>
+        <location filename="../gui/about_dialog.ui" line="240"/>
         <source>Contributors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="252"/>
+        <location filename="../gui/about_dialog.ui" line="247"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
         <translation>Brandon Blanker Lim-it - Rechargement automatique de l&apos;image lors d&apos;une modification externe</translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="257"/>
+        <location filename="../gui/about_dialog.ui" line="252"/>
         <source>creepertron95 - Laigter Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/about_dialog.ui" line="276"/>
+        <location filename="../gui/about_dialog.ui" line="271"/>
         <source>Translations</source>
         <translation>Traductions</translation>
     </message>
     <message>
+        <location filename="../gui/about_dialog.ui" line="278"/>
+        <source>Hans Wakelin - Japanese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../gui/about_dialog.ui" line="283"/>
-        <source>Hans Wakelin (Japanese)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/about_dialog.ui" line="288"/>
-        <source>Muhammed Altaş - Turkish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/about_dialog.ui" line="293"/>
-        <source>Manolis Papadeas (Overloaded) - Greek</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/about_dialog.ui" line="298"/>
-        <source>Hugo Locurcio (Calinou) &amp; Danton Slip - French</source>
+        <source>TheTrueDuck - German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -126,7 +115,7 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Fira Sans Semi-Light&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Noto Sans&apos;; font-size:9pt;&quot;&gt;Acknowledgements&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Noto Sans&apos;; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Noto Sans&apos;; font-size:9pt;&quot;&gt;Portions of this software may utilize the following copyrighted material, the use of which is hereby acknowledged.&lt;/span&gt;&lt;/p&gt;
@@ -1463,6 +1452,21 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../gui/about_dialog.ui" line="288"/>
+        <source>Muhammed Altaş - Turkish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/about_dialog.ui" line="293"/>
+        <source>Manolis Papadeas (Overloaded) - Greek</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/about_dialog.ui" line="298"/>
+        <source>Hugo Locurcio (Calinou) &amp; Danton Slip - French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Hugo Locurcio (Calinou) - French</source>
         <translation type="vanished">Hugo Locurcio (Calinou) - Français</translation>
     </message>
@@ -1537,7 +1541,7 @@ p, li { white-space: pre-wrap; }
     <name>ExportWidget</name>
     <message>
         <location filename="../gui/exportwidget.ui" line="14"/>
-        <location filename="../gui/exportwidget.ui" line="281"/>
+        <location filename="../gui/exportwidget.ui" line="349"/>
         <source>Export</source>
         <translation type="unfinished">Exporter</translation>
     </message>
@@ -1573,7 +1577,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="99"/>
-        <location filename="../gui/exportwidget.ui" line="230"/>
+        <location filename="../gui/exportwidget.ui" line="298"/>
         <source>Specular</source>
         <translation type="unfinished">Spéculaire</translation>
     </message>
@@ -1584,7 +1588,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="116"/>
-        <location filename="../gui/exportwidget.ui" line="235"/>
+        <location filename="../gui/exportwidget.ui" line="303"/>
         <source>Parallax</source>
         <translation type="unfinished">Parallaxe</translation>
     </message>
@@ -1595,7 +1599,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="133"/>
-        <location filename="../gui/exportwidget.ui" line="240"/>
+        <location filename="../gui/exportwidget.ui" line="308"/>
         <source>Occlusion</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1630,53 +1634,88 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="193"/>
+        <location filename="../gui/exportwidget.ui" line="214"/>
+        <source>Frames export options:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="222"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="227"/>
+        <source>Horizontal Strip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="232"/>
+        <source>Vertical Strip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="237"/>
+        <source>Fixed Rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="242"/>
+        <source>Fixed Columns</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="247"/>
+        <source>Sepparate Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/exportwidget.ui" line="323"/>
         <source>This Option will export Specular, Parallax, and Occlusion maps in a single RGB image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="196"/>
+        <location filename="../gui/exportwidget.ui" line="326"/>
         <source>Combine Grayscale Maps</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="210"/>
+        <location filename="../gui/exportwidget.ui" line="200"/>
         <source>Invert Normal X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="225"/>
+        <location filename="../gui/exportwidget.ui" line="293"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="248"/>
+        <location filename="../gui/exportwidget.ui" line="193"/>
         <source>Invert Normal Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="255"/>
+        <location filename="../gui/exportwidget.ui" line="282"/>
         <source>Embedd this map as the alpha channel of normal map.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="258"/>
+        <location filename="../gui/exportwidget.ui" line="285"/>
         <source>Normal Alpha Channel:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.ui" line="288"/>
+        <location filename="../gui/exportwidget.ui" line="356"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.cpp" line="214"/>
+        <location filename="../gui/exportwidget.cpp" line="257"/>
         <source>All selected maps were exported.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/exportwidget.cpp" line="218"/>
+        <location filename="../gui/exportwidget.cpp" line="261"/>
         <source>Could not export maps. Check destination&apos;s permissions.
 </source>
         <translation type="unfinished"></translation>
@@ -2018,7 +2057,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../main_window.ui" line="1557"/>
-        <location filename="../main_window.cpp" line="1530"/>
+        <location filename="../main_window.cpp" line="1529"/>
         <source>Load Plugins</source>
         <translation>Charger les plugins</translation>
     </message>
@@ -2030,20 +2069,20 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="1571"/>
         <location filename="../main_window.ui" line="1574"/>
-        <location filename="../main_window.cpp" line="1530"/>
+        <location filename="../main_window.cpp" line="1529"/>
         <source>Install Plugin</source>
         <translation>Installer le plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1585"/>
         <location filename="../main_window.ui" line="1588"/>
-        <location filename="../main_window.cpp" line="1530"/>
+        <location filename="../main_window.cpp" line="1529"/>
         <source>Delete Plugin</source>
         <translation>Supprimer le plugin</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1593"/>
-        <location filename="../main_window.cpp" line="1685"/>
+        <location filename="../main_window.cpp" line="1686"/>
         <source>Languages</source>
         <translation>Langues</translation>
     </message>
@@ -2192,13 +2231,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../main_window.cpp" line="267"/>
-        <location filename="../main_window.cpp" line="371"/>
+        <location filename="../main_window.cpp" line="369"/>
         <source>Load specular map</source>
         <translation>Charger une carte spéculaire</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="268"/>
-        <location filename="../main_window.cpp" line="375"/>
+        <location filename="../main_window.cpp" line="373"/>
         <source>Reset specular map</source>
         <translation>Réinitialiser la carte spéculaire</translation>
     </message>
@@ -2227,41 +2266,41 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Lancer l&apos;animation</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="398"/>
-        <location filename="../main_window.cpp" line="416"/>
-        <location filename="../main_window.cpp" line="1839"/>
+        <location filename="../main_window.cpp" line="396"/>
+        <location filename="../main_window.cpp" line="414"/>
+        <location filename="../main_window.cpp" line="1840"/>
         <source>Open Image</source>
         <translation>Ouvrir une image</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="399"/>
-        <location filename="../main_window.cpp" line="417"/>
-        <location filename="../main_window.cpp" line="1839"/>
+        <location filename="../main_window.cpp" line="397"/>
+        <location filename="../main_window.cpp" line="415"/>
+        <location filename="../main_window.cpp" line="1840"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
         <translation>Images (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="572"/>
+        <location filename="../main_window.cpp" line="570"/>
         <source>Cannot open </source>
         <translation>Impossible d&apos;ouvrir </translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="573"/>
+        <location filename="../main_window.cpp" line="571"/>
         <source>Unsupported or incorrect format.</source>
         <translation>Format incorrect ou non pris en charge.</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1711"/>
+        <location filename="../main_window.cpp" line="1712"/>
         <source>Open Laigter Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1712"/>
+        <location filename="../main_window.cpp" line="1713"/>
         <source>Project File (*.laigter)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1825"/>
+        <location filename="../main_window.cpp" line="1826"/>
         <source>Image File (*.laigter)</source>
         <translation>Fichier image</translation>
     </message>
@@ -2270,13 +2309,13 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">L&apos;image est déjà ouverte dans laigter.</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1310"/>
-        <location filename="../main_window.cpp" line="1825"/>
+        <location filename="../main_window.cpp" line="1309"/>
+        <location filename="../main_window.cpp" line="1826"/>
         <source>Save Image</source>
         <translation>Enregistrer l&apos;image</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1310"/>
+        <location filename="../main_window.cpp" line="1309"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
         <translation>Images (*.png *.jpg *.bmp *.tga)</translation>
     </message>
@@ -2365,24 +2404,24 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Une carte de hauteur personnalisée a été modifiée</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1602"/>
-        <location filename="../main_window.cpp" line="1605"/>
-        <location filename="../main_window.cpp" line="1608"/>
+        <location filename="../main_window.cpp" line="1603"/>
+        <location filename="../main_window.cpp" line="1606"/>
+        <location filename="../main_window.cpp" line="1609"/>
         <source>Open Plugin</source>
         <translation>Ouvrir Plugin</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1602"/>
+        <location filename="../main_window.cpp" line="1603"/>
         <source>Shared Library (*.so)</source>
         <translation>Bibliothèque partagée</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1605"/>
+        <location filename="../main_window.cpp" line="1606"/>
         <source>Shared Library (*.dll)</source>
         <translation>Bibliothèque partagée</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="1608"/>
+        <location filename="../main_window.cpp" line="1609"/>
         <source>Shared Library (*.dylib)</source>
         <translation>Bibliothèque partagée</translation>
     </message>
@@ -2395,27 +2434,32 @@ p, li { white-space: pre-wrap; }
         <translation>Sélectionneur de voisins</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="183"/>
+        <location filename="../gui/nb_selector.ui" line="186"/>
+        <source>Zoom:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/nb_selector.ui" line="203"/>
         <source>Sprite Frames</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="209"/>
+        <location filename="../gui/nb_selector.ui" line="229"/>
         <source>ExternalImages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="234"/>
+        <location filename="../gui/nb_selector.ui" line="254"/>
         <source>Add Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="247"/>
+        <location filename="../gui/nb_selector.ui" line="268"/>
         <source>Remove Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.ui" line="313"/>
+        <location filename="../gui/nb_selector.ui" line="593"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2428,12 +2472,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Vider les voisins</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.cpp" line="191"/>
+        <location filename="../gui/nb_selector.cpp" line="209"/>
         <source>Open Image</source>
         <translation>Ouvrir une image</translation>
     </message>
     <message>
-        <location filename="../gui/nb_selector.cpp" line="192"/>
+        <location filename="../gui/nb_selector.cpp" line="210"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
         <translation>Images (*.png *.jpg *.bmp *.tga)</translation>
     </message>

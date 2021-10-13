@@ -142,7 +142,9 @@ TRANSLATIONS = translations/laigter_da.ts \
 	translations/laigter_pt_BR.ts \
 	translations/laigter_ca_ES.ts \
         translations/laigter_el.ts \
-        translations/laigter_tr.ts
+        translations/laigter_tr.ts \
+        translations/laigter_jp.ts \
+        translations/laigter_de.ts
 
 LANGUAGES = da\
 	en \
@@ -152,7 +154,8 @@ LANGUAGES = da\
 	ca_ES \
         el \
         tr \
-        jp
+        jp \
+        de
 
 # parameters: var, prepend, append
 defineReplace(prependAll) {
