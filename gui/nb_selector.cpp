@@ -31,6 +31,8 @@ NBSelector::NBSelector(QDialog *parent)
   ui->setupUi(this);
   frameList = ui->framesTab->findChild<QListWidget *>("listWidget");
   imagesList = ui->imagesTab->findChild<QListWidget *>("listWidgetImages");
+  ui->listWidget->setIconSize(QSize(100, 100));
+  ui->listWidgetImages->setIconSize(QSize(100,100));
 }
 
 NBSelector::~NBSelector() { delete ui; }
@@ -50,10 +52,7 @@ void NBSelector::setProcessor(ImageProcessor *processor)
   QSize s(processor->texture.width() / processor->getHFrames(), processor->texture.height() / processor->getVFrames());
   QImage empty(s, processor->texture.format());
   empty.fill(Qt::transparent);
-  qDebug() << 1;
-  qDebug() << processor->current_animation->frames_id;
 
-  qDebug() << 1.5;
   foreach (int frame, processor->current_animation->frames_id)
   {
     QImage image = processor->getFrameImage(frame);
@@ -77,24 +76,37 @@ void NBSelector::setProcessor(ImageProcessor *processor)
 
 void NBSelector::get_neighbours()
 {
+
+  QSize s = ui->NUL->size();
+
+  ui->NUL->setIconSize(s);
+  ui->NUM->setIconSize(s);
+  ui->NUR->setIconSize(s);
+  ui->NML->setIconSize(s);
+  ui->NMM->setIconSize(s);
+  ui->NMR->setIconSize(s);
+  ui->NBL->setIconSize(s);
+  ui->NBM->setIconSize(s);
+  ui->NBR->setIconSize(s);
+
   QImage image = processor->get_neighbour(0, 0);
-  ui->NUL->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NUL->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(1, 0);
-  ui->NUM->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NUM->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(2, 0);
-  ui->NUR->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NUR->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(0, 1);
-  ui->NML->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NML->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(1, 1);
-  ui->NMM->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NMM->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(2, 1);
-  ui->NMR->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NMR->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(0, 2);
-  ui->NBL->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NBL->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(1, 2);
-  ui->NBM->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NBM->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
   image = processor->get_neighbour(2, 2);
-  ui->NBR->setIcon(QIcon(QPixmap::fromImage(image)));
+  ui->NBR->setIcon(QIcon(QPixmap::fromImage(image).scaled(s.width(), s.height(), Qt::KeepAspectRatio)));
 }
 
 void NBSelector::on_pushButtonResetNeighbours_clicked()
@@ -207,3 +219,30 @@ void NBSelector::on_addImagePushButton_pressed()
     imagesList->addItem(item);
   }
 }
+
+void NBSelector::resizeEvent(QResizeEvent *event){
+    Q_UNUSED(event);
+    get_neighbours();
+}
+
+void NBSelector::on_horizontalSlider_valueChanged(int value)
+{
+    ui->listWidget->setIconSize(QSize(value, value));
+
+    QSize s(processor->texture.width() / processor->getHFrames(), processor->texture.height() / processor->getVFrames());
+    QImage empty(s, processor->texture.format());
+    empty.fill(Qt::transparent);
+    int i = 0;
+    foreach (int frame, processor->current_animation->frames_id)
+    {
+      QImage image = processor->getFrameImage(frame);
+      if (image == empty)
+        continue;
+
+      QListWidgetItem *item = ui->listWidget->item(i);
+      QPixmap icon = QPixmap::fromImage(image.scaled(QSize(value,value)));
+      item->setIcon(icon);
+      i++;
+    }
+}
+

@@ -63,6 +63,11 @@ private slots:
   void setNeighbor(int x, int y);
   void on_pushButtonResetNeighbours_pressed();
   void on_addImagePushButton_pressed();
+
+  void on_horizontalSlider_valueChanged(int value);
+
+protected:
+  void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // NBSELECTOR_H

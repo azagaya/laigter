@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>725</width>
-    <height>442</height>
+    <width>777</width>
+    <height>457</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,122 +26,24 @@
    <string>Neighbours selector</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="2" column="0">
-    <widget class="QPushButton" name="NBL">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="NMM">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1">
     <widget class="QPushButton" name="NBM">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>123</width>
-       <height>123</height>
+       <width>128</width>
+       <height>128</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>16777215</width>
-       <height>16777215</height>
+       <width>256</width>
+       <height>256</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -173,8 +75,126 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3" rowspan="3" colspan="2">
+   <item row="3" column="5">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPushButton" name="NUM">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>128</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="NBR">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>128</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Zoom:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" rowspan="3" colspan="4">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -237,7 +257,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="frame-add"/>
+          <iconset theme="frame-add">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -250,7 +271,8 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="delete"/>
+          <iconset theme="delete">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -258,178 +280,24 @@
      </widget>
     </widget>
    </item>
-   <item row="2" column="2">
-    <widget class="QPushButton" name="NBR">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="NML">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>123</width>
-       <height>123</height>
+       <width>128</width>
+       <height>128</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="4">
-    <widget class="QPushButton" name="pushButtonResetNeighbours">
-     <property name="text">
-      <string>Reset</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="NMR">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QPushButton" name="NUL">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QPushButton" name="NUM">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
+       <width>256</width>
+       <height>256</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -464,21 +332,21 @@
    <item row="0" column="2">
     <widget class="QPushButton" name="NUR">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>123</width>
-       <height>123</height>
+       <width>128</width>
+       <height>128</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>16777215</width>
-       <height>16777215</height>
+       <width>256</width>
+       <height>256</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -510,67 +378,221 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="NML">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="3" column="4">
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="minimum">
+      <number>100</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>123</width>
-       <height>123</height>
-      </size>
+     <property name="maximum">
+      <number>512</number>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"> QPushButton { 
-                     border: 2px solid transparent;
-                     padding: 0px; 
-                     background: 2px solid rgba(29, 161, 242, 25);
-                     }
-                   QPushButton:pressed
-                     {
-                          border: 2px solid rgb(29, 161, 242);
-                          background: 2px solid rgba(29, 161, 242, 50);
-                      }</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>115</width>
-       <height>115</height>
-      </size>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="3">
-    <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="NMM">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
       <size>
-       <width>40</width>
-       <height>20</height>
+       <width>128</width>
+       <height>128</height>
       </size>
      </property>
-    </spacer>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="NMR">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>128</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="NBL">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>128</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="NUL">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>128</width>
+       <height>128</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>256</width>
+       <height>256</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QPushButton { 
+                     border: 2px solid transparent;
+                     padding: 0px; 
+                     background: 2px solid rgba(29, 161, 242, 25);
+                     }
+                   QPushButton:pressed
+                     {
+                          border: 2px solid rgb(29, 161, 242);
+                          background: 2px solid rgba(29, 161, 242, 50);
+                      }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>115</width>
+       <height>115</height>
+      </size>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="6">
+    <widget class="QPushButton" name="pushButtonResetNeighbours">
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
