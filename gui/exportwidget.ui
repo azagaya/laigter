@@ -145,9 +145,9 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QCheckBox" name="checkBoxDifusse">
+       <widget class="QCheckBox" name="checkBoxDiffuse">
         <property name="text">
-         <string>Difusse</string>
+         <string>Diffuse</string>
         </property>
        </widget>
       </item>
@@ -244,7 +244,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Sepparate Images</string>
+          <string>Separate Images</string>
          </property>
         </item>
        </widget>
@@ -279,7 +279,7 @@
       <item row="7" column="0" colspan="2">
        <widget class="QLabel" name="label">
         <property name="toolTip">
-         <string>Embedd this map as the alpha channel of normal map.</string>
+         <string>Embed the selected texture map in the alpha channel of the exported normal map image.</string>
         </property>
         <property name="text">
          <string>Normal Alpha Channel:</string>

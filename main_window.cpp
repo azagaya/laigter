@@ -728,7 +728,7 @@ void MainWindow::on_actionExport_triggered()
   //        info.absoluteFilePath().remove("." + suffix) + "_o." + suffix;
   //    n = *processor->get_occlusion();
   //    n.save(fileName);
-  //    message += tr("Occlussion map was exported.\n");
+  //    message += tr("Occlusion map was exported.\n");
   //  }
 
   //  if (ui->checkBoxExportPreview->isChecked())

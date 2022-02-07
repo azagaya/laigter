@@ -2938,7 +2938,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="150"/>
-        <source>Difusse</source>
+        <source>Diffuse</source>
         <translation>Diffus</translation>
     </message>
     <message>
@@ -2988,7 +2988,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="255"/>
-        <source>Embedd this map as the alpha channel of normal map.</source>
+        <source>Embed the selected texture map in the alpha channel of the exported normal map image.</source>
         <translatorcomment>??? What is this saying?</translatorcomment>
         <translation>Dieses Feld als Alphakanal des Normalfelds einbinden.</translation>
     </message>
@@ -3228,7 +3228,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../main_window.ui" line="743"/>
-        <source>Occlussion Map</source>
+        <source>Occlusion Map</source>
         <translation>Umgebungverdeckungsfeld</translation>
     </message>
     <message>
@@ -3609,7 +3609,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="209"/>
-        <source>ExternalImages</source>
+        <source>External Images</source>
         <translation>Externe BIlder</translation>
     </message>
     <message>
