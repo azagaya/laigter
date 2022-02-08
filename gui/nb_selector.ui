@@ -47,9 +47,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -103,9 +103,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -152,9 +152,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -226,7 +226,7 @@
      </widget>
      <widget class="QWidget" name="imagesTab">
       <attribute name="title">
-       <string>ExternalImages</string>
+       <string>External Images</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0" colspan="2">
@@ -299,9 +299,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -348,9 +348,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -410,9 +410,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -459,9 +459,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -508,9 +508,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed
@@ -557,9 +557,9 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QPushButton { 
+      <string notr="true"> QPushButton {
                      border: 2px solid transparent;
-                     padding: 0px; 
+                     padding: 0px;
                      background: 2px solid rgba(29, 161, 242, 25);
                      }
                    QPushButton:pressed

@@ -173,7 +173,7 @@ void ExportWidget::on_pushButton_clicked()
     {
       saved &= ExportMap(TextureTypes::Occlussion, p, ui->lineEditOcclusionPostFix->text(), path, p->get_use_occlusion_alpha());
     }
-    if (ui->checkBoxDifusse->isChecked())
+    if (ui->checkBoxDiffuse->isChecked())
     {
       saved &= ExportMap(TextureTypes::Color, p, ui->lineEditDiffusePostFix->text(), path);
     }

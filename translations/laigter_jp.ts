@@ -1622,7 +1622,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="150"/>
-        <source>Difusse</source>
+        <source>Diffuse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1677,7 +1677,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="247"/>
-        <source>Sepparate Images</source>
+        <source>Separate Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1707,7 +1707,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="282"/>
-        <source>Embedd this map as the alpha channel of normal map.</source>
+        <source>Embed the selected texture map in the alpha channel of the exported normal map image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1947,7 +1947,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../main_window.ui" line="743"/>
-        <source>Occlussion Map</source>
+        <source>Occlusion Map</source>
         <translation>オクルージョンマップ</translation>
     </message>
     <message>
@@ -2353,7 +2353,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">スペキュラーマップのエクスポート完了!</translation>
     </message>
     <message>
-        <source>Occlussion map was exported.
+        <source>Occlusion map was exported.
 </source>
         <translation type="vanished">オクルージョンマップのエクスポート完了!</translation>
     </message>
@@ -2430,7 +2430,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="229"/>
-        <source>ExternalImages</source>
+        <source>External Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
