@@ -1,4 +1,5 @@
 Català	ES_CA.png	ca_ES
+简体中文	CN.png	zh_CN
 Dansk	DK.png	da
 English	GB.png	en
 Español	ES.png	es
