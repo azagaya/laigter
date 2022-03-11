@@ -1,110 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_ES">
+<TS version="2.1" language="en_US">
 <context>
     <name>AboutDialog</name>
     <message>
         <location filename="../gui/about_dialog.ui" line="14"/>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation>关于</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="27"/>
         <source>Follow and Support me on:</source>
-        <translation>Sígueme y Apóyame en:</translation>
+        <translation>关注并支持我：</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="181"/>
         <source>Laigter, by Azagaya</source>
-        <translation>Laigter, por Azagaya</translation>
-    </message>
-    <message>
-        <source>Contributions</source>
-        <translation type="vanished">Contribuciones</translation>
+        <translation>Laigter，由 Azagaya 制作</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="204"/>
         <source>Lodugh (Participant!)</source>
-        <translation>Lodugh (Participant!)</translation>
+        <translation>Lodugh (参与者！)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="224"/>
         <source>Christoffer Sundbom (Supporter!)</source>
-        <translation></translation>
+        <translation type="unfinished">Christoffer Sundbom (支持者！)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="232"/>
         <source>Patreon:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Programmers</source>
-        <translation type="vanished">Programadores</translation>
+        <translation>Patreon：</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="262"/>
         <source>Gnumaru - Experimental CLI Interface</source>
-        <translation></translation>
+        <translation>Gnumaru - 实验性 CLI 界面</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="257"/>
         <source>George Marques (vnen) - Translation load</source>
-        <translation>George Marques (vnen) - Translation load</translation>
+        <translation>>George Marques (vnen) - 翻译装载</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="192"/>
         <source>Supporters</source>
-        <translation>Patrocinadores</translation>
+        <translation type="unfinished">支持者</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="199"/>
         <source>Rico Cruz (Producer!)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rico Cruz (制作人！)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="209"/>
         <source>GameDevTraum (Friend of Laigter!)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">GameDevTraum (Laigter 的朋友！)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="214"/>
         <source>SHo0N (Participant!)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SHo0N（参与者！）</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="219"/>
         <source>Matthieu (Participant!)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Matthieu (参与者！)</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="240"/>
         <source>Contributors</source>
-        <translation>Contribuidores</translation>
+        <translation type="unfinished">贡献者</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="247"/>
         <source>Brandon Blanker Lim-it - Image auto reload when file changes</source>
-        <translation></translation>
+        <translation>Brandon Blanker Lim-it - 文件变化时图像自动重新加载</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="252"/>
         <source>creepertron95 - Laigter Icon</source>
-        <translation></translation>
+        <translation type="unfinished">creepertron95 - Laigter 的图标</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="271"/>
         <source>Translations</source>
-        <translation>Traducciones</translation>
+        <translation>翻译者</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="278"/>
         <source>Hans Wakelin - Japanese</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hans Wakelin - 日语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="283"/>
         <source>TheTrueDuck - German</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">TheTrueDuck - 德语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="333"/>
@@ -1450,42 +1442,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/about_dialog.ui" line="288"/>
         <source>Muhammed Altaş - Turkish</source>
-        <translation></translation>
+        <translation type="unfinished">Muhammed Altaş - 土耳其语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="293"/>
         <source>Manolis Papadeas (Overloaded) - Greek</source>
-        <translation></translation>
+        <translation type="unfinished">Manolis Papadeas (Overloaded) - 希腊语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="298"/>
         <source>Hugo Locurcio (Calinou) &amp; Danton Slip - French</source>
-        <translation></translation>
+        <translation type="unfinished">Hugo Locurcio (Calinou) &amp; Danton Slip - 法语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="303"/>
         <source>George Marques (vnen) - Brazilian Portuguese</source>
-        <translation>George Marques (vnen) - Brazilian Portuguese</translation>
+        <translation>George Marques (vnen) - 巴西葡萄牙语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="308"/>
         <source>Xavier Gómez (hiulit) - Catalán</source>
-        <translation>Xavier Gómez (hiulit) - Catalán</translation>
+        <translation>Xavier Gómez (hiulit) - 加泰罗尼亚语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="313"/>
         <source>Lars Pontoppidan (Larpon) - Danish</source>
-        <translation>Lars Pontoppidan (Larpon) - Danish</translation>
+        <translation>Lars Pontoppidan (Larpon) - 丹麦语</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="318"/>
         <source>Azagaya - English and Spanish</source>
-        <translation></translation>
+        <translation>Azagaya - 英语和西班牙语</translation>
+    </message>
+        <message>
+        <location filename="../gui/about_dialog.ui" line="318"/>
+        <source>SakuraNeko - Simplified Chinese</source>
+        <translation>落樱 - 简体中文</translation>
     </message>
     <message>
         <location filename="../gui/about_dialog.ui" line="327"/>
         <source>Acknowledgements</source>
-        <translation>Reconocimientos</translation>
+        <translation>鸣谢</translation>
     </message>
 </context>
 <context>
@@ -1493,22 +1490,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">形状</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="84"/>
         <source>New Animation Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新动画名称</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="91"/>
         <source>Add Animation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">增加动画</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animationcreator.ui" line="105"/>
         <source>Delete Current Animation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">删除当前动画</translation>
     </message>
 </context>
 <context>
@@ -1516,17 +1513,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/animation_dock.ui" line="14"/>
         <source>Animation Dock</source>
-        <translation>Dock de Animación</translation>
+        <translation type="unfinished">动画托盘</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animation_dock.ui" line="40"/>
         <source>FPS:</source>
-        <translation></translation>
+        <translation type="unfinished">帧数（FPS）：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/animation_dock.ui" line="155"/>
         <source>Delete Current Frame</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">删除当前帧</translation>
     </message>
 </context>
 <context>
@@ -1535,184 +1532,180 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/exportwidget.ui" line="14"/>
         <location filename="../gui/exportwidget.ui" line="349"/>
         <source>Export</source>
-        <translation type="unfinished">Exportar</translation>
+        <translation type="unfinished">输出</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="20"/>
         <source>Exporting Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">输出目录</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="26"/>
         <source>Original Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">原始目录</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="36"/>
         <source>Target Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">目标目录</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="73"/>
         <source>Maps to Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">输出的地图</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="79"/>
         <source>Normal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">发现</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="89"/>
         <source>_n</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_n</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="99"/>
         <location filename="../gui/exportwidget.ui" line="298"/>
         <source>Specular</source>
-        <translation type="unfinished">Especular</translation>
+        <translation type="unfinished">高光</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="106"/>
         <source>_s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_s</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="116"/>
         <location filename="../gui/exportwidget.ui" line="303"/>
         <source>Parallax</source>
-        <translation type="unfinished">Paralaje</translation>
+        <translation type="unfinished">视差</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="123"/>
         <source>_p</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_p</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="133"/>
         <location filename="../gui/exportwidget.ui" line="308"/>
         <source>Occlusion</source>
-        <translation type="unfinished">Oclusión</translation>
+        <translation type="unfinished">遮挡</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="140"/>
         <source>_o</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_o</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="150"/>
-        <source>Diffuse</source>
-        <translation type="unfinished"></translation>
+        <source>Difusse</source>
+        <translation type="unfinished">漫反射</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="157"/>
         <source>_d</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_d</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="167"/>
         <source>Preview</source>
-        <translation type="unfinished">Vista Previa</translation>
+        <translation type="unfinished">预览</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="174"/>
         <source>_v</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">_v</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="187"/>
         <source>Exporting Options</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">输出选项</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="214"/>
         <source>Frames export options:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">帧输出选项：</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="222"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">默认</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="227"/>
         <source>Horizontal Strip</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">横向条纹</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="232"/>
         <source>Vertical Strip</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">纵向条纹</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="237"/>
         <source>Fixed Rows</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">固定行数</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="242"/>
         <source>Fixed Columns</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">固定列数</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="247"/>
-        <source>Separate Images</source>
-        <translation type="unfinished"></translation>
+        <source>Sepparate Images</source>
+        <translation type="unfinished">分离图像</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="323"/>
         <source>This Option will export Specular, Parallax, and Occlusion maps in a single RGB image.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">该选项将在单个 RGB 图像中导出高光贴图、视差贴图和遮挡贴图。</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="326"/>
         <source>Combine Grayscale Maps</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">合并灰度贴图</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="200"/>
         <source>Invert Normal X</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">反转法线X</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="293"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">无</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="193"/>
         <source>Invert Normal Y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">反转法线Y</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="282"/>
-        <source>Embed the selected texture map in the alpha channel of the exported normal map image.</source>
-        <translation type="unfinished"></translation>
+        <source>Embedd this map as the alpha channel of normal map.</source>
+        <translation type="unfinished">将此贴图嵌入法线贴图的alpha通道。</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="285"/>
         <source>Normal Alpha Channel:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">法线alpha通道：</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.ui" line="356"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation type="unfinished"><取消/translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.cpp" line="257"/>
-        <source>All selected maps were exported.
-</source>
-        <translation type="unfinished">Todos los mapas seleccionados fueron exportados.
-</translation>
+        <source>All selected maps were exported.</source>
+        <translation type="unfinished">所有选定的贴图都被导出了。</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.cpp" line="261"/>
-        <source>Could not export maps. Check destination&apos;s permissions.
-</source>
-        <translation type="unfinished">No se pudo exportar. Verificar permisos de la dirección de destino.
-</translation>
+        <source>Could not export maps. Check destination&apos;s permissions.</source>
+        <translation type="unfinished">无法导出贴图。请检查权限。</translation>
     </message>
 </context>
 <context>
@@ -1720,27 +1713,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/frame_splitter.ui" line="14"/>
         <source>Frame Splitter</source>
-        <translation>Divisor de Fotogramas</translation>
+        <translation type="unfinished">帧分流器</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="20"/>
         <source>Horizontal Frames:</source>
-        <translation>Fotogramas Horizontales:</translation>
+        <translation type="unfinished">水平帧：</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="34"/>
         <source>Vertical Frames:</source>
-        <translation>Fotogramas Verticales:</translation>
+        <translation type="unfinished">垂直帧：</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="48"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
         <location filename="../gui/frame_splitter.ui" line="55"/>
         <source>Ok</source>
-        <translation>Aceptar</translation>
+        <translation type="unfinished">确认</translation>
     </message>
 </context>
 <context>
@@ -1748,12 +1741,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/language_selector.ui" line="14"/>
         <source>Language Selector</source>
-        <translation>Selector de Idiomas</translation>
+        <translation type="unfinished">语言选择器</translation>
     </message>
     <message>
         <location filename="../gui/language_selector.ui" line="36"/>
         <source>Ok</source>
-        <translation></translation>
+        <translation type="unfinished">确认</translation>
     </message>
 </context>
 <context>
@@ -1761,24 +1754,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.ui" line="14"/>
         <source>Laigter</source>
-        <translation></translation>
+        <translation>Laigter</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="99"/>
         <source>Normal</source>
-        <translation></translation>
+        <translation>法线</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="249"/>
         <source>Enhance:</source>
-        <translation>Realzar:</translation>
+        <translation>增强：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="152"/>
         <location filename="../main_window.ui" line="257"/>
         <location filename="../main_window.ui" line="577"/>
         <source>Height:</source>
-        <translation>Altura:</translation>
+        <translation>高度：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="192"/>
@@ -1787,43 +1780,43 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1247"/>
         <location filename="../main_window.ui" line="1308"/>
         <source>Soft:</source>
-        <translation>Suavizado:</translation>
+        <translation>平滑：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="115"/>
         <source>Axis:</source>
-        <translation>Ejes:</translation>
+        <translation>轴：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="121"/>
         <source>Invert x</source>
-        <translation>Invertir x</translation>
+        <translation>反转 x</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="128"/>
         <source>Invert y</source>
-        <translation>Invertir y</translation>
+        <translation>反转 y</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="144"/>
         <source>Bump:</source>
-        <translation>Bisel:</translation>
+        <translation>凹凸：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="172"/>
         <location filename="../main_window.ui" line="1394"/>
         <source>Distance:</source>
-        <translation>Distancia:</translation>
+        <translation>距离：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="218"/>
         <source>Soft</source>
-        <translation>Suave</translation>
+        <translation>平滑</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="231"/>
         <source>Abrupt</source>
-        <translation>Abrupto</translation>
+        <translation>锐利</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="311"/>
@@ -1831,606 +1824,458 @@ p, li { white-space: pre-wrap; }
         <location filename="../main_window.ui" line="1270"/>
         <location filename="../main_window.ui" line="1417"/>
         <source>Use Alpha</source>
-        <translation>Usar Alfa</translation>
+        <translation type="unfinished">使用 Alpha 通道</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="329"/>
         <source>Visualization</source>
-        <translation>Visualización</translation>
+        <translation>可视化</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="345"/>
         <source>Light</source>
-        <translation>Luz</translation>
+        <translation>光照</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="394"/>
         <source>Diffuse</source>
-        <translation>Difusa</translation>
+        <translation>扩散</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="400"/>
         <location filename="../main_window.ui" line="445"/>
         <location filename="../main_window.ui" line="495"/>
         <source>Intensity:</source>
-        <translation>Intensidad:</translation>
+        <translation>强度：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="421"/>
         <location filename="../main_window.ui" line="1164"/>
         <source>Specular</source>
-        <translation>Especular</translation>
+        <translation>镜面</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="452"/>
         <source>Scatter:</source>
-        <translation>Dispersión:</translation>
+        <translation>散射：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="489"/>
         <source>Ambient</source>
-        <translation>Ambiente</translation>
+        <translation>环境</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="515"/>
         <location filename="../main_window.ui" line="606"/>
         <source>Color:</source>
-        <translation></translation>
+        <translation>颜色：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="541"/>
         <source>Background:</source>
-        <translation>Fondo:</translation>
+        <translation>背景：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="632"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, each texture will have its own lights, with its own respective settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si se habilita, cada textura tendrá su propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se se habilita, cada textura tendrá sus propias luces, con sus respectivas configuraciones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果启用，每个纹理将有各自的灯光和设置。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="635"/>
         <source>Lights per texture</source>
-        <translation>Luces por textura</translation>
+        <translation>每个纹理的灯光</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="701"/>
         <source>View</source>
-        <translation>Vista</translation>
+        <translation>查看</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="793"/>
         <source>Mode:</source>
-        <translation>Modo:</translation>
+        <translation>模式：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="723"/>
         <source>Texture</source>
-        <translation>Textura</translation>
+        <translation>材质</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="728"/>
         <source>Normal Map</source>
-        <translation>Mapa Normal</translation>
+        <translation>法线贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="733"/>
         <source>Specular Map</source>
-        <translation>Mapa Especular</translation>
+        <translation>高光贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="738"/>
         <source>Parallax Map</source>
-        <translation>Mapa de Paralaje</translation>
+        <translation>视差贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="743"/>
-        <source>Occlusion Map</source>
-        <translation>Mapa de Oclusión</translation>
+        <source>Occlussion Map</source>
+        <translation>遮挡贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="748"/>
         <source>Preview</source>
-        <translation>Vista Previa</translation>
+        <translation>预览</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="806"/>
         <source>Pixelated</source>
-        <translation>Pixelado</translation>
+        <translation>像素化</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="819"/>
         <source>Toon</source>
-        <translation></translation>
+        <translation type="unfinished">卡通化</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1285"/>
         <source>Occlusion</source>
-        <translation>Oclusión</translation>
+        <translation type="unfinished">遮罩</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1453"/>
         <source>Import</source>
-        <translation>Importar</translation>
+        <translation type="unfinished">导入</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1456"/>
         <source>Import Image</source>
-        <translation>Importar Imagen</translation>
+        <translation type="unfinished">导入图片</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1601"/>
         <source>Save Project</source>
-        <translation>Guardar Proyecto</translation>
+        <translation type="unfinished">保存项目</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1609"/>
         <location filename="../main_window.ui" line="1612"/>
         <source>Open Project</source>
-        <translation>Abrir Proyecto</translation>
+        <translation type="unfinished">打开项目</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1628"/>
         <location filename="../main_window.ui" line="1631"/>
         <source>Themes</source>
-        <translation>Temas</translation>
+        <translation type="unfinished">主题</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1620"/>
         <source>Save Project As</source>
-        <translation>Guardar Proyecto Como</translation>
+        <translation type="unfinished">项目另存为</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="654"/>
         <source>Tile</source>
-        <translation>Mozaico</translation>
+        <translation>瓦片</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="678"/>
         <source>Tile y</source>
-        <translation>Mozaico y</translation>
+        <translation>瓦片 y</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="685"/>
         <source>Tile x</source>
-        <translation>Mozaico x</translation>
+        <translation>瓦片 x</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="773"/>
         <location filename="../main_window.ui" line="891"/>
         <source>Parallax</source>
-        <translation>Paralaje</translation>
+        <translation>视差</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="780"/>
         <source>Blending:</source>
-        <translation></translation>
+        <translation type="unfinished">混合：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="847"/>
         <source>Textures</source>
-        <translation>Texturas</translation>
+        <translation>贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="901"/>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>类型</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="909"/>
         <source>Binary</source>
-        <translation>Binario</translation>
+        <translation>二元化</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="914"/>
         <source>Height Map</source>
-        <translation>Mapa de Altura</translation>
+        <translation>高度贴图</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="922"/>
         <location filename="../main_window.ui" line="1174"/>
         <location filename="../main_window.ui" line="1295"/>
         <source>Controls:</source>
-        <translation>Controles:</translation>
+        <translation>控制：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1090"/>
         <source>Quantization:</source>
-        <translation>Quantización:</translation>
+        <translation>量化：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1116"/>
         <location filename="../main_window.ui" line="1193"/>
         <location filename="../main_window.ui" line="1387"/>
         <source>Threshold:</source>
-        <translation>Umbral:</translation>
+        <translation>阈限：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1038"/>
         <source>Min Height:</source>
-        <translation>Altura min:</translation>
+        <translation>最小高度：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1557"/>
         <location filename="../main_window.cpp" line="1529"/>
         <source>Load Plugins</source>
-        <translation>Cargar Plugins</translation>
+        <translation>加载插件</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1560"/>
         <source>Reload Plugins</source>
-        <translation>Recargar Plugins</translation>
+        <translation>重载插件</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1571"/>
         <location filename="../main_window.ui" line="1574"/>
         <location filename="../main_window.cpp" line="1529"/>
         <source>Install Plugin</source>
-        <translation>Instalar Plugin</translation>
+        <translation>安装插件</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1585"/>
         <location filename="../main_window.ui" line="1588"/>
         <location filename="../main_window.cpp" line="1529"/>
         <source>Delete Plugin</source>
-        <translation>Eliminar Plugin</translation>
+        <translation>删除插件</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1593"/>
         <location filename="../main_window.cpp" line="1686"/>
         <source>Languages</source>
-        <translation>Lenguajes</translation>
-    </message>
-    <message>
-        <source>Minimum Height:</source>
-        <translation type="vanished">Altura Mínima:</translation>
+        <translation type="unfinished">语言</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1129"/>
         <location filename="../main_window.ui" line="1200"/>
         <location filename="../main_window.ui" line="1357"/>
         <source>Contrast:</source>
-        <translation>Contraste:</translation>
+        <translation>对比：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1025"/>
         <location filename="../main_window.ui" line="1240"/>
         <location filename="../main_window.ui" line="1301"/>
         <source>Invert</source>
-        <translation>Invertir</translation>
+        <translation>反转</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1103"/>
         <source>Focus:</source>
-        <translation>Enfoque:</translation>
+        <translation>焦点：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1077"/>
         <location filename="../main_window.ui" line="1233"/>
         <location filename="../main_window.ui" line="1380"/>
         <source>Brightness:</source>
-        <translation>Brillo:</translation>
+        <translation>亮度：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="934"/>
         <source>Erode / Dilate:</source>
-        <translation>Erosión / Dilatación:</translation>
-    </message>
-    <message>
-        <source>Occlussion</source>
-        <translation type="vanished">Oclusión</translation>
-    </message>
-    <message>
-        <source>Neighbours</source>
-        <translation type="vanished">Vecinos</translation>
+        <translation>侵蚀/扩张：</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1502"/>
         <location filename="../main_window.ui" line="1505"/>
         <source>Export</source>
-        <translation>Exportar</translation>
-    </message>
-    <message>
-        <source>Export to...</source>
-        <translation type="vanished">Exportar a...</translation>
+        <translation>导出</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1429"/>
         <source>toolBar</source>
-        <translation>toolBar</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">Abrir</translation>
+        <translation>工具栏</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1467"/>
         <location filename="../main_window.ui" line="1470"/>
         <source>Fit Zoom</source>
-        <translation>Ajustar Zoom</translation>
+        <translation>合适的缩放</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1478"/>
         <source>Zoom 100%</source>
-        <translation></translation>
+        <translation>缩放到100%</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1486"/>
         <source>Zoom +</source>
-        <translation></translation>
+        <translation>放大</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1494"/>
         <source>Zoom -</source>
-        <translation></translation>
+        <translation>缩小</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1513"/>
         <source>Presets</source>
-        <translation></translation>
+        <translation>预设</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1521"/>
         <location filename="../main_window.ui" line="1524"/>
         <source>Export Preview</source>
-        <translation>Exportar Vista Previa</translation>
+        <translation>输出预览</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1532"/>
         <location filename="../main_window.ui" line="1535"/>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation>关于</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1546"/>
         <source>Add Light</source>
-        <translation>Agregar Luz</translation>
+        <translation>增加光源</translation>
     </message>
     <message>
         <location filename="../main_window.ui" line="1549"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Add Light Source:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Left click to add light source.&lt;/p&gt;&lt;p&gt;Right click to remove light source or cancel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Agregar Fuente de Luz:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Clic izquierdo para agregar fuente de luz.&lt;/p&gt;&lt;p&gt;Clic derecho para eliminar fuente de luz o cancelar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;增加光源：&lt;/span&gt;&lt;/p&gt;&lt;p&gt;左键增加光源。&lt;/p&gt;&lt;p&gt;右键删除光源或取消。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="260"/>
         <source>Context menu</source>
-        <translation>Menú Contextual</translation>
+        <translation>上下文菜单（环境菜单）</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="261"/>
         <location filename="../main_window.cpp" line="331"/>
         <source>Remove</source>
-        <translation>Quitar</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="263"/>
         <location filename="../main_window.cpp" line="335"/>
         <source>Load heightmap</source>
-        <translation>Cargar mapa de altura</translation>
+        <translation>加载高度贴图</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="264"/>
         <location filename="../main_window.cpp" line="339"/>
         <source>Reset heightmap</source>
-        <translation>Reiniciar mapa de altura</translation>
+        <translation>重置高度贴图</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="265"/>
         <location filename="../main_window.cpp" line="347"/>
         <source>Merge Heightmap with previous Sprite</source>
-        <translation>Fusionar Mapa de Altura con Sprite Anterior</translation>
+        <translation type="unfinished">将高度图与之前的精灵合并</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="267"/>
         <location filename="../main_window.cpp" line="369"/>
         <source>Load specular map</source>
-        <translation>Cargar mapa especular</translation>
+        <translation>加载高光贴图</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="268"/>
         <location filename="../main_window.cpp" line="373"/>
         <source>Reset specular map</source>
-        <translation>Reiniciar mapa especular</translation>
-    </message>
-    <message>
-        <source>Add new frames</source>
-        <translation type="vanished">Agregar nuevos fotogramas</translation>
-    </message>
-    <message>
-        <source>Remove current frame</source>
-        <translation type="vanished">Quitar fotograma actual</translation>
-    </message>
-    <message>
-        <source>Next Frame</source>
-        <translation type="vanished">Fotograma Siguiente</translation>
-    </message>
-    <message>
-        <source>Previous Frame</source>
-        <translation type="vanished">Fotograma Anterior</translation>
-    </message>
-    <message>
-        <source>Stop Animation</source>
-        <translation type="vanished">Parar Animación</translation>
-    </message>
-    <message>
-        <source>Start Animation</source>
-        <translation type="vanished">Iniciar Animación</translation>
-    </message>
-    <message>
-        <source>Split in frames</source>
-        <translation type="vanished">Separar en Fotogramas</translation>
+        <translation>重置高光贴图</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="396"/>
         <location filename="../main_window.cpp" line="414"/>
         <location filename="../main_window.cpp" line="1840"/>
         <source>Open Image</source>
-        <translation>Abrir Imagen</translation>
+        <translation>打开图像</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="397"/>
         <location filename="../main_window.cpp" line="415"/>
         <location filename="../main_window.cpp" line="1840"/>
         <source>Image File (*.png *.jpg *.bmp *.tga)</source>
-        <translation>Archivo de Imagen (*.png *.jpg *.bmp *.tga)</translation>
+        <translation>图像文件 (*.png *.jpg *.bmp *.tga)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="570"/>
         <source>Cannot open </source>
-        <translation>No se puede abrir </translation>
+        <translation>无法打开 </translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="571"/>
         <source>Unsupported or incorrect format.</source>
-        <translation>Formato incorrecto o no soportado.</translation>
-    </message>
-    <message>
-        <source>All selected maps were exported.
-</source>
-        <translation type="vanished">Todos los mapas seleccionados fueron exportados.
-</translation>
-    </message>
-    <message>
-        <source>Could not export maps. Check destination&apos;s permissions.
-</source>
-        <translation type="vanished">No se pudo exportar. Verificar permisos de la dirección de destino.
-</translation>
+        <translation>不支持或不正确的格式。</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1712"/>
         <source>Open Laigter Project</source>
-        <translation>Abrir proyecto de Laigter</translation>
+        <translation type="unfinished">打开 Laigter 项目</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1713"/>
         <source>Project File (*.laigter)</source>
-        <translation>Archivo de Proyecto (*.laigter)</translation>
+        <translation type="unfinished">项目文件 (*.laigter)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1826"/>
         <source>Image File (*.laigter)</source>
-        <translation>Archivo de Imagen (*.laigter)</translation>
-    </message>
-    <message>
-        <source>The image is already opened in Laigter.</source>
-        <translation type="vanished">La imagen ya se encuentra abierta en Laigter.</translation>
+        <translation type="unfinished">图像文件 (*.laigter)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1309"/>
         <location filename="../main_window.cpp" line="1826"/>
         <source>Save Image</source>
-        <translation>Guardar Imagen</translation>
+        <translation>保存图像</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1309"/>
         <source>Image File (*.png *.jpg *.bmp)</source>
-        <translation>Archivo de Imagen (*.png *.jpg *.bmp)</translation>
-    </message>
-    <message>
-        <source>Normal map was exported.
-</source>
-        <translation type="vanished">Se exportó el mapa normal.
-</translation>
-    </message>
-    <message>
-        <source>Parallax map was exported.
-</source>
-        <translation type="vanished">Se exportó el mapa de paralaje.
-</translation>
-    </message>
-    <message>
-        <source>Specular map was exported.
-</source>
-        <translation type="vanished">Se exportó el mapa especular.
-</translation>
-    </message>
-    <message>
-        <source>Occlusion map was exported.
-</source>
-        <translation type="vanished">Se exportó el mapa de oclusión.
-</translation>
-    </message>
-    <message>
-        <source>Preview was exported.
-</source>
-        <translation type="vanished">Se exportó la vista previa.
-</translation>
-    </message>
-    <message>
-        <source>All normal maps were exported.
-</source>
-        <translation type="vanished">Todos los mapas normales fueron exportados.
-</translation>
-    </message>
-    <message>
-        <source>All parallax maps were exported.
-</source>
-        <translation type="vanished">Todos los mapas de paralaje fueron exportados.
-</translation>
-    </message>
-    <message>
-        <source>All specular maps were exported.
-</source>
-        <translation type="vanished">Todos los mapas especulares fueron exportados.
-</translation>
-    </message>
-    <message>
-        <source>All occlussion maps were exported.
-</source>
-        <translation type="vanished">Todos los mapas de oclusión fueron exportados.
-</translation>
-    </message>
-    <message>
-        <source>All previews were exported.
-</source>
-        <translation type="vanished">Todas las vistas previas fueron exportadas.
-</translation>
-    </message>
-    <message>
-        <source>Image modified</source>
-        <translation type="vanished">Imagen modificada</translation>
-    </message>
-    <message>
-        <source>An image was modified</source>
-        <translation type="vanished">Una imagen ha sido modificada</translation>
-    </message>
-    <message>
-        <source>Specular map modified</source>
-        <translation type="vanished">Mapa especular modificado</translation>
-    </message>
-    <message>
-        <source>A custom specular map was modified</source>
-        <translation type="vanished">Un mapa especular personalizado ha sido modificado</translation>
-    </message>
-    <message>
-        <source>Height map modified</source>
-        <translation type="vanished">Mapa de altura modificado</translation>
-    </message>
-    <message>
-        <source>A custom height map was modified</source>
-        <translation type="vanished">Un mapa de altura personalizado ha sido modificado</translation>
+        <translation>图像文件 (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1603"/>
         <location filename="../main_window.cpp" line="1606"/>
         <location filename="../main_window.cpp" line="1609"/>
         <source>Open Plugin</source>
-        <translation>Abrir Plugin</translation>
+        <translation>打开插件</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1603"/>
         <source>Shared Library (*.so)</source>
-        <translation>Biblioteca Compartida (*.so)</translation>
+        <translation>共享链接库 (*.so)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1606"/>
         <source>Shared Library (*.dll)</source>
-        <translation>Biblioteca Compartida (*.dll)</translation>
+        <translation>共享链接库 (*.dll)</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="1609"/>
         <source>Shared Library (*.dylib)</source>
-        <translation>Biblioteca Compartida (*.dylib)</translation>
+        <translation>共享链接库 (*.dylib)</translation>
     </message>
 </context>
 <context>
@@ -2439,57 +2284,49 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/nb_selector.ui" line="26"/>
         <source>Neighbours selector</source>
         <oldsource>Selector de vecinos</oldsource>
-        <translation>Selector de vecinos</translation>
+        <translation>邻接选择器</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="186"/>
         <source>Zoom:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">缩放：</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="203"/>
         <source>Sprite Frames</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">精灵帧</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="229"/>
-        <source>External Images</source>
-        <translation type="unfinished"></translation>
+        <source>ExternalImages</source>
+        <translation type="unfinished">外部图像</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="254"/>
         <source>Add Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">增加图像</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="268"/>
         <source>Remove Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">移除图像</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.ui" line="593"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset Neighbours</source>
-        <translation type="vanished">Restaurar Vecinos</translation>
-    </message>
-    <message>
-        <source>Empty Neighbours</source>
-        <translation type="vanished">Vaciar Vecinos</translation>
+        <translation type="unfinished">重置</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.cpp" line="209"/>
         <source>Open Image</source>
         <oldsource>Abrir Imagen</oldsource>
-        <translation>Abrir Imagen</translation>
+        <translation>打开图像</translation>
     </message>
     <message>
         <location filename="../gui/nb_selector.cpp" line="210"/>
         <source>Image Files (*.png *.jpg *.bmp *.tga)</source>
         <oldsource>Archivos de Imagen (*.png *.jpg *.bmp *.tga)</oldsource>
-        <translation>Archivo de Imagen (*.png *.jpg *.bmp *.tga)</translation>
+        <translation>图像文件 (*.png *.jpg *.bmp *.tga)</translation>
     </message>
 </context>
 <context>
@@ -2498,90 +2335,90 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="33"/>
         <source>Apply preset:</source>
         <oldsource>Aplicar Preset:</oldsource>
-        <translation>Aplicar preset:</translation>
+        <translation>应用预设：</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="45"/>
         <source>Preset:</source>
-        <translation></translation>
+        <translation>预设：</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="74"/>
         <source>Export</source>
         <oldsource>Exportar</oldsource>
-        <translation>Exportar</translation>
+        <translation>导出</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="99"/>
         <source>Import</source>
         <oldsource>Importar</oldsource>
-        <translation>Importar</translation>
+        <translation>导入</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="156"/>
         <source>Apply</source>
         <oldsource>Aplicar</oldsource>
-        <translation>Aplicar</translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="172"/>
         <source>Save current preset:</source>
         <oldsource>Guardar Preset Actual:</oldsource>
-        <translation>Guardar preset actual:</translation>
+        <translation>保存当前预设：</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="184"/>
         <source>Name:</source>
         <oldsource>Nombre:</oldsource>
-        <translation>Nombre:</translation>
+        <translation>命名：</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="195"/>
         <source>Controls</source>
         <oldsource>Controles</oldsource>
-        <translation>Controles</translation>
+        <translation>控制</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="205"/>
         <source>Normal</source>
-        <translation></translation>
+        <translation>法线</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="234"/>
         <source>0</source>
-        <translation></translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="245"/>
         <source>1</source>
-        <translation></translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="270"/>
         <source>2</source>
-        <translation></translation>
+        <translation>2</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="275"/>
         <location filename="../gui/presets_manager.ui" line="641"/>
         <source>Distance</source>
         <oldsource>Distancia</oldsource>
-        <translation>Distancia</translation>
+        <translation>距离</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="281"/>
         <source>3</source>
-        <translation></translation>
+        <translation>3</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="292"/>
         <source>4</source>
-        <translation></translation>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="303"/>
         <source>5</source>
-        <translation></translation>
+        <translation>5</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="309"/>
@@ -2590,102 +2427,102 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="608"/>
         <source>Invert</source>
         <oldsource>Invertir</oldsource>
-        <translation>Invertir</translation>
+        <translation>反转</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="328"/>
         <source>7</source>
-        <translation></translation>
+        <translation>7</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="339"/>
         <source>8</source>
-        <translation></translation>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="352"/>
         <source>6</source>
-        <translation></translation>
+        <translation>6</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="360"/>
         <source>Parallax</source>
         <oldsource>Paralaje</oldsource>
-        <translation>Paralaje</translation>
+        <translation>视差</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="370"/>
         <source>Type</source>
         <oldsource>Tipo</oldsource>
-        <translation>Tipo</translation>
+        <translation>类型</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="376"/>
         <source>9</source>
-        <translation></translation>
+        <translation>9</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="381"/>
         <source>Binary</source>
         <oldsource>Binario</oldsource>
-        <translation>Binario</translation>
+        <translation>二极化</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="400"/>
         <source>10</source>
-        <translation></translation>
+        <translation>10</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="411"/>
         <source>11</source>
-        <translation></translation>
+        <translation>11</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="422"/>
         <source>13</source>
-        <translation></translation>
+        <translation>13</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="427"/>
         <source>Erode / Dilate</source>
         <oldsource>Erosión / Dilatación</oldsource>
-        <translation>Erosión / Dilatación</translation>
+        <translation>侵蚀/扩张</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="433"/>
         <source>14</source>
-        <translation></translation>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="445"/>
         <source>12</source>
-        <translation></translation>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="14"/>
         <source>Presets Manager</source>
-        <translation>Administrador de Presets</translation>
+        <translation>预设管理器</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="118"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="200"/>
         <source>Code</source>
-        <translation>Código</translation>
+        <translation>代码</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="215"/>
         <source>Enhance</source>
-        <translation>Realzar</translation>
+        <translation>增强</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="228"/>
         <location filename="../gui/presets_manager.ui" line="264"/>
         <source>Height</source>
-        <translation>Altura</translation>
+        <translation>高度</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="239"/>
@@ -2694,66 +2531,66 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="505"/>
         <location filename="../gui/presets_manager.ui" line="586"/>
         <source>Soft</source>
-        <translation>Suavizado</translation>
+        <translation>平衡</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="251"/>
         <source>Bump</source>
-        <translation>Bisel</translation>
+        <translation>凹凸</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="297"/>
         <source>Cut</source>
-        <translation>Corte</translation>
+        <translation>裁切</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="322"/>
         <source>X Axis</source>
-        <translation>Eje X</translation>
+        <translation>X 轴</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="333"/>
         <source>Y Axis</source>
-        <translation>Eje Y</translation>
+        <translation>Y 轴</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="346"/>
         <source>Tile</source>
-        <translation>Mozaico</translation>
+        <translation>瓦片</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="394"/>
         <location filename="../gui/presets_manager.ui" line="547"/>
         <location filename="../gui/presets_manager.ui" line="619"/>
         <source>Threshold</source>
-        <translation>Umbral</translation>
+        <translation>阈值</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="405"/>
         <source>Focus</source>
-        <translation>Enfoque</translation>
+        <translation>焦点</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="416"/>
         <source>Minimum Height</source>
-        <translation>Altura Mínima</translation>
+        <translation>最小高度</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="450"/>
         <source>Height Map</source>
-        <translation>Mapa de Altura</translation>
+        <translation>高度贴图</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="460"/>
         <location filename="../gui/presets_manager.ui" line="519"/>
         <location filename="../gui/presets_manager.ui" line="597"/>
         <source>Brightness</source>
-        <translation>Brillo</translation>
+        <translation>亮度</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="466"/>
         <source>15</source>
-        <translation></translation>
+        <translation>15</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="471"/>
@@ -2761,152 +2598,152 @@ p, li { white-space: pre-wrap; }
         <location filename="../gui/presets_manager.ui" line="630"/>
         <source>Contrast</source>
         <oldsource>Contraste</oldsource>
-        <translation>Contraste</translation>
+        <translation>对比度</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="477"/>
         <source>16</source>
-        <translation></translation>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="489"/>
         <source>17</source>
-        <translation></translation>
+        <translation>17</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="495"/>
         <source>Specular</source>
         <oldsource>Especular</oldsource>
-        <translation>Especular</translation>
+        <translation>镜面</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="511"/>
         <source>18</source>
-        <translation></translation>
+        <translation18></translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="525"/>
         <source>19</source>
-        <translation></translation>
+        <translation>19</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="539"/>
         <source>20</source>
-        <translation></translation>
+        <translation>20</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="553"/>
         <source>21</source>
-        <translation></translation>
+        <translation>21</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="567"/>
         <source>22</source>
-        <translation></translation>
+        <translation>22</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="576"/>
         <source>Occlussion</source>
         <oldsource>Oclusión</oldsource>
-        <translation>Oclusión</translation>
+        <translation>遮挡</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="592"/>
         <source>23</source>
-        <translation></translation>
+        <translation>23</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="603"/>
         <source>24</source>
-        <translation></translation>
+        <translation>24</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="614"/>
         <source>25</source>
-        <translation></translation>
+        <translation>25</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="625"/>
         <source>26</source>
-        <translation></translation>
+        <translation>26</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="636"/>
         <source>27</source>
-        <translation></translation>
+        <translation>27</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="647"/>
         <source>28</source>
-        <translation></translation>
+        <translation>28</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="652"/>
         <source>Distance Mode</source>
         <oldsource>Modo distancia</oldsource>
-        <translation>Modo Distancia</translation>
+        <translation>距离模式</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="658"/>
         <source>29</source>
-        <translation></translation>
+        <translation>29</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="684"/>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="670"/>
         <source>30</source>
-        <translation></translation>
+        <translation>30</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="149"/>
         <source>You must input a name for the preset!</source>
-        <translation>Debes introducir un nombre para el preset!</translation>
+        <translation>你必须为预设输入一个名称！</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="157"/>
         <source>There is already a preset with that name!</source>
-        <translation>Ya existe un preset con ese nombre!</translation>
+        <translation>已经有一个叫这个名字的预设了！</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="664"/>
         <location filename="../gui/presets_manager.cpp" line="174"/>
         <source>Lights</source>
-        <translation>Luces</translation>
+        <translation>光源</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="229"/>
         <source>Cannot open the specified preset.</source>
-        <translation>No se puede abrir el preset especificado.</translation>
+        <translation>无法打开指定的预设。</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="237"/>
         <location filename="../gui/presets_manager.cpp" line="313"/>
         <source>Incorrect format.</source>
-        <translation>Formato incorrecto.</translation>
+        <translation>格式不正确。</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="259"/>
         <source>Applying </source>
-        <translation>Aplicando </translation>
+        <translation>应用 </translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="259"/>
         <source> to </source>
-        <translation> a </translation>
+        <translation> 到 </translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="287"/>
         <source>Couldn&apos;t export. Check destination&apos;s permissions or if a file with the same name already exists there.</source>
-        <translation>No se pudo exportar. Verificar permisos de la dirección de destino, o si existe un archivo con el mismo nombre.</translation>
+        <translation type="unfinished">无法导出。检查目的地的权限或那里是否已经存在同名的文件。</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.cpp" line="321"/>
         <source>There is already a preset with that name.</source>
-        <translation>Ya existe un preset con ese nombre.</translation>
+        <translation>预设名称已存在。</translation>
     </message>
 </context>
 <context>
@@ -2914,12 +2751,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="14"/>
         <source>Remove Plugins</source>
-        <translation>Quitar Plugins</translation>
+        <translation type="unfinished">移除插件</translation>
     </message>
     <message>
         <location filename="../gui/remove_plugin_dialog.ui" line="20"/>
         <source>Plugins</source>
-        <translation>Plugins</translation>
+        <translation type="unfinished">插件</translation>
     </message>
 </context>
 <context>
@@ -2927,137 +2764,117 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="20"/>
         <source>Form</source>
-        <translation></translation>
+        <translation type="unfinished">自</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="47"/>
         <source>Neighbours</source>
-        <translation>Vecinos</translation>
+        <translation type="unfinished">邻接</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="60"/>
         <source>Transform:</source>
-        <translation>Transformación:</translation>
+        <translation type="unfinished">位移：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="66"/>
         <source>Scale:</source>
-        <translation>Escala:</translation>
+        <translation type="unfinished">规模：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="89"/>
         <source>Rotation:</source>
-        <translation>Rotación:</translation>
+        <translation type="unfinished">旋转：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="112"/>
         <source>Information</source>
-        <translation>Información</translation>
+        <translation type="unfinished">信息</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="145"/>
         <source>Name:</source>
-        <translation>Nombre:</translation>
+        <translation type="unfinished">名称：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="164"/>
         <source>Path:</source>
-        <translation>Dirección:</translation>
+        <translation type="unfinished">路径：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="177"/>
         <source>Size:</source>
-        <translation>Tamaño:</translation>
+        <translation type="unfinished">尺寸：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="193"/>
         <source>Load Specular</source>
-        <translation>Cargar Especular</translation>
+        <translation type="unfinished">加载镜像</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="200"/>
         <source>Tile</source>
-        <translation>Mozaico</translation>
+        <translation type="unfinished">瓦片</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="207"/>
         <source>Load Heightmap</source>
-        <translation>Cargar Mapa de Altura</translation>
+        <translation type="unfinished">加载高度贴图</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="220"/>
         <source>Position:</source>
-        <translation>Posición:</translation>
+        <translation type="unfinished">位置：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="247"/>
         <source>X:</source>
-        <translation></translation>
+        <translation type="unfinished">X：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="270"/>
         <source>Y:</source>
-        <translation></translation>
+        <translation type="unfinished">Y：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="332"/>
         <source>Frames</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">帧</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="346"/>
         <source>H:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">H：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="364"/>
         <source>V:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="380"/>
         <source>Animation</source>
-        <translation>Animación</translation>
+        <translation type="unfinished">动画</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.ui" line="387"/>
         <source>Sheet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Frames:</source>
-        <translation type="vanished">Fotogramas:</translation>
-    </message>
-    <message>
-        <source>Split</source>
-        <translation type="vanished">Dividir</translation>
-    </message>
-    <message>
-        <source>Current:</source>
-        <translation type="vanished">Actual:</translation>
+        <translation type="unfinished">Sheet</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="28"/>
         <source>Name: </source>
-        <translation>Nombre: </translation>
+        <translation type="unfinished">名称：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="29"/>
         <source>Path: </source>
-        <translation>Dirección: </translation>
+        <translation type="unfinished">路径：</translation>
     </message>
     <message>
         <location filename="../gui/widgets/sprite_properties_dock.cpp" line="30"/>
         <source>Size: </source>
-        <translation>Tamaño: </translation>
-    </message>
-    <message>
-        <source>Frames: </source>
-        <translation type="vanished">Fotogramas: </translation>
-    </message>
-    <message>
-        <source>Current Frame: </source>
-        <translation type="vanished">Fotograma actual: </translation>
+        <translation type="unfinished">尺寸：</translation>
     </message>
 </context>
 <context>
@@ -3065,17 +2882,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="14"/>
         <source>Theme Selector</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">主题选择器</translation>
     </message>
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="21"/>
         <source>Classic</source>
-        <translation></translation>
+        <translation type="unfinished">经典</translation>
     </message>
     <message>
         <location filename="../gui/widgets/themeselector.ui" line="26"/>
         <source>DarkBlue</source>
-        <translation></translation>
+        <translation type="unfinished">暗蓝色</translation>
     </message>
 </context>
 </TS>
