@@ -212,6 +212,7 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("toon", m_toon);
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
+  qDebug() << parallax_height;
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
   m_program.setUniformValue("zoom", m_global_zoom);
   m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
@@ -1238,9 +1239,10 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     scaleX = !processor->get_tile_x() ? sx : 1;
     scaleY = !processor->get_tile_y() ? sy : 1;
 
-    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 10));
+    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);
+
     m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
 
     apply_light_params(projection, view);

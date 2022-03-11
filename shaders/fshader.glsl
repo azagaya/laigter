@@ -101,7 +101,7 @@ void main()
 
   vec4 f_pos = inv_view*inv_projection*vec4(FragPos, 1.0);
   vec4 v_pos =  inv_view*inv_projection*vec4(viewPos, 1.0);
-  vec3 viewDir = normalize( - vec3(0.0, 0.0, -1000.0));
+  vec3 viewDir = normalize(viewPos - FragPos);
 
   vec2 texCoords = texCoord + coordOffset;
 
