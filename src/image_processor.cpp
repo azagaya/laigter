@@ -726,7 +726,10 @@ CImg<float> ImageProcessor::modify_parallax()
 
 CImg<float> ImageProcessor::modify_specular()
 {
-  sprite.get_image(TextureTypes::SpecularBase, &specular);
+  if (tileable)
+    sprite.get_image(TextureTypes::Neighbours, &specular);
+  else
+    sprite.get_image(TextureTypes::SpecularBase, &specular);
   specular = specular.convertToFormat(QImage::Format_Grayscale8);
   CImg<uchar> img = QImage2CImg(specular);
   CImg<float> img_float(img);
@@ -823,6 +826,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     set_current_heightmap(0);
     calculate_heightmap();
     calculate_distance();
+    calculate_specular();
   }
 
   if (update_tileable)
