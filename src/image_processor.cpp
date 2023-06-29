@@ -826,6 +826,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     set_current_heightmap(0);
     calculate_heightmap();
     calculate_distance();
+    calculate_specular();
   }
 
   if (update_tileable)
