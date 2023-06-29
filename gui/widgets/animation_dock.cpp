@@ -1,9 +1,6 @@
 #include "animation_dock.h"
 #include "ui_animation_dock.h"
 
-#include "src/image_loader.h"
-
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QThread>

@@ -2,7 +2,6 @@
 
 #include <math.h>
 
-#include <QDebug>
 #include <QFile>
 #include <QPainter>
 #include <QStyleOptionSlider>
@@ -16,8 +15,8 @@ Slider::Slider(QWidget *parent) : QSlider(parent)
   spin_box.setObjectName("flatSpinBox");
   connect(this, SIGNAL(valueChanged(int)), &spin_box, SLOT(setValue(int)));
   connect(&spin_box, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
-  connect(this, SIGNAL(rangeChanged(int, int)), this,
-          SLOT(setSpinBoxRange(int, int)));
+  connect(this, SIGNAL(rangeChanged(int,int)), this,
+          SLOT(setSpinBoxRange(int,int)));
   //  QFile style(":/styles/spinboxslider.qss");
   //  style.open(QIODevice::ReadOnly);
   //  setStyleSheet(style.readAll());
@@ -32,6 +31,7 @@ void Slider::setValueFromSpinBox(int v) { setValue(v * maximum() / 100.0); }
 
 void Slider::setValueToSpinBox(int v)
 {
+  Q_UNUSED(v)
   spin_box.setValue(value() * 100.0 / maximum());
 }
 

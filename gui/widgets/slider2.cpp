@@ -2,7 +2,6 @@
 
 #include <math.h>
 
-#include <QDebug>
 #include <QFile>
 #include <QPainter>
 #include <QStyleOptionSlider>

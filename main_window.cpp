@@ -1539,8 +1539,6 @@ void MainWindow::on_actionLoadPlugins_triggered()
     }
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
-    qDebug() << pl->metaData().value("MetaData").toObject().value("version").toDouble();
-    qDebug() << pl->metaData().value("MetaData").toObject().value("name").toString();
     if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.103)
     {
       qDebug() << "incorrect plugin version.";

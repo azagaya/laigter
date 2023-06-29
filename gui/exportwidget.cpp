@@ -131,7 +131,6 @@ bool ExportWidget::ExportMap(TextureTypes type, ImageProcessor *p, QString postf
       QString i_name = path_parts.join("/");
       QImage image = n.copy(p->getFrameRect(i));
       saved &= image.save(i_name);
-      qDebug() << i_name;
     }
   }
   else
@@ -242,7 +241,6 @@ void ExportWidget::on_pushButton_clicked()
           QString i_name = path_parts.join("/");
           QImage image = n.copy(p->getFrameRect(i));
           saved &= image.save(i_name);
-          qDebug() << i_name;
         }
       }
       else
@@ -348,7 +346,6 @@ QImage ExportWidget::rearrangeFrames(QImage n, ImageProcessor *p)
         {
           if (index >= frames)
             break;
-          qDebug() << index << frames;
           painter.drawImage(QRectF(i * s.width(), j * s.height(), s.width(), s.height()), n.copy(p->getFrameRect(index)));
           index++;
         }

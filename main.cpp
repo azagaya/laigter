@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QOpenGLContext>
@@ -190,7 +189,6 @@ int main(int argc, char *argv[])
     if (softOpenGlValue)
     {
       a->setAttribute(Qt::AA_UseSoftwareOpenGL);
-      qDebug() << "Soft OpenGL";
     }
     MainWindow w;
     QGuiApplication::setWindowIcon(QIcon(":/images/laigter_icon.png"));

@@ -1,7 +1,7 @@
 #include "language_selector.h"
 #include "ui_language_selector.h"
 
-#include <QDebug>
+#include <QTextStream>
 #include <QFile>
 #include <QStandardPaths>
 #include <QTextCodec>

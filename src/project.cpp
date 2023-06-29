@@ -1,7 +1,6 @@
 #include "project.h"
 #include "gui/presets_manager.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QImage>
 #include <QJsonArray>

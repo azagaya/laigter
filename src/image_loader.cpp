@@ -19,7 +19,6 @@
 
 #include "image_loader.h"
 
-#include <QDebug>
 #include <QFileInfo>
 #include <QImageReader>
 #include <fstream>
@@ -34,7 +33,6 @@ QList<QImage> ImageLoader::loadImages(QString fileName)
   {
     reader.jumpToImage(i);
     image_list.append(reader.read());
-    qDebug() << reader.errorString();
   }
   return image_list;
 }

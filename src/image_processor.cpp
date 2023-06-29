@@ -151,7 +151,6 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   }
   texture = image;
   last_texture = image;
-  qDebug() << image.hasAlphaChannel();
   sprite.set_image(TextureTypes::Diffuse, image);
   sprite.set_image(TextureTypes::Heightmap, image);
   sprite.set_image(TextureTypes::SpecularBase, image);
@@ -762,7 +761,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     normal_counter = 1;
     enhance_requested = bump_requested = distance_requested = true;
     rect_requested = rect_requested.united(rect);
-    qDebug() << " not lock here";
     return;
   }
   QMutexLocker hlocker(&heightmap_mutex);
@@ -810,8 +808,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   CImg<float> heightOv = QImage2CImg(heightOverlay);
   if (heightOv.is_empty())
   {
-    qDebug() << "empty";
-
     normal_mutex.unlock();
     return;
   }
@@ -1874,7 +1870,6 @@ void ImageProcessor::splitInFrames(int h_frames, int v_frames)
     for (int j = 0; j < h_frames; j++)
     {
       animation->frames_id.append(k);
-      qDebug() << animation->frames_id;
       k++;
 
       QVector<float> vertices;

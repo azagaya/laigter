@@ -20,7 +20,6 @@
 #include "presets_manager.h"
 #include "ui_presets_manager.h"
 
-#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>

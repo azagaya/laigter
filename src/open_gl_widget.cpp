@@ -22,7 +22,6 @@
 #include <math.h>
 
 #include <QApplication>
-#include <QDebug>
 #include <QFileInfo>
 #include <QImageWriter>
 #include <QOpenGLFramebufferObject>
@@ -212,7 +211,6 @@ void OpenGlWidget::update_scene()
   m_program.setUniformValue("toon", m_toon);
   m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
   m_program.setUniformValue("height_scale", parallax_height);
-  qDebug() << parallax_height;
   m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
   m_program.setUniformValue("zoom", m_global_zoom);
   m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
