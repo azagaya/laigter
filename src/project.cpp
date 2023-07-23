@@ -76,17 +76,6 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       }
       zip_entry_close(zip);
 
-      /* Restore Neighbours */
-      data.clear();
-      path = frame.value("neighbours").toString();
-      zip_entry_open(zip, path.toUtf8());
-      {
-        zip_entry_read(zip, &buf, &bufsize);
-        data.append((char *)buf, bufsize);
-        p->get_current_frame()->set_image(TextureTypes::Neighbours, QImage::fromData(data));
-      }
-      zip_entry_close(zip);
-
       /* Restore Overlays */
       data.clear();
       path = frame.value("heightmapOverlay").toString();
@@ -104,7 +93,6 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
-        QImage image = QImage::fromData(data);
         p->set_normal_overlay(QImage::fromData(data));
       }
       zip_entry_close(zip);
@@ -182,6 +170,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       int vframes = p_json.value("vframes").toInt();
       p->splitInFrames(hframes, vframes);
       p->reset_neighbours();
+
       p->frame_mode = p_json.value("frames mode").toString();
       p->animation_list.clear();
       QJsonArray animations = p_json.value("animations").toArray();
@@ -198,6 +187,19 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       }
       PresetsManager::applyPresetsString(data, p);
       p_list->append(p);
+
+
+      /* Restore Neighbours */
+      data.clear();
+      path = frame.value("neighbours").toString();
+      zip_entry_open(zip, path.toUtf8());
+      {
+        zip_entry_read(zip, &buf, &bufsize);
+        data.append((char *)buf, bufsize);
+        p->get_current_frame()->set_image(TextureTypes::Neighbours, QImage::fromData(data));
+      }
+      zip_entry_close(zip);
+
     }
   }
   zip_close(zip);
