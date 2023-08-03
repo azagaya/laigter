@@ -193,11 +193,7 @@ int main(int argc, char *argv[])
     QString pressetOptionValue = argsParser.value(pressetOption);
     ImageLoader il;
 
-    if (!pressetOptionValue.trimmed().isEmpty())
-    {
-      processor->recalculate_timer.stop();
-      PresetsManager::applyPresets(pressetOptionValue, *processor);
-    }
+
 
 
 
@@ -205,10 +201,17 @@ int main(int argc, char *argv[])
     {
         auximage = il.loadImage(imagePath, &success);
         if (!success) continue;
-        auximage =
-            auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+        auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-        processor->loadImage(imagePath, auximage);
+        ImageProcessor processor;
+
+        if (!pressetOptionValue.trimmed().isEmpty())
+        {
+          processor.recalculate_timer.stop();
+          PresetsManager::applyPresets(pressetOptionValue, processor);
+        }
+
+        processor.loadImage(imagePath, auximage);
 
         QFileInfo info = QFileInfo(imagePath);
         QString suffix = info.suffix();
@@ -220,7 +223,7 @@ int main(int argc, char *argv[])
 
         if (argsParser.isSet(outputNormalTextureOption))
         {
-          QImage normal = *processor->get_normal();
+          QImage normal = *processor.get_normal();
           outputDir.mkpath(QFileInfo(relativeToInputPath).path());
           QString name = outputDir.filePath(pathWithoutExtension + "_n." + suffix);
           normal.save(name);
@@ -228,21 +231,21 @@ int main(int argc, char *argv[])
 
         if (argsParser.isSet(outputSpecularTextureOption))
         {
-          QImage specular = *processor->get_specular();
+          QImage specular = *processor.get_specular();
           QString name = outputDir.filePath(pathWithoutExtension + "_s." + suffix);
           specular.save(name);
         }
 
         if (argsParser.isSet(outputOcclusionTextureOption))
         {
-          QImage occlusion = *processor->get_occlusion();
+          QImage occlusion = *processor.get_occlusion();
           QString name = outputDir.filePath(pathWithoutExtension + "_o." + suffix);
           occlusion.save(name);
         }
 
         if (argsParser.isSet(outputParallaxTextureOption))
         {
-          QImage parallax = *processor->get_parallax();
+          QImage parallax = *processor.get_parallax();
           QString name = outputDir.filePath(pathWithoutExtension + "_p." + suffix);
           parallax.save(name);
         }
