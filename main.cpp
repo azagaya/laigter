@@ -34,11 +34,18 @@
 
 QCoreApplication *createApplication(int &argc, char *argv[])
 {
-  for (int i = 1; i < argc; ++i)
-    if (!qstrcmp(argv[i], "--no-gui"))
-      return new QCoreApplication(argc, argv);
+  bool gui = true;
 
-  return new QApplication(argc, argv);
+  for (int i = 1; i < argc; ++i)
+  {
+    if (!qstrcmp(argv[i], "--no-gui") || !qstrcmp(argv[i], "-g"))
+    {
+      gui = false;
+      break;
+    }
+  }
+
+  return gui ? new QApplication(argc, argv) :  new QCoreApplication(argc, argv);
 }
 
 int main(int argc, char *argv[])
@@ -117,6 +124,12 @@ int main(int argc, char *argv[])
                                    "presset to load", "preset file path");
   argsParser.addOption(pressetOption);
 
+  QCommandLineOption outputLocationOption(QStringList() << "l"
+                                                        << "location",
+                                          "output directory path", "output directory where generated maps will be saved");
+
+  argsParser.addOption(outputLocationOption);
+
   QSurfaceFormat fmt;
   fmt.setDepthBufferSize(24);
   fmt.setSamples(16);
@@ -132,6 +145,7 @@ int main(int argc, char *argv[])
   bool success = false;
   QString inputDiffuseTextureOptionValue =
       argsParser.value(inputDiffuseTextureOption);
+
   if (!inputDiffuseTextureOptionValue.trimmed().isEmpty())
   {
     QFileInfo info(inputDiffuseTextureOptionValue);
@@ -143,40 +157,46 @@ int main(int argc, char *argv[])
     auximage = il.loadImage(inputDiffuseTextureOptionValue, &success);
     auximage =
         auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+
     if (!pressetOptionValue.trimmed().isEmpty())
     {
       processor->recalculate_timer.stop();
       PresetsManager::applyPresets(pressetOptionValue, *processor);
     }
+
     processor->loadImage(inputDiffuseTextureOptionValue, auximage);
 
+    QString outPathString = argsParser.value(outputLocationOption);
+    QDir outputPath = outPathString.isEmpty() ? QDir(info.path()) : QDir(outPathString);
+
     QString pathWithoutExtension =
-        info.absoluteFilePath().remove("." + suffix);
+        info.fileName().remove("." + suffix);
+
     if (argsParser.isSet(outputNormalTextureOption))
     {
       QImage normal = *processor->get_normal();
-      QString name = pathWithoutExtension + "_n." + suffix;
+      QString name = outputPath.filePath(pathWithoutExtension + "_n." + suffix);
       normal.save(name);
     }
 
     if (argsParser.isSet(outputSpecularTextureOption))
     {
       QImage specular = *processor->get_specular();
-      QString name = pathWithoutExtension + "_s." + suffix;
+      QString name = outputPath.filePath(pathWithoutExtension + "_s." + suffix);
       specular.save(name);
     }
 
     if (argsParser.isSet(outputOcclusionTextureOption))
     {
       QImage occlusion = *processor->get_occlusion();
-      QString name = pathWithoutExtension + "_o." + suffix;
+      QString name = outputPath.filePath(pathWithoutExtension + "_o." + suffix);
       occlusion.save(name);
     }
 
     if (argsParser.isSet(outputParallaxTextureOption))
     {
       QImage parallax = *processor->get_parallax();
-      QString name = pathWithoutExtension + "_p." + suffix;
+      QString name = outputPath.filePath(pathWithoutExtension + "_p." + suffix);
       parallax.save(name);
     }
   }
