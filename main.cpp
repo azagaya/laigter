@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
+#include <QDirIterator>
 #include <QFile>
 #include <QOpenGLContext>
 #include <QSplashScreen>
@@ -94,8 +95,8 @@ int main(int argc, char *argv[])
 
   QCommandLineOption inputDiffuseTextureOption(QStringList() << "d"
                                                              << "diffuse",
-                                               "diffuse texture to load",
-                                               "diffuse texture path");
+                                               "diffuse path",
+                                               "Path to a diffuse image, or to a directory that contains many diffuse images");
   argsParser.addOption(inputDiffuseTextureOption);
 
   QCommandLineOption outputNormalTextureOption(QStringList() << "n"
@@ -126,9 +127,15 @@ int main(int argc, char *argv[])
 
   QCommandLineOption outputLocationOption(QStringList() << "l"
                                                         << "location",
-                                          "output directory path", "output directory where generated maps will be saved");
+                                          "output directory", "output path");
 
   argsParser.addOption(outputLocationOption);
+
+  QCommandLineOption notRecursiveOption("not-recursive", "don't look for images recursively");
+  argsParser.addOption(notRecursiveOption);
+
+  QCommandLineOption flattenOutputOption("flatten", "don't save in subdirectories");
+  argsParser.addOption(flattenOutputOption);
 
   QSurfaceFormat fmt;
   fmt.setDepthBufferSize(24);
@@ -149,14 +156,42 @@ int main(int argc, char *argv[])
   if (!inputDiffuseTextureOptionValue.trimmed().isEmpty())
   {
     QFileInfo info(inputDiffuseTextureOptionValue);
-    QString suffix =
-        info.suffix(); // just the last suffix, not the complete one
+
+    QStringList fileList;
+    QDir inputDir;
+
+    QString outPath = argsParser.value(outputLocationOption);
+    QFileInfo outInfo(outPath);
+    QDir outDir(outPath);
+
+    if (info.isFile())
+    {
+        fileList.append(inputDiffuseTextureOptionValue);
+        inputDir = QDir(info.absolutePath());
+    }
+    else if (info.isDir())
+    {
+        inputDir = QDir(inputDiffuseTextureOptionValue);
+        QDirIterator it(inputDir, argsParser.isSet(notRecursiveOption) ? QDirIterator::NoIteratorFlags : QDirIterator::Subdirectories);
+
+        while (it.hasNext())
+        {
+            QString found = it.next();
+            QFileInfo info(found);
+
+            if (info.isDir())
+                continue;
+
+            if (!outDir.relativeFilePath(found).startsWith(".."))
+                continue;
+
+            fileList.append(info.absoluteFilePath());
+        }
+    }
+
 
     QString pressetOptionValue = argsParser.value(pressetOption);
     ImageLoader il;
-    auximage = il.loadImage(inputDiffuseTextureOptionValue, &success);
-    auximage =
-        auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
     if (!pressetOptionValue.trimmed().isEmpty())
     {
@@ -164,40 +199,53 @@ int main(int argc, char *argv[])
       PresetsManager::applyPresets(pressetOptionValue, *processor);
     }
 
-    processor->loadImage(inputDiffuseTextureOptionValue, auximage);
 
-    QString outPathString = argsParser.value(outputLocationOption);
-    QDir outputPath = outPathString.isEmpty() ? QDir(info.path()) : QDir(outPathString);
 
-    QString pathWithoutExtension =
-        info.fileName().remove("." + suffix);
-
-    if (argsParser.isSet(outputNormalTextureOption))
+    foreach (QString imagePath, fileList)
     {
-      QImage normal = *processor->get_normal();
-      QString name = outputPath.filePath(pathWithoutExtension + "_n." + suffix);
-      normal.save(name);
-    }
+        auximage = il.loadImage(imagePath, &success);
+        if (!success) continue;
+        auximage =
+            auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
 
-    if (argsParser.isSet(outputSpecularTextureOption))
-    {
-      QImage specular = *processor->get_specular();
-      QString name = outputPath.filePath(pathWithoutExtension + "_s." + suffix);
-      specular.save(name);
-    }
+        processor->loadImage(imagePath, auximage);
 
-    if (argsParser.isSet(outputOcclusionTextureOption))
-    {
-      QImage occlusion = *processor->get_occlusion();
-      QString name = outputPath.filePath(pathWithoutExtension + "_o." + suffix);
-      occlusion.save(name);
-    }
+        QFileInfo info = QFileInfo(imagePath);
+        QString suffix = info.suffix();
 
-    if (argsParser.isSet(outputParallaxTextureOption))
-    {
-      QImage parallax = *processor->get_parallax();
-      QString name = outputPath.filePath(pathWithoutExtension + "_p." + suffix);
-      parallax.save(name);
+        QDir outputDir = outPath.isEmpty() ? QDir(info.path()) : outDir;
+
+        QString relativeToInputPath = argsParser.isSet(flattenOutputOption) ? info.fileName() : inputDir.relativeFilePath(imagePath);
+        QString pathWithoutExtension = relativeToInputPath.remove("." + suffix);
+
+        if (argsParser.isSet(outputNormalTextureOption))
+        {
+          QImage normal = *processor->get_normal();
+          outputDir.mkpath(QFileInfo(relativeToInputPath).path());
+          QString name = outputDir.filePath(pathWithoutExtension + "_n." + suffix);
+          normal.save(name);
+        }
+
+        if (argsParser.isSet(outputSpecularTextureOption))
+        {
+          QImage specular = *processor->get_specular();
+          QString name = outputDir.filePath(pathWithoutExtension + "_s." + suffix);
+          specular.save(name);
+        }
+
+        if (argsParser.isSet(outputOcclusionTextureOption))
+        {
+          QImage occlusion = *processor->get_occlusion();
+          QString name = outputDir.filePath(pathWithoutExtension + "_o." + suffix);
+          occlusion.save(name);
+        }
+
+        if (argsParser.isSet(outputParallaxTextureOption))
+        {
+          QImage parallax = *processor->get_parallax();
+          QString name = outputDir.filePath(pathWithoutExtension + "_p." + suffix);
+          parallax.save(name);
+        }
     }
   }
 

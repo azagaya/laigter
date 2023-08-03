@@ -394,7 +394,7 @@ void MainWindow::loadSpecular()
 {
   QString fileName = QFileDialog::getOpenFileName(
       this, tr("Open Image"), "",
-      tr("Image File (*.png *.jpg *.bmp *.tga)"));
+      tr("Image File (*.png *.jpg *.bmp *.tga *.tiff)"));
   if (fileName != nullptr)
   {
     bool success;
