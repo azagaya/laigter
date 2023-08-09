@@ -33,6 +33,9 @@
 
 #define cimg_use_openmp 1
 
+#define CHECK_CHANGES(outFileInfo, info) (outFileInfo.fileTime(QFile::FileModificationTime) < info.fileTime(QFile::FileModificationTime))
+
+
 QCoreApplication *createApplication(int &argc, char *argv[])
 {
   bool gui = true;
@@ -96,7 +99,7 @@ int main(int argc, char *argv[])
   QCommandLineOption inputDiffuseTextureOption(QStringList() << "d"
                                                              << "diffuse",
                                                "diffuse path",
-                                               "Path to a diffuse image, or to a directory that contains many diffuse images");
+                                               "Path to a list of diffuse images or to a directory");
   argsParser.addOption(inputDiffuseTextureOption);
 
   QCommandLineOption outputNormalTextureOption(QStringList() << "n"
@@ -104,10 +107,16 @@ int main(int argc, char *argv[])
                                                "generate normals");
   argsParser.addOption(outputNormalTextureOption);
 
+  QCommandLineOption normalSuffixOption("normal-suffix", "Suffix for normal maps");
+  argsParser.addOption(normalSuffixOption);
+
   QCommandLineOption outputSpecularTextureOption(QStringList() << "c"
                                                                << "specular",
                                                  "generate specular");
   argsParser.addOption(outputSpecularTextureOption);
+
+  QCommandLineOption specularSuffixOption("specular-suffix", "Suffix for specular maps");
+  argsParser.addOption(specularSuffixOption);
 
   QCommandLineOption outputOcclusionTextureOption(QStringList()
                                                       << "o"
@@ -115,10 +124,16 @@ int main(int argc, char *argv[])
                                                   "generate occlusion");
   argsParser.addOption(outputOcclusionTextureOption);
 
+  QCommandLineOption occlusionSuffixOption("occlusion-suffix", "Suffix for occlusion maps");
+  argsParser.addOption(normalSuffixOption);
+
   QCommandLineOption outputParallaxTextureOption(QStringList() << "p"
                                                                << "parallax",
                                                  "generate parallax");
   argsParser.addOption(outputParallaxTextureOption);
+
+  QCommandLineOption paralaxSuffixOption("paralax-suffix", "Suffix for paralax maps");
+  argsParser.addOption(normalSuffixOption);
 
   QCommandLineOption pressetOption(QStringList() << "r"
                                                  << "preset",
@@ -136,6 +151,9 @@ int main(int argc, char *argv[])
 
   QCommandLineOption flattenOutputOption("flatten", "don't save in subdirectories");
   argsParser.addOption(flattenOutputOption);
+
+  QCommandLineOption checkChangesOption("check-changes", "only generate maps if the maps are older than the diffuse");
+  argsParser.addOption(checkChangesOption);
 
   QSurfaceFormat fmt;
   fmt.setDepthBufferSize(24);
@@ -161,7 +179,6 @@ int main(int argc, char *argv[])
     QDir inputDir;
 
     QString outPath = argsParser.value(outputLocationOption);
-    QFileInfo outInfo(outPath);
     QDir outDir(outPath);
 
     if (info.isFile())
@@ -188,17 +205,64 @@ int main(int argc, char *argv[])
             fileList.append(info.absoluteFilePath());
         }
     }
-
+    else
+    {
+        fileList.append(inputDiffuseTextureOptionValue.split(","));
+        // TODO: look for actual common prefix
+        inputDir = QDir(QFileInfo(fileList[0]).absolutePath());
+    }
 
     QString pressetOptionValue = argsParser.value(pressetOption);
     ImageLoader il;
 
-
-
-
-
     foreach (QString imagePath, fileList)
     {
+
+        QFileInfo info = QFileInfo(imagePath);
+        QString suffix = info.suffix();
+        QDir outputDir = outPath.isEmpty() ? QDir(info.path()) : outDir;
+        QString relativeToInputPath = argsParser.isSet(flattenOutputOption) ? info.fileName() : inputDir.relativeFilePath(imagePath);
+        QString pathWithoutExtension = relativeToInputPath.remove("." + suffix);
+
+        bool changed = true;
+
+        if(argsParser.isSet(checkChangesOption))
+        {
+            changed = false;
+            QString typeSuffix = argsParser.isSet(normalSuffixOption) ? argsParser.value(normalSuffixOption) : "_n.";
+            if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+            QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
+            QFileInfo outInfo(name);
+            changed |= argsParser.isSet(outputNormalTextureOption) && CHECK_CHANGES(outInfo, info);
+
+            typeSuffix = argsParser.isSet(specularSuffixOption) ? argsParser.value(specularSuffixOption) : "_s.";
+            if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+            name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
+            outInfo = QFileInfo(name);
+            changed |= argsParser.isSet(outputSpecularTextureOption) && CHECK_CHANGES(outInfo, info);
+
+            typeSuffix = argsParser.isSet(occlusionSuffixOption) ? argsParser.value(specularSuffixOption) : "_o.";
+            if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+            name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
+            outInfo = QFileInfo(name);
+            changed |= argsParser.isSet(outputOcclusionTextureOption) && CHECK_CHANGES(outInfo, info);
+
+            typeSuffix = argsParser.isSet(paralaxSuffixOption) ? argsParser.value(paralaxSuffixOption) : "_p.";
+            if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+            name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
+            outInfo = QFileInfo(name);
+            changed |= argsParser.isSet(outputParallaxTextureOption) && CHECK_CHANGES(outInfo, info);
+        }
+
+        if (!changed)
+        {
+            continue;
+        }
+
         auximage = il.loadImage(imagePath, &success);
         if (!success) continue;
         auximage = auximage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
@@ -213,40 +277,50 @@ int main(int argc, char *argv[])
 
         processor.loadImage(imagePath, auximage);
 
-        QFileInfo info = QFileInfo(imagePath);
-        QString suffix = info.suffix();
-
-        QDir outputDir = outPath.isEmpty() ? QDir(info.path()) : outDir;
-
-        QString relativeToInputPath = argsParser.isSet(flattenOutputOption) ? info.fileName() : inputDir.relativeFilePath(imagePath);
-        QString pathWithoutExtension = relativeToInputPath.remove("." + suffix);
-
         if (argsParser.isSet(outputNormalTextureOption))
-        {
-          QImage normal = *processor.get_normal();
+        {          
+          QString typeSuffix = argsParser.isSet(normalSuffixOption) ? argsParser.value(normalSuffixOption) : "_n.";
+          if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+
           outputDir.mkpath(QFileInfo(relativeToInputPath).path());
-          QString name = outputDir.filePath(pathWithoutExtension + "_n." + suffix);
+          QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
+
+          QFileInfo outFileInfo(name);
+          QImage normal = *processor.get_normal();
           normal.save(name);
         }
 
         if (argsParser.isSet(outputSpecularTextureOption))
         {
+          QString typeSuffix = argsParser.isSet(specularSuffixOption) ? argsParser.value(specularSuffixOption) : "_s.";
+          if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+
           QImage specular = *processor.get_specular();
-          QString name = outputDir.filePath(pathWithoutExtension + "_s." + suffix);
+          QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
           specular.save(name);
         }
 
         if (argsParser.isSet(outputOcclusionTextureOption))
         {
+          QString typeSuffix = argsParser.isSet(occlusionSuffixOption) ? argsParser.value(occlusionSuffixOption) : "_o.";
+          if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+
           QImage occlusion = *processor.get_occlusion();
-          QString name = outputDir.filePath(pathWithoutExtension + "_o." + suffix);
+          QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
           occlusion.save(name);
         }
 
         if (argsParser.isSet(outputParallaxTextureOption))
         {
+          QString typeSuffix = argsParser.isSet(paralaxSuffixOption) ? argsParser.value(paralaxSuffixOption) : "_p.";
+          if (!typeSuffix.endsWith("."))
+                typeSuffix += ".";
+
           QImage parallax = *processor.get_parallax();
-          QString name = outputDir.filePath(pathWithoutExtension + "_p." + suffix);
+          QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
           parallax.save(name);
         }
     }
