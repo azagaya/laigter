@@ -169,7 +169,7 @@ TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
 win32 {
-  LRELEASE=$$replace(LRELEASE, \, /)
+  LRELEASE=$$clean_path(LRELEASE)
   LRELEASE=$$replace(LRELEASE, \', )
 }
 for(tsfile, TRANSLATIONS) {
