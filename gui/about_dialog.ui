@@ -229,22 +229,42 @@
         <widget class="QListWidget" name="listWidget_2">
          <item>
           <property name="text">
-           <string>Brandon Blanker Lim-it - Image auto reload when file changes</string>
+           <string>Brandon Blanker Lim-it</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>creepertron95 - Laigter Icon</string>
+           <string>lewiji</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>George Marques (vnen) - Translation load</string>
+           <string>creepertron95</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>Gnumaru - Experimental CLI Interface</string>
+           <string>George Marques (vnen)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Gnumaru</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Calinou</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>akien-mga</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>ffyhlkain</string>
           </property>
          </item>
         </widget>
@@ -261,6 +281,11 @@
          <item>
           <property name="text">
            <string>Hans Wakelin - Japanese</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SakuraNeko - Simplified Chinese</string>
           </property>
          </item>
          <item>
