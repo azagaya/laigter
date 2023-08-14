@@ -15,7 +15,7 @@ jobs:
       with:
         version: '5.15.2'
         modules: 'imageformats'
-        arch: win64_mingw73
+        arch: win64_mingw81
         extra: '--external 7z'
         
     - name: Build Laigter
