@@ -17,6 +17,7 @@
  * Contact: azagaya.games@gmail.com
  */
 
+
 #include "gui/presets_manager.h"
 #include "main_window.h"
 #include "src/image_processor.h"
@@ -31,7 +32,7 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
-#define cimg_use_openmp 1
+#define cimg_use_openmp
 
 #define CHECK_CHANGES(outFileInfo, info) (outFileInfo.fileTime(QFile::FileModificationTime) < info.fileTime(QFile::FileModificationTime))
 
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
   argsParser.addOption(outputOcclusionTextureOption);
 
   QCommandLineOption occlusionSuffixOption("occlusion-suffix", "Suffix for occlusion maps");
-  argsParser.addOption(normalSuffixOption);
+  argsParser.addOption(occlusionSuffixOption);
 
   QCommandLineOption outputParallaxTextureOption(QStringList() << "p"
                                                                << "parallax",
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
   argsParser.addOption(outputParallaxTextureOption);
 
   QCommandLineOption paralaxSuffixOption("paralax-suffix", "Suffix for paralax maps");
-  argsParser.addOption(normalSuffixOption);
+  argsParser.addOption(paralaxSuffixOption);
 
   QCommandLineOption pressetOption(QStringList() << "r"
                                                  << "preset",
@@ -217,7 +218,6 @@ int main(int argc, char *argv[])
 
     foreach (QString imagePath, fileList)
     {
-
         QFileInfo info = QFileInfo(imagePath);
         QString suffix = info.suffix();
         QDir outputDir = outPath.isEmpty() ? QDir(info.path()) : outDir;

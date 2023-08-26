@@ -46,6 +46,8 @@
 #include <QPluginLoader>
 #include <QStandardPaths>
 #include <QtConcurrent/QtConcurrent>
+#include <QDebug>
+#include <QElapsedTimer>
 
 #include <QtNetwork>
 QNetworkAccessManager manager;
@@ -1178,6 +1180,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *e)
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
+   QElapsedTimer timer;
   QStringList fileNames;
   QStringList projectNames;
   QList<QUrl> urlList = event->mimeData()->urls();
@@ -1200,7 +1203,10 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
     LoadProject(projectNames[0]);
   }
+  timer.start();
   open_files(fileNames);
+
+  qDebug()<< "Drop time: " << timer.elapsed();
 }
 
 void MainWindow::openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames)

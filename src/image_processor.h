@@ -161,7 +161,7 @@ public:
   QTimer animation, recalculate_timer;
   Sprite sprite;
   QString frame_mode = "Sheet";
-  bool busy, active;
+  bool busy;
   bool updated = false;
 
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
@@ -247,11 +247,12 @@ private:
   int specular_bright;
   int specular_thresh;
 
+  int current_heightmap_id = -1;
+
   int h_frames = 1, v_frames = 1;
 
 public:
   explicit ImageProcessor(QObject *parent = nullptr);
-  ~ImageProcessor();
   QImage *get_normal();
   QImage *get_occlusion();
   QImage *get_parallax();

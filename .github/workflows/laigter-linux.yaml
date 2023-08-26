@@ -1,8 +1,5 @@
 name: Ubuntu 20.04
-on:  
-  push:
-    tags:
-      - '*'
+on: push
 
 jobs:
   buildOnUbuntu:
@@ -17,7 +14,7 @@ jobs:
     - name: add build dependencies
       run: |
         apt update
-        apt install -y software-properties-common g++ make wget
+        apt install -y software-properties-common clang make wget
         add-apt-repository ppa:beineri/opt-qt-5.15.2-focal
         apt-get update
         apt install -y qt515base qt515x11extras qt515tools libgl1-mesa-dev qt515imageformats

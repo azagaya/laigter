@@ -41,6 +41,8 @@ CONFIG += core ui c++11
 
 QMAKE_CXXFLAGS_RELEASE *= -O3
 
+LIBS += -lgomp -lpthread
+
 SOURCES += \
 	gui/about_dialog.cpp \
 	gui/exportwidget.cpp \
@@ -109,6 +111,10 @@ FORMS += \
 	gui/nb_selector.ui
 
 unix{
+
+    QMAKE_CXXFLAGS += -fopenmp
+    QMAKE_LFLAGS += -fopenmp
+
     isEmpty(PREFIX) {
         PREFIX = /usr/local
     }
@@ -169,6 +175,8 @@ TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
 win32 {
+  QMAKE_CXXFLAGS += -openmp
+  QMAKE_LFLAGS += -openmp
   LRELEASE=$$clean_path(LRELEASE)
   LRELEASE=$$replace(LRELEASE, \', )
 }

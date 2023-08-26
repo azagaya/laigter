@@ -22,7 +22,6 @@
 #include <cmath>
 
 #include <QApplication>
-#include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
 using namespace cimg_library;
@@ -104,7 +103,6 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   connected = false;
   customSpecularMap = false;
   customHeightMap = false;
-  active = true;
   normal_counter = parallax_counter = specular_counter = occlussion_counter = 0;
 
   connect(&animation, SIGNAL(timeout()), this, SLOT(next_frame()));
@@ -125,18 +123,6 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   current_animation = getAnimation("Default");
 }
 
-ImageProcessor::~ImageProcessor()
-{
-  active = false;
-  //  while (normal_counter > 0)
-  //    QThread::msleep(10);
-  //  while (parallax_counter > 0)
-  //    QThread::msleep(10);
-  //  while (specular_counter > 0)
-  //    QThread::msleep(10);
-  //  while (occlussion_counter > 0)
-  //    QThread::msleep(10);
-}
 int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
 {
   m_fileName = fileName;
@@ -182,6 +168,12 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
 
 void ImageProcessor::set_current_heightmap(int id)
 {
+
+  if (id == current_heightmap_id) return;
+
+  current_heightmap_id = id;
+
+
   if (tileable)
     sprite.get_image(TextureTypes::Neighbours, &heightmap);
   else
@@ -301,7 +293,6 @@ void ImageProcessor::calculate_occlusion()
     occlussion_counter = 1;
     return;
   }
-
   current_occlusion = modify_occlusion();
   QImage ovi = get_occlusion_overlay();
 
@@ -319,7 +310,6 @@ void ImageProcessor::calculate_occlusion()
   occlussion_ready.lock();
   sprite.set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
   occlussion_ready.unlock();
-
   processed();
   occlusion_mutex.unlock();
 }
@@ -331,7 +321,6 @@ void ImageProcessor::calculate_heightmap()
 
 int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 {
-
   QSize s = sprite.size();
   image = image.scaled(s);
 
@@ -340,6 +329,7 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image)
     for (int y = 0; y < 3; y++)
       set_neighbour_image(fileName, image, x, y);
   }
+
   calculate();
 
   return 0;
@@ -638,12 +628,10 @@ CImg<float> ImageProcessor::modify_occlusion()
   set_current_heightmap(current_frame_id);
 
   CImg<float> occ(QImage2CImg(heightmap.convertToFormat(QImage::Format_Grayscale8)));
-
   if (occlusion_invert)
   {
     occ = 255.0f - occ;
   }
-
   if (occlusion_distance_mode)
   {
     occ.threshold(occlusion_thresh) * 255.0;
@@ -661,7 +649,6 @@ CImg<float> ImageProcessor::modify_occlusion()
   occ += occlusion_bright;
   occ.cut(0, 255);
   occ = occ.blur(occlusion_blur);
-
   return occ;
 }
 
@@ -764,7 +751,6 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     return;
   }
   QMutexLocker hlocker(&heightmap_mutex);
-
   /* Calculate rects to update */
   QList<QRect> rlist;
   bool diagonal = true;
@@ -812,6 +798,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     return;
   }
   heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
+
   for (int i = 0; i < rlist.count(); i++)
   {
     m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
@@ -835,7 +822,7 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   {
     for (int i = 0; i < rlist.count(); i++)
     {
-      m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius);
+      m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius, rlist.at(i));
     }
   }
 
@@ -848,9 +835,10 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   {
     for (int i = 0; i < rlist.count(); i++)
     {
-      m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius);
+      m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius, rlist.at(i));
     }
   }
+
 
   if (m_normal.width() == 0 || m_normal.height() == 0)
   {
@@ -866,6 +854,8 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
     {
       rect.getCoords(&xmin, &ymin, &xmax, &ymax);
     }
+
+#pragma omp parallel for collapse(2)
     for (int x = xmin; x <= xmax; ++x)
     {
       for (int y = ymin; y <= ymax; ++y)
@@ -889,26 +879,22 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
         m_normal(x, y, 0, 1) = 255.0 * (ng / norm * 0.5 + 0.5);
         m_normal(x, y, 0, 2) = 255.0 * (nb / norm * 0.5 + 0.5);
 
-        //          if (!active)
-        //          {
-        //            normal_mutex.unlock();
-        //            return;
-        //          }
       }
     }
   }
+
   normal_ready.lock();
   sprite.set_image(TextureTypes::Normal, CImg2QImage(m_normal));
   normal_ready.unlock();
 
   processed();
   normal_mutex.unlock();
+
 }
 
 CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur_radius, QRect r)
 {
   QSize s = sprite.size();
-  float dx, dy;
 
   CImg<float> img(in);
 
@@ -944,57 +930,66 @@ CImg<float> ImageProcessor::calculate_normal(CImg<float> in, int depth, int blur
 
   img /= 255.0;
 
-  for (int x = xs; x <= xe; ++x)
-  {
-    for (int y = ys; y <= ye; ++y)
-    {
-      if (current_heightmap(x, y, 0, 3) == 0.0)
-      {
-        normals(x, y, 0, 0) = 0;
-        normals(x, y, 0, 1) = 0;
-        normals(x, y, 0, 2) = 1;
-        continue;
-      }
+int w = img.width();
+int h = img.height();
 
-      if (x == 0)
+float dx, dy;
+#pragma omp parallel for collapse(2) private(dx, dy)
+      for (int x = xs; x <= xe; x++)
       {
-        dx = -3 * img(x, y) + 4 * img(x + 1, y) - img(x + 2, y);
-      }
-      else if (x == img.width() - 1)
-      {
-        dx = 3 * img(x, y) - 4 * img(x - 1, y) + img(x - 2, y);
-      }
-      else
-      {
-        dx = -img(x - 1, y) + img(x + 1, y);
-      }
+        for (int y = ys; y <= ye; y++)
+        {
 
-      if (y == 0)
-      {
-        dy = -3 * img(x, y) + 4 * img(x, y + 1) - img(x, y + 2);
-      }
-      else if (y == img.height() - 1)
-      {
-        dy = 3 * img(x, y) - 4 * img(x, y - 1) + img(x, y - 2);
-      }
-      else
-      {
-        dy = -img(x, y - 1) + img(x, y + 1);
-      }
+          if (current_heightmap(x, y, 0, 3) == 0.0)
+          {
+            normals(x, y, 0, 0) = 0;
+            normals(x, y, 0, 1) = 0;
+            normals(x, y, 0, 2) = 1;
+            continue;
+          }
 
-      normals(x, y, 0, 0) = -dx * (depth / 100.0) * normalInvertX;
-      normals(x, y, 0, 1) = dy * (depth / 100.0) * normalInvertY;
-      normals(x, y, 0, 2) = 1.0;
-    }
-  }
+          if (x == 0)
+          {
+            dx = -3 * img(x, y) + 4 * img(x + 1, y) - img(x + 2, y);
+          }
+          else if (x == w - 1)
+          {
+            dx = 3 * img(x, y) - 4 * img(x - 1, y) + img(x - 2, y);
+          }
+          else
+          {
+            dx = -img(x - 1, y) + img(x + 1, y);
+          }
+
+          if (y == 0)
+          {
+            dy = -3 * img(x, y) + 4 * img(x, y + 1) - img(x, y + 2);
+          }
+          else if (y == h - 1)
+          {
+            dy = 3 * img(x, y) - 4 * img(x, y - 1) + img(x, y - 2);
+          }
+          else
+          {
+            dy = -img(x, y - 1) + img(x, y + 1);
+          }
+
+          normals(x, y, 0, 0) = -dx * (depth / 100.0) * normalInvertX;
+          normals(x, y, 0, 1) = dy * (depth / 100.0) * normalInvertY;
+          normals(x, y, 0, 2) = 1.0;
+        }
+      }
   //  normals *= 255.0;
   if (tileable)
   {
     int w = s.width() / h_frames;
     int h = s.height() / v_frames;
-    for (int i = 0; i < h_frames; i++)
+
+    int i, j;
+#pragma omp parallel for collapse(2)
+    for (i = 0; i < h_frames; i++)
     {
-      for (int j = 0; j < v_frames; j++)
+      for (j = 0; j < v_frames; j++)
       {
         int si = i * 3 + 1;
         int sj = j * 3 + 1;
@@ -1649,6 +1644,7 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
   //  srt.permute_axes("yzcx");
 
   CImg<uchar> srt(w, h, 1, channels);
+
   cimg_forY(srt, y)
   {
     unsigned char *src = in.scanLine(y);
