@@ -36,6 +36,12 @@ jobs:
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage -verbose=2
 
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-artifact
+        path: Laigter-x86_64.AppImage 
+
     - name: GitHub Releases
       uses: fnkr/github-action-ghr@v1.3
       if: startsWith(github.ref, 'refs/tags/')
