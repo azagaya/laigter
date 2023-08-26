@@ -41,6 +41,9 @@ CONFIG += core ui c++11
 
 QMAKE_CXXFLAGS_RELEASE *= -O3
 
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_LFLAGS += -fopenmp
+
 LIBS += -lgomp -lpthread
 
 SOURCES += \
@@ -112,9 +115,6 @@ FORMS += \
 
 unix{
 
-    QMAKE_CXXFLAGS += -fopenmp
-    QMAKE_LFLAGS += -fopenmp
-
     isEmpty(PREFIX) {
         PREFIX = /usr/local
     }
@@ -175,8 +175,6 @@ TRANSLATIONS_FILES =
 
 qtPrepareTool(LRELEASE, lrelease)
 win32 {
-  QMAKE_CXXFLAGS += -openmp
-  QMAKE_LFLAGS += -openmp
   LRELEASE=$$clean_path(LRELEASE)
   LRELEASE=$$replace(LRELEASE, \', )
 }
