@@ -799,9 +799,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   }
   heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
 
-  for (int i = 0; i < rlist.count(); i++)
+  //for (int i = 0; i < rlist.count(); i++)
   {
-    m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0, rlist.at(i));
+    m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0);
   }
 
   if (update_tileable)
@@ -820,9 +820,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   if (updateEnhance)
   {
-    for (int i = 0; i < rlist.count(); i++)
+    //for (int i = 0; i < rlist.count(); i++)
     {
-      m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius, rlist.at(i));
+      m_emboss_normal = calculate_normal(m_gray * 10.0, normal_depth, normal_blur_radius);
     }
   }
 
@@ -833,9 +833,9 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
 
   if (updateBump)
   {
-    for (int i = 0; i < rlist.count(); i++)
+    //for (int i = 0; i < rlist.count(); i++)
     {
-      m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius, rlist.at(i));
+      m_distance_normal = calculate_normal(new_distance, normal_bisel_depth * normal_bisel_distance, normal_bisel_blur_radius);
     }
   }
 
