@@ -14,7 +14,7 @@ jobs:
     - name: add build dependencies
       run: |
         apt update
-        apt install -y software-properties-common clang make wget
+        apt install -y software-properties-common clang make wget libomp-dev
         add-apt-repository ppa:beineri/opt-qt-5.15.2-focal
         apt-get update
         apt install -y qt515base qt515x11extras qt515tools libgl1-mesa-dev qt515imageformats
@@ -24,7 +24,8 @@ jobs:
       run: |
         echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
         source /opt/qt*/bin/qt*-env.sh || true
-        /opt/qt515/bin/qmake CONFIG+=release PREFIX=/usr
+        export CXX=clang++
+        /opt/qt515/bin/qmake -spec linux-clang CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
         find appdir/
