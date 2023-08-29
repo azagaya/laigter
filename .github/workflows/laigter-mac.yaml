@@ -12,7 +12,7 @@ jobs:
       run: |
         rm /usr/local/bin/2to3* 
         export HOMEBREW_NO_AUTO_UPDATE=1 && export HOMEBREW_NO_INSTALL_CLEANUP=1 && brew update
-        HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt5 llvm
+        HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt5
     - name: build Laigter
       shell: bash
       run: |
