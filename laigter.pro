@@ -41,10 +41,12 @@ CONFIG += core ui c++11
 
 QMAKE_CXXFLAGS_RELEASE *= -O3
 
+!macx {
 QMAKE_CXXFLAGS += -fopenmp
 QMAKE_LFLAGS += -fopenmp
 
 LIBS += -lgomp -lpthread
+}
 
 SOURCES += \
 	gui/about_dialog.cpp \
