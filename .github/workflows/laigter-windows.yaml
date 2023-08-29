@@ -28,7 +28,13 @@ jobs:
         windeployqt --compiler-runtime --dir .\laigter-windows .\release\laigter.exe
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
         tar.exe -a -c -f laigter-windows.zip laigter-windows
-        
+  
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mac-artifacts
+        path: laigter-windows.zip 
+
     - name: GitHub Releases
       uses: svenstaro/upload-release-action@v2
       if: startsWith(github.ref, 'refs/tags/')
