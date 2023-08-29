@@ -166,6 +166,10 @@ public:
 
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
+  // These will only be used in the cli interface for now, to avoid calculating maps that wont be exported.
+
+  bool has_normal = true, has_parallax = true, has_specular = true, has_occlusion = true;
+
   QRect rect_requested = QRect(0, 0, 0, 0);
 
   QVector<QVector<float>> vertices;

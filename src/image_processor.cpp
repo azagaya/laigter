@@ -186,12 +186,12 @@ void ImageProcessor::set_current_heightmap(int id)
 void ImageProcessor::calculate()
 {
   set_current_heightmap(current_frame_id);
-  calculate_distance();
+  if (has_normal || has_parallax) calculate_distance();
   calculate_heightmap();
-  generate_normal_map();
-  calculate_parallax();
-  calculate_specular();
-  calculate_occlusion();
+  if (has_normal) generate_normal_map();
+  if (has_parallax) calculate_parallax();
+  if (has_specular) calculate_specular();
+  if (has_occlusion) calculate_occlusion();
 }
 
 void ImageProcessor::recalculate()

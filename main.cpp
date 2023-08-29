@@ -216,6 +216,13 @@ int main(int argc, char *argv[])
     QString pressetOptionValue = argsParser.value(pressetOption);
     ImageLoader il;
 
+    bool has_normal, has_parallax, has_occlusion, has_specular;
+
+    has_normal = argsParser.isSet(outputNormalTextureOption);
+    has_parallax = argsParser.isSet(outputParallaxTextureOption);
+    has_occlusion = argsParser.isSet(outputOcclusionTextureOption);
+    has_specular = argsParser.isSet(outputSpecularTextureOption);
+
     foreach (QString imagePath, fileList)
     {
         QFileInfo info = QFileInfo(imagePath);
@@ -234,28 +241,28 @@ int main(int argc, char *argv[])
                 typeSuffix += ".";
             QString name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
             QFileInfo outInfo(name);
-            changed |= argsParser.isSet(outputNormalTextureOption) && CHECK_CHANGES(outInfo, info);
+            changed |= has_normal && CHECK_CHANGES(outInfo, info);
 
             typeSuffix = argsParser.isSet(specularSuffixOption) ? argsParser.value(specularSuffixOption) : "_s.";
             if (!typeSuffix.endsWith("."))
                 typeSuffix += ".";
             name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
             outInfo = QFileInfo(name);
-            changed |= argsParser.isSet(outputSpecularTextureOption) && CHECK_CHANGES(outInfo, info);
+            changed |= has_specular && CHECK_CHANGES(outInfo, info);
 
             typeSuffix = argsParser.isSet(occlusionSuffixOption) ? argsParser.value(specularSuffixOption) : "_o.";
             if (!typeSuffix.endsWith("."))
                 typeSuffix += ".";
             name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
             outInfo = QFileInfo(name);
-            changed |= argsParser.isSet(outputOcclusionTextureOption) && CHECK_CHANGES(outInfo, info);
+            changed |= has_occlusion && CHECK_CHANGES(outInfo, info);
 
             typeSuffix = argsParser.isSet(paralaxSuffixOption) ? argsParser.value(paralaxSuffixOption) : "_p.";
             if (!typeSuffix.endsWith("."))
                 typeSuffix += ".";
             name = outputDir.filePath(pathWithoutExtension + typeSuffix + suffix);
             outInfo = QFileInfo(name);
-            changed |= argsParser.isSet(outputParallaxTextureOption) && CHECK_CHANGES(outInfo, info);
+            changed |= has_parallax && CHECK_CHANGES(outInfo, info);
         }
 
         if (!changed)
@@ -275,9 +282,14 @@ int main(int argc, char *argv[])
           PresetsManager::applyPresets(pressetOptionValue, processor);
         }
 
+        processor.has_normal = has_normal;
+        processor.has_occlusion = has_occlusion;
+        processor.has_parallax = has_parallax;
+        processor.has_specular = has_specular;
+
         processor.loadImage(imagePath, auximage);
 
-        if (argsParser.isSet(outputNormalTextureOption))
+        if (has_normal)
         {          
           QString typeSuffix = argsParser.isSet(normalSuffixOption) ? argsParser.value(normalSuffixOption) : "_n.";
           if (!typeSuffix.endsWith("."))
@@ -291,7 +303,7 @@ int main(int argc, char *argv[])
           normal.save(name);
         }
 
-        if (argsParser.isSet(outputSpecularTextureOption))
+        if (has_specular)
         {
           QString typeSuffix = argsParser.isSet(specularSuffixOption) ? argsParser.value(specularSuffixOption) : "_s.";
           if (!typeSuffix.endsWith("."))
@@ -302,7 +314,7 @@ int main(int argc, char *argv[])
           specular.save(name);
         }
 
-        if (argsParser.isSet(outputOcclusionTextureOption))
+        if (has_occlusion)
         {
           QString typeSuffix = argsParser.isSet(occlusionSuffixOption) ? argsParser.value(occlusionSuffixOption) : "_o.";
           if (!typeSuffix.endsWith("."))
@@ -313,7 +325,7 @@ int main(int argc, char *argv[])
           occlusion.save(name);
         }
 
-        if (argsParser.isSet(outputParallaxTextureOption))
+        if (has_parallax)
         {
           QString typeSuffix = argsParser.isSet(paralaxSuffixOption) ? argsParser.value(paralaxSuffixOption) : "_p.";
           if (!typeSuffix.endsWith("."))
