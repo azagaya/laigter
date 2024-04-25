@@ -1695,7 +1695,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/exportwidget.ui" line="356"/>
         <source>Cancel</source>
-        <translation type="unfinished"><取消/translation>
+        <translation type="unfinished">取消</translation>
     </message>
     <message>
         <location filename="../gui/exportwidget.cpp" line="257"/>
