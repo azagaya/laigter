@@ -24,7 +24,7 @@ jobs:
         find appdir/
         mkdir -p appdir/usr/lib
         macdeployqt laigter.app
-        wget https://raw.githubusercontent.com/arl/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py
+        wget https://raw.githubusercontent.com/chchwy/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py
         ./macdeployqtfix.py laigter.app /usr/local/Cellar/qt/*/
         zip -r laigter-mac.zip laigter.app
 
