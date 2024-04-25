@@ -2619,7 +2619,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../gui/presets_manager.ui" line="511"/>
         <source>18</source>
-        <translation18></translation>
+        <translation>18</translation>
     </message>
     <message>
         <location filename="../gui/presets_manager.ui" line="525"/>
