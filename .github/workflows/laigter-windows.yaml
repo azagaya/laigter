@@ -8,15 +8,17 @@ jobs:
     steps:
     
     - name: checkout sources
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v4
       with:
-        version: '5.15.2'
-        modules: 'imageformats'
-        arch: win64_mingw81
+        aqtversion: '==3.1.*'
+        version: '6.8.0'
         extra: '--external 7z'
+        target: 'desktop'
+        host: 'windows'
+        modules: 'qtimageformats'
         
     - name: Build Laigter
       shell: cmd
@@ -30,7 +32,7 @@ jobs:
         tar.exe -a -c -f laigter-windows.zip laigter-windows
   
     - name: upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: mac-artifacts
         path: laigter-windows.zip 
