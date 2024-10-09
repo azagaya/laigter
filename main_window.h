@@ -89,7 +89,7 @@ public:
   void SaveProject(QString path);
   void LoadProject(QString path);
   bool ExportMap(TextureTypes type, ImageProcessor *p, QString postfix, QString destination = "", bool useAlpha = false);
-  QStringList FindSimilarFiles(QString file_name, QStringList checkedFiles, QString *prefix);
+  QStringList FindSimilarFiles(QString file_name, QStringList checkedFiles, QString &prefix);
 
 public slots:
   ImageProcessor *find_processor(QString name);

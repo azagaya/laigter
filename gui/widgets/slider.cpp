@@ -1,4 +1,6 @@
 #include "slider.h"
+#include "qevent.h"
+#include "qscreen.h"
 
 #include <math.h>
 
@@ -6,6 +8,7 @@
 #include <QPainter>
 #include <QStyleOptionSlider>
 #include <QToolTip>
+#include <QMouseEvent>
 
 Slider::Slider(QWidget *parent) : QSlider(parent)
 {
@@ -17,9 +20,6 @@ Slider::Slider(QWidget *parent) : QSlider(parent)
   connect(&spin_box, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
   connect(this, SIGNAL(rangeChanged(int,int)), this,
           SLOT(setSpinBoxRange(int,int)));
-  //  QFile style(":/styles/spinboxslider.qss");
-  //  style.open(QIODevice::ReadOnly);
-  //  setStyleSheet(style.readAll());
 }
 
 Slider::Slider(Qt::Orientation orientation, QWidget *parent)
@@ -31,8 +31,7 @@ void Slider::setValueFromSpinBox(int v) { setValue(v * maximum() / 100.0); }
 
 void Slider::setValueToSpinBox(int v)
 {
-  Q_UNUSED(v)
-  spin_box.setValue(value() * 100.0 / maximum());
+  spin_box.setValue(v * 100.0 / maximum());
 }
 
 void Slider::setSpinBoxRange(int min, int max)
@@ -47,11 +46,8 @@ void Slider::resizeEvent(QResizeEvent *ev)
   setMinimumSize(QSize(50, 20));
   QString num = QString::number(value());
   QFontMetrics fm(spin_box.font());
-  spin_box.resize(fm.size(Qt::TextSingleLine, num + " ").width(), 20);
-  // spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(),
-  // height()/2-spin_box.height()/2);
-  //  spin_box.move(0.5*value()/maximum()*spin_box.width(),
-  //  height()/2-spin_box.height()/2);
+  int width = fm.size(Qt::TextSingleLine, num + " ").width() + handler_min / 2;
+  spin_box.resize(width, 20);
 }
 
 void Slider::sliderChange(QAbstractSlider::SliderChange change)
@@ -61,19 +57,15 @@ void Slider::sliderChange(QAbstractSlider::SliderChange change)
   {
     QString num = QString::number(value());
     QFontMetrics fm(spin_box.font());
-    spin_box.resize(fm.size(Qt::TextSingleLine, num + " ").width(), 20);
-    // spin_box.move(0.5*width()*value()/maximum()-0.5*value()/maximum()*spin_box.width(),
-    // height()/2-spin_box.height()/2);
+    int width = fm.size(Qt::TextSingleLine, num + " ").width() + handler_min / 2;
+    spin_box.resize(width, 20);
   }
 }
 
 void Slider::paintEvent(QPaintEvent *ev)
 {
   QSlider::paintEvent(ev);
-  QRect rect(1.0 * (width() - 12.0) * (value() - minimum()) /
-                     (maximum() - minimum()) +
-                 37.0 * (maximum() - value()) / (maximum() - minimum()),
-             8, 4, 4);
+  QRect rect(1.0 * (width() - handler_right_offset) * (value() - minimum()) / (maximum() - minimum()) + handler_min * (maximum() - value()) / (maximum() - minimum()), 8, 4, 4);
   QPainter painter(this);
 
   if (isEnabled())
@@ -86,4 +78,26 @@ void Slider::paintEvent(QPaintEvent *ev)
 void Slider::mouseDoubleClickEvent( QMouseEvent * e ){
     spin_box.setFocus();
     spin_box.selectAll();
+}
+
+
+void Slider::mousePressEvent(QMouseEvent *event)
+{
+
+    QPointF new_position = event->position();
+    new_position.setX(0.5*handler_min * (event->position().x() - width()) / (handler_min - width()) +
+                      (width() - handler_right_offset)*(event->position().x() - handler_min) / (width()- handler_min));
+    event = new QMouseEvent(event->type(), new_position, new_position + pos(), event->button(), event->buttons(), event->modifiers());    QSlider::mousePressEvent(event);
+    delete event;
+
+}
+
+void Slider::mouseMoveEvent(QMouseEvent *event)
+{
+    QPointF new_position = event->position();
+    new_position.setX(0.5*handler_min * (event->position().x() - width()) / (handler_min - width()) +
+                      (width() - handler_right_offset)*(event->position().x() - handler_min) / (width()- handler_min));
+    event = new QMouseEvent(event->type(), new_position, this->mapToGlobal(new_position), event->button(), event->buttons(), event->modifiers());
+    QSlider::mouseMoveEvent(event);
+    delete event;
 }

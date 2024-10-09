@@ -26,9 +26,20 @@
 
 using namespace cimg_library;
 
+void SetAlphaChannel(const QImage &src, QImage &dst)
+{
+  for (int y = 0; y < dst.height(); ++y) {
+    const QRgb *srcLine = reinterpret_cast<const QRgb *>(src.constScanLine(y));
+    uchar *destLine = dst.scanLine(y);
+    for (int x = 0; x < src.width(); ++x) {
+      destLine[x] = qAlpha(srcLine[x]);
+    }
+  }
+}
+
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
-  position = offset = QVector2D(0, 0);
+  position = offset = QVector3D(0, 0, 0);
   zoom = 1.0;
   selected = false;
   normal_bisel_depth = 100;
@@ -200,25 +211,24 @@ void ImageProcessor::recalculate()
   {
 
     normal_mutex.unlock();
-    QtConcurrent::run(this, &ImageProcessor::generate_normal_map, enhance_requested, bump_requested,
-                      distance_requested, rect_requested);
+    QtConcurrent::run([this](){this->generate_normal_map(enhance_requested, bump_requested, distance_requested, rect_requested);});
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
     normal_counter = 0;
   }
   if (specular_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_specular);
+    QtConcurrent::run([this](){this->calculate_specular();});
     specular_counter = 0;
   }
   if (parallax_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_parallax);
+    QtConcurrent::run([this](){this->calculate_parallax();});
     parallax_counter = 0;
   }
   if (occlussion_counter > 0)
   {
-    QtConcurrent::run(this, &ImageProcessor::calculate_occlusion);
+    QtConcurrent::run([this](){this->calculate_occlusion();});
     occlussion_counter = 0;
   }
 }
@@ -1049,7 +1059,7 @@ QImage *ImageProcessor::get_normal()
   sprite.get_image(TextureTypes::Normal, &last_normal);
   if (useNormalAlpha)
   {
-    last_normal.setAlphaChannel(texture.alphaChannel());
+    SetAlphaChannel(texture, last_normal);
   }
   return &last_normal;
 }
@@ -1059,7 +1069,7 @@ QImage *ImageProcessor::get_parallax()
   sprite.get_image(TextureTypes::Parallax, &last_parallax);
   if (useParallaxAlpha)
   {
-    last_parallax.setAlphaChannel(texture.alphaChannel());
+    SetAlphaChannel(texture, last_parallax);
   }
   return &last_parallax;
 }
@@ -1069,7 +1079,7 @@ QImage *ImageProcessor::get_specular()
   sprite.get_image(TextureTypes::Specular, &last_specular);
   if (useSpecularAlpha)
   {
-    last_specular.setAlphaChannel(texture.alphaChannel());
+    SetAlphaChannel(texture, last_specular);
   }
   return &last_specular;
 }
@@ -1079,7 +1089,7 @@ QImage *ImageProcessor::get_occlusion()
   sprite.get_image(TextureTypes::Occlussion, &last_occlussion);
   if (useOcclusionAlpha)
   {
-    last_occlussion.setAlphaChannel(texture.alphaChannel());
+    SetAlphaChannel(texture, last_occlussion);
   }
   return &last_occlussion;
 }

@@ -4,7 +4,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QStandardPaths>
-#include <QTextCodec>
+#include <QStringConverter>
 
 LanguageSelector::LanguageSelector(QWidget *parent)
     : QDialog(parent), ui(new Ui::LanguageSelector)
@@ -14,7 +14,7 @@ LanguageSelector::LanguageSelector(QWidget *parent)
   if (f.open(QIODevice::ReadOnly))
   {
     QTextStream in(&f);
-    in.setCodec( QTextCodec::codecForName( "UTF-8" ) );
+    in.setEncoding( QStringConverter::Utf8 );
     while (!in.atEnd())
     {
       QStringList line = in.readLine().split("\t");
