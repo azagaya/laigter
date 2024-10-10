@@ -211,7 +211,9 @@ void ImageProcessor::recalculate()
   {
 
     normal_mutex.unlock();
-    QtConcurrent::run([this](){this->generate_normal_map(enhance_requested, bump_requested, distance_requested, rect_requested);});
+    bool updateEnhance = enhance_requested, updateBump = bump_requested, updateDistance = distance_requested;
+    QRect rect = rect_requested;
+    QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
     normal_counter = 0;
