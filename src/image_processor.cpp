@@ -1411,11 +1411,6 @@ QImage ImageProcessor::get_heightmap()
   return heightmap.copy();
 }
 
-QImage ImageProcessor::get_distance_map()
-{
-  /* Implement this ? */
-}
-
 void ImageProcessor::set_light_list(QList<LightSource *> &list)
 {
   lightList.clear();

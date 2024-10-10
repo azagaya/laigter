@@ -262,7 +262,6 @@ public:
   QImage *get_parallax();
   QImage *get_specular();
   QImage *get_texture();
-  QImage get_distance_map();
   QImage get_heightmap();
   QString get_heightmap_path();
   QString get_name();
