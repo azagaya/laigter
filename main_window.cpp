@@ -469,7 +469,7 @@ ImageProcessor *MainWindow::find_processor(QString name)
   return nullptr;
 }
 
-QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedFiles, QString *prefix)
+QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedFiles, QString &prefix)
 {
   /* Check for auto loading of frames */
 
@@ -481,10 +481,10 @@ QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedF
     QRegularExpression rx("((\\d+)(?!.*\\d))");
     QRegularExpressionMatch match = rx.match(info.fileName());
     QStringList parts = file_name.split("/").last().split(match.captured(0));
-    *prefix = parts.first();
+    prefix = parts.first();
     postfix = parts.last();
     QDir dir = info.absoluteDir();
-    if (*prefix != "")
+    if (prefix != "")
     {
       foreach (QString file, dir.entryList())
       {
@@ -518,7 +518,7 @@ void MainWindow::open_files(QStringList fileNames)
 
     if (reader.imageCount() <= 1)
     {
-      similarList = FindSimilarFiles(fileName, checkedFiles, &prefix);
+      similarList = FindSimilarFiles(fileName, checkedFiles, prefix);
 
       if (similarList.count() == 0)
       {

@@ -185,7 +185,7 @@ void OpenGlWidget::update_scene()
   glViewport(0, 0, m_width, m_height);
 
   QVector3D color;
-  double r, g, b;
+  float r, g, b;
   GLfloat bkColor[4];
   glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
@@ -738,7 +738,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   float lightWidth = (float)laigter.width() * 0.25;
   float lightHeight = (float)laigter.height() * 0.25;
 
-  if (event->buttons() & (Qt::LeftButton | Qt::MidButton))
+  if (event->buttons() & (Qt::LeftButton | Qt::MiddleButton))
   {
     if (addLight)
     {
@@ -961,7 +961,7 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     }
     need_to_update = true;
   }
-  else if (event->buttons() & Qt::MidButton)
+  else if (event->buttons() & Qt::MiddleButton)
   {
     origin += QVector3D(global_mouse_last_position - global_mouse_press_position);
     updateView();
@@ -1298,7 +1298,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     glClear(GL_COLOR_BUFFER_BIT);
 
     QVector3D color;
-    double r, g, b;
+    float r, g, b;
     GLfloat bkColor[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
@@ -1484,7 +1484,7 @@ QImage OpenGlWidget::get_preview(bool fullPreview, bool autosave,
 
 void OpenGlWidget::apply_light_params(QMatrix4x4 projection, QMatrix4x4 view)
 {
-  double r, g, b;
+  float r, g, b;
   QVector3D color;
 
   QList<LightSource *> currentLightList;

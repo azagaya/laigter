@@ -13,6 +13,8 @@ private:
   QSpinBox spin_box;
 
 public:
+  int handler_min = 37;
+  int handler_right_offset = 12;
   explicit Slider(QWidget *parent = nullptr);
   explicit Slider(Qt::Orientation orientation, QWidget *parent = nullptr);
 
@@ -26,6 +28,8 @@ private slots:
   void setSpinBoxRange(int min, int max);
   void setValueFromSpinBox(int v);
   void setValueToSpinBox(int v);
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
 
 signals:
   void resized();

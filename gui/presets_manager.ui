@@ -77,7 +77,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="export"/>
+         <iconset theme="export">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -102,7 +103,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="import"/>
+         <iconset theme="import">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -121,7 +123,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="delete"/>
+         <iconset theme="delete">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -208,7 +211,7 @@
           <enum>Checked</enum>
          </property>
          <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          <set>NoItemFlags</set>
          </property>
          <item>
           <property name="text">
@@ -221,7 +224,7 @@
            <string/>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
           <item>
            <property name="text">
@@ -233,6 +236,9 @@
            <property name="text">
             <string>0</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -243,6 +249,9 @@
            </property>
            <property name="text">
             <string>1</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
          </item>
@@ -257,7 +266,7 @@
            <string/>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
           <item>
            <property name="text">
@@ -268,6 +277,9 @@
            </property>
            <property name="text">
             <string>2</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
           <item>
@@ -280,6 +292,9 @@
            <property name="text">
             <string>3</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -291,6 +306,9 @@
            <property name="text">
             <string>4</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -301,6 +319,9 @@
            </property>
            <property name="text">
             <string>5</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
          </item>
@@ -315,7 +336,7 @@
            <string/>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
           <item>
            <property name="text">
@@ -327,6 +348,9 @@
            <property name="text">
             <string>7</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -337,6 +361,9 @@
            </property>
            <property name="text">
             <string>8</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
          </item>
@@ -352,7 +379,7 @@
           <string>6</string>
          </property>
          <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          <set>NoItemFlags</set>
          </property>
         </item>
         <item>
@@ -363,7 +390,7 @@
           <enum>Checked</enum>
          </property>
          <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          <set>NoItemFlags</set>
          </property>
          <item>
           <property name="text">
@@ -374,6 +401,9 @@
           </property>
           <property name="text">
            <string>9</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
           </property>
          </item>
          <item>
@@ -387,7 +417,7 @@
            <string/>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
           <item>
            <property name="text">
@@ -398,6 +428,9 @@
            </property>
            <property name="text">
             <string>10</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
           <item>
@@ -410,6 +443,9 @@
            <property name="text">
             <string>11</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -421,6 +457,9 @@
            <property name="text">
             <string>13</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -431,6 +470,9 @@
            </property>
            <property name="text">
             <string>14</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
          </item>
@@ -444,6 +486,9 @@
           <property name="text">
            <string>12</string>
           </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+          </property>
          </item>
          <item>
           <property name="text">
@@ -453,7 +498,7 @@
            <enum>Checked</enum>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
           <item>
            <property name="text">
@@ -465,6 +510,9 @@
            <property name="text">
             <string>15</string>
            </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+           </property>
           </item>
           <item>
            <property name="text">
@@ -475,6 +523,9 @@
            </property>
            <property name="text">
             <string>16</string>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
            </property>
           </item>
          </item>
@@ -488,6 +539,9 @@
           <property name="text">
            <string>17</string>
           </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+          </property>
          </item>
         </item>
         <item>
@@ -498,7 +552,7 @@
           <enum>Checked</enum>
          </property>
          <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          <set>NoItemFlags</set>
          </property>
          <item>
           <property name="text">
@@ -511,7 +565,7 @@
            <string>18</string>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
          </item>
          <item>
@@ -525,7 +579,7 @@
            <string>19</string>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
          </item>
          <item>
@@ -539,7 +593,7 @@
            <string>20</string>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
          </item>
          <item>
@@ -553,7 +607,7 @@
            <string>21</string>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
          </item>
          <item>
@@ -567,7 +621,7 @@
            <string>22</string>
           </property>
           <property name="flags">
-           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+           <set>NoItemFlags</set>
           </property>
          </item>
         </item>
@@ -579,7 +633,7 @@
           <enum>Checked</enum>
          </property>
          <property name="flags">
-          <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled|ItemIsTristate</set>
+          <set>NoItemFlags</set>
          </property>
          <item>
           <property name="text">
@@ -590,6 +644,9 @@
           </property>
           <property name="text">
            <string>23</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
           </property>
          </item>
          <item>
@@ -602,6 +659,9 @@
           <property name="text">
            <string>24</string>
           </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+          </property>
          </item>
          <item>
           <property name="text">
@@ -612,6 +672,9 @@
           </property>
           <property name="text">
            <string>25</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
           </property>
          </item>
          <item>
@@ -624,6 +687,9 @@
           <property name="text">
            <string>26</string>
           </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+          </property>
          </item>
          <item>
           <property name="text">
@@ -634,6 +700,9 @@
           </property>
           <property name="text">
            <string>27</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
           </property>
          </item>
          <item>
@@ -646,6 +715,9 @@
           <property name="text">
            <string>28</string>
           </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
+          </property>
          </item>
          <item>
           <property name="text">
@@ -656,6 +728,9 @@
           </property>
           <property name="text">
            <string>29</string>
+          </property>
+          <property name="flags">
+           <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable</set>
           </property>
          </item>
         </item>

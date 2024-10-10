@@ -21,7 +21,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets network
+QT       += core gui widgets network opengl openglwidgets
 
 TARGET = laigter
 TEMPLATE = app

@@ -6,18 +6,19 @@ jobs:
     runs-on: macOS-latest
     steps:
     - name: checkout sources
-      uses: actions/checkout@v2
-    - name: setup Homebrew
-      shell: bash
-      run: |
-        rm /usr/local/bin/2to3* 
-        export HOMEBREW_NO_AUTO_UPDATE=1 && export HOMEBREW_NO_INSTALL_CLEANUP=1 && brew update
-        HOMEBREW_VERBOSE_USING_DOTS=1 brew reinstall --verbose qt@5
-        brew link qt@5 --force
+      uses: actions/checkout@v4
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.8.0'
+        extra: '--external 7z'
+        arch: 'clang_64'
+        modules: 'qtimageformats'
+     
     - name: build Laigter
       shell: bash
       run: |
-        export PATH="/usr/local/opt/qt@5/bin:$PATH"
         qmake CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
@@ -29,7 +30,7 @@ jobs:
         zip -r laigter-mac.zip laigter.app
 
     - name: upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: mac-artifacts
         path: laigter-mac.zip 
