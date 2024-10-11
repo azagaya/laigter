@@ -196,12 +196,17 @@
         <widget class="QListWidget" name="listWidget">
          <item>
           <property name="text">
-           <string>Manolis Papadeas (Participant!)</string>
+           <string>GameDevTraum (Friend of Laigter!)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>GameDevTraum (Friend of Laigter!)</string>
+           <string>BasicIncomePlz (Participant!)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Alex Lee (Supporter!)</string>
           </property>
          </item>
          <item>

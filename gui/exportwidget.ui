@@ -52,8 +52,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="open">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset resource="../icons.qrc">
+          <normaloff>:/icons/Classic Laigter/custom-icons/open.png</normaloff>:/icons/Classic Laigter/custom-icons/open.png</iconset>
         </property>
        </widget>
       </item>
@@ -359,7 +359,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>radioButtonTargetPos</sender>

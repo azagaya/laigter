@@ -56,7 +56,7 @@ QCoreApplication *createApplication(int &argc, char *argv[])
 int main(int argc, char *argv[])
 {
   QCoreApplication::setApplicationName("laigter");
-  QCoreApplication::setApplicationVersion("1.11.0");
+  QCoreApplication::setApplicationVersion("1.12.0");
   //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
