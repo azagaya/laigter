@@ -46,6 +46,8 @@ private slots:
   void on_hFramesSpinBox_valueChanged(int arg1);
   void on_vFramesSpinBox_valueChanged(int arg1);
   void on_radioButton_2_toggled(bool checked);
+  void on_vGridSpinBox_editingFinished();
+  void on_hGridSpinBox_editingFinished();
 };
 
 #endif // SPRITE_PROPERTIES_DOCK_H

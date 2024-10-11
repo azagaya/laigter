@@ -36,8 +36,11 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
 
   processor->getFrameMode() == "Animation" ? ui->radioButton->setChecked(true) : ui->radioButton_2->setChecked(true);
 
-  ui->hFramesSpinBox->setValue(processor->getHFrames());
+  ui->hGridSpinBox->setValue(processor->getHFrames());
   ui->vFramesSpinBox->setValue(processor->getVFrames());
+
+  ui->vGridSpinBox->setValue(processor->get_texture()->size().height());
+  ui->hGridSpinBox->setValue(processor->get_texture()->size().width());
 
   connect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
   connect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
@@ -105,6 +108,7 @@ void SpritePropertiesDock::on_hFramesSpinBox_valueChanged(int arg1)
     return;
   current_processor->set_current_frame_id(0);
   framesChanged(arg1, current_processor->getVFrames(), current_processor);
+  this->ui->hGridSpinBox->setValue(current_processor->get_texture()->width() / arg1);
 }
 
 void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
@@ -113,6 +117,8 @@ void SpritePropertiesDock::on_vFramesSpinBox_valueChanged(int arg1)
     return;
   current_processor->set_current_frame_id(0);
   framesChanged(current_processor->getHFrames(), arg1, current_processor);
+
+  this->ui->vGridSpinBox->setValue(current_processor->get_texture()->height() / arg1);
 }
 
 void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
@@ -121,3 +127,25 @@ void SpritePropertiesDock::on_radioButton_2_toggled(bool checked)
     return;
   current_processor->setFrameMode(checked ? "Sheet" : "Animation");
 }
+
+void SpritePropertiesDock::on_vGridSpinBox_editingFinished()
+{
+  // get the nearest that allows integer division
+  int value = this->ui->vGridSpinBox->value();
+  int texture_height = current_processor->get_texture()->height();
+  int nearest = fmax(1,round(1.0*texture_height / value));
+  this->ui->vGridSpinBox->setValue(texture_height / nearest);
+  this->ui->vFramesSpinBox->setValue(nearest);
+}
+
+
+void SpritePropertiesDock::on_hGridSpinBox_editingFinished()
+{
+  // get the nearest that allows integer division
+  int value = this->ui->hGridSpinBox->value();
+  int texture_width = current_processor->get_texture()->width();
+  int nearest = fmax(1,round(1.0*texture_width / value));
+  this->ui->hGridSpinBox->setValue(texture_width / nearest);
+  this->ui->hFramesSpinBox->setValue(nearest);
+}
+
