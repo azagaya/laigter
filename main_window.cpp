@@ -1457,10 +1457,13 @@ void MainWindow::processor_selected(ImageProcessor *processor, bool selected)
   }
 
   if (sample_processor->get_selected())
+  {
     connect_processor(sample_processor);
-
-  if (ui->listWidget->count() == 0)
     set_enabled_map_controls(true);
+  }
+
+  else if (ui->listWidget->count() == 0)
+    set_enabled_map_controls(false);
 }
 
 void MainWindow::set_enabled_map_controls(bool e)

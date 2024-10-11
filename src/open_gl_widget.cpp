@@ -745,9 +745,6 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
       set_add_light(true);
       return;
     }
-    /* Loops for selecting textues */
-    if (QApplication::keyboardModifiers() != Qt::CTRL && QApplication::keyboardModifiers() != Qt::SHIFT)
-      set_all_processors_selected(false);
 
     bool selected = false;
     /* We first check if we selected a light, and if not, we scan if we
@@ -768,6 +765,7 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     }
     else
     {
+      /* Loops for selecting textues */
       foreach (ImageProcessor *p, processorList)
       {
         currentLightList = p->get_light_list_ptr();
@@ -790,6 +788,9 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 
     if (!lightSelected)
     {
+      if (QApplication::keyboardModifiers() != Qt::CTRL && QApplication::keyboardModifiers() != Qt::SHIFT)
+        set_all_processors_selected(false);
+
       set_enabled_light_controls(false);
       for (int i = processorList.count() - 1; i >= 0; i--)
       {
