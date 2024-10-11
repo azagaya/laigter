@@ -435,6 +435,12 @@ void MainWindow::update_scene()
   ui->openGLPreviewWidget->need_to_update = true;
 }
 
+void MainWindow::rename_processor(ImageProcessor *p, QString new_name)
+{
+  ui->listWidget->findItems(p->get_name(), Qt::MatchExactly).at(0)->setText(new_name);
+  processor->set_name(new_name);
+}
+
 void MainWindow::add_processor(ImageProcessor *p)
 {
   processorList.append(p);
@@ -501,7 +507,7 @@ QStringList MainWindow::FindSimilarFiles(QString file_name, QStringList checkedF
   return similarList;
 }
 
-void MainWindow::open_files(QStringList fileNames)
+void MainWindow::open_files(QStringList fileNames, bool search_similar)
 {
   QImage auximage;
   QStringList similarFiles, checkedFiles, similarList;
@@ -518,7 +524,8 @@ void MainWindow::open_files(QStringList fileNames)
 
     if (reader.imageCount() <= 1)
     {
-      similarList = FindSimilarFiles(fileName, checkedFiles, prefix);
+      if (search_similar)
+        similarList = FindSimilarFiles(fileName, checkedFiles, prefix);
 
       if (similarList.count() == 0)
       {
@@ -574,6 +581,7 @@ void MainWindow::open_files(QStringList fileNames)
             msgBox.exec();
             continue;
           }
+          fs_watcher.addPath(fileName);
           if (auximage.hasAlphaChannel())
             auximage = auximage.convertToFormat(
                 QImage::Format_RGBA8888_Premultiplied);
@@ -605,6 +613,7 @@ void MainWindow::open_files(QStringList fileNames)
     else
     {
       QList<QImage> image_list = il.loadImages(fileName);
+      fs_watcher.addPath(fileName);
       if (reader.supportsAnimation())
       {
         QSize frame_size = il.maxImagesSize(image_list);
@@ -1205,8 +1214,6 @@ void MainWindow::dropEvent(QDropEvent *event)
   }
   timer.start();
   open_files(fileNames);
-
-  qDebug()<< "Drop time: " << timer.elapsed();
 }
 
 void MainWindow::openDroppedFiles(QList<QUrl> urlList, QStringList *fileNames)
@@ -1490,9 +1497,9 @@ void MainWindow::onFileChanged(const QString &file_path)
     return;
 
   // Not needed anymore ???
-  //  if (!fs_watcher.files().contains(file_path)) {
-  //    fs_watcher.addPath(file_path);
-  //  }
+  if (!fs_watcher.files().contains(file_path)) {
+    fs_watcher.addPath(file_path);
+  }
   // no file system watcher reports "change" when creating file (bug?)
 
   if (QFile(file_path).size() == 0)
@@ -1505,8 +1512,16 @@ void MainWindow::onFileChanged(const QString &file_path)
     bool success;
     // IMPORTANT TODO, replace this with a function in ImageProcessor that takes a string and an image replaces all images with that path //
     auximage = il.loadImage(file_path, &success);
-    if (file_path == ip->get_name())
-      ip->loadImage(file_path, auximage);
+    if (!success)
+      return;
+    if (file_path == ip->sprite.get_file_name())
+    {
+      rename_processor(ip, "to-delete");
+      open_files({file_path});
+      fs_watcher.addPath(file_path);
+
+      remove_processor(ip);
+    }
 
     if (file_path == ip->get_specular_path())
       ip->loadSpecularMap(file_path, auximage);

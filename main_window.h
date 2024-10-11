@@ -97,6 +97,7 @@ public slots:
   void setCurrentItem(QListWidgetItem *i);
   void update_scene();
   void add_processor(ImageProcessor *p);
+  void rename_processor(ImageProcessor *p, QString new_name);
   void remove_processor(ImageProcessor *p);
   void selectedLightChanged(LightSource *light);
   void stopAddingLight();
@@ -136,7 +137,7 @@ private slots:
   void loadSpecular();
   void splitInFrames(int h_frames, int v_frames, ImageProcessor *processor);
   void on_comboBox_currentIndexChanged(int index);
-  void open_files(QStringList fileNames);
+  void open_files(QStringList fileNames, bool search_similar = true);
   void on_actionPresets_triggered();
   void on_horizontalSliderSpec_valueChanged(int value);
   void on_horizontalSliderSpecScatter_valueChanged(int value);

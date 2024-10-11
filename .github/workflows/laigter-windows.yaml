@@ -35,7 +35,7 @@ jobs:
     - name: upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: mac-artifacts
+        name: win-artifacts
         path: laigter-windows.zip 
 
     - name: GitHub Releases

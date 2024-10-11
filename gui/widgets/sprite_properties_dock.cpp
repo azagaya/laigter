@@ -36,11 +36,11 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
 
   processor->getFrameMode() == "Animation" ? ui->radioButton->setChecked(true) : ui->radioButton_2->setChecked(true);
 
-  ui->hGridSpinBox->setValue(processor->getHFrames());
+  ui->hFramesSpinBox->setValue(processor->getHFrames());
   ui->vFramesSpinBox->setValue(processor->getVFrames());
 
-  ui->vGridSpinBox->setValue(processor->get_texture()->size().height());
-  ui->hGridSpinBox->setValue(processor->get_texture()->size().width());
+  ui->vGridSpinBox->setValue(processor->get_texture()->size().height() / processor->getVFrames());
+  ui->hGridSpinBox->setValue(processor->get_texture()->size().width() / processor->getHFrames());
 
   connect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
   connect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
