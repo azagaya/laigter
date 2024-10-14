@@ -30,12 +30,15 @@ jobs:
         mkdir \laigter-windows
         windeployqt --compiler-runtime --dir .\laigter-windows .\release\laigter.exe
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
+        for /f "usebackq" %%i in (`where libgomp-1.dll`) do copy "%%i" .\laigter-windows\
+        for /f "usebackq" %%i in (`where libwinpthread-1.dll`) do copy "%%i" .\laigter-windows\
+        where libmcfgthread-1.dll
         tar.exe -a -c -f laigter-windows.zip laigter-windows
   
     - name: upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: mac-artifacts
+        name: win-artifacts
         path: laigter-windows.zip 
 
     - name: GitHub Releases
