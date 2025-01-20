@@ -14,8 +14,8 @@ jobs:
       uses: jurplel/install-qt-action@v4
       with:
         aqtversion: '==3.1.*'
-        version: '6.8.1'
-        arch: 'win64_mingw'
+        version: '6.2.0'
+        arch: 'win64_mingw81'
         extra: '--external 7z'
         target: 'desktop'
         host: 'windows'
