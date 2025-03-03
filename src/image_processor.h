@@ -105,6 +105,7 @@ public:
   bool *occlusion_invert;
   bool *specular_invert;
   char *gradient_end;
+  bool *useNormalAlpha, *useSpecularAlpha, *useParallaxAlpha, *useOcclusionAlpha;
   double *occlusion_contrast;
   double *parallax_contrast;
   double *specular_contrast;

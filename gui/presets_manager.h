@@ -30,7 +30,7 @@
 
 namespace Ui
 {
-typedef QString preset_codes_array[30];
+typedef QString preset_codes_array[34];
 class PresetsManager;
 } // namespace Ui
 
@@ -44,7 +44,7 @@ private:
   QList<ImageProcessor *> *mProcessorList;
   QString presetsPath;
   QDir presetsDir;
-  QString currentValues[30];
+  QString currentValues[34];
   QList<LightSource *> lightList;
 
 public:

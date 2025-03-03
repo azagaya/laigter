@@ -110,6 +110,10 @@ ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
   settings.occlusion_distance = &occlusion_distance;
   settings.occlusion_distance_mode = &occlusion_distance_mode;
   settings.lightList = &lightList;
+  settings.useNormalAlpha = &useNormalAlpha;
+  settings.useOcclusionAlpha = &useOcclusionAlpha;
+  settings.useSpecularAlpha = &useSpecularAlpha;
+  settings.useParallaxAlpha = &useParallaxAlpha;
   is_parallax = false;
   connected = false;
   customSpecularMap = false;

@@ -27,7 +27,7 @@
 #include <QStringConverter>
 #include <QThread>
 
-static QString presetCodes[30] = {"EnhanceHeight ",
+static QString presetCodes[34] = {"EnhanceHeight ",
                                   "EnhanceSoft ",
                                   "BumpHeight ",
                                   "BumpDistance",
@@ -56,7 +56,11 @@ static QString presetCodes[30] = {"EnhanceHeight ",
                                   "OcclusionThresh ",
                                   "OcclusionContrast ",
                                   "OcclusionDistance ",
-                                  "OcclusionDistanceMode "};
+                                  "OcclusionDistanceMode ",
+                                  "Normal Use Alpha ",
+                                  "Specular Use Alpha ",
+                                  "Occlussion Use Alpha ",
+                                  "Parallax Use Alpha "};
 
 PresetsManager::PresetsManager(ProcessorSettings settings,
                                QList<ImageProcessor *> *processorList,
@@ -111,6 +115,10 @@ PresetsManager::PresetsManager(ProcessorSettings settings,
   currentValues[27] = QString::number(*mSettings.occlusion_contrast * 1000);
   currentValues[28] = QString::number(*mSettings.occlusion_distance);
   currentValues[29] = *mSettings.occlusion_distance_mode ? "1" : "0";
+  currentValues[30] = *mSettings.useNormalAlpha ? "1" : "0";
+  currentValues[31] = *mSettings.useSpecularAlpha ? "1" : "0";
+  currentValues[32] = *mSettings.useOcclusionAlpha ? "1" : "0";
+  currentValues[33] = *mSettings.useParallaxAlpha ? "1" : "0";
 
   lightList.clear();
   foreach (LightSource *light, *(mSettings.lightList))
@@ -174,7 +182,7 @@ void PresetsManager::on_pushButtonSavePreset_clicked()
           saveLights = true;
         else if (code != "")
         {
-          int i = (*it)->text(1).toInt();
+          int i = code.toInt();
           in << "\n"
              << presetCodes[i] << "\t" << currentValues[i];
         }
@@ -393,6 +401,14 @@ void PresetsManager::applyPresetSettings(QByteArray &setting, ImageProcessor &p)
     p.set_occlusion_distance(aux[1].toInt());
   else if (aux[0] == presetCodes[29])
     p.set_occlusion_distance_mode((bool)aux[1].toInt());
+  else if (aux[0] == presetCodes[30])
+    p.set_use_normal_alpha((bool)aux[1].toInt());
+  else if (aux[0] == presetCodes[31])
+    p.set_use_specular_alpha((bool)aux[1].toInt());
+  else if (aux[0] == presetCodes[32])
+    p.set_use_occlusion_alpha((bool)aux[1].toInt());
+  else if (aux[0] == presetCodes[33])
+    p.set_use_parallax_alpha((bool)aux[1].toInt());
   else if (aux[0] == "LightSource")
   {
     QList<LightSource *> *pLightList = p.get_light_list_ptr();
