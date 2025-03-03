@@ -131,6 +131,8 @@ public slots:
   void setLight(bool light);
   void setLightColor(QColor color);
   void setLightHeight(float height);
+  void setLightAnimate(bool animate);
+  void setLightSpeed(float speed);
   void setLightIntensity(float intensity);
   void setNormalMap(QImage *normalMap);
   void setOcclusionMap(QImage *occlusionMap);

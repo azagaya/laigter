@@ -165,6 +165,10 @@ private slots:
 
   void on_deletePushButton_clicked();
 
+  void on_lightSpeedSpinBox_valueChanged(double arg1);
+
+  void on_animateLightCheckBox_toggled(bool checked);
+
 protected slots:
   virtual void changeEvent(QEvent *event);
 };

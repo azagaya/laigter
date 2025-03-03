@@ -29,6 +29,10 @@
 #include <QOpenGLVertexArrayObject>
 #include <QPainter>
 
+#include <QElapsedTimer>
+
+QElapsedTimer elapsed_timer;
+
 OpenGlWidget::OpenGlWidget(QWidget *parent)
 {
   Q_UNUSED(parent)
@@ -58,7 +62,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   currentLightList = &lightList;
   backgroundColor.setRgbF(0.2, 0.2, 0.3);
   pixelSize = 3;
-  refreshTimer.setInterval(1.0 / 30.0 * 1000.0);
+  refreshTimer.setInterval(1.0 / 60.0 * 1000.0);
   refreshTimer.setSingleShot(false);
   connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(force_update()));
   refreshTimer.start();
@@ -71,6 +75,7 @@ OpenGlWidget::OpenGlWidget(QWidget *parent)
   sample_light_list_used = true;
   oldPos = QPoint(0, 0);
   currentBrush = nullptr;
+  elapsed_timer.start();
 }
 
 void OpenGlWidget::initializeGL()
@@ -165,7 +170,9 @@ void OpenGlWidget::paintGL()
   }
 }
 
-void OpenGlWidget::update() { QOpenGLWidget::update(); }
+void OpenGlWidget::update() {
+  QOpenGLWidget::update();
+}
 
 void OpenGlWidget::force_update()
 {
@@ -1063,6 +1070,18 @@ void OpenGlWidget::setLightHeight(float height)
   need_to_update = true;
 }
 
+void OpenGlWidget::setLightAnimate(bool animate)
+{
+  currentLight->set_animate(animate);
+  need_to_update = true;
+}
+
+void OpenGlWidget::setLightSpeed(float speed)
+{
+  currentLight->set_speed(speed);
+  need_to_update = true;
+}
+
 void OpenGlWidget::setLightIntensity(float intensity)
 {
   currentLight->set_diffuse_intensity(intensity);
@@ -1511,7 +1530,22 @@ void OpenGlWidget::apply_light_params(QMatrix4x4 projection, QMatrix4x4 view)
     light->get_diffuse_color().getRgbF(&r, &g, &b, nullptr);
     color = QVector3D(r, g, b);
     QString Light = "Light[" + QString::number(i) + "]";
+    if (light->get_animate())
+    {
+      need_to_update = true;
+      float w = light->get_speed();
+      QVector3D pos = light->get_light_position();
+      float r = pos.length();
+      float theeta = atan2(pos.y(), pos.x());
+      theeta += 1.0/60.0 * w;
+      light->set_light_position( QVector3D(
+                                          r*cos(theeta),
+                                          r*sin(theeta),
+                                          pos.z()
+                              ));
+    }
     QVector3D light_position = light->get_light_position();
+
     light_position.setZ(-light_position.z());
 
     m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), projection * view * light_position);

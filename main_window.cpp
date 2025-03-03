@@ -1878,3 +1878,15 @@ void MainWindow::on_deletePushButton_clicked()
     remove_processor(find_processor(item->data(Qt::UserRole).toString()));
   }
 }
+
+void MainWindow::on_lightSpeedSpinBox_valueChanged(double arg1)
+{
+  ui->openGLPreviewWidget->setLightSpeed(arg1);
+}
+
+
+void MainWindow::on_animateLightCheckBox_toggled(bool checked)
+{
+  ui->openGLPreviewWidget->setLightAnimate(checked);
+}
+

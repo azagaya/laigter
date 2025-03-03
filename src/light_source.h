@@ -9,6 +9,8 @@ struct LightSettings
 {
   QColor diffuseColor, specularColor;
   float diffuseIntensity, specularIntensity, specularScatter;
+  float speed = 1.0;
+  bool animate = false;
   QVector3D lightPosition;
 };
 
@@ -40,6 +42,19 @@ public slots:
   void set_specular_color(QColor color);
   void set_specular_intensity(float intensity);
   void set_specular_scatter(float scatter);
+
+  void set_animate(bool a) {
+    settings.animate = a;
+  }
+  void set_speed(float speed) {
+    settings.speed = speed;
+  }
+  bool get_animate() {
+    return settings.animate;
+  }
+  float get_speed() {
+    return settings.speed;
+  }
 };
 
 #endif // LIGHTSOURCE_H
