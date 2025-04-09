@@ -184,7 +184,7 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
 void ImageProcessor::set_current_heightmap(int id)
 {
 
-  if (id == current_heightmap_id) return;
+ // if (id == current_heightmap_id) return;
 
   current_heightmap_id = id;
 
