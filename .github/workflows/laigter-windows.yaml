@@ -24,13 +24,16 @@ jobs:
     - name: Build Laigter
       shell: cmd
       run: |
-        echo --- Environment Check ---
-        echo QT_ROOT_DIR is: %QT_ROOT_DIR%
-        echo QT_TOOLS_DIR is: %QT_TOOLS_DIR%
-        dir "%QT_TOOLS_DIR%"
-        dir "%QT_TOOLS_DIR%\mingw810_64"
-        echo -------------------------
-        echo %QT_TOOLS_DIR%\mingw810_64\bin>> %GITHUB_PATH%
+        rem QT_TOOLS_DIR is empty, so we derive the compiler path from QT_ROOT_DIR.
+        rem The MinGW toolchain is usually one level up, in a 'Tools' folder.
+        
+        set "MINGW_BIN_PATH=%QT_ROOT_DIR%\..\Tools\mingw810_64\bin"
+        
+        echo Adding derived compiler path to PATH: %MINGW_BIN_PATH%
+        echo %MINGW_BIN_PATH%>> %GITHUB_PATH%
+
+        rem We will also explicitly confirm the path exists.
+        dir "%MINGW_BIN_PATH%"
         qmake
         make
         dir
