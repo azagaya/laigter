@@ -36,7 +36,7 @@ jobs:
         find appdir/
         mkdir -p appdir/usr/lib
         export APPIMAGE_EXTRACT_AND_RUN=1
-        export EXTRA_PLATFORM_PLUGINS=libqwayland-generic.so
+        export EXTRA_PLATFORM_PLUGINS=libqwayland-egl.so;libqwayland-generic.so
         export EXTRA_QT_MODULES="waylandcompositor"
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
