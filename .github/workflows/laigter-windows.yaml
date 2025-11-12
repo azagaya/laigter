@@ -24,12 +24,7 @@ jobs:
     - name: Build Laigter
       shell: cmd
       run: |
-        set "MINGW_BIN_PATH=%QT_ROOT_DIR%\..\Tools\mingw810_64\bin"
-        
-        echo Adding derived compiler path to PATH: %MINGW_BIN_PATH%
-        echo %MINGW_BIN_PATH%>> %GITHUB_PATH%
-
-        dir "%MINGW_BIN_PATH%"
+        dir %QT_ROOT_DIR%\..
         qmake
         make
         dir
