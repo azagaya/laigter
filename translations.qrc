@@ -34,5 +34,8 @@
         <file>translations/laigter_zh_CN.ts</file>
         <file>translations/laigter_zh_CN.qm</file>
         <file>translations/flags/CN.png</file>
+        <file>translations/laigter_sl_SI.ts</file>
+        <file>translations/flags/SI.png</file>
+        <file>translations/laigter_sl_SI.qm</file>
     </qresource>
 </RCC>
