@@ -138,6 +138,23 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       zip_entry_close(zip);
 
       /* Load custom heightmaps and specular maps */
+      data.clear();
+      path = frame.value("heightmap").toString();
+      zip_entry_open(zip, path.toUtf8());
+      {
+        zip_entry_read(zip, &buf, &bufsize);
+        data.append((char *)buf, bufsize);
+        p->loadHeightMap(path, QImage::fromData(data));
+      }
+
+      data.clear();
+      path = frame.value("specular").toString();
+      zip_entry_open(zip, path.toUtf8());
+      {
+        zip_entry_read(zip, &buf, &bufsize);
+        data.append((char *)buf, bufsize);
+        p->loadSpecularMap(path, QImage::fromData(data));
+      }
 
       /* restore position of processor */
       QVector3D position;
