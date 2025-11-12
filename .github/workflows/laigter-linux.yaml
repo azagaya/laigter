@@ -24,7 +24,7 @@ jobs:
         version: '6.10'
         arch: 'linux_gcc_64'
         extra: '--external 7z'
-        modules: 'qtimageformats qtwaylandcompositor'
+        modules: 'qtwayland qtimageformats qtwaylandcompositor'
 
     - name: Build Laigter
       shell: bash
