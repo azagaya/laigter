@@ -24,6 +24,12 @@ jobs:
     - name: Build Laigter
       shell: cmd
       run: |
+        echo --- Environment Check ---
+        echo QT_ROOT_DIR is: %QT_ROOT_DIR%
+        echo QT_TOOLS_DIR is: %QT_TOOLS_DIR%
+        dir "%QT_TOOLS_DIR%"
+        dir "%QT_TOOLS_DIR%\mingw810_64"
+        echo -------------------------
         echo %QT_TOOLS_DIR%\mingw810_64\bin>> %GITHUB_PATH%
         qmake
         make
