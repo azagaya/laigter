@@ -24,6 +24,9 @@ jobs:
     - name: Build Laigter
       shell: cmd
       run: |
+        set MINGW_DIR=%QT_ROOT_DIR:\=/%/tools/mingw810_64
+        echo %MINGW_DIR%\bin
+        echo %MINGW_DIR%\bin>> %GITHUB_PATH%
         qmake
         make
         dir
