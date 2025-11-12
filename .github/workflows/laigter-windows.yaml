@@ -19,7 +19,7 @@ jobs:
         extra: '--external 7z'
         target: 'desktop'
         host: 'windows'
-        modules: 'qtimageformats'
+        modules: 'tools_mingw qtimageformats'
         
     - name: Build Laigter
       shell: cmd
