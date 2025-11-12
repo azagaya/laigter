@@ -25,6 +25,7 @@ jobs:
       shell: cmd
       run: |
         dir %QT_ROOT_DIR%\..
+        dir %QT_ROOT_DIR%
         qmake
         make
         dir
