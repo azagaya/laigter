@@ -14,7 +14,7 @@ jobs:
     - name: Install Dependencies
       shell: bash
       run: |
-        apt-get update && apt-get install -y sudo p7zip-full wget file
+        apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1 
         sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
 
@@ -36,12 +36,11 @@ jobs:
         find appdir/
         mkdir -p appdir/usr/lib
         export APPIMAGE_EXTRACT_AND_RUN=1
-        export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
         export EXTRA_QT_MODULES="waylandcompositor"
         wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
         if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
         chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -extra-plugins=imageformats -appimage -verbose=2
+        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -exclude-libs=libwayland-client.so.0 -extra-plugins=imageformats,platforms/libqwayland-generic.so,platforms/libqwayland-egl.so,wayland-graphics-integration-client,wayland-decoration-client,wayland-shell-integration -appimage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
