@@ -35,6 +35,7 @@ jobs:
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
         for /f "usebackq" %%i in (`where libgomp-1.dll`) do copy "%%i" .\laigter-windows\
         for /f "usebackq" %%i in (`where libwinpthread-1.dll`) do copy "%%i" .\laigter-windows\
+        for /f "usebackq" %%i in (`where libdl.dll`) do copy "%%i" .\laigter-windows\
         where libmcfgthread-1.dll
         tar.exe -a -c -f laigter-windows.zip laigter-windows
   
