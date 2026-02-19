@@ -20,13 +20,13 @@ jobs:
         target: 'desktop'
         host: 'windows'
         modules: 'qtimageformats'
+        tools: 'tools_mingw'
         
     - name: Build Laigter
       shell: cmd
       run: |
-        set MINGW_DIR=%QT_ROOT_DIR:\=/%/tools/mingw810_64
-        echo %MINGW_DIR%\bin
-        echo %MINGW_DIR%\bin>> %GITHUB_PATH%
+        dir %QT_ROOT_DIR%\..
+        dir %QT_ROOT_DIR%
         qmake
         make
         dir
@@ -35,6 +35,7 @@ jobs:
         copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
         for /f "usebackq" %%i in (`where libgomp-1.dll`) do copy "%%i" .\laigter-windows\
         for /f "usebackq" %%i in (`where libwinpthread-1.dll`) do copy "%%i" .\laigter-windows\
+        for /f "usebackq" %%i in (`where libdl.dll`) do copy "%%i" .\laigter-windows\
         where libmcfgthread-1.dll
         tar.exe -a -c -f laigter-windows.zip laigter-windows
   
