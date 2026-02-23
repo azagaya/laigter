@@ -29,6 +29,7 @@ jobs:
         extra: '--external 7z'
         modules: 'qtimageformats qtwaylandcompositor'
         setup-python: false
+        aqtversion: '==3.1.21'
 
     - name: Build Laigter
       shell: bash
