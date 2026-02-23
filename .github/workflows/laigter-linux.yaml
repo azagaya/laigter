@@ -44,7 +44,7 @@ jobs:
         export ICON=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.png
         export DESKTOP=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.desktop
         export DEPLOY_OPENGL=1
-        ./quick-sharun /usr/bin/laigter
+        ./quick-sharun appdir/usr/bin/laigter
         ./quick-sharun --make-appimage
 
     - name: upload artifacts
