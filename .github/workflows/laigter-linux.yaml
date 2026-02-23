@@ -15,11 +15,6 @@ jobs:
         apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1
         sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
-    
-    - name: Install Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.12'
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
@@ -28,8 +23,6 @@ jobs:
         arch: 'linux_gcc_64'
         extra: '--external 7z'
         modules: 'qtimageformats qtwaylandcompositor'
-        setup-python: false
-        aqtversion: '==3.1.21'
 
     - name: Build Laigter
       shell: bash
