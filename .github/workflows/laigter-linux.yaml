@@ -16,10 +16,10 @@ jobs:
         sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
     
-    - name: Install Python 3.13
+    - name: Install Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: '3.12'
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
