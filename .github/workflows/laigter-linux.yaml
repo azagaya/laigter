@@ -40,19 +40,17 @@ jobs:
         
     - name: Create Appimage
       run: |
-        #mkdir -p appdir/usr/lib
-        #export APPIMAGE_EXTRACT_AND_RUN=1
-        #export EXTRA_QT_MODULES="waylandcompositor"
-        #wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-        #if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
-        #chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-        #./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -exclude-libs=libwayland-client.so.0 -extra-plugins=imageformats,platforms/libqwayland-generic.so,platforms/libqwayland-egl.so,wayland-graphics-integration-client,wayland-decoration-client,wayland-shell-integration -appimage
         export ICON="dist/laigter.png"
         export DESKTOP="dist/laigter.desktop"
         export OUTNAME="Laigter-x86_64.AppImage"
-        curl -Lo sharun https://github.com/pkgforge-dev/sharun/releases/latest/download/sharun-x86_64
-        chmod +x sharun
-        ./sharun --output Laigter-AnyLinux-x86_64.AppImage appdir/usr/local/bin/laigter
+        
+        curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
+        chmod +x quick-sharun
+        
+        ./quick-sharun appdir/usr/local/bin/laigter --make-appimage --output "$OUTNAME" --icon "$ICON" --desktop "$DESKTOP"
+
+# Or if it has a simpler mode (some versions support one-liner bundling):
+# ./quick-sharun /path/to/your/laigter-binary --make-appimage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
