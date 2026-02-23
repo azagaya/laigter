@@ -17,13 +17,14 @@ jobs:
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
         
     - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: jurplel/install-qt-action@v3
       with:
-        version: '6.8'
+        aqtversion: '==3.1.*'
+        version: '6.11.0'
+        host: 'linux'
+        target: 'desktop'
         arch: 'linux_gcc_64'
-        extra: '--external 7z'
         modules: 'qtimageformats qtwaylandcompositor'
-        aqtversion: "==3.1.*"
 
     - name: Build Laigter
       shell: bash
@@ -43,9 +44,6 @@ jobs:
         chmod +x quick-sharun
         
         ./quick-sharun appdir/usr/local/bin/laigter --make-appimage --output "$OUTNAME" --icon "$ICON" --desktop "$DESKTOP"
-
-# Or if it has a simpler mode (some versions support one-liner bundling):
-# ./quick-sharun /path/to/your/laigter-binary --make-appimage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
