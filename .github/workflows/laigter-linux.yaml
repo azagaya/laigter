@@ -25,6 +25,7 @@ jobs:
         arch: 'linux_gcc_64'
         extra: '--external 7z'
         modules: 'qtimageformats qtwaylandcompositor'
+        setup-python: false
 
     - name: Build Laigter
       shell: bash
