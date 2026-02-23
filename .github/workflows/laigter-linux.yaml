@@ -1,11 +1,9 @@
-name: Ubuntu 22.04
+name: Ubuntu Latest
 on: push
 
 jobs:
   buildOnUbuntu:
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu:22.04 # yes, this looks redundant, but something is messed up with their Ubuntu image that causes our builds to fail
+    runs-on: ubuntu-24.04
 
     steps:
     - name: checkout sources
@@ -17,11 +15,14 @@ jobs:
         apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1
         sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
-        
-    - name: Setup Python
+    
+    - name: Install Python 3.13
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13' # Standard stable version for 2026
+        python-version: '3.13'
+        # Important lines:
+        cache: 'pip'
+        allow-prereleases: true
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
