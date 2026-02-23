@@ -39,6 +39,7 @@ jobs:
         set -eu
         curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
         chmod +x quick-sharun
+        export OUTNAME="Laigter-x86_64.AppImage"
         export OUTPATH=.
         export ADD_HOOKS="self-updater.bg.hook"
         export ICON=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.png
