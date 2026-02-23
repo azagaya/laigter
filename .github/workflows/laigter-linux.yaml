@@ -43,7 +43,7 @@ jobs:
         curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
         chmod +x quick-sharun
         
-        ./quick-sharun appdir/usr/local/bin/laigter --make-appimage --output "$OUTNAME" --icon "$ICON" --desktop "$DESKTOP"
+        ./quick-sharun appdir/usr/bin/laigter --make-appimage --output "$OUTNAME" --icon "$ICON" --desktop "$DESKTOP"
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
