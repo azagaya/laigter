@@ -23,6 +23,7 @@ jobs:
         arch: 'linux_gcc_64'
         extra: '--external 7z'
         modules: 'qtimageformats qtwaylandcompositor'
+        aqtversion: "==2.1.*"
 
     - name: Build Laigter
       shell: bash
