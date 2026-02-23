@@ -17,6 +17,7 @@ jobs:
         apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1 
         sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
+        python3 -m ensurepip --upgrade
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
