@@ -36,14 +36,16 @@ jobs:
         
     - name: Create Appimage
       run: |
-        export ICON="dist/laigter.png"
-        export DESKTOP="dist/laigter.desktop"
-        export OUTNAME="Laigter-x86_64.AppImage"
-        
+        set -eu
         curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
         chmod +x quick-sharun
-        
-        ./quick-sharun appdir/usr/bin/laigter --make-appimage --output "$OUTNAME" --icon "$ICON" --desktop "$DESKTOP"
+        export OUTPATH=.
+        export ADD_HOOKS="self-updater.bg.hook"
+        export ICON=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.png
+        export DESKTOP=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.desktop
+        export DEPLOY_OPENGL=1
+        quick-sharun /usr/bin/laigter
+        quick-sharun --make-appimage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
