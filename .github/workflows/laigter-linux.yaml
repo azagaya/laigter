@@ -8,13 +8,6 @@ jobs:
     steps:
     - name: checkout sources
       uses: actions/checkout@v4
-
-    - name: Install Dependencies
-      shell: bash
-      run: |
-        apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1
-        sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
         
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -24,7 +17,7 @@ jobs:
         host: 'linux'
         target: 'desktop'
         arch: 'linux_gcc_64'
-        modules: 'qtimageformats qtwaylandcompositor'
+        modules: 'qtimageformats'
 
     - name: Build Laigter
       shell: bash
