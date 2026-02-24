@@ -9,6 +9,9 @@ jobs:
     steps:
     - name: checkout sources
       uses: actions/checkout@v5
+
+    - name: Preparing Container
+      uses: pkgforge-dev/anylinux-setup-action@v1
         
     - name: Install dependencies & Qt6 on Arch
       run: |
