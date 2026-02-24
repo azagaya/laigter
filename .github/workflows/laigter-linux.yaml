@@ -19,12 +19,13 @@ jobs:
         pacman -Syu --noconfirm
         pacman -S --needed --noconfirm base-devel git make qt6-base qt6-tools qt6-imageformats
         get-debloated-pkgs mesa-nano libxml2-mini opus-mini
+        ls /usr/bin/qmake*
 
     - name: Build Laigter
       shell: bash
       run: |
         echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        qmake CONFIG+=release PREFIX=/usr
+        /usr/bin/qmake6 CONFIG+=release PREFIX=/usr
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
         
