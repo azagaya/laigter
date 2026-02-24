@@ -36,7 +36,7 @@ jobs:
         chmod +x quick-sharun
         export ARCH="$(uname -m)"
         export OUTNAME="Laigter-${ARCH}.AppImage"
-        export OUTPATH=./dist
+        export OUTPATH=./binaries
         export ADD_HOOKS="self-updater.bg.hook"
         export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
         export ICON=dist/laigter.png
@@ -49,7 +49,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: AppImage-x86_64
-        path: dist
+        path: binaries
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
