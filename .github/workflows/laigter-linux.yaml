@@ -2,22 +2,20 @@ name: Ubuntu Latest
 on: push
 
 jobs:
-  buildOnUbuntu:
+  build:
     runs-on: ubuntu-24.04
+    container: ghcr.io/pkgforge-dev/archlinux:latest
 
     steps:
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
         
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        aqtversion: '==3.1.*'
-        version: '6.11.0'
-        host: 'linux'
-        target: 'desktop'
-        arch: 'linux_gcc_64'
-        modules: 'qtimageformats'
+    - name: Install dependencies & Qt6 on Arch
+      run: |
+        set -eu
+        pacman -Syu --noconfirm
+        pacman -S --needed --noconfirm base-devel git make qt6-base qt6-tools qt6-imageformats
+        get-debloated-pkgs mesa-nano libxml2-mini opus-mini
 
     - name: Build Laigter
       shell: bash
@@ -32,11 +30,13 @@ jobs:
         set -eu
         curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
         chmod +x quick-sharun
-        export OUTNAME="Laigter-x86_64.AppImage"
-        export OUTPATH=.
+        export ARCH="$(uname -m)"
+        export OUTNAME="Laigter-${ARCH}.AppImage"
+        export OUTPATH=./dist
         export ADD_HOOKS="self-updater.bg.hook"
-        export ICON=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.png
-        export DESKTOP=https://raw.githubusercontent.com/azagaya/laigter/refs/heads/master/dist/laigter.desktop
+        export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+        export ICON=dist/laigter.png
+        export DESKTOP=dist/laigter.desktop
         export DEPLOY_OPENGL=1
         ./quick-sharun appdir/usr/bin/laigter
         ./quick-sharun --make-appimage
@@ -44,13 +44,18 @@ jobs:
     - name: upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: test-artifact
-        path: Laigter-x86_64.AppImage 
+        name: AppImage-x86_64
+        path: dist
 
-    - name: GitHub Releases
-      uses: fnkr/github-action-ghr@v1.3
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GHR_PATH: Laigter-x86_64.AppImage
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [build]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          pattern: AppImage-*
+          merge-multiple: true
+      - name: Release AppImage
+        uses: pkgforge-dev/make-stable-appimage-release@v1
