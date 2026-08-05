@@ -203,6 +203,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
   connect(sprite_widget, SIGNAL(framesChanged(int, int, ImageProcessor *)), this, SLOT(splitInFrames(int, int, ImageProcessor *)));
+  connect(&nbSelector, SIGNAL(framesChanged(int, int, ImageProcessor *)), this, SLOT(splitInFrames(int, int, ImageProcessor *)));
 
   // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
@@ -388,6 +389,7 @@ void MainWindow::splitInFrames(int h_frames, int v_frames, ImageProcessor *proce
   if (h_frames > 0 && v_frames > 0)
   {
     processor->splitInFrames(h_frames, v_frames);
+    sprite_widget->updateFrames(processor);
     ui->openGLPreviewWidget->need_to_update = true;
   }
 }

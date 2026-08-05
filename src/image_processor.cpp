@@ -353,6 +353,7 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 
 void ImageProcessor::reset_neighbours()
 {
+  tile_neighbours.clear();
   QImage diffuse;
   QImage neighbours;
   sprite.get_image(TextureTypes::Neighbours, &neighbours);
@@ -1843,6 +1844,22 @@ void ImageProcessor::getFramePosition(int frame, int &x, int &y)
   x = frame % h_frames;
   y = frame / h_frames;
 }
+
+void ImageProcessor::set_tile_neighbour_id(int frame, int x, int y,
+                                           int neighbour_frame)
+{
+  if (!tile_neighbours.contains(frame))
+    tile_neighbours[frame] = QVector<int>(9, NeighbourUnset);
+
+  tile_neighbours[frame][y * 3 + x] = neighbour_frame;
+}
+
+QHash<int, QVector<int>> ImageProcessor::get_tile_neighbours()
+{
+  return tile_neighbours;
+}
+
+void ImageProcessor::clear_tile_neighbours() { tile_neighbours.clear(); }
 
 void ImageProcessor::removeAnimation(QString name)
 {

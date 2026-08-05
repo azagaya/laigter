@@ -25,6 +25,7 @@
 
 #include <QBrush>
 #include <QFuture>
+#include <QHash>
 #include <QImage>
 #include <QList>
 #include <QMutex>
@@ -35,8 +36,7 @@
 #include <QTimer>
 #include <QVector2D>
 
-#define cimg_display 0
-#include "thirdparty/CImg.h"
+#include "src/cimg.h"
 
 enum class ProcessedImage
 {
@@ -256,7 +256,13 @@ private:
 
   int h_frames = 1, v_frames = 1;
 
+  /* Frame id to neighbour frame ids, row major (y * 3 + x), for presets */
+  QHash<int, QVector<int>> tile_neighbours;
+
 public:
+  /* Not assigned yet, since -1 is already the empty frame */
+  static constexpr int NeighbourUnset = -2;
+
   explicit ImageProcessor(QObject *parent = nullptr);
   QImage *get_normal();
   QImage *get_occlusion();
@@ -326,6 +332,10 @@ public:
 
   void getFramePosition(int frame, int &x, int &y);
   void splitInFrames(int h_frames, int v_frames);
+
+  void set_tile_neighbour_id(int frame, int x, int y, int neighbour_frame);
+  QHash<int, QVector<int>> get_tile_neighbours();
+  void clear_tile_neighbours();
 
 public slots:
   void playAnimation(bool play);

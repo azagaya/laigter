@@ -25,6 +25,7 @@ public:
   void SetCurrentProcessor(ImageProcessor *processor);
 
 public slots:
+  void updateFrames(ImageProcessor *processor);
   void updatePosition();
   void setCurrentFrame(int i);
 

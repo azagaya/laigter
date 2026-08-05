@@ -741,9 +741,12 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     currentBrush->mousePress(tpos);
   }
 
+  /* World coords are in device pixels, so the boxes have to be too */
+  float dpr = devicePixelRatioF();
+
   /* In rendering, we are reducing the size of the light by 0.25 */
-  float lightWidth = (float)laigter.width() * 0.25;
-  float lightHeight = (float)laigter.height() * 0.25;
+  float lightWidth = (float)laigter.width() * 0.25 * dpr;
+  float lightHeight = (float)laigter.height() * 0.25 * dpr;
 
   if (event->buttons() & (Qt::LeftButton | Qt::MiddleButton))
   {
@@ -812,15 +815,16 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           h /= processor->getVFrames();
         }
 
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 * dpr &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 * dpr &&
             not selected)
         {
           set_processor_selected(processor, true);
           selected = true;
-          QPoint point = global_mouse_press_position.toPoint();
-          point.setY(-point.y());
-          point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
+          /* Back to texture pixels, get_frame_at_point works on those */
+          QPointF delta = global_mouse_press_position - QPointF(processor->get_position()->x(), processor->get_position()->y());
+          delta /= dpr * processor->get_zoom();
+          QPoint point(delta.x() + processor->texture.width() / 2.0, -delta.y() + processor->texture.height() / 2.0);
           if (processor->frame_mode == "Sheet")
             processor->set_current_frame_id(processor->get_frame_at_point(point));
         }
@@ -1159,15 +1163,13 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       setOcclusionMap(&occlusionMap);
     }
 
-    /* The exported image has one pixel per texture pixel, no matter the screen
-     * scale factor. */
+    /* One pixel per texture pixel, no matter the screen scale */
     float dpr = devicePixelRatioF();
     int w = m_image.width();
     int h = m_image.height();
     int m_width = (int(w / this->m_width) + 1) * this->m_width;
     int m_height = (int(h / this->m_height) + 1) * this->m_height;
-    /* The image is centered, so keep it aligned to the pixel grid to avoid
-     * sampling it half a pixel off. */
+    /* Keep the centered image aligned to the pixel grid */
     if ((m_width - w) % 2)
       m_width++;
     if ((m_height - h) % 2)
@@ -1178,27 +1180,21 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
     QMatrix4x4 transform, projection, view;
 
-    /* Center the image like the on screen render does. The shader takes the view
-     * direction from the clip space position, so framing the image anywhere else
-     * tilts it and moves the specular highlights. */
+    /* Center it like on screen, or viewDir tilts and specular moves */
     projection.setToIdentity();
     projection.ortho(-0.5 * m_width, 0.5 * m_width, -0.5 * m_height, 0.5 * m_height, -1.0, 1.0);
 
     transform.setToIdentity();
     transform.translate(texPos);
 
-    /* Lights and positions live in device pixels, so the scene is laid out in
-     * device pixels and shrunk back to texture pixels by the view matrix. The
-     * shader recovers light and fragment positions in pre view space, so the
-     * lighting keeps matching the one on screen. Only x and y are scaled: light
-     * height is read from the projected z, and scaling it would flatten the
-     * exported lighting. */
+    /* Lights are in device pixels, so lay out the scene in device pixels */
     float scaleX = 0.5 * w * dpr;
     float scaleY = 0.5 * h * dpr;
 
     transform.scale(scaleX, scaleY, 1);
 
     view.setToIdentity();
+    /* Back to texture pixels. Only x and y, height comes from the projected z */
     view.scale(1.0f / dpr, 1.0f / dpr, 1.0f);
     view.translate(-texPos);
 
@@ -1272,7 +1268,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     scaleX = !processor->get_tile_x() ? sx : 1;
     scaleY = !processor->get_tile_y() ? sy : 1;
 
-    /* Same view position as the on screen render, the image is centered now. */
+    /* Same as on screen, the image is centered now */
     m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);

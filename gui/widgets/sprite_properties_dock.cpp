@@ -47,6 +47,24 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
   updatePosition();
 }
 
+void SpritePropertiesDock::updateFrames(ImageProcessor *processor)
+{
+  if (processor != current_processor)
+    return;
+
+  /* Blocked, or setting the values would ask for another split */
+  ui->hFramesSpinBox->blockSignals(true);
+  ui->vFramesSpinBox->blockSignals(true);
+
+  ui->hFramesSpinBox->setValue(processor->getHFrames());
+  ui->vFramesSpinBox->setValue(processor->getVFrames());
+  ui->hGridSpinBox->setValue(processor->get_texture()->size().width() / processor->getHFrames());
+  ui->vGridSpinBox->setValue(processor->get_texture()->size().height() / processor->getVFrames());
+
+  ui->hFramesSpinBox->blockSignals(false);
+  ui->vFramesSpinBox->blockSignals(false);
+}
+
 void SpritePropertiesDock::setCurrentFrame(int i)
 {
   QImage frame;

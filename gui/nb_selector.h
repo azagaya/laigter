@@ -24,6 +24,8 @@
 #include "src/image_processor.h"
 
 #include <QDialog>
+#include <QDir>
+#include <QJsonObject>
 #include <QListWidget>
 
 namespace Ui
@@ -37,15 +39,26 @@ class NBSelector : public QDialog
 
 private:
   Ui::NBSelector *ui;
-  ImageProcessor *processor;
+  ImageProcessor *processor = nullptr;
   ImageLoader *il;
   QListWidget *frameList;
   QListWidget *imagesList;
+
+  QString presetsPath;
+  QDir presetsDir;
+
+  void update_presets();
+  void update_frame_list();
+  void load_preset(QString presetName);
+  void apply_preset(QJsonObject preset);
 
 public:
   explicit NBSelector(QDialog *parent = nullptr);
   void setProcessor(ImageProcessor *processor);
   ~NBSelector();
+
+signals:
+  void framesChanged(int, int, ImageProcessor *);
 
 private slots:
   void on_pushButtonResetNeighbours_clicked();
@@ -65,6 +78,10 @@ private slots:
   void on_addImagePushButton_pressed();
 
   void on_horizontalSlider_valueChanged(int value);
+
+  void on_savePresetButton_clicked();
+  void on_deletePresetButton_clicked();
+  void on_presetComboBox_activated(int index);
 
 protected:
   void resizeEvent(QResizeEvent *event) override;
