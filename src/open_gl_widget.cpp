@@ -1159,32 +1159,47 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       setOcclusionMap(&occlusionMap);
     }
 
-    int w = m_image.width() * devicePixelRatioF();
-    int h = m_image.height() * devicePixelRatioF();
+    /* The exported image has one pixel per texture pixel, no matter the screen
+     * scale factor. */
+    float dpr = devicePixelRatioF();
+    int w = m_image.width();
+    int h = m_image.height();
     int m_width = (int(w / this->m_width) + 1) * this->m_width;
     int m_height = (int(h / this->m_height) + 1) * this->m_height;
+    /* The image is centered, so keep it aligned to the pixel grid to avoid
+     * sampling it half a pixel off. */
+    if ((m_width - w) % 2)
+      m_width++;
+    if ((m_height - h) % 2)
+      m_height++;
     QOpenGLFramebufferObject frameBuffer(m_width, m_height);
 
     QVector3D texPos = *processor->get_position();
 
     QMatrix4x4 transform, projection, view;
 
+    /* Center the image like the on screen render does. The shader takes the view
+     * direction from the clip space position, so framing the image anywhere else
+     * tilts it and moves the specular highlights. */
     projection.setToIdentity();
-    projection.ortho(-0.5 * w, m_width - 0.5 * w, -m_height + 0.5 * h, 0.5 * h, -1.0, 1.0);
+    projection.ortho(-0.5 * m_width, 0.5 * m_width, -0.5 * m_height, 0.5 * m_height, -1.0, 1.0);
 
     transform.setToIdentity();
     transform.translate(texPos);
 
-    float scaleX = 0.5 * w;
-    float scaleY = 0.5 * h;
-
-    /* Adjust for retina */
-    scaleX *= devicePixelRatioF();
-    scaleY *= devicePixelRatioF();
+    /* Lights and positions live in device pixels, so the scene is laid out in
+     * device pixels and shrunk back to texture pixels by the view matrix. The
+     * shader recovers light and fragment positions in pre view space, so the
+     * lighting keeps matching the one on screen. Only x and y are scaled: light
+     * height is read from the projected z, and scaling it would flatten the
+     * exported lighting. */
+    float scaleX = 0.5 * w * dpr;
+    float scaleY = 0.5 * h * dpr;
 
     transform.scale(scaleX, scaleY, 1);
 
     view.setToIdentity();
+    view.scale(1.0f / dpr, 1.0f / dpr, 1.0f);
     view.translate(-texPos);
 
     /* Start first pass */
@@ -1257,7 +1272,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     scaleX = !processor->get_tile_x() ? sx : 1;
     scaleY = !processor->get_tile_y() ? sy : 1;
 
-    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 1));
+    /* Same view position as the on screen render, the image is centered now. */
+    m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);
 
@@ -1280,7 +1296,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.release();
     frameBuffer.release();
 
-    renderedPreview = frameBuffer.toImage().copy(0, 0, w, h);
+    renderedPreview = frameBuffer.toImage().copy((m_width - w) / 2, (m_height - h) / 2, w, h);
 
     if (m_autosave)
     {
