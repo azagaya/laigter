@@ -20,6 +20,8 @@ jobs:
         pacman -S --needed --noconfirm base-devel git make qt6-base qt6-tools qt6-imageformats
         get-debloated-pkgs mesa-nano libxml2-mini opus-mini
         ls /usr/bin/qmake*
+        # Arch is rolling, so write down which Qt this AppImage was built with
+        pacman -Q qt6-base qt6-tools qt6-imageformats
 
     - name: Build Laigter
       shell: bash
