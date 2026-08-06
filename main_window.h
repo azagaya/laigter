@@ -48,6 +48,8 @@ namespace Ui
 class MainWindow;
 }
 
+class QNetworkAccessManager;
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -79,6 +81,8 @@ private:
   SpritePropertiesDock *sprite_widget;
   NBSelector nbSelector;
   ExportWidget exportWidget;
+  /* Not a global, it has to be created after the QApplication */
+  QNetworkAccessManager *manager;
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);

@@ -36,6 +36,12 @@ signals:
 
 #define BrushInterface_iid "org.azagaya.laigter.plugins.BrushInterface/1.0"
 
+/* Plugins put this number in their metadata.json and laigter does not load
+ * anything older. Bump it whenever plugins built for the previous one stop
+ * working, like the qt6 port did, since qt5 plugins cannot be loaded at all.
+ * A plugin can also say "dev" to skip the check while being worked on. */
+#define LAIGTER_PLUGIN_API 2
+
 Q_DECLARE_INTERFACE(BrushInterface, BrushInterface_iid)
 
 #endif // BRUSHINTERFACE_H

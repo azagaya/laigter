@@ -88,7 +88,9 @@ void OpenGlWidget::initializeGL()
       backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
       backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
 
-  setUpdateBehavior(QOpenGLWidget::PartialUpdate);
+  /* We redraw the whole scene every time, so there is nothing to preserve
+   * between frames and no reason to ask qt for a partial update */
+  setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
   m_program.create();
   m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,
                                     ":/shaders/vshader.glsl");
@@ -100,11 +102,13 @@ void OpenGlWidget::initializeGL()
                                        ":/shaders/lvshader.glsl");
   lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
                                        ":/shaders/lfshader.glsl");
+  lightProgram.link();
   cursorProgram.create();
   cursorProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,
                                         ":/shaders/lvshader.glsl");
   cursorProgram.addShaderFromSourceFile(
       QOpenGLShader::Fragment, ":/shaders/cursor_fragment_shader.glsl");
+  cursorProgram.link();
 
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------
@@ -157,11 +161,14 @@ void OpenGlWidget::loadTextures()
 
 void OpenGlWidget::paintGL()
 {
-  if (need_to_update)
-  {
-    need_to_update = false;
-    update_scene();
-  }
+  /* Qt asks for a frame when it needs one, on resize or when the window shows
+   * up again, so always draw. Not drawing leaves whatever was in the buffer,
+   * which on some compositors is nothing until the user clicks something.
+   * The flag only says a repaint is pending, force_update uses it. Clearing it
+   * before drawing keeps the animated lights going, they set it again while
+   * the scene is drawn */
+  need_to_update = false;
+  update_scene();
 
   if (export_render)
   {
@@ -730,9 +737,9 @@ void OpenGlWidget::tabletEvent(QTabletEvent *event)
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
 
-  old_position = event->localPos();
-  global_mouse_press_position = LocalToWorld(event->localPos());
-  local_mouse_press_position = LocalToView(event->localPos());
+  old_position = event->position();
+  global_mouse_press_position = LocalToWorld(event->position());
+  local_mouse_press_position = LocalToView(event->position());
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
@@ -741,9 +748,12 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
     currentBrush->mousePress(tpos);
   }
 
+  /* World coords are in device pixels, so the boxes have to be too */
+  float dpr = devicePixelRatioF();
+
   /* In rendering, we are reducing the size of the light by 0.25 */
-  float lightWidth = (float)laigter.width() * 0.25;
-  float lightHeight = (float)laigter.height() * 0.25;
+  float lightWidth = (float)laigter.width() * 0.25 * dpr;
+  float lightHeight = (float)laigter.height() * 0.25 * dpr;
 
   if (event->buttons() & (Qt::LeftButton | Qt::MiddleButton))
   {
@@ -812,15 +822,16 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           h /= processor->getVFrames();
         }
 
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 &&
+        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 * dpr &&
+            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 * dpr &&
             not selected)
         {
           set_processor_selected(processor, true);
           selected = true;
-          QPoint point = global_mouse_press_position.toPoint();
-          point.setY(-point.y());
-          point = point - QPoint(processor->get_position()->x(), -processor->get_position()->y()) + QPoint(processor->texture.width() / 2.0, processor->texture.height() / 2.0);
+          /* Back to texture pixels, get_frame_at_point works on those */
+          QPointF delta = global_mouse_press_position - QPointF(processor->get_position()->x(), processor->get_position()->y());
+          delta /= dpr * processor->get_zoom();
+          QPoint point(delta.x() + processor->texture.width() / 2.0, -delta.y() + processor->texture.height() / 2.0);
           if (processor->frame_mode == "Sheet")
             processor->set_current_frame_id(processor->get_frame_at_point(point));
         }
@@ -890,8 +901,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
 
-  global_mouse_last_position = LocalToWorld(event->localPos());
-  local_mouse_last_position = LocalToView(event->localPos());
+  global_mouse_last_position = LocalToWorld(event->position());
+  local_mouse_last_position = LocalToView(event->position());
   QVector3D newLightPos(global_mouse_last_position.x(), global_mouse_last_position.y(), currentLight->get_height());
 
   if (addLight)
@@ -1159,32 +1170,39 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
       setOcclusionMap(&occlusionMap);
     }
 
-    int w = m_image.width() * devicePixelRatioF();
-    int h = m_image.height() * devicePixelRatioF();
+    /* One pixel per texture pixel, no matter the screen scale */
+    float dpr = devicePixelRatioF();
+    int w = m_image.width();
+    int h = m_image.height();
     int m_width = (int(w / this->m_width) + 1) * this->m_width;
     int m_height = (int(h / this->m_height) + 1) * this->m_height;
+    /* Keep the centered image aligned to the pixel grid */
+    if ((m_width - w) % 2)
+      m_width++;
+    if ((m_height - h) % 2)
+      m_height++;
     QOpenGLFramebufferObject frameBuffer(m_width, m_height);
 
     QVector3D texPos = *processor->get_position();
 
     QMatrix4x4 transform, projection, view;
 
+    /* Center it like on screen, or viewDir tilts and specular moves */
     projection.setToIdentity();
-    projection.ortho(-0.5 * w, m_width - 0.5 * w, -m_height + 0.5 * h, 0.5 * h, -1.0, 1.0);
+    projection.ortho(-0.5 * m_width, 0.5 * m_width, -0.5 * m_height, 0.5 * m_height, -1.0, 1.0);
 
     transform.setToIdentity();
     transform.translate(texPos);
 
-    float scaleX = 0.5 * w;
-    float scaleY = 0.5 * h;
-
-    /* Adjust for retina */
-    scaleX *= devicePixelRatioF();
-    scaleY *= devicePixelRatioF();
+    /* Lights are in device pixels, so lay out the scene in device pixels */
+    float scaleX = 0.5 * w * dpr;
+    float scaleY = 0.5 * h * dpr;
 
     transform.scale(scaleX, scaleY, 1);
 
     view.setToIdentity();
+    /* Back to texture pixels. Only x and y, height comes from the projected z */
+    view.scale(1.0f / dpr, 1.0f / dpr, 1.0f);
     view.translate(-texPos);
 
     /* Start first pass */
@@ -1257,7 +1275,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     scaleX = !processor->get_tile_x() ? sx : 1;
     scaleY = !processor->get_tile_y() ? sy : 1;
 
-    m_program.setUniformValue("viewPos", QVector3D(-texPos.x(), -texPos.y(), 1));
+    /* Same as on screen, the image is centered now */
+    m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
     m_program.setUniformValue("parallax", processor->get_is_parallax());
     m_program.setUniformValue("height_scale", parallax_height);
 
@@ -1280,7 +1299,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.release();
     frameBuffer.release();
 
-    renderedPreview = frameBuffer.toImage().copy(0, 0, w, h);
+    renderedPreview = frameBuffer.toImage().copy((m_width - w) / 2, (m_height - h) / 2, w, h);
 
     if (m_autosave)
     {
@@ -1322,8 +1341,6 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     GLfloat bkColor[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
-    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
-    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
     int xmin = m_width, xmax = 0, ymin = m_height, ymax = 0;
 
     QMatrix4x4 transform;
@@ -1548,7 +1565,7 @@ void OpenGlWidget::apply_light_params(QMatrix4x4 projection, QMatrix4x4 view)
 
     light_position.setZ(-light_position.z());
 
-    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), projection * view * light_position);
+    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), (projection * view).map(light_position));
     m_program.setUniformValue((Light + ".lightColor").toUtf8().constData(),
                               color);
     light->get_specular_color().getRgbF(&r, &g, &b, nullptr);
@@ -1702,14 +1719,14 @@ QPointF OpenGlWidget::LocalToView(QPointF local)
 QPointF OpenGlWidget::LocalToWorld(QPointF local)
 {
   QVector3D local_position = QVector3D(LocalToView(local));
-  QVector3D world_position = view.inverted() * local_position;
+  QVector3D world_position = view.inverted().map(local_position);
   return QPointF(world_position.x(), world_position.y());
 }
 
 QPointF OpenGlWidget::WorldToLocal(QPointF world)
 {
   QVector3D world_position(world);
-  QVector3D view_position = view * world_position;
+  QVector3D view_position = view.map(world_position);
   QVector3D local_position;
   local_position.setX((view_position.x() + 0.5 * m_width) / devicePixelRatioF());
   local_position.setY((view_position.y() + 0.5 * m_height) / devicePixelRatioF());

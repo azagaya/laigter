@@ -6,44 +6,47 @@ jobs:
   buildWin:
     runs-on: windows-latest
     steps:
-    
+
     - name: checkout sources
       uses: actions/checkout@v4
-      
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        aqtversion: '==3.1.*'
-        version: '6.2.0'
-        arch: 'win64_mingw81'
+        version: '6.11'
+        arch: 'win64_mingw'
         extra: '--external 7z'
         target: 'desktop'
         host: 'windows'
         modules: 'qtimageformats'
-        tools: 'tools_mingw'
-        
+        tools: 'tools_mingw1310'
+
     - name: Build Laigter
       shell: cmd
+      env:
+        # On a tag, the app reports the tag instead of the fallback in the pro
+        QMAKE_VERSION_ARG: ${{ startsWith(github.ref, 'refs/tags/') && format('VERSION={0}', github.ref_name) || '' }}
       run: |
-        dir %QT_ROOT_DIR%\..
-        dir %QT_ROOT_DIR%
-        qmake
+        qmake %QMAKE_VERSION_ARG%
         make
-        dir
-        mkdir \laigter-windows
-        windeployqt --compiler-runtime --dir .\laigter-windows .\release\laigter.exe
-        copy /Y .\release\laigter.exe .\laigter-windows\laigter.exe
-        for /f "usebackq" %%i in (`where libgomp-1.dll`) do copy "%%i" .\laigter-windows\
-        for /f "usebackq" %%i in (`where libwinpthread-1.dll`) do copy "%%i" .\laigter-windows\
-        for /f "usebackq" %%i in (`where libdl.dll`) do copy "%%i" .\laigter-windows\
-        where libmcfgthread-1.dll
+
+    - name: Package Laigter
+      shell: cmd
+      env:
+        # laigter-setup-1.14.0.exe on a tag, plain laigter-setup.exe otherwise
+        SETUP_NAME: ${{ startsWith(github.ref, 'refs/tags/') && format('laigter-setup-{0}.exe', github.ref_name) || 'laigter-setup.exe' }}
+      run: |
+        powershell -ExecutionPolicy Bypass -File dist\make-installer.ps1 -Exe release\laigter.exe -OutFile %SETUP_NAME%
         tar.exe -a -c -f laigter-windows.zip laigter-windows
-  
+        dir
+
     - name: upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: win-artifacts
-        path: laigter-windows.zip 
+        path: |
+          laigter-windows.zip
+          laigter-setup*.exe
 
     - name: GitHub Releases
       uses: svenstaro/upload-release-action@v2
@@ -52,4 +55,12 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: laigter-windows.zip
         tag: ${{ github.ref }}
-    
+
+    - name: GitHub Releases installer
+      uses: svenstaro/upload-release-action@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: laigter-setup*.exe
+        file_glob: true
+        tag: ${{ github.ref }}

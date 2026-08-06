@@ -78,7 +78,7 @@
    <item row="3" column="5">
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -203,7 +203,20 @@
        <string>Sprite Frames</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
+       <item row="0" column="4">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0" colspan="6">
         <widget class="QListWidget" name="listWidget">
          <property name="iconSize">
           <size>
@@ -212,13 +225,49 @@
           </size>
          </property>
          <property name="flow">
-          <enum>QListView::LeftToRight</enum>
+          <enum>QListView::Flow::LeftToRight</enum>
          </property>
          <property name="isWrapping" stdset="0">
           <bool>true</bool>
          </property>
          <property name="resizeMode">
-          <enum>QListView::Adjust</enum>
+          <enum>QListView::ResizeMode::Adjust</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="labelPreset">
+         <property name="text">
+          <string>Preset:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="deletePresetButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../icons.qrc">
+           <normaloff>:/icons/Classic Laigter/custom-icons/delete.png</normaloff>:/icons/Classic Laigter/custom-icons/delete.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QComboBox" name="presetComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="savePresetButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../icons.qrc">
+           <normaloff>:/icons/Classic Laigter/custom-icons/save.png</normaloff>:/icons/Classic Laigter/custom-icons/save.png</iconset>
          </property>
         </widget>
        </item>
@@ -238,13 +287,13 @@
           </size>
          </property>
          <property name="flow">
-          <enum>QListView::LeftToRight</enum>
+          <enum>QListView::Flow::LeftToRight</enum>
          </property>
          <property name="isWrapping" stdset="0">
           <bool>true</bool>
          </property>
          <property name="resizeMode">
-          <enum>QListView::Adjust</enum>
+          <enum>QListView::ResizeMode::Adjust</enum>
          </property>
         </widget>
        </item>
@@ -385,7 +434,7 @@
       <number>512</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -594,6 +643,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

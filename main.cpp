@@ -22,6 +22,15 @@
 #include "main_window.h"
 #include "src/image_processor.h"
 
+#ifdef Q_OS_WIN
+#include "src/win_install.h"
+#endif
+
+/* Comes from the pro file, this is only for builds that skip qmake */
+#ifndef LAIGTER_VERSION
+#define LAIGTER_VERSION "0.0.0"
+#endif
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDir>
@@ -31,8 +40,6 @@
 #include <QSplashScreen>
 #include <QStandardPaths>
 #include <QTranslator>
-
-#define cimg_use_openmp
 
 #define CHECK_CHANGES(outFileInfo, info) (outFileInfo.fileTime(QFile::FileModificationTime) < info.fileTime(QFile::FileModificationTime))
 
@@ -56,7 +63,7 @@ QCoreApplication *createApplication(int &argc, char *argv[])
 int main(int argc, char *argv[])
 {
   QCoreApplication::setApplicationName("laigter");
-  QCoreApplication::setApplicationVersion("1.12.0");
+  QCoreApplication::setApplicationVersion(LAIGTER_VERSION);
   //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
@@ -96,6 +103,34 @@ int main(int argc, char *argv[])
                                                << "no-gui",
                                  "do not start graphical interface");
   argsParser.addOption(noGuiOption);
+
+#ifdef Q_OS_WIN
+  QCommandLineOption uninstallOption("uninstall",
+                                     "remove an installed laigter");
+  argsParser.addOption(uninstallOption);
+
+  /* Set by the self extracting exe, so only that one offers to install */
+  QCommandLineOption stagedOption("staged",
+                                  "laigter was just unpacked in a temp folder");
+  argsParser.addOption(stagedOption);
+
+  QCommandLineOption setupDirOption("from", "where the setup exe was run from",
+                                    "directory");
+  argsParser.addOption(setupDirOption);
+
+  /* Used by the elevated copy of ourselves, when installing needs admin */
+  QCommandLineOption installToOption("install-to", "install in this folder",
+                                     "directory");
+  argsParser.addOption(installToOption);
+
+  QCommandLineOption installExtrasOption("install-extras",
+                                         "shortcut, association and uninstall entry",
+                                         "flags");
+  argsParser.addOption(installExtrasOption);
+
+  QCommandLineOption confirmedOption("confirmed", "do not ask again");
+  argsParser.addOption(confirmedOption);
+#endif
 
   QCommandLineOption inputDiffuseTextureOption(QStringList() << "d"
                                                              << "diffuse",
@@ -343,6 +378,30 @@ int main(int argc, char *argv[])
   int returnCode;
   if (a)
   {
+#ifdef Q_OS_WIN
+    if (argsParser.isSet(uninstallOption))
+    {
+      WinInstall::uninstall(nullptr, argsParser.isSet(confirmedOption));
+      return 0;
+    }
+
+    /* We are the elevated copy, install and let the other one start laigter */
+    if (argsParser.isSet(installToOption))
+    {
+      bool ok = WinInstall::install_for_all_users(
+          argsParser.value(installToOption),
+          argsParser.value(installExtrasOption).toInt());
+      return ok ? 0 : 1;
+    }
+
+    /* Only the self extracting exe asks. Unzipping laigter somewhere and
+     * running it is already the portable way to use it */
+    if (argsParser.isSet(stagedOption) &&
+        WinInstall::current_mode() == WinInstall::Mode::FirstRun &&
+        WinInstall::first_run(nullptr, argsParser.value(setupDirOption)))
+      return 0;
+#endif
+
     bool softOpenGlValue = argsParser.isSet(softOpenGl);
     if (softOpenGlValue)
     {

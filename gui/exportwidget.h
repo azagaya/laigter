@@ -34,7 +34,7 @@ private slots:
 
   void on_pushButtonExportDirectory_clicked();
 
-  void on_AnimationComboBox_activated(const QString &arg1);
+  void on_AnimationComboBox_textActivated(const QString &arg1);
 
 private:
   Ui::ExportWidget *ui;

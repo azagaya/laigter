@@ -50,12 +50,12 @@
 #include <QElapsedTimer>
 
 #include <QtNetwork>
-QNetworkAccessManager manager;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  manager = new QNetworkAccessManager(this);
 
   QSettings settings("Azagaya", "Laigter");
   QString style = "classic_laigter.qss";
@@ -71,9 +71,11 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Setting style
   QFile stylesheet_file(":/styles/" + style);
-  stylesheet_file.open(QFile::ReadOnly);
-  QString stylesheet = QLatin1String(stylesheet_file.readAll());
-  qApp->setStyleSheet(stylesheet);
+  if (stylesheet_file.open(QFile::ReadOnly))
+  {
+    QString stylesheet = QLatin1String(stylesheet_file.readAll());
+    qApp->setStyleSheet(stylesheet);
+  }
 
   /* Set Icon Path */
   QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
@@ -92,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
   {
     QTextStream in(&l);
     QStringList locale = in.readLine().split("\t");
-    translator->load(":/translations/laigter_" + locale[2]);
+    (void)translator->load(":/translations/laigter_" + locale[2]);
     el->icon =
         QPixmap::fromImage(QImage(":/translations/flags/" + locale[1]));
   }
@@ -102,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent)
         translator->load(QLocale::system(), ":/translations/laigter", "_");
     if (!loaded)
     {
-      translator->load(":/translations/laigter_en");
+      (void)translator->load(":/translations/laigter_en");
       el->icon =
           QPixmap::fromImage(QImage(":/translations/flags/EN.png"));
     }
@@ -110,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
       /* Get icon of locale language */
       QFile f(":/translations/languages.txt");
-      f.open(QIODevice::ReadOnly);
+      (void)f.open(QIODevice::ReadOnly);
       QTextStream stream(&f);
       QString locale = QLocale::system().bcp47Name();
       while (!stream.atEnd())
@@ -203,6 +205,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(sprite_widget, SIGNAL(heightmapButtonPressed()), this, SLOT(loadHeightmap()));
   connect(sprite_widget, SIGNAL(specularButtonPressed()), this, SLOT(loadSpecular()));
   connect(sprite_widget, SIGNAL(framesChanged(int, int, ImageProcessor *)), this, SLOT(splitInFrames(int, int, ImageProcessor *)));
+  connect(&nbSelector, SIGNAL(framesChanged(int, int, ImageProcessor *)), this, SLOT(splitInFrames(int, int, ImageProcessor *)));
 
   // Restore window state and geometry
   restoreGeometry(settings.value("geometry").toByteArray());
@@ -388,6 +391,7 @@ void MainWindow::splitInFrames(int h_frames, int v_frames, ImageProcessor *proce
   if (h_frames > 0 && v_frames > 0)
   {
     processor->splitInFrames(h_frames, v_frames);
+    sprite_widget->updateFrames(processor);
     ui->openGLPreviewWidget->need_to_update = true;
   }
 }
@@ -1177,6 +1181,11 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
       ui->labelThreshFocus->setVisible(true);
       ui->labelThreshParallax->setVisible(true);
       ui->labelQuantization->setVisible(true);
+      break;
+    }
+    case ParallaxType::Intervals:
+    {
+      break;
     }
   }
 }
@@ -1563,14 +1572,23 @@ void MainWindow::on_actionLoadPlugins_triggered()
     }
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
-    if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.103)
+    /* A plugin built without a version says dev, and is taken as current. The
+     * variant also accepts the version as a number or as a string */
+    QVariant plugin_version =
+        pl->metaData().value("MetaData").toObject().value("version").toVariant();
+
+    if (plugin_version.toString() != "dev" &&
+        plugin_version.toDouble() < LAIGTER_PLUGIN_API)
     {
-      qDebug() << "incorrect plugin version.";
+      /* Skip it, the one the user installed is not ours to delete. Keep going
+       * so one old plugin does not hide all the others */
+      qWarning() << fileName << "is built for plugin api"
+                 << (plugin_version.isValid() ? plugin_version.toString() : "unknown")
+                 << "and laigter needs" << LAIGTER_PLUGIN_API << ", not loading it";
       pl->unload();
       delete pl;
-      QFile plugin(dir.absoluteFilePath(fileName));
-      plugin.remove();
-      return;
+      QFile(tmp.absoluteFilePath(fileName)).remove();
+      continue;
     }
 
     BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());

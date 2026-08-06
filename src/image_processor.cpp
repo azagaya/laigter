@@ -217,24 +217,24 @@ void ImageProcessor::recalculate()
     normal_mutex.unlock();
     bool updateEnhance = enhance_requested, updateBump = bump_requested, updateDistance = distance_requested;
     QRect rect = rect_requested;
-    QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
+    (void)QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
     normal_counter = 0;
   }
   if (specular_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_specular();});
+    (void)QtConcurrent::run([this](){this->calculate_specular();});
     specular_counter = 0;
   }
   if (parallax_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_parallax();});
+    (void)QtConcurrent::run([this](){this->calculate_parallax();});
     parallax_counter = 0;
   }
   if (occlussion_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_occlusion();});
+    (void)QtConcurrent::run([this](){this->calculate_occlusion();});
     occlussion_counter = 0;
   }
 }
@@ -353,6 +353,7 @@ int ImageProcessor::fill_neighbours(QString fileName, QImage image)
 
 void ImageProcessor::reset_neighbours()
 {
+  tile_neighbours.clear();
   QImage diffuse;
   QImage neighbours;
   sprite.get_image(TextureTypes::Neighbours, &neighbours);
@@ -1050,6 +1051,11 @@ int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
 QImage *ImageProcessor::get_texture()
 {
   sprite.get_image(TextureTypes::Diffuse, &texture);
+
+  /* Nothing loaded yet, painting on a null image only gives warnings */
+  if (last_texture.isNull())
+    return &last_texture;
+
   QImage ov(texture.size(), QImage::Format_RGBA8888_Premultiplied);
   sprite.get_image(TextureTypes::TextureOverlay, &ov);
   last_texture.fill(Qt::transparent);
@@ -1843,6 +1849,22 @@ void ImageProcessor::getFramePosition(int frame, int &x, int &y)
   x = frame % h_frames;
   y = frame / h_frames;
 }
+
+void ImageProcessor::set_tile_neighbour_id(int frame, int x, int y,
+                                           int neighbour_frame)
+{
+  if (!tile_neighbours.contains(frame))
+    tile_neighbours[frame] = QVector<int>(9, NeighbourUnset);
+
+  tile_neighbours[frame][y * 3 + x] = neighbour_frame;
+}
+
+QHash<int, QVector<int>> ImageProcessor::get_tile_neighbours()
+{
+  return tile_neighbours;
+}
+
+void ImageProcessor::clear_tile_neighbours() { tile_neighbours.clear(); }
 
 void ImageProcessor::removeAnimation(QString name)
 {

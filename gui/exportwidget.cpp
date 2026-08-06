@@ -269,7 +269,7 @@ void ExportWidget::on_pushButtonExportDirectory_clicked()
   ui->lineEdit->setText(QFileDialog::getExistingDirectory());
 }
 
-void ExportWidget::on_AnimationComboBox_activated(const QString &arg1)
+void ExportWidget::on_AnimationComboBox_textActivated(const QString &arg1)
 {
 
   if (arg1 == "Fixed Rows")

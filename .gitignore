@@ -6,3 +6,5 @@ deploy/
 compile_commands.json
 build
 bin/
+laigter-windows/
+laigter-setup*.exe

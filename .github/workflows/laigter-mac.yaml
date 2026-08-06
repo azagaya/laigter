@@ -11,22 +11,23 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.8.0'
+        version: '6.11.1'
         extra: '--external 7z'
         arch: 'clang_64'
         modules: 'qtimageformats'
      
     - name: build Laigter
       shell: bash
+      env:
+        # On a tag, the app reports the tag instead of the fallback in the pro
+        QMAKE_VERSION_ARG: ${{ startsWith(github.ref, 'refs/tags/') && format('VERSION={0}', github.ref_name) || '' }}
       run: |
-        qmake CONFIG+=release PREFIX=/usr
+        qmake CONFIG+=release PREFIX=/usr $QMAKE_VERSION_ARG
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
         find appdir/
         mkdir -p appdir/usr/lib
         macdeployqt laigter.app
-        wget https://raw.githubusercontent.com/chchwy/macdeployqtfix/master/macdeployqtfix.py && chmod a+x macdeployqtfix.py
-        ./macdeployqtfix.py laigter.app /usr/local/Cellar/qt/*/
         zip -r laigter-mac.zip laigter.app
 
     - name: upload artifacts
