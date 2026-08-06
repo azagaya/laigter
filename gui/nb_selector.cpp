@@ -215,17 +215,6 @@ void NBSelector::on_NBR_clicked()
   setNeighbor(2, 2);
 }
 
-void NBSelector::on_pushButton_clicked()
-{
-  for (int i = 0; i < 3; i++)
-  {
-    for (int j = 0; j < 3; j++)
-      processor->empty_neighbour(i, j);
-  }
-  processor->calculate();
-  get_neighbours();
-}
-
 void NBSelector::on_pushButtonResetNeighbours_pressed()
 {
   processor->reset_neighbours();

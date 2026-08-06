@@ -1051,6 +1051,11 @@ int ImageProcessor::get_normal_invert_y() { return normalInvertY; }
 QImage *ImageProcessor::get_texture()
 {
   sprite.get_image(TextureTypes::Diffuse, &texture);
+
+  /* Nothing loaded yet, painting on a null image only gives warnings */
+  if (last_texture.isNull())
+    return &last_texture;
+
   QImage ov(texture.size(), QImage::Format_RGBA8888_Premultiplied);
   sprite.get_image(TextureTypes::TextureOverlay, &ov);
   last_texture.fill(Qt::transparent);

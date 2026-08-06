@@ -19,12 +19,19 @@ void SpritePropertiesDock::SetCurrentProcessor(ImageProcessor *processor)
 {
   /* disconnect previous processor */
 
-  disconnect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
-  disconnect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+  if (current_processor)
+  {
+    disconnect(current_processor, SIGNAL(positionChanged()), this, SLOT(updatePosition()));
+    disconnect(current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+  }
 
   current_processor = processor;
 
-  ui->textureLabel->setPixmap(QPixmap::fromImage(current_processor->texture.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
+  /* The sample processor has no texture until something is loaded */
+  if (current_processor->texture.isNull())
+    ui->textureLabel->clear();
+  else
+    ui->textureLabel->setPixmap(QPixmap::fromImage(current_processor->texture.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
   ui->infoName->setText(tr("Name: ") + processor->get_name());
   ui->infoPath->setText(tr("Path: ") + processor->m_fileName);
   ui->infoSize->setText(tr("Size: ") + QString::number(processor->texture.width()) + "x" + QString::number(processor->texture.height()));

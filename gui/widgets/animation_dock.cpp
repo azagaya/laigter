@@ -30,10 +30,11 @@ void AnimationDock::updateAnimationList()
 
 void AnimationDock::setCurrentProcessor(ImageProcessor *p)
 {
-  this->disconnect();
-  /* reconnect animation_creator signal */
-  connect(animation_creator, SIGNAL(animationsUpdated()), this, SLOT(updateAnimationList()));
-  disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+  /* Only the previous processor, disconnecting everything also kills the
+   * connections other windows made to us */
+  if (m_current_processor)
+    disconnect(m_current_processor, SIGNAL(frameChanged(int)), this, SLOT(setCurrentFrame(int)));
+
   disconnect(ui->listWidget, SIGNAL(currentRowChanged(int)), this, SLOT(updateProcessorFrame(int)));
 
   m_current_processor = p;
@@ -144,12 +145,6 @@ void AnimationDock::on_editorPushButton_pressed()
   animation_creator->activateWindow();
 }
 
-void AnimationDock::on_comboBox_activated(const QString &arg1)
-{
-
-
-}
-
 void AnimationDock::updateList(QString animation_name)
 {
 
@@ -174,8 +169,12 @@ void AnimationDock::updateList(QString animation_name)
   ui->comboBox->setCurrentText(animation_name);
 }
 
-void AnimationDock::on_comboBox_currentIndexChanged(const QString &arg1)
+void AnimationDock::on_comboBox_currentTextChanged(const QString &arg1)
 {
+    /* The combo is filled before we have a processor */
+    if (!m_current_processor)
+      return;
+
     Animation *animation = m_current_processor->getAnimation(arg1);
 
     if (!animation)

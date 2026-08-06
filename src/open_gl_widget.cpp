@@ -100,11 +100,13 @@ void OpenGlWidget::initializeGL()
                                        ":/shaders/lvshader.glsl");
   lightProgram.addShaderFromSourceFile(QOpenGLShader::Fragment,
                                        ":/shaders/lfshader.glsl");
+  lightProgram.link();
   cursorProgram.create();
   cursorProgram.addShaderFromSourceFile(QOpenGLShader::Vertex,
                                         ":/shaders/lvshader.glsl");
   cursorProgram.addShaderFromSourceFile(
       QOpenGLShader::Fragment, ":/shaders/cursor_fragment_shader.glsl");
+  cursorProgram.link();
 
   // set up vertex data (and buffer(s)) and configure vertex attributes
   // ------------------------------------------------------------------

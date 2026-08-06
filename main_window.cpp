@@ -50,12 +50,12 @@
 #include <QElapsedTimer>
 
 #include <QtNetwork>
-QNetworkAccessManager manager;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  manager = new QNetworkAccessManager(this);
 
   QSettings settings("Azagaya", "Laigter");
   QString style = "classic_laigter.qss";

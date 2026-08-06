@@ -72,7 +72,6 @@ private slots:
   void on_NBL_clicked();
   void on_NBM_clicked();
   void on_NBR_clicked();
-  void on_pushButton_clicked();
   void setNeighbor(int x, int y);
   void on_pushButtonResetNeighbours_pressed();
   void on_addImagePushButton_pressed();
