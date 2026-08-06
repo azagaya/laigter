@@ -1572,14 +1572,23 @@ void MainWindow::on_actionLoadPlugins_triggered()
     }
     QFile(dir.absoluteFilePath(fileName)).copy(tmp.absoluteFilePath(fileName));
     QPluginLoader *pl = new QPluginLoader(tmp.absoluteFilePath(fileName));
-    if (pl->metaData().value("MetaData").toObject().value("version").toDouble() < 1.103)
+    /* A plugin built without a version says dev, and is taken as current. The
+     * variant also accepts the version as a number or as a string */
+    QVariant plugin_version =
+        pl->metaData().value("MetaData").toObject().value("version").toVariant();
+
+    if (plugin_version.toString() != "dev" &&
+        plugin_version.toDouble() < LAIGTER_PLUGIN_API)
     {
-      qDebug() << "incorrect plugin version.";
+      /* Skip it, the one the user installed is not ours to delete. Keep going
+       * so one old plugin does not hide all the others */
+      qWarning() << fileName << "is built for plugin api"
+                 << (plugin_version.isValid() ? plugin_version.toString() : "unknown")
+                 << "and laigter needs" << LAIGTER_PLUGIN_API << ", not loading it";
       pl->unload();
       delete pl;
-      QFile plugin(dir.absoluteFilePath(fileName));
-      plugin.remove();
-      return;
+      QFile(tmp.absoluteFilePath(fileName)).remove();
+      continue;
     }
 
     BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());

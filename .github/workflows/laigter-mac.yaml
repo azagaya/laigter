@@ -18,8 +18,11 @@ jobs:
      
     - name: build Laigter
       shell: bash
+      env:
+        # On a tag, the app reports the tag instead of the fallback in the pro
+        QMAKE_VERSION_ARG: ${{ startsWith(github.ref, 'refs/tags/') && format('VERSION={0}', github.ref_name) || '' }}
       run: |
-        qmake CONFIG+=release PREFIX=/usr
+        qmake CONFIG+=release PREFIX=/usr $QMAKE_VERSION_ARG
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
         find appdir/

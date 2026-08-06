@@ -24,6 +24,18 @@
 QT       += core gui widgets network opengl openglwidgets
 
 TARGET = laigter
+
+# The workflows pass VERSION=<tag> to qmake on a tagged build. Anything else is
+# a dev build and says so, instead of claiming to be some release.
+# VERSION itself has to stay a number, the windows resource is built from it
+isEmpty(VERSION) {
+  VERSION = 0.0.0
+  LAIGTER_VERSION_NAME = dev
+} else {
+  VERSION ~= s/^v//
+  LAIGTER_VERSION_NAME = $$VERSION
+}
+DEFINES += LAIGTER_VERSION=\\\"$$LAIGTER_VERSION_NAME\\\"
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -183,6 +195,11 @@ qtPrepareTool(LRELEASE, lrelease)
 win32 {
   LRELEASE=$$clean_path(LRELEASE)
   LRELEASE=$$replace(LRELEASE, \', )
+
+  # Laigter installs and uninstalls itself, there is no separate installer
+  SOURCES += src/win_install.cpp
+  HEADERS += src/win_install.h
+  LIBS += -lshell32
 }
 for(tsfile, TRANSLATIONS) {
         qmfile = $$tsfile
@@ -205,7 +222,8 @@ RESOURCES += \
 	images.qrc \
 	styles.qrc \
 	translations.qrc \
-	icons.qrc
+	icons.qrc \
+	license.qrc
 
 
 win32: RC_ICONS = icons\laigter_icon.ico
