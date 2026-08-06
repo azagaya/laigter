@@ -732,9 +732,9 @@ void OpenGlWidget::tabletEvent(QTabletEvent *event)
 void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 {
 
-  old_position = event->localPos();
-  global_mouse_press_position = LocalToWorld(event->localPos());
-  local_mouse_press_position = LocalToView(event->localPos());
+  old_position = event->position();
+  global_mouse_press_position = LocalToWorld(event->position());
+  local_mouse_press_position = LocalToView(event->position());
   if (currentBrush && currentBrush->get_selected())
   {
     QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
@@ -896,8 +896,8 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
 void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
 {
 
-  global_mouse_last_position = LocalToWorld(event->localPos());
-  local_mouse_last_position = LocalToView(event->localPos());
+  global_mouse_last_position = LocalToWorld(event->position());
+  local_mouse_last_position = LocalToView(event->position());
   QVector3D newLightPos(global_mouse_last_position.x(), global_mouse_last_position.y(), currentLight->get_height());
 
   if (addLight)
@@ -1336,8 +1336,6 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     GLfloat bkColor[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
 
-    int i1 = m_pixelated ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_LINEAR;
-    int i2 = m_pixelated ? GL_NEAREST : GL_LINEAR;
     int xmin = m_width, xmax = 0, ymin = m_height, ymax = 0;
 
     QMatrix4x4 transform;
@@ -1562,7 +1560,7 @@ void OpenGlWidget::apply_light_params(QMatrix4x4 projection, QMatrix4x4 view)
 
     light_position.setZ(-light_position.z());
 
-    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), projection * view * light_position);
+    m_program.setUniformValue((Light + ".lightPos").toUtf8().constData(), (projection * view).map(light_position));
     m_program.setUniformValue((Light + ".lightColor").toUtf8().constData(),
                               color);
     light->get_specular_color().getRgbF(&r, &g, &b, nullptr);
@@ -1716,14 +1714,14 @@ QPointF OpenGlWidget::LocalToView(QPointF local)
 QPointF OpenGlWidget::LocalToWorld(QPointF local)
 {
   QVector3D local_position = QVector3D(LocalToView(local));
-  QVector3D world_position = view.inverted() * local_position;
+  QVector3D world_position = view.inverted().map(local_position);
   return QPointF(world_position.x(), world_position.y());
 }
 
 QPointF OpenGlWidget::WorldToLocal(QPointF world)
 {
   QVector3D world_position(world);
-  QVector3D view_position = view * world_position;
+  QVector3D view_position = view.map(world_position);
   QVector3D local_position;
   local_position.setX((view_position.x() + 0.5 * m_width) / devicePixelRatioF());
   local_position.setY((view_position.y() + 0.5 * m_height) / devicePixelRatioF());

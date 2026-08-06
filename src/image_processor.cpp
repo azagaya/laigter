@@ -217,24 +217,24 @@ void ImageProcessor::recalculate()
     normal_mutex.unlock();
     bool updateEnhance = enhance_requested, updateBump = bump_requested, updateDistance = distance_requested;
     QRect rect = rect_requested;
-    QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
+    (void)QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
     normal_counter = 0;
   }
   if (specular_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_specular();});
+    (void)QtConcurrent::run([this](){this->calculate_specular();});
     specular_counter = 0;
   }
   if (parallax_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_parallax();});
+    (void)QtConcurrent::run([this](){this->calculate_parallax();});
     parallax_counter = 0;
   }
   if (occlussion_counter > 0)
   {
-    QtConcurrent::run([this](){this->calculate_occlusion();});
+    (void)QtConcurrent::run([this](){this->calculate_occlusion();});
     occlussion_counter = 0;
   }
 }

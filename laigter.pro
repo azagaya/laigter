@@ -83,7 +83,6 @@ HEADERS += \
 	gui/language_selector.h \
 	gui/presets_manager.h \
 	gui/remove_plugin_dialog.h \
-	gui/widgets/slider.h \
 	gui/widgets/slider2.h \
 	gui/widgets/sprite_properties_dock.h \
 	gui/widgets/themeselector.h \

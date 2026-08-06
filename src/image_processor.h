@@ -131,6 +131,10 @@ public:
   int *specular_thresh;
 
 public:
+  /* Copying the pointers is what we want, but the compiler stops declaring it
+   * for us because of the operator below, which copies the values instead */
+  ProcessorSettings() = default;
+  ProcessorSettings(const ProcessorSettings &other) = default;
   ProcessorSettings &operator=(ProcessorSettings other);
 };
 

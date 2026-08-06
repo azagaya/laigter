@@ -32,8 +32,6 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
-#define cimg_use_openmp
-
 #define CHECK_CHANGES(outFileInfo, info) (outFileInfo.fileTime(QFile::FileModificationTime) < info.fileTime(QFile::FileModificationTime))
 
 

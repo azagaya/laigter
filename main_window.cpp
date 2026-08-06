@@ -71,9 +71,11 @@ MainWindow::MainWindow(QWidget *parent)
 
   // Setting style
   QFile stylesheet_file(":/styles/" + style);
-  stylesheet_file.open(QFile::ReadOnly);
-  QString stylesheet = QLatin1String(stylesheet_file.readAll());
-  qApp->setStyleSheet(stylesheet);
+  if (stylesheet_file.open(QFile::ReadOnly))
+  {
+    QString stylesheet = QLatin1String(stylesheet_file.readAll());
+    qApp->setStyleSheet(stylesheet);
+  }
 
   /* Set Icon Path */
   QIcon::setFallbackSearchPaths(QIcon::fallbackSearchPaths() << ":icons");
@@ -92,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
   {
     QTextStream in(&l);
     QStringList locale = in.readLine().split("\t");
-    translator->load(":/translations/laigter_" + locale[2]);
+    (void)translator->load(":/translations/laigter_" + locale[2]);
     el->icon =
         QPixmap::fromImage(QImage(":/translations/flags/" + locale[1]));
   }
@@ -102,7 +104,7 @@ MainWindow::MainWindow(QWidget *parent)
         translator->load(QLocale::system(), ":/translations/laigter", "_");
     if (!loaded)
     {
-      translator->load(":/translations/laigter_en");
+      (void)translator->load(":/translations/laigter_en");
       el->icon =
           QPixmap::fromImage(QImage(":/translations/flags/EN.png"));
     }
@@ -110,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
       /* Get icon of locale language */
       QFile f(":/translations/languages.txt");
-      f.open(QIODevice::ReadOnly);
+      (void)f.open(QIODevice::ReadOnly);
       QTextStream stream(&f);
       QString locale = QLocale::system().bcp47Name();
       while (!stream.atEnd())
@@ -1179,6 +1181,11 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
       ui->labelThreshFocus->setVisible(true);
       ui->labelThreshParallax->setVisible(true);
       ui->labelQuantization->setVisible(true);
+      break;
+    }
+    case ParallaxType::Intervals:
+    {
+      break;
     }
   }
 }

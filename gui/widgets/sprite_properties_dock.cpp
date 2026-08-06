@@ -74,6 +74,7 @@ void SpritePropertiesDock::updateFrames(ImageProcessor *processor)
 
 void SpritePropertiesDock::setCurrentFrame(int i)
 {
+  Q_UNUSED(i)
   QImage frame;
   //  current_processor->get_current_frame()->get_image(TextureTypes::Diffuse, &frame);
   //  ui->textureLabel->setPixmap(QPixmap::fromImage(frame.scaled(ui->textureLabel->size(), Qt::KeepAspectRatio)));
