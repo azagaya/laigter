@@ -13,7 +13,10 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.11'
+        # Not 6.11 yet: qt split the windows repo per toolchain starting with
+        # it (qt6_6111_mingw instead of qt6_6111) and aqtinstall 3.3.0 still
+        # looks for the old path, so installing it fails
+        version: '6.10.2'
         arch: 'win64_mingw'
         extra: '--external 7z'
         target: 'desktop'

@@ -17,7 +17,8 @@ jobs:
       run: |
         set -eu
         pacman -Syu --noconfirm
-        pacman -S --needed --noconfirm base-devel git make qt6-base qt6-tools qt6-imageformats
+        # patchelf is what quick-sharun uses to rewrite the rpaths
+        pacman -S --needed --noconfirm base-devel git make patchelf qt6-base qt6-tools qt6-imageformats
         get-debloated-pkgs mesa-nano libxml2-mini opus-mini
         ls /usr/bin/qmake*
         # Arch is rolling, so write down which Qt this AppImage was built with
