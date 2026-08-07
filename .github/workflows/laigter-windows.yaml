@@ -18,7 +18,6 @@ jobs:
         # looks for the old path, so installing it fails
         version: '6.10.2'
         arch: 'win64_mingw'
-        extra: '--external 7z'
         target: 'desktop'
         host: 'windows'
         modules: 'qtimageformats'

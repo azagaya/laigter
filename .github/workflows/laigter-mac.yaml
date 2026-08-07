@@ -12,7 +12,6 @@ jobs:
       uses: jurplel/install-qt-action@v4
       with:
         version: '6.11.1'
-        extra: '--external 7z'
         arch: 'clang_64'
         modules: 'qtimageformats'
      
