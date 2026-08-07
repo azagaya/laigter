@@ -46,7 +46,8 @@ enum Extras
 {
   Shortcut = 1,
   Association = 2,
-  UninstallEntry = 4
+  UninstallEntry = 4,
+  DesktopShortcut = 8
 };
 
 Mode current_mode();
