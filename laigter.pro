@@ -34,6 +34,10 @@ isEmpty(VERSION) {
 } else {
   VERSION ~= s/^v//
   LAIGTER_VERSION_NAME = $$VERSION
+  # The windows resource is built from VERSION and only takes numbers, so a tag
+  # like 1.14.0-beta keeps its name in the app but becomes 1.14.0 there
+  VERSION ~= s/[^0-9.].*//
+  isEmpty(VERSION): VERSION = 0.0.0
 }
 DEFINES += LAIGTER_VERSION=\\\"$$LAIGTER_VERSION_NAME\\\"
 TEMPLATE = app
