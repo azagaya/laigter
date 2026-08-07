@@ -22,7 +22,7 @@ void ThemeSelector::on_listWidget_itemClicked(QListWidgetItem *item)
   style = style.replace(" ", "_").toLower() + ".qss";
   // Setting style
   QFile stylesheet_file(":/styles/" + style);
-  stylesheet_file.open(QFile::ReadOnly);
+  (void)stylesheet_file.open(QFile::ReadOnly);
   QString stylesheet = QLatin1String(stylesheet_file.readAll());
   qApp->setStyleSheet(stylesheet);
 

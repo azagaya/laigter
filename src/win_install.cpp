@@ -54,12 +54,14 @@ struct Options
   bool install = true;
   QString path;
   bool shortcut = true;
+  bool desktop_shortcut = true;
   bool association = true;
   bool uninstall_entry = true;
 
   int extras() const
   {
     return (shortcut ? WinInstall::Shortcut : 0) |
+           (desktop_shortcut ? WinInstall::DesktopShortcut : 0) |
            (association ? WinInstall::Association : 0) |
            (uninstall_entry ? WinInstall::UninstallEntry : 0);
   }
@@ -103,6 +105,19 @@ QString shortcut_file(bool machine)
 
   QString data = qEnvironmentVariable("ProgramData", "C:/ProgramData");
   return data + "/Microsoft/Windows/Start Menu/Programs/Laigter.lnk";
+}
+
+/* The public desktop when we installed for everyone, ours otherwise */
+QString desktop_shortcut_file(bool machine)
+{
+  if (!machine)
+  {
+    return QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) +
+           "/Laigter.lnk";
+  }
+
+  QString shared = qEnvironmentVariable("PUBLIC", "C:/Users/Public");
+  return shared + "/Desktop/Laigter.lnk";
 }
 
 QString recorded_install()
@@ -292,6 +307,12 @@ bool do_install(const QString &dir, int extras, bool machine, QWidget *parent)
     QFile::link(exe, shortcut_file(machine));
   }
 
+  if (extras & WinInstall::DesktopShortcut)
+  {
+    QFile::remove(desktop_shortcut_file(machine));
+    QFile::link(exe, desktop_shortcut_file(machine));
+  }
+
   return true;
 }
 
@@ -327,9 +348,11 @@ bool ask(QWidget *parent, const QString &setup_dir, Options &options)
   QLabel *admin_note = new QLabel;
 
   QCheckBox *shortcut = new QCheckBox(QObject::tr("Create a start menu shortcut"));
+  QCheckBox *desktop_shortcut = new QCheckBox(QObject::tr("Create a desktop shortcut"));
   QCheckBox *association = new QCheckBox(QObject::tr("Open .laigter projects with Laigter"));
   QCheckBox *uninstall_entry = new QCheckBox(QObject::tr("Show Laigter in add or remove programs"));
   shortcut->setChecked(true);
+  desktop_shortcut->setChecked(true);
   association->setChecked(true);
   uninstall_entry->setChecked(true);
 
@@ -338,6 +361,7 @@ bool ask(QWidget *parent, const QString &setup_dir, Options &options)
   extras_layout->addWidget(update_existing);
   extras_layout->addWidget(new_install);
   extras_layout->addWidget(shortcut);
+  extras_layout->addWidget(desktop_shortcut);
   extras_layout->addWidget(association);
   extras_layout->addWidget(uninstall_entry);
 
@@ -414,6 +438,7 @@ bool ask(QWidget *parent, const QString &setup_dir, Options &options)
   options.install = install->isChecked();
   options.path = QDir::fromNativeSeparators(location->text()).trimmed();
   options.shortcut = shortcut->isChecked();
+  options.desktop_shortcut = desktop_shortcut->isChecked();
   options.association = association->isChecked();
   options.uninstall_entry = uninstall_entry->isChecked();
   return !options.path.isEmpty();
@@ -544,6 +569,7 @@ bool WinInstall::uninstall(QWidget *parent, bool confirmed)
     ours.remove("");
 
     QFile::remove(shortcut_file(machine));
+    QFile::remove(desktop_shortcut_file(machine));
   }
 
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);

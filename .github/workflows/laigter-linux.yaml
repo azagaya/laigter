@@ -1,30 +1,30 @@
-name: Ubuntu 22.04
-on: push
+name: Ubuntu Latest
+on: [push, workflow_dispatch]
 
 jobs:
-  buildOnUbuntu:
-    runs-on: ubuntu-22.04
-    container:
-      image: ubuntu:22.04 # yes, this looks redundant, but something is messed up with their Ubuntu image that causes our builds to fail
+  build:
+    runs-on: ubuntu-24.04
+    container: ghcr.io/pkgforge-dev/archlinux:latest
 
     steps:
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
-    - name: Install Dependencies
-      shell: bash
+    - name: Preparing Container
+      uses: pkgforge-dev/anylinux-setup-action@v1
+        
+    - name: Install dependencies & Qt6 on Arch
       run: |
-        apt-get update && apt-get install -y sudo p7zip-full wget file libwayland-cursor0 libwayland-egl1 
-        sudo ln -fs /usr/share/zoneinfo/UTC /etc/localtime
-        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: '6.11'
-        arch: 'linux_gcc_64'
-        extra: '--external 7z'
-        modules: 'qtimageformats qtwaylandcompositor'
+        set -eu
+        pacman -Syu --noconfirm
+        # patchelf is what quick-sharun uses to rewrite the rpaths, and the
+        # qt6ct, kvantum and lxqt plugins are what it bundles so the app can
+        # follow the theme of whatever desktop it ends up running on
+        pacman -S --needed --noconfirm base-devel git make patchelf qt6-base qt6-tools qt6-imageformats qt6ct kvantum lxqt-qtplugin
+        get-debloated-pkgs mesa-nano libxml2-mini opus-mini
+        ls /usr/bin/qmake*
+        # Arch is rolling, so write down which Qt this AppImage was built with
+        pacman -Q qt6-base qt6-tools qt6-imageformats
 
     - name: Build Laigter
       shell: bash
@@ -33,28 +33,41 @@ jobs:
         QMAKE_VERSION_ARG: ${{ startsWith(github.ref, 'refs/tags/') && format('VERSION={0}', github.ref_name) || '' }}
       run: |
         echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        qmake CONFIG+=release PREFIX=/usr $QMAKE_VERSION_ARG
+        /usr/bin/qmake6 CONFIG+=release PREFIX=/usr $QMAKE_VERSION_ARG
         make -j$(nproc)
         make INSTALL_ROOT=appdir install
-        find appdir/
-        mkdir -p appdir/usr/lib
-        export APPIMAGE_EXTRACT_AND_RUN=1
-        export EXTRA_QT_MODULES="waylandcompositor"
-        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-        if [[ "$RELEASE_VERSION" != "" ]]; then export VERSION=$RELEASE_VERSION;fi
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -exclude-libs=libwayland-client.so.0 -extra-plugins=imageformats,platforms/libqwayland-generic.so,platforms/libqwayland-egl.so,wayland-graphics-integration-client,wayland-decoration-client,wayland-shell-integration -appimage
+        
+    - name: Create Appimage
+      run: |
+        set -eu
+        curl -Lo quick-sharun https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/main/useful-tools/quick-sharun.sh
+        chmod +x quick-sharun
+        export ARCH="$(uname -m)"
+        export OUTNAME="Laigter-${ARCH}.AppImage"
+        export OUTPATH=./binaries
+        export ADD_HOOKS="self-updater.bg.hook"
+        export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+        export ICON=dist/laigter.png
+        export DESKTOP=dist/laigter.desktop
+        export DEPLOY_OPENGL=1
+        ./quick-sharun appdir/usr/bin/laigter
+        ./quick-sharun --make-appimage
 
     - name: upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: test-artifact
-        path: Laigter-x86_64.AppImage 
+        name: AppImage-x86_64
+        path: binaries
 
-    - name: GitHub Releases
-      uses: fnkr/github-action-ghr@v1.3
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GHR_PATH: Laigter-x86_64.AppImage
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [build]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          pattern: AppImage-*
+          merge-multiple: true
+      - name: Release AppImage
+        uses: pkgforge-dev/make-stable-appimage-release@v1

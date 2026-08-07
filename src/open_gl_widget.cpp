@@ -88,7 +88,9 @@ void OpenGlWidget::initializeGL()
       backgroundColor.greenF() * ambientColor.greenF() * ambientIntensity,
       backgroundColor.blueF() * ambientColor.blueF() * ambientIntensity, 1.0);
 
-  setUpdateBehavior(QOpenGLWidget::PartialUpdate);
+  /* We redraw the whole scene every time, so there is nothing to preserve
+   * between frames and no reason to ask qt for a partial update */
+  setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
   m_program.create();
   m_program.addShaderFromSourceFile(QOpenGLShader::Vertex,
                                     ":/shaders/vshader.glsl");
@@ -159,11 +161,14 @@ void OpenGlWidget::loadTextures()
 
 void OpenGlWidget::paintGL()
 {
-  if (need_to_update)
-  {
-    need_to_update = false;
-    update_scene();
-  }
+  /* Qt asks for a frame when it needs one, on resize or when the window shows
+   * up again, so always draw. Not drawing leaves whatever was in the buffer,
+   * which on some compositors is nothing until the user clicks something.
+   * The flag only says a repaint is pending, force_update uses it. Clearing it
+   * before drawing keeps the animated lights going, they set it again while
+   * the scene is drawn */
+  need_to_update = false;
+  update_scene();
 
   if (export_render)
   {

@@ -6,3 +6,4 @@ Exec=laigter
 Icon=laigter
 Type=Application
 Categories=Graphics;2DGraphics;
+StartupWMClass=laigter

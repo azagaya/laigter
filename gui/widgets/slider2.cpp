@@ -18,7 +18,7 @@ Slider2::Slider2(QWidget *parent) : QSlider(parent)
   connect(this, SIGNAL(rangeChanged(int,int)), this,
           SLOT(setSpinBoxRange(int,int)));
   QFile style(":/styles/spin_box_slider2.qss");
-  style.open(QIODevice::ReadOnly);
+  (void)style.open(QIODevice::ReadOnly);
   setStyleSheet(style.readAll());
 }
 

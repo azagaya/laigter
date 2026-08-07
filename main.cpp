@@ -63,6 +63,9 @@ QCoreApplication *createApplication(int &argc, char *argv[])
 int main(int argc, char *argv[])
 {
   QCoreApplication::setApplicationName("laigter");
+  /* Wayland takes the app id from here, so the window is matched with our
+   * desktop file and shows our icon instead of a generic one */
+  QGuiApplication::setDesktopFileName("laigter");
   QCoreApplication::setApplicationVersion(LAIGTER_VERSION);
   //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);

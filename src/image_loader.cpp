@@ -92,7 +92,6 @@ QImage ImageLoader::loadTga(const char *filePath, bool *success)
 
     // get variables
     vui8Pixels = new std::vector<std::uint8_t>;
-    bool bCompressed;
     std::uint32_t ui32IDLength;
     std::uint32_t ui32PicType;
     std::uint32_t ui32PaletteLength;
@@ -108,7 +107,6 @@ QImage ImageLoader::loadTga(const char *filePath, bool *success)
 
     // calculate some more information
     ui32Size = ui32Width * ui32Height * ui32BpP / 8;
-    bCompressed = ui32PicType == 9 || ui32PicType == 10;
     vui8Pixels->resize(ui32Size);
 
     // jump to the data block
