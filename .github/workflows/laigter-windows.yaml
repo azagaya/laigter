@@ -1,6 +1,6 @@
 
 name: Windows
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
   buildWin:
