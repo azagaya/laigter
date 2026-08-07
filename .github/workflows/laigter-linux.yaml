@@ -17,8 +17,10 @@ jobs:
       run: |
         set -eu
         pacman -Syu --noconfirm
-        # patchelf is what quick-sharun uses to rewrite the rpaths
-        pacman -S --needed --noconfirm base-devel git make patchelf qt6-base qt6-tools qt6-imageformats
+        # patchelf is what quick-sharun uses to rewrite the rpaths, and the
+        # qt6ct, kvantum and lxqt plugins are what it bundles so the app can
+        # follow the theme of whatever desktop it ends up running on
+        pacman -S --needed --noconfirm base-devel git make patchelf qt6-base qt6-tools qt6-imageformats qt6ct kvantum lxqt-qtplugin
         get-debloated-pkgs mesa-nano libxml2-mini opus-mini
         ls /usr/bin/qmake*
         # Arch is rolling, so write down which Qt this AppImage was built with

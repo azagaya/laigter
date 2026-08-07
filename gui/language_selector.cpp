@@ -42,7 +42,7 @@ void LanguageSelector::on_listWidget_itemSelectionChanged()
   icon = QPixmap::fromImage(QImage(":/translations/flags/" + locale[0]));
 
   qApp->removeTranslator(translator);
-  translator->load(":/translations/laigter_" + locale[1]);
+  (void)translator->load(":/translations/laigter_" + locale[1]);
   qApp->installTranslator(translator);
   QString current_language =
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +

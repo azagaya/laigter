@@ -76,6 +76,7 @@ void Slider::paintEvent(QPaintEvent *ev)
 
 
 void Slider::mouseDoubleClickEvent( QMouseEvent * e ){
+    Q_UNUSED(e)
     spin_box.setFocus();
     spin_box.selectAll();
 }

@@ -217,7 +217,9 @@ void ImageProcessor::recalculate()
     normal_mutex.unlock();
     bool updateEnhance = enhance_requested, updateBump = bump_requested, updateDistance = distance_requested;
     QRect rect = rect_requested;
-    (void)QtConcurrent::run([=](){this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect);});
+    /* Named captures, [=] taking this along is deprecated in c++20 */
+    (void)QtConcurrent::run([this, updateEnhance, updateBump, updateDistance, rect]()
+                            { this->generate_normal_map(updateEnhance, updateBump, updateDistance, rect); });
     enhance_requested = bump_requested = distance_requested = false;
     rect_requested = QRect(0, 0, 0, 0);
     normal_counter = 0;
@@ -1602,6 +1604,10 @@ QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
     case 4:
       format = QImage::Format_RGBA8888;
       break;
+    default:
+      /* Two channels or anything else has no format here, and building a
+       * QImage with an uninitialized one is undefined */
+      return QImage();
   }
 
   QImage out(w, h, format);

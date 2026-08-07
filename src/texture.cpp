@@ -2,7 +2,9 @@
 
 Texture::Texture(QObject *parent) : QObject(parent) {}
 
-Texture::Texture(const Texture &T)
+/* QObject cannot be copied, so the copy starts as a fresh one with no parent
+ * and only the data is taken from T */
+Texture::Texture(const Texture &T) : QObject()
 {
   image = T.image;
   type = T.type;

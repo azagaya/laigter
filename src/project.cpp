@@ -299,7 +299,7 @@ bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObj
           if (f.open(QIODevice::ReadOnly))
           {
             QByteArray a = f.readAll();
-            zip_entry_write(zip, a, a.count());
+            zip_entry_write(zip, a, a.size());
             f.close();
           }
         }
@@ -316,7 +316,7 @@ bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObj
       if (f.open(QIODevice::ReadOnly))
       {
         QByteArray content = f.readAll();
-        zip_entry_write(zip, content, content.count());
+        zip_entry_write(zip, content, content.size());
       }
     }
     zip_entry_close(zip);
@@ -365,7 +365,7 @@ bool Project::save(QString path, QList<ImageProcessor *> processorList, QJsonObj
   QJsonDocument json_project(project_json);
   zip_entry_open(zip, "project.json");
   {
-    zip_entry_write(zip, json_project.toJson(), json_project.toJson().count());
+    zip_entry_write(zip, json_project.toJson(), json_project.toJson().size());
   }
   zip_entry_close(zip);
 
