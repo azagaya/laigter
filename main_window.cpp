@@ -774,7 +774,8 @@ void MainWindow::openGL_initialized()
   processor_selected(processor, true);
   processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
   on_comboBoxView_currentIndexChanged(Texture);
-  on_actionLoadPlugins_triggered();
+  /* not a retry, a plugin that crashed last start has to stay disabled */
+  load_plugins(false);
 
   ui->openGLPreviewWidget->add_processor(processor);
   ui->openGLPreviewWidget->loadTextures();
@@ -1543,12 +1544,45 @@ void MainWindow::onFileChanged(const QString &file_path)
 
 void MainWindow::on_actionLoadPlugins_triggered()
 {
+  /* Asking for them by hand is also how a disabled plugin gets another go */
+  load_plugins(true);
+}
+
+void MainWindow::load_plugins(bool retry_disabled)
+{
   QString appData =
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
   QDir dir(appData);
   QDir tmp(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
   dir.cd("plugins");
-  const QStringList entryList = dir.entryList(QDir::Files);
+
+  /* Only real plugins. Building one leaves other files next to it, like the
+   * import libraries mingw writes, and those are not loadable */
+#if defined(Q_OS_WIN)
+  const QStringList plugin_names("*.dll");
+#elif defined(Q_OS_MACOS)
+  const QStringList plugin_names = QStringList() << "*.dylib" << "*.so";
+#else
+  const QStringList plugin_names("*.so");
+#endif
+
+  const QStringList entryList = dir.entryList(plugin_names, QDir::Files);
+  QStringList skipped_plugins;
+
+  QSettings settings("Azagaya", "Laigter");
+  QStringList disabled = settings.value("disabled_plugins").toStringList();
+
+  /* Still set means laigter died last time while calling into that plugin */
+  const QString crashed = settings.value("loading_plugin").toString();
+  if (!crashed.isEmpty() && !disabled.contains(crashed))
+    disabled << crashed;
+
+  if (retry_disabled)
+    disabled.clear();
+
+  settings.setValue("disabled_plugins", disabled);
+  settings.remove("loading_plugin");
+  settings.sync();
 
   foreach (QDockWidget *dock, plugin_docks_list)
   {
@@ -1566,6 +1600,13 @@ void MainWindow::on_actionLoadPlugins_triggered()
 
   for (const QString &fileName : entryList)
   {
+    if (disabled.contains(fileName))
+    {
+      qWarning() << fileName << "crashed laigter while loading, not loading it";
+      skipped_plugins << tr("%1 (crashed laigter while loading)").arg(fileName);
+      continue;
+    }
+
     if (QFile(tmp.absoluteFilePath(fileName)).exists())
     {
       QFile(tmp.absoluteFilePath(fileName)).remove();
@@ -1577,32 +1618,47 @@ void MainWindow::on_actionLoadPlugins_triggered()
     QVariant plugin_version =
         pl->metaData().value("MetaData").toObject().value("version").toVariant();
 
+    /* Has to be an exact match. A newer plugin is just as unloadable as an
+     * older one, and calling into it crashes laigter before it even shows */
     if (plugin_version.toString() != "dev" &&
-        plugin_version.toDouble() < LAIGTER_PLUGIN_API)
+        plugin_version.toDouble() != LAIGTER_PLUGIN_API)
     {
       /* Skip it, the one the user installed is not ours to delete. Keep going
        * so one old plugin does not hide all the others */
-      qWarning() << fileName << "is built for plugin api"
-                 << (plugin_version.isValid() ? plugin_version.toString() : "unknown")
+      QString version = plugin_version.isValid() ? plugin_version.toString() : tr("unknown");
+      qWarning() << fileName << "is built for plugin api" << version
                  << "and laigter needs" << LAIGTER_PLUGIN_API << ", not loading it";
+      skipped_plugins << tr("%1 (built for plugin api %2)").arg(fileName, version);
       pl->unload();
       delete pl;
       QFile(tmp.absoluteFilePath(fileName)).remove();
       continue;
     }
 
+    /* Everything below runs plugin code. Leave the name on disk so that if it
+     * takes laigter down we know who did it on the next start */
+    settings.setValue("loading_plugin", fileName);
+    settings.sync();
+
     BrushInterface *b = qobject_cast<BrushInterface *>(pl->instance());
     if (pl->errorString() != "Unknown error")
     {
       qDebug() << pl->errorString();
     }
+    if (b == nullptr)
+    {
+      qWarning() << fileName << "is not a laigter brush:" << pl->errorString();
+      skipped_plugins << tr("%1 (%2)").arg(fileName, pl->errorString());
+    }
     if (b != nullptr)
     {
       ui->openGLPreviewWidget->currentBrush = b;
-      b->setProcessor(&processor);
+      b->setProcessor(processor);
       QAction *action = new QAction(QIcon::fromTheme(b->getIcon()), b->getName());
       action->setCheckable(true);
       QDockWidget *pluginDock = new QDockWidget(b->getName(), this);
+      // without a name saveState cant store it, and warns on every exit
+      pluginDock->setObjectName(b->getName());
       QWidget *pluginGui = b->loadGUI();
 
       addDockWidget(Qt::LeftDockWidgetArea, pluginDock);
@@ -1620,6 +1676,21 @@ void MainWindow::on_actionLoadPlugins_triggered()
       plugin_list.append(pl);
       brush_list.append(b);
     }
+
+    settings.remove("loading_plugin");
+    settings.sync();
+  }
+
+  /* qWarning goes nowhere in a windows gui build, and a plugin that silently
+   * disappears looks like laigter is broken */
+  if (!skipped_plugins.isEmpty())
+  {
+    QMessageBox::warning(this, tr("Plugins not loaded"),
+                         tr("These plugins do not match this version of "
+                            "laigter and were skipped:\n\n%1\n\nGet a build "
+                            "made for plugin api %2.")
+                             .arg(skipped_plugins.join("\n"))
+                             .arg(LAIGTER_PLUGIN_API));
   }
 }
 

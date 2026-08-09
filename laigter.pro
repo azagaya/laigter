@@ -104,6 +104,7 @@ HEADERS += \
 	gui/widgets/themeselector.h \
 	main_window.h \
 	src/brush_interface.h \
+	src/processor_interface.h \
 	src/cimg.h \
 	src/image_loader.h \
 	src/image_processor.h \

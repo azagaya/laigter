@@ -194,7 +194,7 @@ QImage ImageLoader::loadTga(const char *filePath, bool *success)
         img.setPixelColor(x, y, value);
       }
     }
-    img = img.mirrored();
+    img = img.flipped();
   }
 
   *success = true;

@@ -84,6 +84,9 @@ private:
   /* Not a global, it has to be created after the QApplication */
   QNetworkAccessManager *manager;
 
+  /* retry_disabled loads again the ones that crashed laigter before */
+  void load_plugins(bool retry_disabled);
+
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();

@@ -1119,6 +1119,24 @@ void ImageProcessor::set_texture_overlay(QImage to)
   sprite.set_image(TextureTypes::TextureOverlay, to);
 }
 
+void ImageProcessor::get_current_diffuse(QImage *diffuse)
+{
+  get_current_frame()->get_image(TextureTypes::Diffuse, diffuse);
+}
+
+void ImageProcessor::request_rect(QRect r)
+{
+  rect_requested = rect_requested.united(r);
+}
+
+void ImageProcessor::set_normal_counter(int c) { normal_counter = c; }
+
+void ImageProcessor::set_parallax_counter(int c) { parallax_counter = c; }
+
+void ImageProcessor::set_specular_counter(int c) { specular_counter = c; }
+
+void ImageProcessor::set_occlussion_counter(int c) { occlussion_counter = c; }
+
 QImage ImageProcessor::get_normal_overlay()
 {
   sprite.get_image(TextureTypes::NormalOverlay, &normalOverlay);

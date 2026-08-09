@@ -21,6 +21,7 @@
 #define IMAGEPROCESSOR_H
 
 #include "src/light_source.h"
+#include "src/processor_interface.h"
 #include "src/sprite.h"
 
 #include <QBrush>
@@ -138,7 +139,7 @@ public:
   ProcessorSettings &operator=(ProcessorSettings other);
 };
 
-class ImageProcessor : public QObject
+class ImageProcessor : public QObject, public ProcessorInterface
 {
   Q_OBJECT
 
@@ -293,22 +294,30 @@ public:
                            bool updateDistance = true,
                            QRect rect = QRect(0, 0, 0, 0));
   void set_name(QString name);
-  QImage get_normal_overlay();
-  QImage get_texture_overlay();
-  QImage get_heightmap_overlay();
-  QImage get_occlusion_overlay();
-  QImage get_parallax_overlay();
-  QImage get_specular_overlay();
+  QImage get_normal_overlay() override;
+  QImage get_texture_overlay() override;
+  QImage get_heightmap_overlay() override;
+  QImage get_occlusion_overlay() override;
+  QImage get_parallax_overlay() override;
+  QImage get_specular_overlay() override;
   void calculate();
   void calculate_occlusion();
   void calculate_parallax();
   void calculate_specular();
-  void set_heightmap_overlay(QImage ho);
-  void set_normal_overlay(QImage no);
-  void set_occlussion_overlay(QImage oo);
-  void set_parallax_overlay(QImage po);
-  void set_specular_overlay(QImage so);
-  void set_texture_overlay(QImage to);
+  void set_heightmap_overlay(QImage ho) override;
+  void set_normal_overlay(QImage no) override;
+  void set_occlussion_overlay(QImage oo) override;
+  void set_parallax_overlay(QImage po) override;
+  void set_specular_overlay(QImage so) override;
+  void set_texture_overlay(QImage to) override;
+
+  /* what plugins use instead of reaching into the members below */
+  void get_current_diffuse(QImage *diffuse) override;
+  void request_rect(QRect r) override;
+  void set_normal_counter(int c) override;
+  void set_parallax_counter(int c) override;
+  void set_specular_counter(int c) override;
+  void set_occlussion_counter(int c) override;
   int WrapCoordinate(int coord, int interval);
   QImage CImg2QImage(cimg_library::CImg<uchar> in);
   cimg_library::CImg<uchar> QImage2CImg(QImage in);
@@ -350,7 +359,7 @@ public slots:
   QImage get_neighbour(int x, int y);
   QList<LightSource *> *get_light_list_ptr();
   QVector3D *get_offset();
-  QVector3D *get_position();
+  QVector3D *get_position() override;
   Sprite *get_current_frame();
   bool get_connected();
   bool get_is_parallax();
@@ -360,8 +369,8 @@ public slots:
   bool get_parallax_invert();
   bool get_selected();
   bool get_specular_invert();
-  bool get_tile_x();
-  bool get_tile_y();
+  bool get_tile_x() override;
+  bool get_tile_y() override;
   bool get_tileable();
 
   void set_use_normal_alpha(bool a);
