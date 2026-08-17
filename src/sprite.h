@@ -23,7 +23,8 @@ enum class TextureTypes
   HeightmapOverlay,
   SpecularOverlay,
   ParallaxOverlay,
-  OcclussionOverlay
+  OcclussionOverlay,
+  NUM_TEXTURE_TYPES
 };
 
 class Sprite
@@ -42,6 +43,9 @@ public:
   explicit Sprite(const Sprite &S);
   void set_image(TextureTypes type, QImage i);
   bool get_image(TextureTypes type, QImage *dst);
+  bool get_image_shared(TextureTypes type, QImage *dst);
+  quint64 get_revision(TextureTypes type) const {return textures[static_cast<int>(type)].revision();}
+  bool IsLocked(TextureTypes type) {return textures[static_cast<int>(type)].IsLocked();}
   void set_texture(TextureTypes type, Texture t);
   Sprite &operator=(const Sprite &S);
   QString get_file_name();

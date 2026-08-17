@@ -168,7 +168,7 @@ public:
   Sprite sprite;
   QString frame_mode = "Sheet";
   bool busy;
-  bool updated = false;
+  bool diffuse_updated = true, normal_updated = true, specular_updated = true, parallax_updated = true, occlussion_updated = true;
 
   int normal_counter, parallax_counter, specular_counter, occlussion_counter;
 
@@ -192,7 +192,13 @@ public:
   QList<Animation> animation_list;
   Animation *current_animation = nullptr;
 
+  int getID() {return id;}
+
+  int index = 0;
+
 private:
+  static int global_id;
+  int id;
   ParallaxType parallax_type;
   ProcessorSettings settings;
   QBrush normal_brush;
@@ -226,7 +232,7 @@ private:
   cimg_library::CImg<float> m_emboss_normal;
   cimg_library::CImg<float> m_normal;
   cimg_library::CImg<float> m_gray;
-  cimg_library::CImg<float> m_height_ov, aux_height_ov;
+  cimg_library::CImg<float> m_height_ov;
 
   double occlusion_contrast;
   double parallax_contrast;
@@ -256,6 +262,17 @@ private:
   int specular_blur;
   int specular_bright;
   int specular_thresh;
+
+  quint64 texture_revisions[static_cast<int>(TextureTypes::NUM_TEXTURE_TYPES)] = {0};
+
+  // An overlay nobody painted on contributes nothing, so it can be skipped
+  bool specular_overlay_used = false;
+  bool parallax_overlay_used = false;
+  bool occlussion_overlay_used = false;
+
+  // The height overlay one cannot be skipped, m_height_ov has to be there for
+  // the normals, so it says when the cached one went stale instead
+  bool heightmap_overlay_changed = true;
 
   int current_heightmap_id = -1;
 
@@ -311,7 +328,7 @@ public:
   void set_specular_overlay(QImage so) override;
   void set_texture_overlay(QImage to) override;
 
-  /* what plugins use instead of reaching into the members below */
+  // what plugins use instead of reaching into the members below
   void get_current_diffuse(QImage *diffuse) override;
   void request_rect(QRect r) override;
   void set_normal_counter(int c) override;
@@ -319,7 +336,10 @@ public:
   void set_specular_counter(int c) override;
   void set_occlussion_counter(int c) override;
   int WrapCoordinate(int coord, int interval);
-  QImage CImg2QImage(cimg_library::CImg<uchar> in);
+  QImage CImg2QImage(const cimg_library::CImg<uchar> &in);
+  // Pulls the two channels the overlays are used for in a single pass
+  bool overlay_channels(const QImage &in, cimg_library::CImg<float> *value,
+                        cimg_library::CImg<float> *alpha);
   cimg_library::CImg<uchar> QImage2CImg(QImage in);
 
   int get_frame_count();

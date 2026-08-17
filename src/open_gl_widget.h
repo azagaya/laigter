@@ -46,6 +46,12 @@ enum ViewMode
   Preview
 };
 
+typedef struct
+{
+  int id;
+  quint64 revision[static_cast<int>(TextureTypes::NUM_TEXTURE_TYPES)];
+} processor_revisions_t;
+
 class OpenGlWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
   Q_OBJECT
@@ -64,20 +70,20 @@ public:
   QPointF LocalToView(QPointF local);
   float UnwrapAngle(float angle);
   float FixAngle(float angle, int step = 4, float tol = 5);
+  bool must_update_texture(int pi, int processor_id, TextureTypes type, quint64 revision);
 
 private:
   GLuint shaderProgram, vertexShader, fragmentShader;
   LightSource *currentLight;
   QColor lightColor, specColor, ambientColor, backgroundColor;
-  QImage m_image, normalMap, parallaxMap, laigter, specularMap, occlusionMap,
-      renderedPreview;
+  QImage laigter, renderedPreview;
   QList<ImageProcessor *> processorList, selectedProcessors;
   QList<LightSource *> *currentLightList;
   QList<LightSource *> lightList;
   QOpenGLBuffer VBO, VBO3D;
   QOpenGLShaderProgram m_program, simpleProgram, lightProgram, cursorProgram;
-  QOpenGLTexture *m_texture, *m_normalTexture, *laigterTexture, *brushTexture,
-      *m_parallaxTexture, *m_specularTexture, *m_occlusionTexture;
+  QVector <QOpenGLTexture*> m_texture, m_normalTexture, m_parallaxTexture, m_specularTexture, m_occlusionTexture;
+  QOpenGLTexture *laigterTexture, *brushTexture;
   QOpenGLVertexArrayObject VAO, VAO3D;
   QOpenGLVertexArrayObject lightVAO;
 
@@ -107,13 +113,15 @@ private:
   bool useAlpha = false;
   float diffIntensity, ambientIntensity, specIntensity, specScatter;
   float m_zoom, m_global_zoom = 1;
-  float sx, sy, parallax_height;
-  int pixelsX, pixelsY, pixelSize;
+  float parallax_height;
+  int pixelSize;
   int viewmode;
   int m_width = 0, m_height = 0;
   void apply_light_params(QMatrix4x4 projection, QMatrix4x4 view);
   void select_current_light_list();
   void select_light(LightSource *light);
+
+  QVector<processor_revisions_t> processor_revisions;
 
 public slots:
   float getZoom();
@@ -127,24 +135,24 @@ public slots:
   void setAmbientColor(QColor color);
   void setAmbientIntensity(float intensity);
   void setBackgroundColor(QColor color);
-  void setImage(QImage *image);
+  void setImage(const QImage *image, int pi);
   void setLight(bool light);
   void setLightColor(QColor color);
   void setLightHeight(float height);
   void setLightAnimate(bool animate);
   void setLightSpeed(float speed);
   void setLightIntensity(float intensity);
-  void setNormalMap(QImage *normalMap);
-  void setOcclusionMap(QImage *occlusionMap);
+  void setNormalMap(const QImage *normalMap, int p);
+  void setOcclusionMap(const QImage *occlusionMap, int p);
   void setParallax(bool p);
   void setParallaxHeight(int height);
-  void setParallaxMap(QImage *parallaxMap);
+  void setParallaxMap(const QImage *parallaxMap, int p);
   void setPixelSize(int size);
   void setPixelated(bool pixelated);
   void setSpecColor(QColor color);
   void setSpecIntensity(float intensity);
   void setSpecScatter(int scatter);
-  void setSpecularMap(QImage *image);
+  void setSpecularMap(const QImage *image, int p);
   void setTileX(bool x);
   void setTileY(bool y);
   void setToon(bool toon);

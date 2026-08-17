@@ -21,8 +21,9 @@ bool Texture::set_image(QImage i)
 {
   if (mutex.tryLock())
   {
-         image = i.copy();
+    image = i.copy();
     mutex.unlock();
+    m_revision++;
     return true;
   }
   return false;
@@ -37,6 +38,15 @@ bool Texture::get_image(QImage *dst)
     return true;
   }
   return false;
+}
+
+bool Texture::IsLocked(){
+  if (mutex.tryLock())
+  {
+    mutex.unlock();
+    return false;
+  }
+  return true;
 }
 
 void Texture::set_type(QString t) { type = t; }

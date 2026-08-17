@@ -46,6 +46,12 @@ bool Sprite::get_image(TextureTypes type, QImage *dst)
   return textures[t].get_image(dst);
 }
 
+bool Sprite::get_image_shared(TextureTypes type, QImage *dst)
+{
+  int t = static_cast<int>(type);
+  return textures[t].get_image_shared(dst);
+}
+
 void Sprite::set_texture(TextureTypes type, Texture t)
 {
   int tex = static_cast<int>(type);

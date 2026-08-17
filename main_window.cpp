@@ -774,7 +774,7 @@ void MainWindow::openGL_initialized()
   processor_selected(processor, true);
   processor->set_light_list(*(ui->openGLPreviewWidget->get_current_light_list_ptr()));
   on_comboBoxView_currentIndexChanged(Texture);
-  /* not a retry, a plugin that crashed last start has to stay disabled */
+  // not a retry, a plugin that crashed last start has to stay disabled
   load_plugins(false);
 
   ui->openGLPreviewWidget->add_processor(processor);
@@ -1019,6 +1019,7 @@ void MainWindow::on_listWidget_itemSelectionChanged()
           p = find_processor(item->data(Qt::UserRole).toString());
           if (p)
           {
+            p->index = processorList.indexOf(p) + 1; // 0  is sample processor
             ui->openGLPreviewWidget->add_processor(p);
             processor_selected(p, true);
             break;
@@ -1544,7 +1545,7 @@ void MainWindow::onFileChanged(const QString &file_path)
 
 void MainWindow::on_actionLoadPlugins_triggered()
 {
-  /* Asking for them by hand is also how a disabled plugin gets another go */
+  // Asking for them by hand is also how a disabled plugin gets another go
   load_plugins(true);
 }
 
@@ -1572,7 +1573,7 @@ void MainWindow::load_plugins(bool retry_disabled)
   QSettings settings("Azagaya", "Laigter");
   QStringList disabled = settings.value("disabled_plugins").toStringList();
 
-  /* Still set means laigter died last time while calling into that plugin */
+  // Still set means laigter died last time while calling into that plugin
   const QString crashed = settings.value("loading_plugin").toString();
   if (!crashed.isEmpty() && !disabled.contains(crashed))
     disabled << crashed;

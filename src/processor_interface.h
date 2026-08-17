@@ -32,10 +32,10 @@ public:
   virtual bool get_tile_x() = 0;
   virtual bool get_tile_y() = 0;
 
-  /* diffuse of the frame being edited, so plugins dont need Sprite */
+  // diffuse of the frame being edited, so plugins dont need Sprite
   virtual void get_current_diffuse(QImage *diffuse) = 0;
 
-  /* these were public members before the interface */
+  // these were public members before the interface
   virtual void request_rect(QRect r) = 0;
   virtual void set_normal_counter(int c) = 0;
   virtual void set_parallax_counter(int c) = 0;

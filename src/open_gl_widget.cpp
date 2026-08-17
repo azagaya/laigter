@@ -147,14 +147,6 @@ void OpenGlWidget::initializeGL()
 
 void OpenGlWidget::loadTextures()
 {
-  processor = processorList.at(0);
-  QImage i(processor->get_texture()->size(), QImage::Format_RGBA8888);
-  i.fill(Qt::transparent);
-  m_texture = new QOpenGLTexture(i);
-  m_parallaxTexture = new QOpenGLTexture(i);
-  m_specularTexture = new QOpenGLTexture(i);
-  m_normalTexture = new QOpenGLTexture(i);
-  m_occlusionTexture = new QOpenGLTexture(i);
   laigterTexture = new QOpenGLTexture(laigter);
   brushTexture = new QOpenGLTexture(laigter);
 }
@@ -185,6 +177,16 @@ void OpenGlWidget::force_update()
 {
   if (need_to_update)
     update();
+}
+
+bool OpenGlWidget::must_update_texture(int pi, int processor_id, TextureTypes type, quint64 revision)
+{
+  bool ret = processor_revisions[pi].id != processor_id || processor_revisions[pi].revision[static_cast<int>(type)] != revision;
+  if (ret)
+  {
+    processor_revisions[pi].revision[static_cast<int>(type)] = revision;
+  }
+  return ret;
 }
 
 void OpenGlWidget::update_scene()
@@ -232,27 +234,64 @@ void OpenGlWidget::update_scene()
 
   foreach (ImageProcessor *processor, processorList)
   {
-    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+
+    int pi = processor->index;
+    Sprite *current_frame = processor->get_current_frame();
+
+    QSize img_size = current_frame->size();
+
+    int processor_id = processor->getID();
+
+    if (pi >= m_texture.size())
     {
-      m_image = *processor->get_texture();
-      setImage(&m_image);
+      m_texture.resize(pi+1);
+      m_texture[pi] = nullptr;
+      m_normalTexture.resize(pi+1);
+      m_normalTexture[pi] = nullptr;
+      m_specularTexture.resize(pi+1);
+      m_specularTexture[pi] = nullptr;
+      m_occlusionTexture.resize(pi+1);
+      m_occlusionTexture[pi] = nullptr;
+      m_parallaxTexture.resize(pi+1);
+      m_parallaxTexture[pi] = nullptr;
+
+      processor_revisions.resize(pi+1);
+      processor_revisions[pi] = (processor_revisions_t){processor->getID(), {0}};
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+
+
+    if (!current_frame->IsLocked(TextureTypes::Diffuse) &&
+        (must_update_texture(pi, processor_id, TextureTypes::Diffuse, current_frame->get_revision(TextureTypes::Diffuse)) ||
+          must_update_texture(pi, processor_id, TextureTypes::TextureOverlay, current_frame->get_revision(TextureTypes::TextureOverlay))))
     {
-      setNormalMap(&normalMap);
+      setImage(processor->get_texture(), pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+    if (!current_frame->IsLocked(TextureTypes::Normal) && must_update_texture(pi, processor_id, TextureTypes::Normal, current_frame->get_revision(TextureTypes::Normal)))
     {
-      setSpecularMap(&specularMap);
+      QImage normal_img;
+    if (current_frame->get_image_shared(TextureTypes::Normal, &normal_img))
+      setNormalMap(&normal_img, pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+    if (!current_frame->IsLocked(TextureTypes::Specular) && must_update_texture(pi, processor_id, TextureTypes::Specular, current_frame->get_revision(TextureTypes::Specular)))
     {
-      setParallaxMap(&parallaxMap);
+      QImage specular_img;
+    if (current_frame->get_image_shared(TextureTypes::Specular, &specular_img))
+      setSpecularMap(&specular_img, pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+    if (!current_frame->IsLocked(TextureTypes::Parallax) && must_update_texture(pi, processor_id, TextureTypes::Parallax, current_frame->get_revision(TextureTypes::Parallax)))
     {
-      setOcclusionMap(&occlusionMap);
+      QImage parallax_img;
+    if (current_frame->get_image_shared(TextureTypes::Parallax, &parallax_img))
+      setParallaxMap(&parallax_img, pi);
     }
+    if (!current_frame->IsLocked(TextureTypes::Occlussion) && must_update_texture(pi, processor_id, TextureTypes::Occlussion, current_frame->get_revision(TextureTypes::Occlussion)))
+    {
+      QImage occlussion_img;
+    if (current_frame->get_image_shared(TextureTypes::Occlussion, &occlussion_img))
+      setOcclusionMap(&occlussion_img, pi);
+    }
+
+    processor_revisions[pi].id = processor_id;
 
     bool useAlpha;
 
@@ -278,8 +317,8 @@ void OpenGlWidget::update_scene()
     QVector3D texPos = *processor->get_position();
     transform.translate(texPos);
 
-    float scaleX = !processor->get_tile_x() ? 0.5 * m_image.width() : 1.5 * m_image.width();
-    float scaleY = !processor->get_tile_y() ? 0.5 * m_image.height() : 1.5 * m_image.height();
+    float scaleX = !processor->get_tile_x() ? 0.5 * img_size.width() : 1.5 * img_size.width();
+    float scaleY = !processor->get_tile_y() ? 0.5 * img_size.height() : 1.5 * img_size.height();
 
     /* Adjust for retina and apply individual zoom*/
     scaleX *= devicePixelRatioF();
@@ -317,8 +356,9 @@ void OpenGlWidget::update_scene()
     m_program.setUniformValue("inv_transform", transform.inverted());
     m_program.setUniformValue("inv_view", view.inverted());
     m_program.setUniformValue("inv_projection", projection.inverted());
-    m_program.setUniformValue("pixelsX", pixelsX);
-    m_program.setUniformValue("pixelsY", pixelsY);
+    QSize s = current_frame->size();
+    m_program.setUniformValue("pixelsX", s.width());
+    m_program.setUniformValue("pixelsY", s.height());
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("selected", processor->get_selected());
     m_program.setUniformValue("textureScale", processor->get_zoom());
@@ -328,22 +368,22 @@ void OpenGlWidget::update_scene()
     zoomY = processor->get_tile_y() ? 1.0 / 3 : 1;
     m_program.setUniformValue("ratio", QVector2D(1 / zoomX, 1 / zoomY));
     m_program.setUniformValue("useAlpha", useAlpha);
-    m_texture->bind(0);
+    m_texture[pi]->bind(0);
     m_program.setUniformValue("diffuse", 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
-    m_normalTexture->bind(1);
+    m_normalTexture[pi]->bind(1);
     m_program.setUniformValue("normalMap", 1);
-    m_parallaxTexture->bind(2);
+    m_parallaxTexture[pi]->bind(2);
     m_program.setUniformValue("parallaxMap", 2);
-    m_specularTexture->bind(3);
+    m_specularTexture[pi]->bind(3);
     m_program.setUniformValue("specularMap", 3);
-    m_occlusionTexture->bind(4);
+    m_occlusionTexture[pi]->bind(4);
     m_program.setUniformValue("occlussionMap", 4);
     m_program.setUniformValue("parallax", processor->get_is_parallax() &&
                                               viewmode == Preview);
-    // m_texture->bind(0);
+    // m_texture[pi]->bind(0);
 
     current_vertices = processor->vertices[processor->get_current_frame_id()].data();
     m_program.setUniformValue("rect", QVector4D(current_vertices[3], current_vertices[8], current_vertices[14], current_vertices[4]));
@@ -445,7 +485,6 @@ void OpenGlWidget::update_scene()
     setCursor(Qt::BlankCursor);
     brushTexture->destroy();
     brushTexture->create();
-    QImage b = currentBrush->getBrushSprite();
     brushTexture->setData(currentBrush->getBrushSprite());
     float x = static_cast<float>(brushTexture->width()) * 0.5f;
     float y = static_cast<float>(brushTexture->height()) * 0.5f;
@@ -497,60 +536,88 @@ void OpenGlWidget::resizeGL(int w, int h)
 {
   w *= devicePixelRatioF();
   h *= devicePixelRatioF();
-  sx = (float)m_image.width() / w;
-  sy = (float)m_image.height() / h;
   need_to_update = true;
   m_width = w;
   m_height = h;
 }
 
-void OpenGlWidget::setImage(QImage *image)
+void OpenGlWidget::setImage(const QImage *image, int pi)
 {
-  if (m_texture->isCreated())
-    m_texture->destroy();
+  if (!m_texture[pi])
+  {
+    m_texture[pi] = new QOpenGLTexture(*image);
+  }
+  else
+  {
+    if (m_texture[pi]->isCreated())
+      m_texture[pi]->destroy();
 
-  m_texture->create();
-  m_texture->setData(*image);
-  sx = (float)image->width() / m_width;
-  sy = (float)image->height() / m_height;
-  pixelsX = image->width();
-  pixelsY = image->height();
+    m_texture[pi]->create();
+    m_texture[pi]->setData(*image);
+  }
 
-  m_texture->generateMipMaps();
+  m_texture[pi]->generateMipMaps();
 }
 
-void OpenGlWidget::setNormalMap(QImage *image)
+void OpenGlWidget::setNormalMap(const QImage *image, int pi)
 {
-  m_normalTexture->destroy();
-  if (m_normalTexture->create())
-    m_normalTexture->setData(*image);
+  if (!m_normalTexture[pi])
+  {
+    m_normalTexture[pi] = new QOpenGLTexture(*image);
+  }
+  else
+  {
+    m_normalTexture[pi]->destroy();
+    if (m_normalTexture[pi]->create())
+      m_normalTexture[pi]->setData(*image);
+  }
 
-  m_normalTexture->generateMipMaps();
+  m_normalTexture[pi]->generateMipMaps();
 }
 
-void OpenGlWidget::setOcclusionMap(QImage *image)
+void OpenGlWidget::setOcclusionMap(const QImage *image, int pi)
 {
-  m_occlusionTexture->destroy();
-  m_occlusionTexture->create();
-  m_occlusionTexture->setData(*image);
-
-  m_occlusionTexture->generateMipMaps();
+  if (!m_occlusionTexture[pi])
+  {
+    m_occlusionTexture[pi] = new QOpenGLTexture(*image);
+  }
+  else
+  {
+    m_occlusionTexture[pi]->destroy();
+    m_occlusionTexture[pi]->create();
+    m_occlusionTexture[pi]->setData(*image);
+  }
+  m_occlusionTexture[pi]->generateMipMaps();
 }
 
-void OpenGlWidget::setParallaxMap(QImage *image)
+void OpenGlWidget::setParallaxMap(const QImage *image, int pi)
 {
-  m_parallaxTexture->destroy();
-  m_parallaxTexture->create();
-  m_parallaxTexture->setData(*image);
-  m_parallaxTexture->generateMipMaps();
+  if (!m_parallaxTexture[pi])
+  {
+    m_parallaxTexture[pi] = new QOpenGLTexture(*image);
+  }
+  else
+  {
+    m_parallaxTexture[pi]->destroy();
+    m_parallaxTexture[pi]->create();
+    m_parallaxTexture[pi]->setData(*image);
+  }
+  m_parallaxTexture[pi]->generateMipMaps();
 }
 
-void OpenGlWidget::setSpecularMap(QImage *image)
+void OpenGlWidget::setSpecularMap(const QImage *image, int pi)
 {
-  m_specularTexture->destroy();
-  if (m_specularTexture->create())
-    m_specularTexture->setData(*image);
-  m_specularTexture->generateMipMaps();
+  if (!m_specularTexture[pi])
+  {
+    m_specularTexture[pi] = new QOpenGLTexture(*image);
+  }
+  else
+  {
+    m_specularTexture[pi]->destroy();
+    if (m_specularTexture[pi]->create())
+      m_specularTexture[pi]->setData(*image);
+  }
+  m_specularTexture[pi]->generateMipMaps();
 }
 
 void OpenGlWidget::setZoom(float zoom)
@@ -740,16 +807,24 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
   old_position = event->position();
   global_mouse_press_position = LocalToWorld(event->position());
   local_mouse_press_position = LocalToView(event->position());
+  /* World coords are in device pixels, so the boxes have to be too */
+  float dpr = devicePixelRatioF();
   if (currentBrush && currentBrush->get_selected())
   {
-    QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
+    QVector3D *o = processor->get_position();
+    QPointF origin(o->x(), o->y());
+    QPointF d = global_mouse_last_position - origin;
+    qreal a = -qDegreesToRadians(processor->get_rotation());
+    d = QPointF(d.x() * cos(a) - d.y() * sin(a),
+                d.x() * sin(a) + d.y() * cos(a));
+    d /= dpr * processor->get_zoom();
+    QPoint tpos = (origin + d).toPoint();
     oldPos = tpos;
     currentBrush->setProcessor(processor);
     currentBrush->mousePress(tpos);
   }
 
-  /* World coords are in device pixels, so the boxes have to be too */
-  float dpr = devicePixelRatioF();
+
 
   /* In rendering, we are reducing the size of the light by 0.25 */
   float lightWidth = (float)laigter.width() * 0.25 * dpr;
@@ -822,15 +897,19 @@ void OpenGlWidget::mousePressEvent(QMouseEvent *event)
           h /= processor->getVFrames();
         }
 
-        if (qAbs(global_mouse_press_position.x() - processor->get_position()->x()) < w * processor->get_zoom() * 0.5 * dpr &&
-            qAbs(global_mouse_press_position.y() - processor->get_position()->y()) < h * processor->get_zoom() * 0.5 * dpr &&
+        QPointF d = global_mouse_press_position - QPointF(processor->get_position()->x(), processor->get_position()->y());
+        qreal a = -qDegreesToRadians(processor->get_rotation());
+        d = QPointF(d.x() * cos(a) - d.y() * sin(a),
+                    d.x() * sin(a) + d.y() * cos(a));
+
+        if (qAbs(d.x()) < w * processor->get_zoom() * 0.5 * dpr &&
+            qAbs(d.y()) < h * processor->get_zoom() * 0.5 * dpr &&
             not selected)
         {
           set_processor_selected(processor, true);
           selected = true;
           /* Back to texture pixels, get_frame_at_point works on those */
-          QPointF delta = global_mouse_press_position - QPointF(processor->get_position()->x(), processor->get_position()->y());
-          delta /= dpr * processor->get_zoom();
+          QPointF delta = d / (dpr * processor->get_zoom());
           QPoint point(delta.x() + processor->texture.width() / 2.0, -delta.y() + processor->texture.height() / 2.0);
           if (processor->frame_mode == "Sheet")
             processor->set_current_frame_id(processor->get_frame_at_point(point));
@@ -944,7 +1023,14 @@ void OpenGlWidget::mouseMoveEvent(QMouseEvent *event)
     }
     else if (currentBrush && currentBrush->get_selected() && !lightSelected && event->buttons() & Qt::LeftButton)
     {
-      QPoint tpos = QPoint(floor(global_mouse_last_position.x()), floor(global_mouse_last_position.y()));
+      QVector3D *o = processor->get_position();
+      QPointF origin(o->x(), o->y());
+      QPointF d = global_mouse_last_position - origin;
+      qreal a = -qDegreesToRadians(processor->get_rotation());
+      d = QPointF(d.x() * cos(a) - d.y() * sin(a),
+                  d.x() * sin(a) + d.y() * cos(a));
+      d /= devicePixelRatioF() * processor->get_zoom();
+      QPoint tpos = (origin + d).toPoint();
       if (abs(oldPos.x() - tpos.x()) + abs(oldPos.y() - tpos.y()) > 1)
       {
         if (event->source() != Qt::MouseEventSynthesizedByQt)
@@ -1149,31 +1235,44 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     QString suffix;
     QFileInfo info;
 
-    if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
+    int pi = processor->index;
+    Sprite *current_frame = processor->get_current_frame();
+
+    QSize img_size = current_frame->size();
+
+    if (!current_frame->IsLocked(TextureTypes::Diffuse))
     {
-      setImage(&m_image);
+      setImage(processor->get_texture(), pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
+    if (!current_frame->IsLocked(TextureTypes::Normal))
     {
-      setNormalMap(&normalMap);
+      QImage normal_img;
+    if (current_frame->get_image_shared(TextureTypes::Normal, &normal_img))
+      setNormalMap(&normal_img, pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
+    if (!current_frame->IsLocked(TextureTypes::Specular))
     {
-      setSpecularMap(&specularMap);
+      QImage specular_img;
+    if (current_frame->get_image_shared(TextureTypes::Specular, &specular_img))
+      setSpecularMap(&specular_img, pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
+    if (!current_frame->IsLocked(TextureTypes::Parallax))
     {
-      setParallaxMap(&parallaxMap);
+      QImage parallax_img;
+    if (current_frame->get_image_shared(TextureTypes::Parallax, &parallax_img))
+      setParallaxMap(&parallax_img, pi);
     }
-    if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
+    if (!current_frame->IsLocked(TextureTypes::Occlussion))
     {
-      setOcclusionMap(&occlusionMap);
+      QImage occlussion_img;
+    if (current_frame->get_image_shared(TextureTypes::Occlussion, &occlussion_img))
+      setOcclusionMap(&occlussion_img, pi);
     }
 
     /* One pixel per texture pixel, no matter the screen scale */
     float dpr = devicePixelRatioF();
-    int w = m_image.width();
-    int h = m_image.height();
+    int w = img_size.width();
+    int h = img_size.height();
     int m_width = (int(w / this->m_width) + 1) * this->m_width;
     int m_height = (int(h / this->m_height) + 1) * this->m_height;
     /* Keep the centered image aligned to the pixel grid */
@@ -1244,9 +1343,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("inv_transform", transform.inverted());
     m_program.setUniformValue("inv_view", view.inverted());
     m_program.setUniformValue("inv_projection", projection.inverted());
-
-    m_program.setUniformValue("pixelsX", pixelsX);
-    m_program.setUniformValue("pixelsY", pixelsY);
+    QSize s = current_frame->size();
+    m_program.setUniformValue("pixelsX", s.width());
+    m_program.setUniformValue("pixelsY", s.height());
     m_program.setUniformValue("pixelSize", pixelSize);
     m_program.setUniformValue("pixelated", m_pixelated);
     m_program.setUniformValue("toon", m_toon);
@@ -1257,23 +1356,23 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, i1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, i2);
 
-    m_texture->bind(0);
+    m_texture[pi]->bind(0);
     m_program.setUniformValue("texture", 0);
 
-    m_normalTexture->bind(1);
+    m_normalTexture[pi]->bind(1);
     m_program.setUniformValue("normalMap", 1);
 
-    m_parallaxTexture->bind(2);
+    m_parallaxTexture[pi]->bind(2);
     m_program.setUniformValue("parallaxMap", 2);
 
-    m_specularTexture->bind(3);
+    m_specularTexture[pi]->bind(3);
     m_program.setUniformValue("specularMap", 3);
 
-    m_occlusionTexture->bind(4);
+    m_occlusionTexture[pi]->bind(4);
     m_program.setUniformValue("occlusionMap", 4);
 
-    scaleX = !processor->get_tile_x() ? sx : 1;
-    scaleY = !processor->get_tile_y() ? sy : 1;
+    scaleX = !processor->get_tile_x() ? (float)s.width()  / this->m_width  : 1;
+    scaleY = !processor->get_tile_y() ? (float)s.height() / this->m_height : 1;
 
     /* Same as on screen, the image is centered now */
     m_program.setUniformValue("viewPos", QVector3D(0, 0, 1));
@@ -1283,7 +1382,7 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("viewport_size", QVector2D(m_width, m_height));
 
     apply_light_params(projection, view);
-    m_texture->bind(0);
+    m_texture[pi]->bind(0);
 
     VBO.bind();
     float vertices[] = {
@@ -1357,8 +1456,9 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
     m_program.setUniformValue("blend_factor", static_cast<float>(blend_factor / 100.0));
     m_program.setUniformValue("zoom", m_global_zoom);
 
-    foreach (ImageProcessor *processor, processorList)
+    foreach ( ImageProcessor *processor, processorList)
     {
+
       QPointF tex_position(processor->get_position()->x(), processor->get_position()->y());
       QPointF local_tex_position = WorldToLocal(tex_position);
       QSize tex_size(processor->get_texture()->size());
@@ -1393,27 +1493,37 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
         if (yf > ymax)
           ymax = yf;
       }
+      Sprite *current_frame = processor->get_current_frame();
+      int pi = processor->index;
+      if (!current_frame->IsLocked(TextureTypes::Diffuse))
+      {
+        setImage(processor->get_texture(), pi);
+      }
+      if (!current_frame->IsLocked(TextureTypes::Normal))
+      {
+        QImage normal_img;
+    if (current_frame->get_image_shared(TextureTypes::Normal, &normal_img))
+      setNormalMap(&normal_img, pi);
+      }
+      if (!current_frame->IsLocked(TextureTypes::Specular))
+      {
+        QImage specular_img;
+    if (current_frame->get_image_shared(TextureTypes::Specular, &specular_img))
+      setSpecularMap(&specular_img, pi);
+      }
+      if (!current_frame->IsLocked(TextureTypes::Parallax))
+      {
+        QImage parallax_img;
+    if (current_frame->get_image_shared(TextureTypes::Parallax, &parallax_img))
+      setParallaxMap(&parallax_img, pi);
+      }
+      if (!current_frame->IsLocked(TextureTypes::Occlussion))
+      {
+        QImage occlussion_img;
+    if (current_frame->get_image_shared(TextureTypes::Occlussion, &occlussion_img))
+      setOcclusionMap(&occlussion_img, pi);
+      }
 
-      if (processor->get_current_frame()->get_image(TextureTypes::Diffuse, &m_image))
-      {
-        setImage(&m_image);
-      }
-      if (processor->get_current_frame()->get_image(TextureTypes::Normal, &normalMap))
-      {
-        setNormalMap(&normalMap);
-      }
-      if (processor->get_current_frame()->get_image(TextureTypes::Specular, &specularMap))
-      {
-        setSpecularMap(&specularMap);
-      }
-      if (processor->get_current_frame()->get_image(TextureTypes::Parallax, &parallaxMap))
-      {
-        setParallaxMap(&parallaxMap);
-      }
-      if (processor->get_current_frame()->get_image(TextureTypes::Occlussion, &occlusionMap))
-      {
-        setOcclusionMap(&occlusionMap);
-      }
 
       transform.setToIdentity();
 
@@ -1424,6 +1534,10 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
         texPos.setY(0);
 
       transform.translate(texPos);
+
+      QSize s = current_frame->size();
+      float sx = (float)s.width()  / this->m_width;
+      float sy = (float)s.height() / this->m_height;
       float scaleX = !processor->get_tile_x() ? sx : 1;
       float scaleY = !processor->get_tile_y() ? sy : 1;
       transform.scale(scaleX, scaleY, 1);
@@ -1450,8 +1564,8 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
       glActiveTexture(GL_TEXTURE0);
       m_program.setUniformValue("transform", transform);
-      m_program.setUniformValue("pixelsX", pixelsX);
-      m_program.setUniformValue("pixelsY", pixelsY);
+      m_program.setUniformValue("pixelsX", s.width());
+      m_program.setUniformValue("pixelsY", s.height());
       m_program.setUniformValue("pixelSize", pixelSize);
 
       scaleX = processor->get_tile_x() ? sx : 1;
@@ -1461,21 +1575,21 @@ QImage OpenGlWidget::calculate_preview(bool fullPreview)
 
       m_program.setUniformValue("ratio", QVector2D(1 / scaleX / zoomX, 1 / scaleY / zoomY));
 
-      m_texture->bind(0);
+      m_texture[pi]->bind(0);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       m_program.setUniformValue("diffuse", 0);
 
-      m_normalTexture->bind(1);
+      m_normalTexture[pi]->bind(1);
       m_program.setUniformValue("normalMap", 1);
 
-      m_parallaxTexture->bind(2);
+      m_parallaxTexture[pi]->bind(2);
       m_program.setUniformValue("parallaxMap", 2);
 
-      m_specularTexture->bind(3);
+      m_specularTexture[pi]->bind(3);
       m_program.setUniformValue("specularMap", 3);
 
-      m_occlusionTexture->bind(4);
+      m_occlusionTexture[pi]->bind(4);
       m_program.setUniformValue("occlusionMap", 4);
 
       m_program.setUniformValue("parallax",

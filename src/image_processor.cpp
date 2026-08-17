@@ -26,6 +26,8 @@
 
 using namespace cimg_library;
 
+int ImageProcessor::global_id = 0;
+
 void SetAlphaChannel(const QImage &src, QImage &dst)
 {
   for (int y = 0; y < dst.height(); ++y) {
@@ -39,6 +41,8 @@ void SetAlphaChannel(const QImage &src, QImage &dst)
 
 ImageProcessor::ImageProcessor(QObject *parent) : QObject(parent)
 {
+  id = global_id;
+  global_id++;
   position = offset = QVector3D(0, 0, 0);
   zoom = 1.0;
   selected = false;
@@ -168,6 +172,8 @@ int ImageProcessor::loadImage(QString fileName, QImage image, QString basePath)
   sprite.set_image(TextureTypes::ParallaxOverlay, n);
   sprite.set_image(TextureTypes::OcclussionOverlay, n);
   sprite.set_image(TextureTypes::TextureOverlay, n);
+  specular_overlay_used = parallax_overlay_used = occlussion_overlay_used = false;
+  heightmap_overlay_changed = true;
   sprite.fileName = fileName;
   set_current_frame_id(0);
   get_normal_overlay();
@@ -249,10 +255,15 @@ void ImageProcessor::calculate_parallax()
     return;
   }
 
-  QImage ovi = get_parallax_overlay();
-
-  CImg<float> ov(QImage2CImg(ovi));
-  CImg<float> alpha = ov.get_channel(3) / 255.0;
+  // An untouched overlay adds nothing, and just fetching it copies
+  // the whole image
+  CImg<float> ov_value, alpha;
+  bool has_overlay = false;
+  if (parallax_overlay_used)
+  {
+    QImage ovi = get_parallax_overlay();
+    has_overlay = overlay_channels(ovi, &ov_value, &alpha);
+  }
 
   current_parallax = modify_parallax();
 
@@ -263,7 +274,8 @@ void ImageProcessor::calculate_parallax()
     current_parallax.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  current_parallax = (current_parallax.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+  if (has_overlay)
+    current_parallax = (current_parallax.mul(1.0 - alpha) + ov_value).cut(0.0, 255.0);
 
   parallax_ready.lock();
   sprite.set_image(TextureTypes::Parallax, CImg2QImage(current_parallax));
@@ -283,10 +295,15 @@ void ImageProcessor::calculate_specular()
   }
 
   current_specular = modify_specular();
-  QImage ovi = get_specular_overlay();
-
-  CImg<float> ov(QImage2CImg(ovi));
-  CImg<float> alpha = ov.get_channel(3) / 255.0;
+  // An untouched overlay adds nothing, and just fetching it copies
+  // the whole image
+  CImg<float> ov_value, alpha;
+  bool has_overlay = false;
+  if (specular_overlay_used)
+  {
+    QImage ovi = get_specular_overlay();
+    has_overlay = overlay_channels(ovi, &ov_value, &alpha);
+  }
 
   if (tileable)
   {
@@ -294,7 +311,8 @@ void ImageProcessor::calculate_specular()
     current_specular.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  current_specular = (current_specular.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+  if (has_overlay)
+    current_specular = (current_specular.mul(1.0 - alpha) + ov_value).cut(0.0, 255.0);
 
   specular_ready.lock();
   sprite.set_image(TextureTypes::Specular, CImg2QImage(current_specular));
@@ -312,10 +330,15 @@ void ImageProcessor::calculate_occlusion()
     return;
   }
   current_occlusion = modify_occlusion();
-  QImage ovi = get_occlusion_overlay();
-
-  CImg<float> ov(QImage2CImg(ovi));
-  CImg<float> alpha = ov.get_channel(3) / 255.0;
+  // An untouched overlay adds nothing, and just fetching it copies
+  // the whole image
+  CImg<float> ov_value, alpha;
+  bool has_overlay = false;
+  if (occlussion_overlay_used)
+  {
+    QImage ovi = get_occlusion_overlay();
+    has_overlay = overlay_channels(ovi, &ov_value, &alpha);
+  }
 
   /* TODO IMPORTANT make occlussion tileable */
   QSize s = sprite.size();
@@ -324,7 +347,8 @@ void ImageProcessor::calculate_occlusion()
     current_occlusion.crop(s.width(), s.height(), 2 * s.width() - 1, 2 * s.height() - 1);
   }
 
-  current_occlusion = (current_occlusion.mul(1.0 - alpha) + ov.get_channel(0)).cut(0.0, 255.0);
+  if (has_overlay)
+    current_occlusion = (current_occlusion.mul(1.0 - alpha) + ov_value).cut(0.0, 255.0);
   occlussion_ready.lock();
   sprite.set_image(TextureTypes::Occlussion, CImg2QImage(current_occlusion));
   occlussion_ready.unlock();
@@ -809,18 +833,33 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
   if (rlist.count() == 0)
     rlist.append(QRect(0, 0, 0, 0));
 
-  QImage heightOverlay = get_heightmap_overlay();
-  CImg<float> heightOv = QImage2CImg(heightOverlay);
-  if (heightOv.is_empty())
+  /* Nothing but painting on the height overlay changes this one, and it is a
+   * gradient and a blur over the whole image, so keep the last result. The
+   * size is checked too, since going tileable or splitting frames resizes the
+   * sprite without touching the overlay */
+  QSize sprite_size = sprite.size();
+  bool needs_height_ov = heightmap_overlay_changed || m_height_ov.is_empty() ||
+                         m_height_ov.width() != sprite_size.width() ||
+                         m_height_ov.height() != sprite_size.height();
+
+  if (needs_height_ov)
+  {
+    // Cleared first, so a stroke landing while we calculate is not lost
+    heightmap_overlay_changed = false;
+
+    QImage heightOverlay = get_heightmap_overlay();
+    CImg<float> heightOv = QImage2CImg(heightOverlay);
+    if (!heightOv.is_empty())
+    {
+      heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
+      m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0);
+    }
+  }
+
+  if (m_height_ov.is_empty())
   {
     normal_mutex.unlock();
     return;
-  }
-  heightOv = heightOv.mul(heightOv.get_channel(3) / 255.0);
-
-  //for (int i = 0; i < rlist.count(); i++)
-  {
-    m_height_ov = calculate_normal(heightOv.channel(0), 5000, 0);
   }
 
   if (update_tileable)
@@ -874,17 +913,23 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
       rect.getCoords(&xmin, &ymin, &xmax, &ymax);
     }
 
-#pragma omp parallel for collapse(2)
-    for (int x = xmin; x <= xmax; ++x)
+
+    const uchar *base = normalOverlay.constBits();
+    const qsizetype stride = normalOverlay.bytesPerLine();
+#pragma omp parallel for
+
+    for (int y = ymin; y <= ymax; ++y)
     {
-      for (int y = ymin; y <= ymax; ++y)
+      const uchar *line = base + y * stride;
+      for (int x = xmin; x <= xmax; ++x)
       {
         float nr, ng, nb, norm, r, g, b, a;
-        QColor ov = normalOverlay.pixelColor(x, y);
-        r = ov.redF() * 2 - 1;
-        g = ov.greenF() * 2 - 1;
-        b = ov.blueF() * 2 - 1;
-        a = ov.alphaF();
+        const uchar A = line[4 * x + 3];
+        const float inv = A ? 1.0f / A : 0.0f;
+        r = line[4 * x + 0] * inv * 2 - 1;
+        g = line[4 * x + 1] * inv * 2 - 1;
+        b = line[4 * x + 2] * inv * 2 - 1;
+        a = A / 255.0f;
         nr = m_emboss_normal(x, y, 0, 0) * 3 / 2.0 + m_distance_normal(x, y, 0, 0) * 3 / 2.0 + m_height_ov(x, y, 0, 0);
         ng = m_emboss_normal(x, y, 0, 1) * 3 / 2.0 + m_distance_normal(x, y, 0, 1) * 3 / 2.0 + m_height_ov(x, y, 0, 1);
         nb = m_emboss_normal(x, y, 0, 2) * 3 / 2.0 + m_distance_normal(x, y, 0, 2) * 3 / 2.0 + m_height_ov(x, y, 0, 2);
@@ -894,9 +939,18 @@ void ImageProcessor::generate_normal_map(bool updateEnhance, bool updateBump, bo
         nb = nb * (1 - a) + (b)*a;
         norm = sqrtf(nr * nr + ng * ng + nb * nb);
 
-        m_normal(x, y, 0, 0) = 255.0 * (nr / norm * 0.5 + 0.5);
-        m_normal(x, y, 0, 1) = 255.0 * (ng / norm * 0.5 + 0.5);
-        m_normal(x, y, 0, 2) = 255.0 * (nb / norm * 0.5 + 0.5);
+        if (nr)
+        {
+          m_normal(x, y, 0, 0) = 255.0 * (nr / norm * 0.5 + 0.5);
+          m_normal(x, y, 0, 1) = 255.0 * (ng / norm * 0.5 + 0.5);
+          m_normal(x, y, 0, 2) = 255.0 * (nb / norm * 0.5 + 0.5);
+        }
+        else
+        {
+          m_normal(x, y, 0, 0) = 127.5;
+          m_normal(x, y, 0, 1) = 127.5;
+          m_normal(x, y, 0, 2) = 255.0;
+        }
 
       }
     }
@@ -1055,8 +1109,13 @@ QImage *ImageProcessor::get_texture()
   sprite.get_image(TextureTypes::Diffuse, &texture);
 
   /* Nothing loaded yet, painting on a null image only gives warnings */
-  if (last_texture.isNull())
+  bool ov_changed = texture_revisions[static_cast<int>(TextureTypes::TextureOverlay)] != sprite.get_revision(TextureTypes::TextureOverlay);
+  bool dif_changed = texture_revisions[static_cast<int>(TextureTypes::Diffuse)] != sprite.get_revision(TextureTypes::Diffuse);
+  if (last_texture.isNull() || !(ov_changed || dif_changed))
     return &last_texture;
+
+  texture_revisions[static_cast<int>(TextureTypes::TextureOverlay)] = sprite.get_revision(TextureTypes::TextureOverlay);
+  texture_revisions[static_cast<int>(TextureTypes::Diffuse)] = sprite.get_revision(TextureTypes::Diffuse);
 
   QImage ov(texture.size(), QImage::Format_RGBA8888_Premultiplied);
   sprite.get_image(TextureTypes::TextureOverlay, &ov);
@@ -1159,6 +1218,7 @@ QImage ImageProcessor::get_parallax_overlay()
 
 void ImageProcessor::set_parallax_overlay(QImage po)
 {
+  parallax_overlay_used = true;
   sprite.set_image(TextureTypes::ParallaxOverlay, po);
 }
 
@@ -1170,6 +1230,7 @@ QImage ImageProcessor::get_specular_overlay()
 
 void ImageProcessor::set_specular_overlay(QImage so)
 {
+  specular_overlay_used = true;
   sprite.set_image(TextureTypes::SpecularOverlay, so);
 }
 
@@ -1181,6 +1242,7 @@ QImage ImageProcessor::get_heightmap_overlay()
 
 void ImageProcessor::set_heightmap_overlay(QImage ho)
 {
+  heightmap_overlay_changed = true;
   sprite.set_image(TextureTypes::HeightmapOverlay, ho);
 }
 
@@ -1193,6 +1255,7 @@ QImage ImageProcessor::get_occlusion_overlay()
 
 void ImageProcessor::set_occlussion_overlay(QImage oo)
 {
+  occlussion_overlay_used = true;
   sprite.set_image(TextureTypes::OcclussionOverlay, oo);
 }
 
@@ -1605,7 +1668,43 @@ int ImageProcessor::WrapCoordinate(int coord, int interval)
   return coord;
 }
 
-QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
+bool ImageProcessor::overlay_channels(const QImage &in, CImg<float> *value, CImg<float> *alpha)
+{
+  QImage src = in;
+  if (src.format() != QImage::Format_RGBA8888 &&
+      src.format() != QImage::Format_RGBA8888_Premultiplied)
+    src.convertTo(QImage::Format_RGBA8888_Premultiplied);
+
+  const int w = src.width(), h = src.height();
+  *value = CImg<float>(w, h, 1, 1);
+  *alpha = CImg<float>(w, h, 1, 1);
+
+  const uchar *base = src.constBits();
+  const qsizetype stride = src.bytesPerLine();
+  float *value_data = value->data(), *alpha_data = alpha->data();
+
+  // Free while we are reading the bytes anyway, and an all zero overlay
+  // leaves the map untouched
+  int used = 0;
+
+#pragma omp parallel for reduction(| : used)
+  for (int y = 0; y < h; y++)
+  {
+    const uchar *line = base + y * stride;
+    float *v = value_data + (size_t)y * w;
+    float *a = alpha_data + (size_t)y * w;
+    for (int x = 0; x < w; x++)
+    {
+      v[x] = (float)line[4 * x];
+      a[x] = (float)(line[4 * x + 3] / 255.0);
+      used |= line[4 * x] | line[4 * x + 3];
+    }
+  }
+
+  return used != 0;
+}
+
+QImage ImageProcessor::CImg2QImage(const CImg<uchar> &in)
 {
   int w = in.width(), h = in.height(), channels = in.spectrum();
 
@@ -1630,9 +1729,14 @@ QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
 
   QImage out(w, h, format);
 
+  // Taken before the loop, scanLine detaches and that is not thread safe
+  unsigned char *base = out.bits();
+  const qsizetype stride = out.bytesPerLine();
+
+#pragma omp parallel for
   for (int y = 0; y < h; y++)
   {
-    unsigned char *dst = out.scanLine(y);
+    unsigned char *dst = base + y * stride;
     for (int x = 0; x < w; x++)
     {
       for (int c = 0; c < channels; c++)
@@ -1642,8 +1746,6 @@ QImage ImageProcessor::CImg2QImage(CImg<uchar> in)
       }
     }
   }
-  //  in.permute_axes("cxyz");
-  //  return QImage(in.data(), in.height(), in.depth(), format);
 
   return out;
 }
@@ -1686,9 +1788,11 @@ CImg<uchar> ImageProcessor::QImage2CImg(QImage in)
 
   CImg<uchar> srt(w, h, 1, channels);
 
+#pragma omp parallel for
   cimg_forY(srt, y)
   {
-    unsigned char *src = in.scanLine(y);
+    // const, so no detach and no copy, and safe to read from threads
+    const unsigned char *src = in.constScanLine(y);
     cimg_forX(srt, x)
     {
       for (int c = 0; c < channels; c++)
