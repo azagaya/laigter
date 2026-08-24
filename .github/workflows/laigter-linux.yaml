@@ -20,7 +20,7 @@ jobs:
         # patchelf is what quick-sharun uses to rewrite the rpaths, and the
         # qt6ct, kvantum and lxqt plugins are what it bundles so the app can
         # follow the theme of whatever desktop it ends up running on
-        pacman -S --needed --noconfirm base-devel git make patchelf qt6-base qt6-tools qt6-imageformats qt6ct kvantum lxqt-qtplugin
+        pacman -S --needed --noconfirm base-devel git make patchelf unzip qt6-base qt6-tools qt6-imageformats qt6ct kvantum lxqt-qtplugin
         get-debloated-pkgs mesa-nano libxml2-mini opus-mini
         ls /usr/bin/qmake*
         # Arch is rolling, so write down which Qt this AppImage was built with
@@ -45,29 +45,25 @@ jobs:
         export ARCH="$(uname -m)"
         export OUTNAME="Laigter-${ARCH}.AppImage"
         export OUTPATH=./binaries
-        export ADD_HOOKS="self-updater.bg.hook"
-        export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
         export ICON=dist/laigter.png
         export DESKTOP=dist/laigter.desktop
         export DEPLOY_OPENGL=1
         ./quick-sharun appdir/usr/bin/laigter
         ./quick-sharun --make-appimage
 
-    - name: upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: AppImage-x86_64
-        path: binaries
+    - name: Install Butler
+      if: github.ref == 'refs/tags/1.15.0'
+      run: |
+        set -eu
+        mkdir .butler
+        curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+        unzip -q butler.zip -d .butler
+        chmod +x .butler/butler
+        .butler/butler -V
 
-  release:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: [build]
-    permissions: write-all
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v6
-        with:
-          pattern: AppImage-*
-          merge-multiple: true
-      - name: Release AppImage
-        uses: pkgforge-dev/make-stable-appimage-release@v1
+    - name: Publish hidden Linux build to itch.io
+      if: github.ref == 'refs/tags/1.15.0'
+      env:
+        BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      run: |
+        .butler/butler push --hidden binaries azagaya/laigter:linux --userversion 1.15.0
