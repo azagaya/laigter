@@ -31,7 +31,7 @@ jobs:
         ditto laigter.app laigter-mac/laigter.app
 
     - name: Install Butler
-      if: github.ref == 'refs/tags/1.15.0'
+      if: startsWith(github.ref, 'refs/tags/')
       shell: bash
       run: |
         set -eu
@@ -46,10 +46,10 @@ jobs:
         chmod +x .butler/butler
         .butler/butler -V
 
-    - name: Publish hidden macOS build to itch.io
-      if: github.ref == 'refs/tags/1.15.0'
+    - name: Publish macOS build to itch.io
+      if: startsWith(github.ref, 'refs/tags/')
       shell: bash
       env:
         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
       run: |
-        .butler/butler push --hidden laigter-mac azagaya/laigter:mac --userversion 1.15.0
+        .butler/butler push laigter-mac azagaya/laigter:mac --userversion "$GITHUB_REF_NAME"

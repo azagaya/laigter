@@ -52,7 +52,7 @@ jobs:
         ./quick-sharun --make-appimage
 
     - name: Install Butler
-      if: github.ref == 'refs/tags/1.15.0'
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         set -eu
         mkdir .butler
@@ -61,9 +61,9 @@ jobs:
         chmod +x .butler/butler
         .butler/butler -V
 
-    - name: Publish hidden Linux build to itch.io
-      if: github.ref == 'refs/tags/1.15.0'
+    - name: Publish Linux build to itch.io
+      if: startsWith(github.ref, 'refs/tags/')
       env:
         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
       run: |
-        .butler/butler push --hidden binaries azagaya/laigter:linux --userversion 1.15.0
+        .butler/butler push binaries azagaya/laigter:linux --userversion "$GITHUB_REF_NAME"

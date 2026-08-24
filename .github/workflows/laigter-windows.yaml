@@ -42,7 +42,7 @@ jobs:
         dir
 
     - name: Install Butler
-      if: github.ref == 'refs/tags/1.15.0'
+      if: startsWith(github.ref, 'refs/tags/')
       shell: powershell
       run: |
         $ErrorActionPreference = 'Stop'
@@ -53,10 +53,10 @@ jobs:
         Expand-Archive -LiteralPath butler.zip -DestinationPath .butler -Force
         .\.butler\butler.exe -V
 
-    - name: Publish hidden Windows build to itch.io
-      if: github.ref == 'refs/tags/1.15.0'
+    - name: Publish Windows build to itch.io
+      if: startsWith(github.ref, 'refs/tags/')
       shell: powershell
       env:
         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
       run: |
-        .\.butler\butler.exe push --hidden laigter-windows azagaya/laigter:windows --userversion 1.15.0
+        .\.butler\butler.exe push laigter-windows azagaya/laigter:windows --userversion $env:GITHUB_REF_NAME
