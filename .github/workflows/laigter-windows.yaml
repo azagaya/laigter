@@ -41,6 +41,14 @@ jobs:
         powershell -ExecutionPolicy Bypass -File dist\make-installer.ps1 -Exe release\laigter.exe -OutFile %SETUP_NAME%
         dir
 
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: win-artifacts
+        path: |
+          laigter-windows
+          laigter-setup*.exe
+
     - name: Install Butler
       if: startsWith(github.ref, 'refs/tags/')
       shell: powershell

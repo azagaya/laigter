@@ -51,6 +51,12 @@ jobs:
         ./quick-sharun appdir/usr/bin/laigter
         ./quick-sharun --make-appimage
 
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: AppImage-x86_64
+        path: binaries
+
     - name: Install Butler
       if: startsWith(github.ref, 'refs/tags/')
       run: |

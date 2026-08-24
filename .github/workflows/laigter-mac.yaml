@@ -29,6 +29,13 @@ jobs:
         macdeployqt laigter.app
         mkdir -p laigter-mac
         ditto laigter.app laigter-mac/laigter.app
+        ditto -c -k --sequesterRsrc --keepParent laigter.app laigter-mac.zip
+
+    - name: Upload macOS artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: mac-artifacts
+        path: laigter-mac.zip
 
     - name: Install Butler
       if: startsWith(github.ref, 'refs/tags/')
