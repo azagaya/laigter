@@ -67,7 +67,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       QImage diffuse;
       QJsonObject frame = p_json.value("sprite").toObject();
       QString path = frame.value("diffuse").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -79,7 +79,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       /* Restore Overlays */
       data.clear();
       path = frame.value("heightmapOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -89,7 +89,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("normalOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -99,7 +99,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("occlussionOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -109,7 +109,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("parallaxOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -119,7 +119,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("specularOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -129,7 +129,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("textureOverlay").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -140,7 +140,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
       /* Load custom heightmaps and specular maps */
       data.clear();
       path = frame.value("heightmap").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
@@ -149,7 +149,7 @@ bool Project::load(QString project_path, QList<ImageProcessor *> *p_list, QJsonO
 
       data.clear();
       path = frame.value("specular").toString();
-      zip_entry_open(zip, path.toUtf8());
+      if (zip_entry_open(zip, path.toUtf8()) == 0)
       {
         zip_entry_read(zip, &buf, &bufsize);
         data.append((char *)buf, bufsize);
