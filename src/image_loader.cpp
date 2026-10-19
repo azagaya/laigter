@@ -54,7 +54,6 @@ QImage ImageLoader::loadImage(QString fileName, bool *success)
   }
   else
   {
-    QImageReader reader(fileName);
     image = QImage(fileName);
   }
   if (image.isNull())
@@ -174,26 +173,22 @@ QImage ImageLoader::loadTga(const char *filePath, bool *success)
     fsPicture.close();
     img = QImage(ui32Width, ui32Height, QImage::Format_RGBA8888);
     int pixelSize = ui32BpP == 32 ? 4 : 3;
-    // TODO: write direct into img
+    const std::uint8_t *src = vui8Pixels->data();
 
-    for (unsigned int x = 0; x < ui32Width; x++)
+    for (unsigned int y=0; y < ui32Height; ++y)
     {
-      for (unsigned int y = 0; y < ui32Height; y++)
+      uchar *dst = img.scanLine(y);
+      const std::uint8_t *row = src + y * ui32Width * pixelSize;
+      for (unsigned int x = 0; x < ui32Width; ++x)
       {
-        int vala = pixelSize == 4
-                       ? vui8Pixels->at(y * ui32Width * pixelSize +
-                                        x * pixelSize + 3)
-                       : 255;
-        int valr = vui8Pixels->at(y * ui32Width * pixelSize +
-                                  x * pixelSize + 2);
-        int valg = vui8Pixels->at(y * ui32Width * pixelSize +
-                                  x * pixelSize + 1);
-        int valb =
-            vui8Pixels->at(y * ui32Width * pixelSize + x * pixelSize);
-        QColor value(valr, valg, valb, vala);
-        img.setPixelColor(x, y, value);
+        const std::uint8_t *px = row + x * pixelSize;
+        dst[4*x + 0] = px[2];
+        dst[4*x + 1] = px[1];
+        dst[4*x + 2] = px[0];
+        dst[4*x + 3] = pixelSize == 4 ? px[3] : 255;
       }
     }
+
     img = img.flipped();
   }
 
